@@ -1,4 +1,4 @@
-package fr.villalem.clientfac;
+package fr.villalem.labd;
 import java.sql.*;
 
 public class Connexion
