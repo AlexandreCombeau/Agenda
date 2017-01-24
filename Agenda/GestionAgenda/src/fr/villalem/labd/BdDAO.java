@@ -31,11 +31,11 @@ public class BdDAO {
 		}
 	}
 	
-	public boolean authentification(String nom, String prenom) throws SQLException{
-		String request = "Select nom, prenom From Client Where nom='"+nom+"' And prenom='"+prenom+"'";
+	public boolean authentification(String log, String pwd) throws SQLException{
+		String request = "Select login, password From Usager Where login='"+log+"' And password='"+pwd+"'";
 		rs = co.query(request);
 		if(rs.next()){
-			return true;
+                    return true;
 		}
 		return false;
 	}

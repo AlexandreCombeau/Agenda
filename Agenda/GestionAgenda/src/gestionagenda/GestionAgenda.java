@@ -18,23 +18,13 @@ public class GestionAgenda {
     /**
      * @param args the command line arguments
      */
+    
+    public static Connexion connexion = new Connexion("db/Agenda.db");
+    public static BdDAO rq = new BdDAO(connexion);
+    
     public static void main(String[] args) throws SQLException {
-        Connexion connexion = new Connexion("db/Agenda.db");
-	BdDAO rq = new BdDAO(connexion);
-		
-	Scanner sc = new Scanner(System.in);
-	System.out.println("Veuillez vous authentifier: ");
-	System.out.println("*********************************************");
-	System.out.println("Votre nom : ");
-	String nom = sc.nextLine();
-	System.out.println("Votre prénom : ");
-	String prenom = sc.nextLine();
-	if(rq.authentification(nom, prenom)){
-		System.out.println("Vous êtes connecté "+nom+" "+prenom);
-	}
-	else{
-		System.err.println("Erreur lors de l'authentification");
-	}
+        
+        new ITconnexion().setVisible(true);
 		
         //connexion.close();
     }
