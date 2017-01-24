@@ -6,5 +6,5 @@ public class BdDAO {
 	//Constructeur
 	
 	//Accès à la BD
-
+	Connexion c = new Connexion();
 }
