@@ -1,0 +1,43 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package fr.villalem.labd;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+/**
+ *
+ * @author Villalemons
+ */
+public class BdDAO {
+    
+    	//Variables
+	private Connexion co = null;
+	private ResultSet rs = null;
+	
+	//Constructeur
+	public BdDAO(Connexion uneCo){
+		this.co = uneCo;
+		this.co.connect();
+	}
+	
+	//Accès à la BD
+	public void nomClients() throws SQLException{
+		String request = "Select nom From Client";
+		rs = co.query(request);
+		while(rs.next()){
+			System.out.println("Nom du client : "+rs.getString("nom"));
+		}
+	}
+	
+	public boolean authentification(String nom, String prenom) throws SQLException{
+		String request = "Select nom, prenom From Client Where nom='"+nom+"' And prenom='"+prenom+"'";
+		rs = co.query(request);
+		if(rs.next()){
+			return true;
+		}
+		return false;
+	}
+    
+}
