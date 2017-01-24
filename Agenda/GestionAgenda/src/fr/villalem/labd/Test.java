@@ -7,7 +7,7 @@ package fr.villalem.labd;
 
 /**
  *
- * @author alexis salut
+ * @author alexis loooooool2
  */
 public class Test {
     
