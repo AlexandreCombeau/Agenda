@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import fr.villalem.reservations.ITagenda;
+import fr.villalem.usager.Usager;
+import java.awt.event.KeyEvent;
 
 /**
  *
@@ -57,6 +59,11 @@ public class ITconnexion extends javax.swing.JFrame {
                 txtIdentifiantActionPerformed(evt);
             }
         });
+        txtIdentifiant.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtIdentifiantKeyReleased(evt);
+            }
+        });
 
         jLabel3.setText("Mot de passe :");
 
@@ -76,6 +83,12 @@ public class ITconnexion extends javax.swing.JFrame {
 
         labelErreur.setBackground(new java.awt.Color(255, 51, 51));
         labelErreur.setForeground(new java.awt.Color(255, 51, 51));
+
+        txtMdp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtMdpKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -142,7 +155,7 @@ public class ITconnexion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtIdentifiantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdentifiantActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_txtIdentifiantActionPerformed
 
     private void btnAuthentificationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAuthentificationActionPerformed
@@ -151,14 +164,16 @@ public class ITconnexion extends javax.swing.JFrame {
         try {
             if(rq.authentification(login, pwd)){
                 //Transmettre les données de la personne connecté
-                rq.getUsager(login, pwd);
-                System.out.println(rq.getUsager(login, pwd));
-                //Fin transmition
+                Usager unUsager = rq.getUsager(login, pwd);
+                System.out.println(unUsager);
+                //Fin transmission
                 this.dispose();
                 System.out.println(System.getProperty("user.name"));
                 ITagenda it = new ITagenda();
-                //Créer une fonction de 'check' pour savoir si l'utilisateur est un admin ou pas ... a appelé dans bdDao
-                it.getBtnTest().setVisible(false);
+                if(unUsager.getAdmin() != 1){
+                    it.getBtnAdmin().setVisible(false);
+                }
+                it.getTxtWelcome().setText("Vous êtes connecté "+unUsager.getPrenom());
                 it.setVisible(true);
             }
             else{
@@ -172,6 +187,64 @@ public class ITconnexion extends javax.swing.JFrame {
     private void btnQuitterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitterActionPerformed
         System.exit(0);
     }//GEN-LAST:event_btnQuitterActionPerformed
+
+    private void txtMdpKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMdpKeyReleased
+        String login = txtIdentifiant.getText();
+        String pwd = txtMdp.getText();
+        try {
+            if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+                if(rq.authentification(login, pwd)){
+                //Transmettre les données de la personne connecté
+                Usager unUsager = rq.getUsager(login, pwd);
+                System.out.println(unUsager);
+                //Fin transmission
+                this.dispose();
+                System.out.println(System.getProperty("user.name"));
+                ITagenda it = new ITagenda();
+                if(unUsager.getAdmin() != 1){
+                    it.getBtnAdmin().setVisible(false);
+                }
+                it.getTxtWelcome().setText("Vous êtes connecté "+unUsager.getPrenom());
+                it.setVisible(true);
+            }
+            else{
+                labelErreur.setText("Erreur lors de l'authentification");
+            }  
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ITconnexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_txtMdpKeyReleased
+
+    private void txtIdentifiantKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdentifiantKeyReleased
+        String login = txtIdentifiant.getText();
+        String pwd = txtMdp.getText();
+        try {
+            if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+                if(rq.authentification(login, pwd)){
+                //Transmettre les données de la personne connecté
+                Usager unUsager = rq.getUsager(login, pwd);
+                System.out.println(unUsager);
+                //Fin transmission
+                this.dispose();
+                System.out.println(System.getProperty("user.name"));
+                ITagenda it = new ITagenda();
+                if(unUsager.getAdmin() != 1){
+                    it.getBtnAdmin().setVisible(false);
+                }
+                it.getTxtWelcome().setText("Vous êtes connecté "+unUsager.getPrenom());
+                it.setVisible(true);
+            }
+            else{
+                labelErreur.setText("Erreur lors de l'authentification");
+            }  
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ITconnexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_txtIdentifiantKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
