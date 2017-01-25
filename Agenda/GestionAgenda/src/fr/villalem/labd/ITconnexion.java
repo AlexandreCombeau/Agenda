@@ -10,6 +10,7 @@ import static gestionagenda.GestionAgenda.rq;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import fr.villalem.reservations.ITagenda;
 
 /**
  *
@@ -149,9 +150,16 @@ public class ITconnexion extends javax.swing.JFrame {
         String pwd = txtMdp.getText();
         try {
             if(rq.authentification(login, pwd)){
+                //Transmettre les données de la personne connecté
+                rq.getUsager(login, pwd);
+                System.out.println(rq.getUsager(login, pwd));
+                //Fin transmition
                 this.dispose();
                 System.out.println(System.getProperty("user.name"));
-                new ITagenda().setVisible(true);
+                ITagenda it = new ITagenda();
+                //Créer une fonction de 'check' pour savoir si l'utilisateur est un admin ou pas ... a appelé dans bdDao
+                it.getBtnTest().setVisible(false);
+                it.setVisible(true);
             }
             else{
                 labelErreur.setText("Erreur lors de l'authentification");

@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package fr.villalem.labd;
+import fr.villalem.usager.Usager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 /**
@@ -35,9 +36,24 @@ public class BdDAO {
 		String request = "Select login, password From Usager Where login='"+log+"' And password='"+pwd+"'";
 		rs = co.query(request);
 		if(rs.next()){
+                    //co.close();
                     return true;
 		}
 		return false;
 	}
+        
+        public Usager getUsager(String login, String pwd) throws SQLException{
+            String request = "SELECT * FROM Usager WHERE login='"+login+"' AND password='"+pwd+"'";
+            rs = co.query(request);
+            
+            int identifiant = rs.getInt("idUsager");
+            int admin = rs.getInt("administrateur");
+            String nom = rs.getString("nom");
+            String prenom = rs.getString("prenom");
+            
+            Usager unUsager = new Usager(identifiant, admin, nom, prenom);
+            
+            return unUsager;
+        }
     
 }

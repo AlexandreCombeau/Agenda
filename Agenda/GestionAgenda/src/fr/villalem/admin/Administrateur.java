@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.villalem.labd;
+package fr.villalem.admin;
 
 /**
  *
  * @author Villalemons
  */
-public class lol {
+public class Administrateur {
+    
+    
+    
     
 }
