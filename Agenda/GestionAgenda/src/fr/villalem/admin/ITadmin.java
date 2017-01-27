@@ -5,6 +5,11 @@
  */
 package fr.villalem.admin;
 
+import java.awt.Color;
+import java.awt.HeadlessException;
+import javax.swing.JColorChooser;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Villalemons
@@ -29,15 +34,8 @@ public class ITadmin extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         btnQuitter = new javax.swing.JButton();
-        btnAjoutSalle = new javax.swing.JButton();
-        btnModificationSalle = new javax.swing.JButton();
-        btnSupprimerSalle = new javax.swing.JButton();
-        btnCreationUtilisateur = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnOptionsUtilisateurs = new javax.swing.JButton();
+        btnOptionsSalles = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,82 +49,50 @@ public class ITadmin extends javax.swing.JFrame {
             }
         });
 
-        btnAjoutSalle.setText("Ajouter une salle");
+        btnOptionsUtilisateurs.setText("Options Utilisateurs");
 
-        btnModificationSalle.setText("Modifier une salle");
-
-        btnSupprimerSalle.setText("Supprimer une salle");
-
-        btnCreationUtilisateur.setText("Créer un nouvel utilisateur");
-
-        jButton1.setText("Modifier un utilisateur");
-
-        jButton2.setText("Supprimer un utilisateur");
-
-        jButton3.setText("Accéder à l'historique");
-
-        jButton4.setText("Consulter une facture");
-
-        jButton5.setText("Voir les statistiques");
+        btnOptionsSalles.setText("Options Salles");
+        btnOptionsSalles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOptionsSallesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnAjoutSalle)
-                        .addGap(121, 121, 121)
-                        .addComponent(btnModificationSalle)
-                        .addGap(134, 134, 134)
-                        .addComponent(btnSupprimerSalle))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnCreationUtilisateur)
-                        .addGap(121, 121, 121)
-                        .addComponent(jButton1)
-                        .addGap(134, 134, 134)
-                        .addComponent(jButton2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton3)
-                        .addGap(121, 121, 121)
-                        .addComponent(jButton4)
-                        .addGap(134, 134, 134)
-                        .addComponent(jButton5)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(330, 330, 330)
+                .addComponent(jLabel1)
+                .addContainerGap(343, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(btnQuitter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(6, 6, 6))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnQuitter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnOptionsUtilisateurs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(btnOptionsSalles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAjoutSalle, btnCreationUtilisateur, btnModificationSalle, btnSupprimerSalle, jButton1, jButton2, jButton3, jButton4, jButton5});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAjoutSalle)
-                    .addComponent(btnModificationSalle)
-                    .addComponent(btnSupprimerSalle))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCreationUtilisateur)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+                .addComponent(btnOptionsUtilisateurs, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
                 .addComponent(btnQuitter, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(54, 54, 54)
+                    .addComponent(btnOptionsSalles, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(195, Short.MAX_VALUE)))
         );
 
         pack();
@@ -136,18 +102,37 @@ public class ITadmin extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnQuitterActionPerformed
 
+    private void btnOptionsSallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOptionsSallesActionPerformed
+        String[] options = {"Ajouter une salle", "Modifier une salle", "Supprimer une salle"};
+        String nom;
+        nom = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une option","Options salles",JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+        System.out.println(nom);
+        switch(nom){
+            case "Ajouter une salle":
+                String nomsalle;
+                nomsalle = (String)JOptionPane.showInputDialog(null, "Quel sera le nom de la nouvelle salle ?", "Options salles - Ajout salle -", JOptionPane.QUESTION_MESSAGE);
+                System.out.println("Le nom de la nouvelle salle sera : "+nomsalle);
+                if(nomsalle == "" || nomsalle == null){ // REVOIR ICI !!!!!!!!!!!!!!!!
+                    break;
+                }
+                //Mettre un choix de couleur
+                Color couleur = JColorChooser.showDialog(null, "Code couleur de la salle", Color.WHITE);
+                //Transcription du code couleur RGB en HEX
+                String hex = "#"+Integer.toHexString(couleur.getRGB()).substring(2);
+                System.out.println("Le hex : "+hex);
+                
+                break;
+            case "Modifier une salle":
+                JOptionPane.showInputDialog(null, "Quelle salle voulez-vous modifier ?", "Options salles - Modification salle -", JOptionPane.QUESTION_MESSAGE);
+                break;
+        }
+    }//GEN-LAST:event_btnOptionsSallesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAjoutSalle;
-    private javax.swing.JButton btnCreationUtilisateur;
-    private javax.swing.JButton btnModificationSalle;
+    private javax.swing.JButton btnOptionsSalles;
+    private javax.swing.JButton btnOptionsUtilisateurs;
     private javax.swing.JButton btnQuitter;
-    private javax.swing.JButton btnSupprimerSalle;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

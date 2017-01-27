@@ -23,38 +23,25 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="2" attributes="0">
-                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                  <Group type="102" alignment="2" attributes="0">
-                      <Component id="btnAjoutSalle" linkSize="1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="121" pref="121" max="121" attributes="0"/>
-                      <Component id="btnModificationSalle" linkSize="1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="134" pref="134" max="134" attributes="0"/>
-                      <Component id="btnSupprimerSalle" linkSize="1" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="2" attributes="0">
-                      <Component id="btnCreationUtilisateur" linkSize="1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="121" pref="121" max="121" attributes="0"/>
-                      <Component id="jButton1" linkSize="1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="134" pref="134" max="134" attributes="0"/>
-                      <Component id="jButton2" linkSize="1" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="2" attributes="0">
-                      <Component id="jButton3" linkSize="1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="121" pref="121" max="121" attributes="0"/>
-                      <Component id="jButton4" linkSize="1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="134" pref="134" max="134" attributes="0"/>
-                      <Component id="jButton5" linkSize="1" min="-2" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-              <EmptySpace max="32767" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="330" max="-2" attributes="0"/>
+              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="343" max="32767" attributes="0"/>
           </Group>
-          <Group type="102" attributes="0">
-              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-              <Component id="btnQuitter" max="32767" attributes="0"/>
-              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="btnQuitter" max="32767" attributes="0"/>
+                  <Component id="btnOptionsUtilisateurs" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+          <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="btnOptionsSalles" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
           </Group>
       </Group>
     </DimensionLayout>
@@ -63,27 +50,18 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnAjoutSalle" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnModificationSalle" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnSupprimerSalle" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnCreationUtilisateur" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton5" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace pref="58" max="32767" attributes="0"/>
+              <EmptySpace pref="86" max="32767" attributes="0"/>
+              <Component id="btnOptionsUtilisateurs" min="-2" pref="36" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
               <Component id="btnQuitter" min="-2" pref="41" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+          </Group>
+          <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+                  <Component id="btnOptionsSalles" min="-2" pref="36" max="-2" attributes="0"/>
+                  <EmptySpace pref="195" max="32767" attributes="0"/>
+              </Group>
           </Group>
       </Group>
     </DimensionLayout>
@@ -105,50 +83,18 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnQuitterActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnAjoutSalle">
+    <Component class="javax.swing.JButton" name="btnOptionsUtilisateurs">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Ajouter une salle"/>
+        <Property name="text" type="java.lang.String" value="Options Utilisateurs"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="btnModificationSalle">
+    <Component class="javax.swing.JButton" name="btnOptionsSalles">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Modifier une salle"/>
+        <Property name="text" type="java.lang.String" value="Options Salles"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnSupprimerSalle">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Supprimer une salle"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnCreationUtilisateur">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Cr&#xe9;er un nouvel utilisateur"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Modifier un utilisateur"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Supprimer un utilisateur"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="jButton3">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Acc&#xe9;der &#xe0; l&apos;historique"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="jButton4">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Consulter une facture"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="jButton5">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Voir les statistiques"/>
-      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOptionsSallesActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
