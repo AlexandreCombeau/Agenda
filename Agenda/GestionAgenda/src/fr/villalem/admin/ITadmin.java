@@ -112,7 +112,7 @@ public class ITadmin extends javax.swing.JFrame {
                 String nomsalle;
                 nomsalle = (String)JOptionPane.showInputDialog(null, "Quel sera le nom de la nouvelle salle ?", "Options salles - Ajout salle -", JOptionPane.QUESTION_MESSAGE);
                 System.out.println("Le nom de la nouvelle salle sera : "+nomsalle);
-                if(nomsalle == "" || nomsalle == null){ // REVOIR ICI !!!!!!!!!!!!!!!!
+                if(nomsalle == "" || nomsalle == null){ // REVOIR ICI !!!!!!!!!!!!!!!!!
                     break;
                 }
                 //Mettre un choix de couleur
