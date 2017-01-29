@@ -115,53 +115,6 @@ public class ITadmin extends javax.swing.JFrame {
                 ajout.setLabelChoice(ajout.getLabelChoice()+"salle");
                 ajout.setVisible(true);
                 break;
-                /*
-                String nomsalle;
-                nomsalle = (String)JOptionPane.showInputDialog(null, "Quel sera le nom de la nouvelle salle ?", title, JOptionPane.QUESTION_MESSAGE);
-                if(nomsalle != null && !(nomsalle.equals(""))){ 
-                    System.out.println("Le nom de la nouvelle salle sera : "+nomsalle);
-                    //Mettre un choix de couleur
-                    try{
-                        Color couleur = JColorChooser.showDialog(null, "Code couleur de la salle", Color.WHITE);
-                        //Transcription du code couleur RGB en HEX
-                        String hexa = "#"+Integer.toHexString(couleur.getRGB()).substring(2);
-                        System.out.println("Le hex : "+hexa);
-                        String aire;
-                        aire = (String)JOptionPane.showInputDialog(null, "Quelle est l'air de la salle ?", title, JOptionPane.QUESTION_MESSAGE);
-                        int superficie = Integer.parseInt(aire);
-                        if(superficie < 0){
-                            JOptionPane.showMessageDialog(null, "Une superficie ne peut être négative ("+superficie+"). Réinitialisation de la superficie à 0.");
-                            superficie = 0;
-                        }
-                        /*
-                        /!\ AFFICHER UNE CASE POUR LA COULEUR CHOISIE /!\
-                        */
-                        /*String infos = "Voici les caractéristiques de la future salle : \n -Nom de la salle : "+nomsalle+" \n -Couleur de la salle : "+hexa+" \n -Superficie de la salle : "+superficie+"m²";
-                        int choix;
-                        choix = (int)JOptionPane.showConfirmDialog(null, infos, title, WIDTH);
-                        /*
-                        /!\ OK = 0 // ANNULER = 1 /!\
-                        */
-                        /*if(choix == 0){
-                            JOptionPane.showMessageDialog(null, "Création de la salle réussie.");
-                        }
-                        else{
-                           JOptionPane.showMessageDialog(null, "Création de la salle annulée."); 
-                        }
-                    }catch(NullPointerException e){
-                        e.getMessage();
-                        JOptionPane.showMessageDialog(null, "Création de la salle annulée.");
-                    }catch(NumberFormatException e){
-                        e.getMessage();
-                    }
- 
-                    break;
-                }
-                else{
-                    JOptionPane.showMessageDialog(null, "Création de la salle annulée.");
-                   break; 
-                }*/
- 
             case "Modifier une salle":
                 JOptionPane.showInputDialog(null, "Quelle salle voulez-vous modifier ?", "Options salles - Modification salle -", JOptionPane.QUESTION_MESSAGE);
                 break;

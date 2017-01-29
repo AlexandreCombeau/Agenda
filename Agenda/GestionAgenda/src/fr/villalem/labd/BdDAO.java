@@ -5,6 +5,7 @@
  */
 package fr.villalem.labd;
 import fr.villalem.usager.Usager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 /**
@@ -54,6 +55,22 @@ public class BdDAO {
             Usager unUsager = new Usager(identifiant, admin, nom, prenom);
             
             return unUsager;
+        }
+        
+        public void ajoutSalle(String name, int superficie, String couleur, String comment){
+            String quest = "INSERT INTO Salle(libelle, superficie, codeCouleur, descriptif) VALUES('"+name+"', "+superficie+", '"+couleur+"', '"+comment+"')";
+            rs = co.query(quest);
+            System.out.println("Insertion réussie");
+        }
+        
+        public boolean checkErreurAjoutSalle(String nomsalle, String couleur) throws SQLException{
+            //Comparaison avec les données de la BD pour déterminer les doublons
+            String quest1 = "SELECT * FROM Salle WHERE libelle = '"+nomsalle+"'";
+            String quest2 = "SELECT * FROM Salle WHERE codeCouleur = '"+couleur+"'";
+            if((rs = co.query(quest1)).next() || (rs = co.query(quest2)).next()){
+                return false;
+            }
+            return true;   
         }
     
 }
