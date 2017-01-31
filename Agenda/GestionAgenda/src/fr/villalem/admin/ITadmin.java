@@ -104,7 +104,6 @@ public class ITadmin extends javax.swing.JFrame {
 
     private void btnOptionsSallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOptionsSallesActionPerformed
         String[] options = {"Ajouter une salle", "Modifier une salle", "Supprimer une salle"};
-        String title = "Options salles - Ajout salle -";
         String nom;
         nom = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une option","Options salles",JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
         System.out.println(nom);
@@ -116,7 +115,8 @@ public class ITadmin extends javax.swing.JFrame {
                 ajout.setVisible(true);
                 break;
             case "Modifier une salle":
-                JOptionPane.showInputDialog(null, "Quelle salle voulez-vous modifier ?", "Options salles - Modification salle -", JOptionPane.QUESTION_MESSAGE);
+                ITmodif modif = new ITmodif();
+                modif.setVisible(true);
                 break;
         }
     }//GEN-LAST:event_btnOptionsSallesActionPerformed
