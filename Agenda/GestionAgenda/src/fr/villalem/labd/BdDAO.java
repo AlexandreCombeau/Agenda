@@ -5,6 +5,7 @@
  */
 package fr.villalem.labd;
 import fr.villalem.usager.Usager;
+import java.awt.Color;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,19 +59,27 @@ public class BdDAO {
         }
         
         public void ajoutSalle(String name, int superficie, String couleur, String comment){
-            String quest = "INSERT INTO Salle(libelle, superficie, codeCouleur, descriptif) VALUES('"+name+"', "+superficie+", '"+couleur+"', '"+comment+"')";
+            String quest = "INSERT INTO Salle(nomSalle, superficie, codeCouleur, descriptif) VALUES('"+name+"', "+superficie+", '"+couleur+"', '"+comment+"')";
             rs = co.query(quest);
             System.out.println("Insertion réussie");
         }
         
         public boolean checkErreurAjoutSalle(String nomsalle, String couleur) throws SQLException{
             //Comparaison avec les données de la BD pour déterminer les doublons
-            String quest1 = "SELECT * FROM Salle WHERE libelle = '"+nomsalle+"'";
+            String quest1 = "SELECT * FROM Salle WHERE nomSalle = '"+nomsalle+"'";
             String quest2 = "SELECT * FROM Salle WHERE codeCouleur = '"+couleur+"'";
             if((rs = co.query(quest1)).next() || (rs = co.query(quest2)).next()){
                 return false;
             }
             return true;   
+        }
+        
+        public boolean checkErreurModif(String nomTable, String nom) throws SQLException{
+            String quest = "SELECT * FROM "+nomTable+" WHERE nomSalle = '"+nom+"'";
+            if(co.query(quest).next()){
+                return false;
+            }
+            return true;
         }
         
         public String[] getSalle() throws SQLException{
@@ -83,11 +92,33 @@ public class BdDAO {
             String[] nom = new String[longueurTableau];
             rs = co.query(quest);
             while(rs.next()){
-               String name = rs.getString("libelle");
+               String name = rs.getString("nomSalle");
                nom[i] = name;
                i++;
             }        
             return nom;
         }
+        
+        public void MAJ(String nomTable, String ancienNomChamps, String nouveauNomChamps){
+            String quest = "UPDATE "+nomTable+" SET nom"+nomTable+" = '"+nouveauNomChamps+"' WHERE nom"+nomTable+" = '"+ancienNomChamps+"'";
+            co.query(quest);
+            System.out.println("UPDATE REUSSIE");
+        }
+        
+        public void MAJcodeCouleur(String nomTable, String nomSalle, String hex){
+            String quest = "UPDATE "+nomTable+" SET codeCouleur = '"+hex+"' WHERE nomSalle = '"+nomSalle+"'";
+            co.query(quest);
+            System.out.println("UPDATE REUSSIE");
+        }
+        
+        public Color hex2Rgb(String nomSalle) throws SQLException {
+            String quest = "SELECT codeCouleur FROM Salle WHERE nomSalle = '"+nomSalle+"'";
+            String hex = null;
+            rs = co.query(quest);
+            if(rs.next()){
+                hex = rs.getString("codeCouleur");
+            }
+            return Color.decode(hex);
+           }
     
 }

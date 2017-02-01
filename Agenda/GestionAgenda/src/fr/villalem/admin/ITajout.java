@@ -194,7 +194,7 @@ public class ITajout extends javax.swing.JFrame {
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         int choice;
-        choice = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment annuler la création ?", "Annuler", WIDTH);
+        choice = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment annuler la création ?", "Annuler", JOptionPane.YES_NO_OPTION);
         if(choice == 0){
            this.dispose(); 
         }  
@@ -245,12 +245,11 @@ public class ITajout extends javax.swing.JFrame {
         if(couleur == null){
         }
         else{
-           String hexa = "#"+Integer.toHexString(couleur.getRGB()).substring(2);
+            String hexa = "#"+Integer.toHexString(couleur.getRGB()).substring(2);
             System.out.println("Le hex : "+hexa);
             btnColor.setBackground(couleur);
             this.hex = hexa; 
         }
-        
     }//GEN-LAST:event_btnColorActionPerformed
 
     public String getLabelChoice() {

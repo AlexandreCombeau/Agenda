@@ -6,13 +6,15 @@
 package fr.villalem.admin;
 
 import static gestionagenda.GestionAgenda.rq;
-import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -123,17 +125,28 @@ public class ITadmin extends javax.swing.JFrame {
         {
             try {
                 nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalle(), rq.getSalle()[0]);
+                System.out.println("ICIIII : "+nomsalle);
+                if(nomsalle != null){
+                    ITmodif modif = new ITmodif();
+                    modif.setTxtTitle("Salle : "+nomsalle);
+                    modif.setLbNomSalle(nomsalle);
+                    modif.getLbNomSalle().setVisible(false);
+                    System.out.println("ICII LA COULEUR : "+rq.hex2Rgb(nomsalle));
+                    modif.getBtnCouleur().setBackground(rq.hex2Rgb(nomsalle));
+                    modif.setVisible(true); 
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(ITadmin.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-                ITmodif modif = new ITmodif();
-                modif.setVisible(true);
                 break;
         }
     }//GEN-LAST:event_btnOptionsSallesActionPerformed
 
-
+    Toolkit tk = Toolkit.getDefaultToolkit();
+    Dimension dimEcran = tk.getScreenSize();
+    int larg = dimEcran.width;
+    int haut = dimEcran.height;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOptionsSalles;
     private javax.swing.JButton btnOptionsUtilisateurs;
