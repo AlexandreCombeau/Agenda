@@ -26,6 +26,12 @@ public class ITajout extends javax.swing.JFrame {
     public ITajout() {
         initComponents();
     }
+    
+    /*
+    ============================================================================
+    /!\ MANQUE L'AJOUT D'UNE IMAGE DANS LA BD (POSSIBILITE PLUSIEURS ???) /!\
+    ============================================================================
+    */
 
     /**
      * This method is called from within the constructor to initialize the form.

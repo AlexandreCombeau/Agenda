@@ -99,16 +99,25 @@ public class BdDAO {
             return nom;
         }
         
-        public void MAJ(String nomTable, String ancienNomChamps, String nouveauNomChamps){
+        public void MAJnom(String nomTable, String ancienNomChamps, String nouveauNomChamps){
             String quest = "UPDATE "+nomTable+" SET nom"+nomTable+" = '"+nouveauNomChamps+"' WHERE nom"+nomTable+" = '"+ancienNomChamps+"'";
             co.query(quest);
             System.out.println("UPDATE REUSSIE");
         }
         
-        public void MAJcodeCouleur(String nomTable, String nomSalle, String hex){
-            String quest = "UPDATE "+nomTable+" SET codeCouleur = '"+hex+"' WHERE nomSalle = '"+nomSalle+"'";
-            co.query(quest);
-            System.out.println("UPDATE REUSSIE");
+        public boolean MAJcodeCouleur(String nomTable, String nomSalle, String hex) throws SQLException{
+            String quest = "UPDATE "+nomTable+" SET codeCouleur = '"+hex+"' WHERE nom"+nomTable+" = '"+nomSalle+"'";
+            String quest1 = "SELECT * FROM "+nomTable+" WHERE codeCouleur = '"+hex+"'";
+            // SELECT * FROM Salle WHERE nomSalle = 'nomSalle' AND codeCouleur = 'hex';
+            rs = co.query(quest1);
+            if(rs.next()){
+                return false;
+            }
+            else{
+                co.query(quest);
+                System.out.println("UPDATE REUSSIE");
+                return true; 
+            }   
         }
         
         public Color hex2Rgb(String nomSalle) throws SQLException {

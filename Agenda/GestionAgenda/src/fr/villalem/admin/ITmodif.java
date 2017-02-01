@@ -27,6 +27,12 @@ public class ITmodif extends javax.swing.JFrame {
     public ITmodif() {
         initComponents();
     }
+    
+    /*
+    ============================================================================
+    /!\ MANQUE LES FONCTIONS POUR CHANGER LE COMMENTAIRE ET LA SUPERFICIE /!\
+    ============================================================================
+    */
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -167,10 +173,18 @@ public class ITmodif extends javax.swing.JFrame {
         }
         else{
             String hexa = "#"+Integer.toHexString(couleur.getRGB()).substring(2);
-            //Faire une insertion dans la BD du nouveau code couleur
-            rq.MAJcodeCouleur("Salle", lbNomSalle.getText(), hexa);
-            JOptionPane.showMessageDialog(null, "Nouvelle couleure pour la salle : "+lbNomSalle.getText());
-            btnCouleur.setBackground(couleur);
+            try {
+                //Faire une insertion dans la BD du nouveau code couleur
+                if(rq.MAJcodeCouleur("Salle", lbNomSalle.getText(), hexa)){
+                    JOptionPane.showMessageDialog(null, "Nouvelle couleure pour la salle : "+lbNomSalle.getText());
+                    btnCouleur.setBackground(couleur);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Cette couleur existe déjà pour une autre salle / tâche");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ITmodif.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnCouleurActionPerformed
 
@@ -207,7 +221,7 @@ public class ITmodif extends javax.swing.JFrame {
             System.out.println("ICIIIIIIII LE CHOIXX : "+choix); // OK = 0 // REFUSER = 1
             if(choix == 0){
                 //UPDATE SUR LA BD
-                rq.MAJ("Salle", lbNomSalle.getText(), nouveauNom);
+                rq.MAJnom("Salle", lbNomSalle.getText(), nouveauNom);
                 this.setTxtTitle(nouveauNom);
                 this.setLbNomSalle(nouveauNom);
             }
