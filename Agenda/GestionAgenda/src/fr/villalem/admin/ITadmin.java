@@ -7,14 +7,11 @@ package fr.villalem.admin;
 
 import static gestionagenda.GestionAgenda.rq;
 import java.awt.Dimension;
-import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
 
 /**
  *
@@ -119,10 +116,11 @@ public class ITadmin extends javax.swing.JFrame {
                 ajout.setLabelTitle(ajout.getLabelTitle()+"d'une salle");
                 ajout.setLabelChoice(ajout.getLabelChoice()+"salle");
                 ajout.setVisible(true);
+                
                 break;
+                
             case "Modifier une salle":
                 String nomsalle;
-        {
             try {
                 nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalle(), rq.getSalle()[0]);
                 System.out.println("ICIIII : "+nomsalle);
@@ -135,10 +133,28 @@ public class ITadmin extends javax.swing.JFrame {
                     modif.getBtnCouleur().setBackground(rq.hex2Rgb(nomsalle));
                     modif.setVisible(true); 
                 }
+            }catch (SQLException ex){Logger.getLogger(ITadmin.class.getName()).log(Level.SEVERE, null, ex);}
+            
+                break;
+                
+            case "Supprimer une salle":
+            try {
+                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalle(), rq.getSalle()[0]);
+                if(nomsalle != null){
+                    int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer : "+nomsalle+"?", "Suppression de la salle : "+nomsalle, JOptionPane.YES_NO_OPTION);
+                    if(choix == 0){
+                        //Requete DELETE sur la BD
+                        rq.delete("Salle", nomsalle);
+                        JOptionPane.showMessageDialog(null, "La salle '"+nomsalle+"' a été supprimée !");
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Annulation de la suppression !");
+                    }
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(ITadmin.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+        
                 break;
         }
     }//GEN-LAST:event_btnOptionsSallesActionPerformed

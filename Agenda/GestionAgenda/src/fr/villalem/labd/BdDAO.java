@@ -120,6 +120,12 @@ public class BdDAO {
             }   
         }
         
+        public void delete(String nomTable, String nomSalle){
+            String request = "DELETE FROM "+nomTable+" WHERE nom"+nomTable+" = '"+nomSalle+"'";
+            co.query(request);
+            System.out.println("DELETE REUSSIE");
+        }
+        
         public Color hex2Rgb(String nomSalle) throws SQLException {
             String quest = "SELECT codeCouleur FROM Salle WHERE nomSalle = '"+nomSalle+"'";
             String hex = null;
