@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package fr.villalem.labd;
+import fr.villalem.usager.Usager;
+import java.awt.Color;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 /**
@@ -35,9 +38,102 @@ public class BdDAO {
 		String request = "Select login, password From Usager Where login='"+log+"' And password='"+pwd+"'";
 		rs = co.query(request);
 		if(rs.next()){
+                    //co.close();
                     return true;
 		}
 		return false;
 	}
+        
+        public Usager getUsager(String login, String pwd) throws SQLException{
+            String request = "SELECT * FROM Usager WHERE login='"+login+"' AND password='"+pwd+"'";
+            rs = co.query(request);
+            
+            int identifiant = rs.getInt("idUsager");
+            int admin = rs.getInt("administrateur");
+            String nom = rs.getString("nom");
+            String prenom = rs.getString("prenom");
+            
+            Usager unUsager = new Usager(identifiant, admin, nom, prenom);
+            
+            return unUsager;
+        }
+        
+        public void ajoutSalle(String name, int superficie, String couleur, String comment){
+            String quest = "INSERT INTO Salle(nomSalle, superficie, codeCouleur, descriptif) VALUES('"+name+"', "+superficie+", '"+couleur+"', '"+comment+"')";
+            rs = co.query(quest);
+            System.out.println("Insertion réussie");
+        }
+        
+        public boolean checkErreurAjoutSalle(String nomsalle, String couleur) throws SQLException{
+            //Comparaison avec les données de la BD pour déterminer les doublons
+            String quest1 = "SELECT * FROM Salle WHERE nomSalle = '"+nomsalle+"'";
+            String quest2 = "SELECT * FROM Salle WHERE codeCouleur = '"+couleur+"'";
+            if((rs = co.query(quest1)).next() || (rs = co.query(quest2)).next()){
+                return false;
+            }
+            return true;   
+        }
+        
+        public boolean checkErreurModif(String nomTable, String nom) throws SQLException{
+            String quest = "SELECT * FROM "+nomTable+" WHERE nomSalle = '"+nom+"'";
+            if(co.query(quest).next()){
+                return false;
+            }
+            return true;
+        }
+        
+        public String[] getSalle() throws SQLException{
+            String quest = "SELECT * FROM Salle";
+            String quest1 = "SELECT COUNT(idSalle) From Salle";
+            rs = co.query(quest1);
+            int longueurTableau = rs.getInt("COUNT(idSalle)");
+            //longueurTableau = Integer.parseInt();
+            int i = 0;
+            String[] nom = new String[longueurTableau];
+            rs = co.query(quest);
+            while(rs.next()){
+               String name = rs.getString("nomSalle");
+               nom[i] = name;
+               i++;
+            }        
+            return nom;
+        }
+        
+        public void MAJnom(String nomTable, String ancienNomChamps, String nouveauNomChamps){
+            String quest = "UPDATE "+nomTable+" SET nom"+nomTable+" = '"+nouveauNomChamps+"' WHERE nom"+nomTable+" = '"+ancienNomChamps+"'";
+            co.query(quest);
+            System.out.println("UPDATE REUSSIE");
+        }
+        
+        public boolean MAJcodeCouleur(String nomTable, String nomSalle, String hex) throws SQLException{
+            String quest = "UPDATE "+nomTable+" SET codeCouleur = '"+hex+"' WHERE nom"+nomTable+" = '"+nomSalle+"'";
+            String quest1 = "SELECT * FROM "+nomTable+" WHERE codeCouleur = '"+hex+"'";
+            // SELECT * FROM Salle WHERE nomSalle = 'nomSalle' AND codeCouleur = 'hex';
+            rs = co.query(quest1);
+            if(rs.next()){
+                return false;
+            }
+            else{
+                co.query(quest);
+                System.out.println("UPDATE REUSSIE");
+                return true; 
+            }   
+        }
+        
+        public void delete(String nomTable, String nomSalle){
+            String request = "DELETE FROM "+nomTable+" WHERE nom"+nomTable+" = '"+nomSalle+"'";
+            co.query(request);
+            System.out.println("DELETE REUSSIE");
+        }
+        
+        public Color hex2Rgb(String nomSalle) throws SQLException {
+            String quest = "SELECT codeCouleur FROM Salle WHERE nomSalle = '"+nomSalle+"'";
+            String hex = null;
+            rs = co.query(quest);
+            if(rs.next()){
+                hex = rs.getString("codeCouleur");
+            }
+            return Color.decode(hex);
+           }
     
 }

@@ -117,6 +117,7 @@
         <Component class="javax.swing.JTextField" name="txtIdentifiant">
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtIdentifiantActionPerformed"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtIdentifiantKeyReleased"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
@@ -151,6 +152,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JPasswordField" name="txtMdp">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtMdpKeyReleased"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
