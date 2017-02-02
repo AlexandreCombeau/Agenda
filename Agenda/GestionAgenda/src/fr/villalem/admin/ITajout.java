@@ -45,19 +45,19 @@ public class ITajout extends javax.swing.JFrame {
         labelTitle = new javax.swing.JLabel();
         labelChoice = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jLabel3 = new javax.swing.JLabel();
+        lbHautGauche = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        lbHautDroit = new javax.swing.JLabel();
         btnColor = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
+        lbCentreGauche = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         btnCancel = new javax.swing.JButton();
         btnSubmit = new javax.swing.JButton();
         txtSuperficie = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        lbCentreDroit = new javax.swing.JLabel();
         btnImg = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        lbBasGauche = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtComment = new javax.swing.JTextArea();
 
@@ -65,11 +65,11 @@ public class ITajout extends javax.swing.JFrame {
 
         labelTitle.setText("Option Administrateur : Création ");
 
-        labelChoice.setText("Vous pouvez ici créer votre ");
+        labelChoice.setText("Vous pouvez ici créer  ");
 
-        jLabel3.setText("Nom : ");
+        lbHautGauche.setText("Nom : ");
 
-        jLabel4.setText("Couleur : ");
+        lbHautDroit.setText("Couleur : ");
 
         btnColor.setText("Choisir la couleur");
         btnColor.setBorderPainted(false);
@@ -80,7 +80,7 @@ public class ITajout extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setText("Superficie :");
+        lbCentreGauche.setText("Superficie :");
 
         jLabel6.setText("m²");
 
@@ -98,11 +98,11 @@ public class ITajout extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Image : ");
+        lbCentreDroit.setText("Image : ");
 
         btnImg.setText("Ajouter une image");
 
-        jLabel2.setText("Commentaire : ");
+        lbBasGauche.setText("Commentaire : ");
 
         txtComment.setColumns(20);
         txtComment.setRows(5);
@@ -135,13 +135,13 @@ public class ITajout extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
+                                        .addComponent(lbBasGauche)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jScrollPane1))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel3)
-                                            .addComponent(jLabel5))
+                                            .addComponent(lbHautGauche)
+                                            .addComponent(lbCentreGauche))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -151,8 +151,8 @@ public class ITajout extends javax.swing.JFrame {
                                                 .addComponent(jLabel6)))
                                         .addGap(5, 5, 5)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel4)
-                                            .addComponent(jLabel1))
+                                            .addComponent(lbHautDroit)
+                                            .addComponent(lbCentreDroit))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(btnColor, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -171,20 +171,20 @@ public class ITajout extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
+                    .addComponent(lbHautGauche)
                     .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
+                    .addComponent(lbHautDroit)
                     .addComponent(btnColor))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
+                    .addComponent(lbCentreGauche)
                     .addComponent(jLabel6)
                     .addComponent(txtSuperficie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
+                    .addComponent(lbCentreDroit)
                     .addComponent(btnImg))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
+                    .addComponent(lbBasGauche)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -281,17 +281,17 @@ public class ITajout extends javax.swing.JFrame {
     private javax.swing.JButton btnColor;
     private javax.swing.JButton btnImg;
     private javax.swing.JButton btnSubmit;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel labelChoice;
     private javax.swing.JLabel labelTitle;
+    private javax.swing.JLabel lbBasGauche;
+    private javax.swing.JLabel lbCentreDroit;
+    private javax.swing.JLabel lbCentreGauche;
+    private javax.swing.JLabel lbHautDroit;
+    private javax.swing.JLabel lbHautGauche;
     private javax.swing.JTextArea txtComment;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtSuperficie;
