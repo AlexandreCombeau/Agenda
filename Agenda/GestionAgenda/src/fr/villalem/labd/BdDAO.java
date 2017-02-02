@@ -135,5 +135,11 @@ public class BdDAO {
             }
             return Color.decode(hex);
            }
+        
+        public ResultSet getReservations() {
+            String request = "SELECT dateDebut, dateFin, nombrePersonnes, validation FROM Reservation";
+            rs = co.query(request);
+            return rs;
+        }
     
 }

@@ -9,6 +9,9 @@ import fr.villalem.admin.ITadmin;
 import fr.villalem.labd.ITconnexion;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import java.sql.*;
+import javax.swing.table.*;
+import static gestionagenda.GestionAgenda.rq;
 
 /**
  *
@@ -21,6 +24,30 @@ public class ITagenda extends javax.swing.JFrame {
      */
     public ITagenda() {
         initComponents();
+               ResultSet rs = rq.getReservations();
+ 
+         try {
+             
+             //To remove previously added rows
+             while(jTable1.getRowCount() > 0) 
+             {
+                 ((DefaultTableModel) jTable1.getModel()).removeRow(0);
+             }
+             int columns = rs.getMetaData().getColumnCount();
+             while(rs.next())
+            {  
+                Object[] row = new Object[columns];
+                for (int i = 1; i <= columns; i++)
+                {  
+                    row[i - 1] = rs.getObject(i);
+                }
+                ((DefaultTableModel) jTable1.getModel()).insertRow(rs.getRow()-1,row);
+            }
+            
+        } catch (SQLException ex) {
+            //Logger.getLogger(ITagenda.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     /**
@@ -37,6 +64,12 @@ public class ITagenda extends javax.swing.JFrame {
         btnAdmin = new javax.swing.JButton();
         btnDeconnexion = new javax.swing.JButton();
         txtWelcome = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuParamAdmin = new javax.swing.JMenuItem();
+        jMenuDeconnexion = new javax.swing.JMenuItem();
 
         jButton1.setText("jButton1");
 
@@ -58,6 +91,45 @@ public class ITagenda extends javax.swing.JFrame {
             }
         });
 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Début", "Fin", "Personnes", "Validé"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(120);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(120);
+        }
+
+        jMenu1.setText("Fichier");
+
+        jMenuParamAdmin.setText("Paramètres administrateur");
+        jMenuParamAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuParamAdminActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuParamAdmin);
+
+        jMenuDeconnexion.setText("Déconnexion");
+        jMenuDeconnexion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuDeconnexionActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuDeconnexion);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -65,34 +137,38 @@ public class ITagenda extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(176, 176, 176)
+                        .addComponent(txtWelcome))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnDeconnexion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(jLabel1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(181, 181, 181))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(140, 140, 140)
-                                .addComponent(jLabel1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(176, 176, 176)
-                                .addComponent(txtWelcome)))
-                        .addGap(0, 91, Short.MAX_VALUE)))
-                .addContainerGap())
+                            .addComponent(btnDeconnexion, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnAdmin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(189, 189, 189))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(btnAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(txtWelcome)
-                .addGap(36, 36, 36)
+                .addGap(115, 115, 115)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
+                .addGap(88, 88, 88))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addComponent(btnAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnDeconnexion, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addGap(27, 27, 27))
         );
 
         pack();
@@ -109,6 +185,17 @@ public class ITagenda extends javax.swing.JFrame {
         itco.setVisible(true);
     }//GEN-LAST:event_btnDeconnexionActionPerformed
 
+    private void jMenuDeconnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuDeconnexionActionPerformed
+        ITconnexion itco = new ITconnexion();
+        this.dispose();
+        itco.setVisible(true);
+    }//GEN-LAST:event_jMenuDeconnexionActionPerformed
+
+    private void jMenuParamAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuParamAdminActionPerformed
+        ITadmin itadmin = new ITadmin();
+        itadmin.setVisible(true);
+    }//GEN-LAST:event_jMenuParamAdminActionPerformed
+
     //Méthodes
     
     
@@ -118,6 +205,12 @@ public class ITagenda extends javax.swing.JFrame {
     private javax.swing.JButton btnDeconnexion;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuDeconnexion;
+    private javax.swing.JMenuItem jMenuParamAdmin;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel txtWelcome;
     // End of variables declaration//GEN-END:variables
 
