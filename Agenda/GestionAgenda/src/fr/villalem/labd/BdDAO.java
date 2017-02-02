@@ -141,5 +141,17 @@ public class BdDAO {
             rs = co.query(request);
             return rs;
         }
+        
+        public boolean autreReservation(String dateDebut, String dateFin) throws SQLException {
+            String request = "SELECT * FROM Reservation WHERE '" + dateDebut + "' >= dateDebut"
+                    + " AND '" + dateDebut + "' < dateFin "
+                    + " OR dateDebut >= '" + dateDebut + "'"
+                    + " AND dateDebut < '" + dateFin + "'";
+            rs = co.query(request);
+            if (rs.next()) {
+                return true;
+            }
+            return false;
+        }
     
 }
