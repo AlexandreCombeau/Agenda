@@ -193,6 +193,11 @@ public class ITmodif extends javax.swing.JFrame {
     }//GEN-LAST:event_btnQuitterActionPerformed
 
     private void btnNomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNomActionPerformed
+        /*
+        =============================
+        /!\ A MODIFIER CONDITION /!\
+        =============================
+        */
         String nouveauNom = "";
         boolean b = true;
         while(nouveauNom.equals("")){
