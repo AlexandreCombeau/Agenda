@@ -153,5 +153,49 @@ public class BdDAO {
             }
             return false;
         }
+        
+        public void ajoutUtilisateur(String nom, String prenom, String email, int admin, String login, String mdp){
+            String request = "INSERT INTO Usager(nom, prenom, mail, administrateur, login, password) VALUES('"+nom+"','"+prenom+"','"+email+"',"+admin+",'"+login+"','"+mdp+"')";
+            rs = co.query(request);
+            System.out.println("Insertion du nouvel utilisateur "+prenom+" "+nom+" réussie !");
+        }
+        
+        public boolean checkUtilisateur(String nom, String prenom, String login, String mdp) throws SQLException{
+            String request = "SELECT * FROM Usager WHERE nom = '"+nom+"' AND prenom = '"+prenom+"'";
+            rs = co.query(request);
+            if(rs.next()){
+                //Si il y a déjà un utilisateur avec le même nom et prénom, nous allons comparer ses identifiants
+                if(rs.getString("login").equals(login) && rs.getString("password").equals(mdp)){
+                   return false; 
+                }
+            }
+            return true;
+        }
+        
+        public boolean checkUtilisateurEmail(String email) throws SQLException{
+            String request = "SELECT * FROM Usager WHERE mail = '"+email+"'";
+            rs = co.query(request);
+            if(rs.next()){
+                return false;
+            }
+            return true;
+        }
+        
+        public String[] getUsager() throws SQLException{
+            String quest = "SELECT * FROM Usager";
+            String quest1 = "SELECT COUNT(idUsager) From Usager";
+            rs = co.query(quest1);
+            int longueurTableau = rs.getInt("COUNT(idUsager)");
+            //longueurTableau = Integer.parseInt();
+            int i = 0;
+            String[] nom = new String[longueurTableau];
+            rs = co.query(quest);
+            while(rs.next()){
+               String name = rs.getString("prenom")+" "+rs.getString("nom");
+               nom[i] = name;
+               i++;
+            }        
+            return nom;
+        }
     
 }

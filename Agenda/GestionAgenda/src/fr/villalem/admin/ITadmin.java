@@ -172,31 +172,27 @@ public class ITadmin extends javax.swing.JFrame {
         switch(nom){
             case "Ajouter un utilisateur":
                 ITajoutUtilisateur ajout = new ITajoutUtilisateur();
-                ajout.setLabelTitle(ajout.getLabelTitle()+"d'un utilisateur");
-                ajout.setLabelChoice(ajout.getLabelChoice()+"un utilisateur");
                 ajout.setVisible(true);
                 
                 break;
                 
-            case "Modifier une salle":
-                String nomsalle;
+            case "Modifier un utilisateur":
+                String nomutilisateur;
             try {
-                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalle(), rq.getSalle()[0]);
-                System.out.println("ICIIII : "+nomsalle);
-                if(nomsalle != null){
-                    ITmodif modif = new ITmodif();
-                    modif.setTxtTitle("Salle : "+nomsalle);
-                    modif.setLbNomSalle(nomsalle);
-                    modif.getLbNomSalle().setVisible(false);
-                    System.out.println("ICII LA COULEUR : "+rq.hex2Rgb(nomsalle));
-                    modif.getBtnCouleur().setBackground(rq.hex2Rgb(nomsalle));
+                nomutilisateur = (String)JOptionPane.showInputDialog(null, "Veuillez choisir un utilisateur à modifier", "Options utilisateurs - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getUsager(), rq.getUsager()[0]);
+                if(nomutilisateur != null){
+                    ITmodifUtilisateur modif = new ITmodifUtilisateur();
+                    modif.setTxtTitle("Utilisateur : "+nomutilisateur);
+                    //A modifier les deux lignes qui suivent
+                    modif.setLbUser(nomutilisateur);
+                    modif.getLbUser().setVisible(false);
                     modif.setVisible(true); 
                 }
             }catch (SQLException ex){Logger.getLogger(ITadmin.class.getName()).log(Level.SEVERE, null, ex);}
             
                 break;
                 
-            case "Supprimer une salle":
+            /*case "Supprimer une salle":
             try {
                 nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalle(), rq.getSalle()[0]);
                 if(nomsalle != null){
@@ -214,7 +210,7 @@ public class ITadmin extends javax.swing.JFrame {
                 Logger.getLogger(ITadmin.class.getName()).log(Level.SEVERE, null, ex);
             }
         
-                break;
+                break;*/
         }
     }//GEN-LAST:event_btnOptionsUtilisateursActionPerformed
 

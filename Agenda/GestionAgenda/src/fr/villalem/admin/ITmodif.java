@@ -194,15 +194,10 @@ public class ITmodif extends javax.swing.JFrame {
 
     private void btnNomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNomActionPerformed
         String nouveauNom = "";
-        boolean b = true;
-        while(nouveauNom.equals("")){
+        while(nouveauNom == null || nouveauNom.equals("")){
             nouveauNom = (String)JOptionPane.showInputDialog(null, "Le nom actuel est : "+lbNomSalle.getText()+".\nQuel sera le nouveau nom ?", "Modification de la salle : "+lbNomSalle.getText(), JOptionPane.QUESTION_MESSAGE);
             System.out.println("LE NOUVEAU NOM EST : "+nouveauNom);
-            if(nouveauNom == null){
-                b = false;
-                break;
-            }
-            else if(nouveauNom != null && !(nouveauNom.equals(""))){
+            if(nouveauNom != null && !(nouveauNom.equals(""))){
                 try {
                     if(rq.checkErreurModif("Salle", nouveauNom) == false){
                         JOptionPane.showMessageDialog(null, "Ce nom de salle existe déjà");
@@ -212,11 +207,11 @@ public class ITmodif extends javax.swing.JFrame {
                     Logger.getLogger(ITmodif.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            else if(nouveauNom != null && nouveauNom.equals("")){
-                JOptionPane.showMessageDialog(null, "Veuillez rentrer un nom");
+            else if(nouveauNom == null || nouveauNom.equals("")){
+                break;
             }
         }
-        if(b = true){
+        if(!(nouveauNom == null) && !(nouveauNom.equals(""))){
             int choix = (int)JOptionPane.showConfirmDialog(null, "Le nouveau nom de salle sera : "+nouveauNom+".\nConfirmer ?", "Modification de la salle : "+lbNomSalle.getText(), JOptionPane.YES_NO_OPTION);
             System.out.println("ICIIIIIIII LE CHOIXX : "+choix); // OK = 0 // REFUSER = 1
             if(choix == 0){
