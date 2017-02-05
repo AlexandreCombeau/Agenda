@@ -72,6 +72,7 @@ public class ITagenda extends javax.swing.JFrame {
         jMenuDeconnexion = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuChercherConflit = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         jButton1.setText("jButton1");
 
@@ -139,6 +140,14 @@ public class ITagenda extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuChercherConflit);
+
+        jMenuItem1.setText("agenda visuel");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
 
         jMenuBar1.add(jMenu2);
 
@@ -213,6 +222,10 @@ public class ITagenda extends javax.swing.JFrame {
         chercherConflit.setVisible(true);
     }//GEN-LAST:event_jMenuChercherConflitActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     //Méthodes
     
     
@@ -227,6 +240,7 @@ public class ITagenda extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuChercherConflit;
     private javax.swing.JMenuItem jMenuDeconnexion;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuParamAdmin;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
