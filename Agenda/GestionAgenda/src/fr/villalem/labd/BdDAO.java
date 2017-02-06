@@ -181,8 +181,32 @@ public class BdDAO {
             return true;
         }
         
-        public String[] getUsager() throws SQLException{
-            String quest = "SELECT * FROM Usager";
+        public boolean checkUtilisateurLogin(String login) throws SQLException{
+            String request = "SELECT * FROM Usager WHERE login = '"+login+"'";
+            rs = co.query(request);
+            if(rs.next()){
+                return false;
+            }
+            return true;
+        }
+        
+        public String[] getUtilisateur(String nom, String prenom) throws SQLException{
+            String quest = "SELECT * FROM Usager WHERE nom = '"+nom+"' AND prenom = '"+prenom+"'";
+            String[] user = new String[5];
+            rs = co.query(quest);
+            if(rs.next()){
+               String email = rs.getString("mail");
+               user[0] = email;
+               String login = rs.getString("login");
+               user[1] = login;
+               String mdp = rs.getString("password");
+               user[2] = mdp;  
+            }        
+            return user;
+        }
+        
+        public String[] getNomUtilisateur() throws SQLException{
+            String quest = "SELECT nom, prenom FROM Usager";
             String quest1 = "SELECT COUNT(idUsager) From Usager";
             rs = co.query(quest1);
             int longueurTableau = rs.getInt("COUNT(idUsager)");
@@ -196,6 +220,24 @@ public class BdDAO {
                i++;
             }        
             return nom;
+        }
+        
+        public void MAJlogin(String ancienLogin, String nouveauLogin){
+            String quest = "UPDATE Usager SET login = '"+nouveauLogin+"' WHERE login = '"+ancienLogin+"'";
+            rs = co.query(quest);
+            System.out.println("UPDATE REUSSIE");
+        }
+        
+        public void MAJmdp(String ancienMdp, String nouveauMdp){
+            String quest = "UPDATE Usager SET password = '"+nouveauMdp+"' WHERE password = '"+ancienMdp+"'";
+            rs = co.query(quest);
+            System.out.println("UPDATE REUSSIE");
+        }
+        
+        public void MAJmail(String ancienMail, String nouveauMail){
+            String quest = "UPDATE Usager SET mail = '"+nouveauMail+"' WHERE mail = '"+ancienMail+"'";
+            rs = co.query(quest);
+            System.out.println("UPDATE REUSSIE");
         }
     
 }

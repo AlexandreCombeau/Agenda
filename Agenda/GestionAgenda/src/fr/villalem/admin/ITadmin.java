@@ -179,11 +179,11 @@ public class ITadmin extends javax.swing.JFrame {
             case "Modifier un utilisateur":
                 String nomutilisateur;
             try {
-                nomutilisateur = (String)JOptionPane.showInputDialog(null, "Veuillez choisir un utilisateur à modifier", "Options utilisateurs - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getUsager(), rq.getUsager()[0]);
+                nomutilisateur = (String)JOptionPane.showInputDialog(null, "Veuillez choisir un utilisateur à modifier", "Options utilisateurs - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getNomUtilisateur(), rq.getNomUtilisateur()[0]);
                 if(nomutilisateur != null){
                     ITmodifUtilisateur modif = new ITmodifUtilisateur();
                     modif.setTxtTitle("Utilisateur : "+nomutilisateur);
-                    //A modifier les deux lignes qui suivent
+                    //Requete SQL récupérant le login en fonction de l'utilisateur
                     modif.setLbUser(nomutilisateur);
                     modif.getLbUser().setVisible(false);
                     modif.setVisible(true); 

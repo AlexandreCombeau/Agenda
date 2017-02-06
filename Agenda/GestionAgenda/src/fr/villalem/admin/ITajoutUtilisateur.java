@@ -240,7 +240,7 @@ public class ITajoutUtilisateur extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSubmitActionPerformed
 
-    private boolean checkEmail(String email){
+    public static boolean checkEmail(String email){
         boolean arobase = false, point = false;
         for(int i = 0 ; i<email.length() ; i++){
             if(email.charAt(i) == '@'){

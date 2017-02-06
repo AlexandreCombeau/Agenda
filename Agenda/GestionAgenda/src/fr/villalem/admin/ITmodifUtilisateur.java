@@ -5,6 +5,7 @@
  */
 package fr.villalem.admin;
 
+import static fr.villalem.admin.ITajoutUtilisateur.checkEmail;
 import static gestionagenda.GestionAgenda.rq;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -57,8 +58,18 @@ public class ITmodifUtilisateur extends javax.swing.JFrame {
         });
 
         btnMdp.setText("Changer le mot de passe");
+        btnMdp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMdpActionPerformed(evt);
+            }
+        });
 
         btnEmail.setText("Changer l'adresse e-mail");
+        btnEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEmailActionPerformed(evt);
+            }
+        });
 
         btnCancel.setText("Quitter");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -111,7 +122,7 @@ public class ITmodifUtilisateur extends javax.swing.JFrame {
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnCancel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         pack();
@@ -122,20 +133,65 @@ public class ITmodifUtilisateur extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        try{
         String nouveauLogin = "";
-            nouveauLogin = (String)JOptionPane.showInputDialog(null, "Quel sera le nouveau login ?", "Modification de l'utilisateur : "+lbUser.getText(), JOptionPane.QUESTION_MESSAGE);
-            if(nouveauLogin != null && !(nouveauLogin.equals(""))){
-                    int choix = (int)JOptionPane.showConfirmDialog(null, "Le nouveau login pour "+lbUser.getText()+" sera : "+nouveauLogin+".\nConfirmer ?", "Modification de l'utilisateur : "+lbUser.getText(), JOptionPane.YES_NO_OPTION);
-                    if(choix == 0){
-                        /*
-                        ========================================================
-                        A FINIR ICI
-                        ========================================================
-                        */
-                        //rq.MAJnom("Salle", lbNomSalle.getText(), nouveauNom);
-                    }
+        String[] nomUsager = this.getNomPrenom(lbUser.getText());
+        nouveauLogin = (String)JOptionPane.showInputDialog(null, "L'ancien login de "+lbUser.getText()+" est : "+rq.getUtilisateur(nomUsager[1], nomUsager[0])[1]+"\nQuel sera le nouveau login ?", "Modification de l'utilisateur : "+lbUser.getText(), JOptionPane.QUESTION_MESSAGE);
+        if(!(rq.checkUtilisateurLogin(nouveauLogin))){
+            JOptionPane.showMessageDialog(null, "Ce login n'est pas disponible !\nVeuillez en choisir un autre");
+        }
+        else if(nouveauLogin != null && !(nouveauLogin.equals(""))){
+            int choix = (int)JOptionPane.showConfirmDialog(null, "Le nouveau login pour "+lbUser.getText()+" sera : "+nouveauLogin+".\nConfirmer ?", "Modification de l'utilisateur : "+lbUser.getText(), JOptionPane.YES_NO_OPTION);
+            if(choix == 0){
+                rq.MAJlogin(rq.getUtilisateur(nomUsager[1], nomUsager[0])[1], nouveauLogin);
+                JOptionPane.showMessageDialog(null, "Le nouveau login de "+lbUser.getText()+" est : "+nouveauLogin);
             }
+            }
+        }catch (SQLException ex) {
+                Logger.getLogger(ITmodifUtilisateur.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void btnMdpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMdpActionPerformed
+        try{
+        String nouveauMdp = "";
+        String[] nomUsager = this.getNomPrenom(lbUser.getText());
+        nouveauMdp = (String)JOptionPane.showInputDialog(null, "L'ancien mot de passe de "+lbUser.getText()+" est : "+rq.getUtilisateur(nomUsager[1], nomUsager[0])[2]+"\nQuel sera le nouveau mot de passe ?", "Modification de l'utilisateur : "+lbUser.getText(), JOptionPane.QUESTION_MESSAGE);
+        if(nouveauMdp != null && !(nouveauMdp.equals(""))){
+            int choix = (int)JOptionPane.showConfirmDialog(null, "Le nouveau mot de passe pour "+lbUser.getText()+" sera : "+nouveauMdp+".\nConfirmer ?", "Modification de l'utilisateur : "+lbUser.getText(), JOptionPane.YES_NO_OPTION);
+            if(choix == 0){
+                rq.MAJmdp(rq.getUtilisateur(nomUsager[1], nomUsager[0])[2], nouveauMdp);
+                JOptionPane.showMessageDialog(null, "Le nouveau login de "+lbUser.getText()+" est : "+nouveauMdp);
+            }
+            }
+        }catch (SQLException ex) {
+                Logger.getLogger(ITmodifUtilisateur.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnMdpActionPerformed
+
+    private void btnEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmailActionPerformed
+        try{
+        String nouveauMail = "";
+        String[] nomUsager = this.getNomPrenom(lbUser.getText());
+        nouveauMail = (String)JOptionPane.showInputDialog(null, "L'ancien mail de "+lbUser.getText()+" est : "+rq.getUtilisateur(nomUsager[1], nomUsager[0])[0]+"\nQuel sera le nouveau mail ?", "Modification de l'utilisateur : "+lbUser.getText(), JOptionPane.QUESTION_MESSAGE);
+        if(!(rq.checkUtilisateurEmail(nouveauMail))){
+            JOptionPane.showMessageDialog(null, "Ce mail est déjà utlisé !\nVeuillez en choisir un autre");
+        }
+        else if(!(checkEmail(nouveauMail))){
+            JOptionPane.showMessageDialog(null, "Ce mail n'est pas valide !\nVeuillez en choisir un autre");
+        }
+        else if(nouveauMail != null && !(nouveauMail.equals(""))){
+            int choix = (int)JOptionPane.showConfirmDialog(null, "Le nouveau mail pour "+lbUser.getText()+" sera : "+nouveauMail+".\nConfirmer ?", "Modification de l'utilisateur : "+lbUser.getText(), JOptionPane.YES_NO_OPTION);
+            if(choix == 0){
+                rq.MAJmail(rq.getUtilisateur(nomUsager[1], nomUsager[0])[0], nouveauMail);
+                JOptionPane.showMessageDialog(null, "Le nouveau mail de "+lbUser.getText()+" est : "+nouveauMail);
+            }
+        }
+        }catch (SQLException ex) {
+                Logger.getLogger(ITmodifUtilisateur.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnEmailActionPerformed
+    
     public JLabel getTxtTitle() {
         return txtTitle;
     }
@@ -150,6 +206,22 @@ public class ITmodifUtilisateur extends javax.swing.JFrame {
     
     public void setLbUser(String txt) {
         this.lbUser.setText(txt);
+    }
+    
+    private String[] getNomPrenom(String txt){
+        String[] nom = new String[2];
+        nom[0] = "";
+        nom[1] = "";
+        int place = 0;
+        for(int i=0 ; i<txt.length() ; i++){
+            if(txt.charAt(i) == ' '){
+                place = 1;
+            }
+            else{
+                nom[place] += txt.charAt(i);
+            }
+        }
+        return nom;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
