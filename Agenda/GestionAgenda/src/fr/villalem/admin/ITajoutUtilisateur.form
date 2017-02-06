@@ -153,12 +153,12 @@
     <Component class="javax.swing.JLabel" name="labelTitle">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="Option Administrateur : Cr&#xe9;ation "/>
+        <Property name="text" type="java.lang.String" value="Option Administrateur : Cr&#xe9;ation d&apos;un utilisateur"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="labelChoice">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Vous pouvez ici cr&#xe9;er "/>
+        <Property name="text" type="java.lang.String" value="Vous pouvez ici cr&#xe9;er un utilisateur pour l&apos;application locale"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JSeparator" name="jSeparator1">

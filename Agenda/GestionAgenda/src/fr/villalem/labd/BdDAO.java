@@ -153,5 +153,91 @@ public class BdDAO {
             }
             return false;
         }
+        
+        public void ajoutUtilisateur(String nom, String prenom, String email, int admin, String login, String mdp){
+            String request = "INSERT INTO Usager(nom, prenom, mail, administrateur, login, password) VALUES('"+nom+"','"+prenom+"','"+email+"',"+admin+",'"+login+"','"+mdp+"')";
+            rs = co.query(request);
+            System.out.println("Insertion du nouvel utilisateur "+prenom+" "+nom+" réussie !");
+        }
+        
+        public boolean checkUtilisateur(String nom, String prenom, String login, String mdp) throws SQLException{
+            String request = "SELECT * FROM Usager WHERE nom = '"+nom+"' AND prenom = '"+prenom+"'";
+            rs = co.query(request);
+            if(rs.next()){
+                //Si il y a déjà un utilisateur avec le même nom et prénom, nous allons comparer ses identifiants
+                if(rs.getString("login").equals(login) && rs.getString("password").equals(mdp)){
+                   return false; 
+                }
+            }
+            return true;
+        }
+        
+        public boolean checkUtilisateurEmail(String email) throws SQLException{
+            String request = "SELECT * FROM Usager WHERE mail = '"+email+"'";
+            rs = co.query(request);
+            if(rs.next()){
+                return false;
+            }
+            return true;
+        }
+        
+        public boolean checkUtilisateurLogin(String login) throws SQLException{
+            String request = "SELECT * FROM Usager WHERE login = '"+login+"'";
+            rs = co.query(request);
+            if(rs.next()){
+                return false;
+            }
+            return true;
+        }
+        
+        public String[] getUtilisateur(String nom, String prenom) throws SQLException{
+            String quest = "SELECT * FROM Usager WHERE nom = '"+nom+"' AND prenom = '"+prenom+"'";
+            String[] user = new String[5];
+            rs = co.query(quest);
+            if(rs.next()){
+               String email = rs.getString("mail");
+               user[0] = email;
+               String login = rs.getString("login");
+               user[1] = login;
+               String mdp = rs.getString("password");
+               user[2] = mdp;  
+            }        
+            return user;
+        }
+        
+        public String[] getNomUtilisateur() throws SQLException{
+            String quest = "SELECT nom, prenom FROM Usager";
+            String quest1 = "SELECT COUNT(idUsager) From Usager";
+            rs = co.query(quest1);
+            int longueurTableau = rs.getInt("COUNT(idUsager)");
+            //longueurTableau = Integer.parseInt();
+            int i = 0;
+            String[] nom = new String[longueurTableau];
+            rs = co.query(quest);
+            while(rs.next()){
+               String name = rs.getString("prenom")+" "+rs.getString("nom");
+               nom[i] = name;
+               i++;
+            }        
+            return nom;
+        }
+        
+        public void MAJlogin(String ancienLogin, String nouveauLogin){
+            String quest = "UPDATE Usager SET login = '"+nouveauLogin+"' WHERE login = '"+ancienLogin+"'";
+            rs = co.query(quest);
+            System.out.println("UPDATE REUSSIE");
+        }
+        
+        public void MAJmdp(String ancienMdp, String nouveauMdp){
+            String quest = "UPDATE Usager SET password = '"+nouveauMdp+"' WHERE password = '"+ancienMdp+"'";
+            rs = co.query(quest);
+            System.out.println("UPDATE REUSSIE");
+        }
+        
+        public void MAJmail(String ancienMail, String nouveauMail){
+            String quest = "UPDATE Usager SET mail = '"+nouveauMail+"' WHERE mail = '"+ancienMail+"'";
+            rs = co.query(quest);
+            System.out.println("UPDATE REUSSIE");
+        }
     
 }

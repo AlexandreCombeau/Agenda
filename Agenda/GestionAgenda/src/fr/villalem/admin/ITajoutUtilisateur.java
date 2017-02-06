@@ -5,6 +5,10 @@
  */
 package fr.villalem.admin;
 
+import static gestionagenda.GestionAgenda.rq;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -65,9 +69,9 @@ public class ITajoutUtilisateur extends javax.swing.JFrame {
         });
 
         labelTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelTitle.setText("Option Administrateur : Création ");
+        labelTitle.setText("Option Administrateur : Création d'un utilisateur");
 
-        labelChoice.setText("Vous pouvez ici créer ");
+        labelChoice.setText("Vous pouvez ici créer un utilisateur pour l'application locale");
 
         jLabel1.setText("Nom : ");
 
@@ -180,62 +184,77 @@ public class ITajoutUtilisateur extends javax.swing.JFrame {
         int choice;
         choice = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment annuler la création ?", "Annuler", JOptionPane.YES_NO_OPTION);
         if(choice == 0){
-            this.dispose();
+            this.dispose();    
         }
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-        //Mettre l'insertion dans la BD + gérer les éventuelles erreurs
-        /*try{
-            int superficie = Integer.parseInt(txtSuperficie.getText());
-            String comment = txtComment.getText();
-            if(superficie < 0){
-                JOptionPane.showMessageDialog(null, "La superficie doit être un nombre entier positif. \nVeuillez corriger.");
+        try {
+            String nom, prenom, email, login, mdp;
+            nom = this.txtNomUtilisateur.getText();
+            prenom = this.txtPrenomUtilisateur.getText();
+            email = this.txtEmail.getText();
+            login = this.txtLogin.getText();
+            mdp = this.txtMdp.getText();
+            boolean admin = this.checkAdmin.isSelected();
+            if(nom.equals("") || prenom.equals("") || email.equals("") || login.equals("") || mdp.equals("")){
+                JOptionPane.showMessageDialog(null, "Vous devez renseigner tous les champs !");
+            }
+            else if(!(checkEmail(email))){
+                JOptionPane.showMessageDialog(null, "Veuillez rentrer une adresse e-mail valide !");
+            }
+            else if(!(rq.checkUtilisateur(nom, prenom, login, mdp))){
+                JOptionPane.showMessageDialog(null, "Il semblerait que cet utilisateur existe déjà.");
+            }
+            else if(!(rq.checkUtilisateurEmail(email))){
+                JOptionPane.showMessageDialog(null, "Cet e-mail est déjà utilisé !");
             }
             else{
-                String nomsalle = txtName.getText();
-                if(nomsalle == null || nomsalle.equals("")){
-                    JOptionPane.showMessageDialog(null, "Veuillez rentrer un nom de salle");
-                }
-                else{
-                    if(this.hex == null){
-                        JOptionPane.showMessageDialog(null, "Veuillez choisir une couleur");
+                if(admin == false){
+                    int choice;
+                    choice = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment créer l'utilisateur suivant ?\nNom : "+nom+", Prenom : "+prenom+"\nEmail : "+email+"\nLogin : "+login+", Mot de passe : "+mdp+"\n\n De plus, "+prenom+" "+nom+" ne sera pas administrateur !", "Annuler", JOptionPane.YES_NO_OPTION);
+                    if(choice == 0){
+                        rq.ajoutUtilisateur(nom, prenom, email, 0, login, mdp);
+                        JOptionPane.showMessageDialog(null, "L'utilisateur "+prenom+" "+nom+" a été créé avec succès !");
+                        this.dispose();
                     }
                     else{
-                        if(rq.checkErreurAjoutSalle(nomsalle, hex)){
-                            rq.ajoutSalle(nomsalle, superficie, hex, comment);
-                            JOptionPane.showMessageDialog(null, "Nouvelle salle créée avec succès !");
-                            this.dispose();
-                        }
-                        else{
-                            JOptionPane.showMessageDialog(null, "Nom de salle déjà existant ou code couleur déjà utilisé !");
-                        }
+                        JOptionPane.showMessageDialog(null, "Création de l'utilisateur "+prenom+" "+nom+" annulé !");
+                    }
+                }
+                else{
+                    int choice;
+                    choice = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment créer l'utilisateur suivant ?\nNom : "+nom+", Prenom : "+prenom+"\nEmail : "+email+"\nLogin : "+login+", Mot de passe : "+mdp+"\n\n De plus, "+prenom+" "+nom+" sera reconnu en tant qu'administrateur !", "Annuler", JOptionPane.YES_NO_OPTION);
+                    if(choice == 0){
+                        rq.ajoutUtilisateur(nom, prenom, email, 1, login, mdp);
+                        JOptionPane.showMessageDialog(null, "L'utilisateur "+prenom+" "+nom+" a été créé avec succès !");
+                        this.dispose();
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Création de l'utilisateur "+prenom+" "+nom+" annulé !");
                     }
                 }
             }
-        }catch(NumberFormatException e){
-            JOptionPane.showMessageDialog(null, "La superficie doit être un nombre entier positif. \nVeuillez corriger.");
-        }catch(NullPointerException e){
-            JOptionPane.showMessageDialog(null, "Veuillez remplir tout les champs.");
         } catch (SQLException ex) {
-            Logger.getLogger(ITajout.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+            Logger.getLogger(ITajoutUtilisateur.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnSubmitActionPerformed
 
-    public String getLabelChoice() {
-        return labelChoice.getText();
-    }
-
-    public String getLabelTitle() {
-        return labelTitle.getText();
-    }
-
-    public void setLabelChoice(String labelChoice) {
-        this.labelChoice.setText(labelChoice);
-    }
-
-    public void setLabelTitle(String labelTitle) {
-        this.labelTitle.setText(labelTitle);
+    public static boolean checkEmail(String email){
+        boolean arobase = false, point = false;
+        for(int i = 0 ; i<email.length() ; i++){
+            if(email.charAt(i) == '@'){
+                arobase = true;
+            }
+            else if(email.charAt(i) == '.' && arobase == true){
+                point = true;
+            }
+            System.out.println(email.charAt(i));
+        }
+        if(arobase == true && point == true){
+            return true;
+        }
+        return false;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
