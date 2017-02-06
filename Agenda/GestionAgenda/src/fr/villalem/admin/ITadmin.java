@@ -5,6 +5,7 @@
  */
 package fr.villalem.admin;
 
+import static fr.villalem.admin.ITmodifUtilisateur.getNomPrenom;
 import static gestionagenda.GestionAgenda.rq;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -183,7 +184,6 @@ public class ITadmin extends javax.swing.JFrame {
                 if(nomutilisateur != null){
                     ITmodifUtilisateur modif = new ITmodifUtilisateur();
                     modif.setTxtTitle("Utilisateur : "+nomutilisateur);
-                    //Requete SQL récupérant le login en fonction de l'utilisateur
                     modif.setLbUser(nomutilisateur);
                     modif.getLbUser().setVisible(false);
                     modif.setVisible(true); 
@@ -192,15 +192,17 @@ public class ITadmin extends javax.swing.JFrame {
             
                 break;
                 
-            /*case "Supprimer une salle":
+            case "Supprimer un utilisateur":
             try {
-                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalle(), rq.getSalle()[0]);
-                if(nomsalle != null){
-                    int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer : "+nomsalle+"?", "Suppression de la salle : "+nomsalle, JOptionPane.YES_NO_OPTION);
+                nomutilisateur = (String)JOptionPane.showInputDialog(null, "Veuillez choisir un utilisateur à supprimer", "Options utilisateurs - Suppression -", JOptionPane.QUESTION_MESSAGE, null, rq.getNomUtilisateur(), rq.getNomUtilisateur()[0]);
+                if(nomutilisateur != null){
+                    int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer : "+nomutilisateur+"?", "Suppression de l'utilisateur : "+nomutilisateur, JOptionPane.YES_NO_OPTION);
                     if(choix == 0){
                         //Requete DELETE sur la BD
-                        rq.delete("Salle", nomsalle);
-                        JOptionPane.showMessageDialog(null, "La salle '"+nomsalle+"' a été supprimée !");
+                        String[] nomUsager = getNomPrenom(nomutilisateur);
+                        String log = rq.getUtilisateur(nomUsager[1], nomUsager[0])[1];
+                        rq.deleteUser(log);
+                        JOptionPane.showMessageDialog(null, "L'utilisateur '"+nomutilisateur+"' a été supprimé !");
                     }
                     else{
                         JOptionPane.showMessageDialog(null, "Annulation de la suppression !");
@@ -210,7 +212,7 @@ public class ITadmin extends javax.swing.JFrame {
                 Logger.getLogger(ITadmin.class.getName()).log(Level.SEVERE, null, ex);
             }
         
-                break;*/
+                break;
         }
     }//GEN-LAST:event_btnOptionsUtilisateursActionPerformed
 

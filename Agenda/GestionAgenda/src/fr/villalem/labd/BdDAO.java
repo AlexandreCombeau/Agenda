@@ -224,20 +224,26 @@ public class BdDAO {
         
         public void MAJlogin(String ancienLogin, String nouveauLogin){
             String quest = "UPDATE Usager SET login = '"+nouveauLogin+"' WHERE login = '"+ancienLogin+"'";
-            rs = co.query(quest);
+            co.query(quest);
             System.out.println("UPDATE REUSSIE");
         }
         
         public void MAJmdp(String ancienMdp, String nouveauMdp){
             String quest = "UPDATE Usager SET password = '"+nouveauMdp+"' WHERE password = '"+ancienMdp+"'";
-            rs = co.query(quest);
+            co.query(quest);
             System.out.println("UPDATE REUSSIE");
         }
         
         public void MAJmail(String ancienMail, String nouveauMail){
             String quest = "UPDATE Usager SET mail = '"+nouveauMail+"' WHERE mail = '"+ancienMail+"'";
-            rs = co.query(quest);
+            co.query(quest);
             System.out.println("UPDATE REUSSIE");
+        }
+        
+        public void deleteUser(String login){
+            String quest = "DELETE FROM Usager WHERE login = '"+login+"'";
+            co.query(quest);
+            System.out.println("SUPPRESSION REUSSIE");
         }
     
 }

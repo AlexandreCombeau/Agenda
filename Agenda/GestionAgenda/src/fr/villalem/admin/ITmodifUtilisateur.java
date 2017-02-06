@@ -208,7 +208,7 @@ public class ITmodifUtilisateur extends javax.swing.JFrame {
         this.lbUser.setText(txt);
     }
     
-    private String[] getNomPrenom(String txt){
+    public static String[] getNomPrenom(String txt){
         String[] nom = new String[2];
         nom[0] = "";
         nom[1] = "";
