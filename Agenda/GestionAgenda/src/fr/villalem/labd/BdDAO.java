@@ -217,14 +217,12 @@ public class BdDAO {
             return true;
         }
         
-<<<<<<< HEAD
         public ResultSet getReservationsSemaine(Date d) {
             String request = "SELECT dateDebut, dateFin, nombrePersonnes, validation FROM Reservation";
             rs = co.query(request);
             return rs;
         }
         
-=======
         /**
          * 
          * @param dateDebut Prend la date de début de l'événement
@@ -232,7 +230,6 @@ public class BdDAO {
          * @return TRUE si une autre réservation se passe au même moment sinon FALSE
          * @throws SQLException 
          */
->>>>>>> 0c94fe0cf61f22f333940ceb24a8886db8f668f7
         public boolean autreReservation(String dateDebut, String dateFin) throws SQLException {
             String request = "SELECT * FROM Reservation WHERE '" + dateDebut + "' >= dateDebut"
                     + " AND '" + dateDebut + "' < dateFin "
