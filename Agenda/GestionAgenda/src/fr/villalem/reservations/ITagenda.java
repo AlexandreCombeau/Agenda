@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import java.sql.*;
 import javax.swing.table.*;
 import static gestionagenda.GestionAgenda.rq;
+import java.awt.Color;
+import java.awt.Container;
 
 /**
  *
@@ -24,30 +26,9 @@ public class ITagenda extends javax.swing.JFrame {
      */
     public ITagenda() {
         initComponents();
-               ResultSet rs = rq.getReservations();
- 
-         try {
-             
-             //To remove previously added rows
-             while(jTable1.getRowCount() > 0) 
-             {
-                 ((DefaultTableModel) jTable1.getModel()).removeRow(0);
-             }
-             int columns = rs.getMetaData().getColumnCount();
-             while(rs.next())
-            {  
-                Object[] row = new Object[columns];
-                for (int i = 1; i <= columns; i++)
-                {  
-                    row[i - 1] = rs.getObject(i);
-                }
-                ((DefaultTableModel) jTable1.getModel()).insertRow(rs.getRow()-1,row);
-            }
-            
-        } catch (SQLException ex) {
-            //Logger.getLogger(ITagenda.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        //Container contenu = getContentPane();
+        //Test2 t = new Test2();
+        //contenu.add(t);
     }
 
     /**
@@ -64,19 +45,19 @@ public class ITagenda extends javax.swing.JFrame {
         btnAdmin = new javax.swing.JButton();
         btnDeconnexion = new javax.swing.JButton();
         txtWelcome = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        panelAgenda1 = new fr.villalem.reservations.PanelAgenda();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuParamAdmin = new javax.swing.JMenuItem();
         jMenuDeconnexion = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuChercherConflit = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("ICI C LACCUEIL :DDDDDD");
 
@@ -94,22 +75,16 @@ public class ITagenda extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Début", "Fin", "Personnes", "Validé"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(120);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(120);
-        }
+        javax.swing.GroupLayout panelAgenda1Layout = new javax.swing.GroupLayout(panelAgenda1);
+        panelAgenda1.setLayout(panelAgenda1Layout);
+        panelAgenda1Layout.setHorizontalGroup(
+            panelAgenda1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 880, Short.MAX_VALUE)
+        );
+        panelAgenda1Layout.setVerticalGroup(
+            panelAgenda1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 540, Short.MAX_VALUE)
+        );
 
         jMenu1.setText("Fichier");
 
@@ -141,13 +116,13 @@ public class ITagenda extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuChercherConflit);
 
-        jMenuItem1.setText("agenda visuel");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem2.setText("test tableau");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jMenuItem2ActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem1);
+        jMenu2.add(jMenuItem2);
 
         jMenuBar1.add(jMenu2);
 
@@ -158,27 +133,26 @@ public class ITagenda extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(txtWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnDeconnexion, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnAdmin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(206, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(95, 95, 95))
+                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(txtWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDeconnexion)
+                .addGap(50, 50, 50))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(88, Short.MAX_VALUE)
+                .addComponent(panelAgenda1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addGap(32, 32, 32)
+                .addComponent(panelAgenda1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -186,10 +160,10 @@ public class ITagenda extends javax.swing.JFrame {
                         .addComponent(txtWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDeconnexion, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnDeconnexion, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18))))
         );
 
         pack();
@@ -222,10 +196,10 @@ public class ITagenda extends javax.swing.JFrame {
         chercherConflit.setVisible(true);
     }//GEN-LAST:event_jMenuChercherConflitActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        testAgenda t = new testAgenda();
-        t.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        TestTableau t1 = new TestTableau();
+        t1.setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     //Méthodes
     
@@ -241,13 +215,12 @@ public class ITagenda extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuChercherConflit;
     private javax.swing.JMenuItem jMenuDeconnexion;
-    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuParamAdmin;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private fr.villalem.reservations.PanelAgenda panelAgenda1;
     private javax.swing.JLabel txtWelcome;
     // End of variables declaration//GEN-END:variables
-
+    
     public JButton getBtnAdmin() {return btnAdmin;}
     public JLabel getTxtWelcome() {return txtWelcome;}
 

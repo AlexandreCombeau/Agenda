@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 /**
  *
  * @author Villalemons
@@ -137,6 +138,12 @@ public class BdDAO {
            }
         
         public ResultSet getReservations() {
+            String request = "SELECT dateDebut, dateFin, nombrePersonnes, validation FROM Reservation";
+            rs = co.query(request);
+            return rs;
+        }
+        
+        public ResultSet getReservationsSemaine(Date d) {
             String request = "SELECT dateDebut, dateFin, nombrePersonnes, validation FROM Reservation";
             rs = co.query(request);
             return rs;
