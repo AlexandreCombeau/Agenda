@@ -187,7 +187,10 @@ public class ITajoutUtilisateur extends javax.swing.JFrame {
             this.dispose();    
         }
     }//GEN-LAST:event_btnCancelActionPerformed
-
+/**
+ * Cette fonction sert à créer un nouvel utilisateur en vérifiant que tous les champs soient remplis et que les données soient disponibles (email, login uniques).
+ * @param evt 
+ */
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         try {
             String nom, prenom, email, login, mdp;
@@ -240,6 +243,11 @@ public class ITajoutUtilisateur extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSubmitActionPerformed
 
+    /**
+     * Cette fonction sert à la validation partielle d'un email.
+     * @param email
+     * @return 
+     */
     public static boolean checkEmail(String email){
         boolean arobase = false, point = false;
         for(int i = 0 ; i<email.length() ; i++){

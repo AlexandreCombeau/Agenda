@@ -159,7 +159,10 @@ public class ITconnexion extends javax.swing.JFrame {
     private void txtIdentifiantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdentifiantActionPerformed
 
     }//GEN-LAST:event_txtIdentifiantActionPerformed
-
+/**
+ * Cette fonction sert à authentifier l'utilisateur qui tente de se connecter.
+ * @param evt 
+ */
     private void btnAuthentificationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAuthentificationActionPerformed
         String login = txtIdentifiant.getText();
         String pwd = txtMdp.getText();
@@ -185,11 +188,17 @@ public class ITconnexion extends javax.swing.JFrame {
             Logger.getLogger(ITconnexion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnAuthentificationActionPerformed
-
+/**
+ * Quitte la fenêtre courante.
+ * @param evt 
+ */
     private void btnQuitterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitterActionPerformed
         System.exit(0);
     }//GEN-LAST:event_btnQuitterActionPerformed
-
+/**
+ * Comme le bouton d'authentification, cette fonction authentifie la personne en appuyant sur la toucher "ENTER".
+ * @param evt 
+ */
     private void txtMdpKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMdpKeyReleased
         String login = txtIdentifiant.getText();
         String pwd = txtMdp.getText();
@@ -218,7 +227,10 @@ public class ITconnexion extends javax.swing.JFrame {
             Logger.getLogger(ITconnexion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_txtMdpKeyReleased
-
+/**
+ * Comme le bouton d'authentification, cette fonction authentifie la personne en appuyant sur la toucher "ENTER".
+ * @param evt 
+ */
     private void txtIdentifiantKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdentifiantKeyReleased
         String login = txtIdentifiant.getText();
         String pwd = txtMdp.getText();

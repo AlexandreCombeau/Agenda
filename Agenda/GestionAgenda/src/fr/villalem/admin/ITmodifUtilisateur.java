@@ -127,11 +127,17 @@ public class ITmodifUtilisateur extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+ * Quitte la fenêtre courante.
+ * @param evt 
+ */
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
-
+/**
+ * Cette fonction sert à changer le login de l'utilisateur choisis auparavant en vérifiant si le login est disponible (attribut unique).
+ * @param evt 
+ */
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         try{
         String nouveauLogin = "";
@@ -151,7 +157,10 @@ public class ITmodifUtilisateur extends javax.swing.JFrame {
                 Logger.getLogger(ITmodifUtilisateur.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnLoginActionPerformed
-
+/**
+ * Cette fonction sert à changer le mot de passe de l'utilisateur choisis auparavant.
+ * @param evt 
+ */
     private void btnMdpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMdpActionPerformed
         try{
         String nouveauMdp = "";
@@ -168,7 +177,10 @@ public class ITmodifUtilisateur extends javax.swing.JFrame {
                 Logger.getLogger(ITmodifUtilisateur.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnMdpActionPerformed
-
+/**
+ * Cette fonction sert à modifier l'email de l'utilisateur choisis auparavant en vérifiant si cet email est disponible (attribut unique).
+ * @param evt 
+ */
     private void btnEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmailActionPerformed
         try{
         String nouveauMail = "";
@@ -208,6 +220,11 @@ public class ITmodifUtilisateur extends javax.swing.JFrame {
         this.lbUser.setText(txt);
     }
     
+    /**
+     * Cette fonction sert à séparer le nom du prénom de la variable courante.
+     * @param txt Variable contenant le nom et le prénom
+     * @return Retourne un tableau en [0] le nom et en [1] le prénom
+     */
     public static String[] getNomPrenom(String txt){
         String[] nom = new String[2];
         nom[0] = "";

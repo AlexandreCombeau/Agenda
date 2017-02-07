@@ -21,6 +21,9 @@ public class Connexion {
         DBPath = dBPath;
     }
  
+    /**
+     * Cette fonction sert à se connecter à la base de données
+     */
     public void connect() {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -36,6 +39,9 @@ public class Connexion {
         }
     }
  
+    /**
+     * Cette fonction sert à se déconnecter de la base de données
+     */
     public void close() {
         try {
             statement.close();
@@ -45,6 +51,11 @@ public class Connexion {
         }
     }
     
+    /**
+     * Cette fonction sert à exécuter une requête.
+     * @param request
+     * @return Retourne le résultat d'une requête
+     */
     public ResultSet query(String request) {
         ResultSet result = null;
         try {
