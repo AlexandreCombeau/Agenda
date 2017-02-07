@@ -60,14 +60,20 @@ public class BdDAO {
         
         public void ajoutSalle(String name, int superficie, String couleur, String comment){
             String quest = "INSERT INTO Salle(nomSalle, superficie, codeCouleur, descriptif) VALUES('"+name+"', "+superficie+", '"+couleur+"', '"+comment+"')";
-            rs = co.query(quest);
+            co.query(quest);
             System.out.println("Insertion réussie");
         }
         
-        public boolean checkErreurAjoutSalle(String nomsalle, String couleur) throws SQLException{
+        public void ajoutTache(String name, String couleur, String comment){
+            String quest = "INSERT INTO Tache(nomTache, codeCouleur, descriptif) VALUES('"+name+"', '"+couleur+"', '"+comment+"')";
+            co.query(quest);
+            System.out.println("Insertion réussie");
+        }
+        
+        public boolean checkErreurAjout(String nomTable, String nom, String couleur) throws SQLException{
             //Comparaison avec les données de la BD pour déterminer les doublons
-            String quest1 = "SELECT * FROM Salle WHERE nomSalle = '"+nomsalle+"'";
-            String quest2 = "SELECT * FROM Salle WHERE codeCouleur = '"+couleur+"'";
+            String quest1 = "SELECT * FROM "+nomTable+" WHERE nom"+nomTable+" = '"+nom+"'";
+            String quest2 = "SELECT * FROM Salle, Tache WHERE Salle.codeCouleur = '"+couleur+"' OR Tache.codeCouleur = '"+couleur+"'";
             if((rs = co.query(quest1)).next() || (rs = co.query(quest2)).next()){
                 return false;
             }
@@ -75,24 +81,23 @@ public class BdDAO {
         }
         
         public boolean checkErreurModif(String nomTable, String nom) throws SQLException{
-            String quest = "SELECT * FROM "+nomTable+" WHERE nomSalle = '"+nom+"'";
+            String quest = "SELECT * FROM "+nomTable+" WHERE nom"+nomTable+" = '"+nom+"'";
             if(co.query(quest).next()){
                 return false;
             }
             return true;
         }
         
-        public String[] getSalle() throws SQLException{
-            String quest = "SELECT * FROM Salle";
-            String quest1 = "SELECT COUNT(idSalle) From Salle";
+        public String[] getSalleTache(String table) throws SQLException{
+            String quest = "SELECT * FROM "+table;
+            String quest1 = "SELECT COUNT(id"+table+") From "+table;
             rs = co.query(quest1);
-            int longueurTableau = rs.getInt("COUNT(idSalle)");
-            //longueurTableau = Integer.parseInt();
+            int longueurTableau = rs.getInt("COUNT(id"+table+")");
             int i = 0;
             String[] nom = new String[longueurTableau];
             rs = co.query(quest);
             while(rs.next()){
-               String name = rs.getString("nomSalle");
+               String name = rs.getString("nom"+table);
                nom[i] = name;
                i++;
             }        
@@ -105,10 +110,9 @@ public class BdDAO {
             System.out.println("UPDATE REUSSIE");
         }
         
-        public boolean MAJcodeCouleur(String nomTable, String nomSalle, String hex) throws SQLException{
-            String quest = "UPDATE "+nomTable+" SET codeCouleur = '"+hex+"' WHERE nom"+nomTable+" = '"+nomSalle+"'";
+        public boolean MAJcodeCouleur(String nomTable, String nom, String hex) throws SQLException{
+            String quest = "UPDATE "+nomTable+" SET codeCouleur = '"+hex+"' WHERE nom"+nomTable+" = '"+nom+"'";
             String quest1 = "SELECT * FROM "+nomTable+" WHERE codeCouleur = '"+hex+"'";
-            // SELECT * FROM Salle WHERE nomSalle = 'nomSalle' AND codeCouleur = 'hex';
             rs = co.query(quest1);
             if(rs.next()){
                 return false;
@@ -126,8 +130,8 @@ public class BdDAO {
             System.out.println("DELETE REUSSIE");
         }
         
-        public Color hex2Rgb(String nomSalle) throws SQLException {
-            String quest = "SELECT codeCouleur FROM Salle WHERE nomSalle = '"+nomSalle+"'";
+        public Color hex2Rgb(String table, String nom) throws SQLException {
+            String quest = "SELECT codeCouleur FROM "+table+" WHERE nom"+table+" = '"+nom+"'";
             String hex = null;
             rs = co.query(quest);
             if(rs.next()){

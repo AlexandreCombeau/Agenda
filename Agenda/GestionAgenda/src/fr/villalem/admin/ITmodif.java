@@ -52,12 +52,13 @@ public class ITmodif extends javax.swing.JFrame {
         btnNom = new javax.swing.JButton();
         btnCouleur = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnSuperficie = new javax.swing.JButton();
         txtTitle = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         btnQuitter = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
-        lbNomSalle = new javax.swing.JLabel();
+        lbNom = new javax.swing.JLabel();
+        lbTable = new javax.swing.JLabel();
 
         jCheckBox1.setText("jCheckBox1");
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -92,7 +93,7 @@ public class ITmodif extends javax.swing.JFrame {
 
         jButton3.setText("Changer le commentaire");
 
-        jButton4.setText("Changer la superficie");
+        btnSuperficie.setText("Changer la superficie");
 
         txtTitle.setFont(new java.awt.Font("Malayalam MN", 1, 18)); // NOI18N
         txtTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -118,22 +119,25 @@ public class ITmodif extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(59, 59, 59)
-                                .addComponent(lbNomSalle)
+                                .addComponent(lbNom)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
-                                .addComponent(jButton4))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnNom)
-                                    .addComponent(jButton3))
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(btnSuperficie))
                             .addComponent(jSeparator1)
                             .addComponent(btnQuitter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtTitle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jSeparator2))))
+                            .addComponent(jSeparator2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnNom)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButton3)
+                                        .addGap(36, 36, 36)
+                                        .addComponent(lbTable)))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCouleur, btnNom, jButton3, jButton4});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCouleur, btnNom, btnSuperficie, jButton3});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,15 +151,18 @@ public class ITmodif extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCouleur)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(lbNomSalle))
-                .addGap(18, 18, 18)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnQuitter, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnSuperficie)
+                            .addComponent(lbNom))
+                        .addGap(18, 18, 18)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnQuitter, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbTable))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -167,16 +174,14 @@ public class ITmodif extends javax.swing.JFrame {
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void btnCouleurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCouleurActionPerformed
-        Color couleur = JColorChooser.showDialog(null, "Code couleur de la salle", btnCouleur.getBackground());
+        Color couleur = JColorChooser.showDialog(null, "Code couleur", btnCouleur.getBackground());
         //Transcription du code couleur RGB en HEX
-        if(couleur == null){
-        }
-        else{
+        if(couleur != null){
             String hexa = "#"+Integer.toHexString(couleur.getRGB()).substring(2);
             try {
                 //Faire une insertion dans la BD du nouveau code couleur
-                if(rq.MAJcodeCouleur("Salle", lbNomSalle.getText(), hexa)){
-                    JOptionPane.showMessageDialog(null, "Nouvelle couleure pour la salle : "+lbNomSalle.getText());
+                if(rq.MAJcodeCouleur(lbTable.getText(), lbNom.getText(), hexa)){
+                    JOptionPane.showMessageDialog(null, "Nouvelle couleure pour la "+lbTable.getText()+" : "+lbNom.getText());
                     btnCouleur.setBackground(couleur);
                 }
                 else{
@@ -195,12 +200,12 @@ public class ITmodif extends javax.swing.JFrame {
     private void btnNomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNomActionPerformed
         String nouveauNom = "";
         while(nouveauNom == null || nouveauNom.equals("")){
-            nouveauNom = (String)JOptionPane.showInputDialog(null, "Le nom actuel est : "+lbNomSalle.getText()+".\nQuel sera le nouveau nom ?", "Modification de la salle : "+lbNomSalle.getText(), JOptionPane.QUESTION_MESSAGE);
+            nouveauNom = (String)JOptionPane.showInputDialog(null, "Le nom actuel est : "+lbNom.getText()+".\nQuel sera le nouveau nom ?", "Modification de la "+lbTable.getText()+" : "+lbNom.getText(), JOptionPane.QUESTION_MESSAGE);
             System.out.println("LE NOUVEAU NOM EST : "+nouveauNom);
             if(nouveauNom != null && !(nouveauNom.equals(""))){
                 try {
-                    if(rq.checkErreurModif("Salle", nouveauNom) == false){
-                        JOptionPane.showMessageDialog(null, "Ce nom de salle existe déjà");
+                    if(rq.checkErreurModif(lbTable.getText(), nouveauNom) == false){
+                        JOptionPane.showMessageDialog(null, "Ce nom de "+lbTable.getText()+" existe déjà");
                         nouveauNom = "";
                     }
                 } catch (SQLException ex) {
@@ -212,13 +217,13 @@ public class ITmodif extends javax.swing.JFrame {
             }
         }
         if(!(nouveauNom == null) && !(nouveauNom.equals(""))){
-            int choix = (int)JOptionPane.showConfirmDialog(null, "Le nouveau nom de salle sera : "+nouveauNom+".\nConfirmer ?", "Modification de la salle : "+lbNomSalle.getText(), JOptionPane.YES_NO_OPTION);
+            int choix = (int)JOptionPane.showConfirmDialog(null, "Le nouveau nom de la "+lbTable.getText()+" sera : "+nouveauNom+".\nConfirmer ?", "Modification de la "+lbTable.getText()+" : "+lbNom.getText(), JOptionPane.YES_NO_OPTION);
             System.out.println("ICIIIIIIII LE CHOIXX : "+choix); // OK = 0 // REFUSER = 1
             if(choix == 0){
                 //UPDATE SUR LA BD
-                rq.MAJnom("Salle", lbNomSalle.getText(), nouveauNom);
+                rq.MAJnom(lbTable.getText(), lbNom.getText(), nouveauNom);
                 this.setTxtTitle(nouveauNom);
-                this.setLbNomSalle(nouveauNom);
+                this.setLbNom(nouveauNom);
             }
         }
     }//GEN-LAST:event_btnNomActionPerformed
@@ -232,12 +237,24 @@ public class ITmodif extends javax.swing.JFrame {
         this.txtTitle.setText(txt);
     }
     
-    public JLabel getLbNomSalle() {
-        return lbNomSalle;
+    public JLabel getLbNom() {
+        return lbNom;
     }
 
-    public void setLbNomSalle(String txt) {
-        this.lbNomSalle.setText(txt);
+    public void setLbNom(String txt) {
+        this.lbNom.setText(txt);
+    }
+    
+    public JLabel getLbTable() {
+        return lbTable;
+    }
+
+    public void setLbTable(String txt) {
+        this.lbTable.setText(txt);
+    }
+
+    public JButton getBtnSuperficie() {
+        return btnSuperficie;
     }
 
     public JButton getBtnCouleur() {
@@ -248,17 +265,18 @@ public class ITmodif extends javax.swing.JFrame {
     private javax.swing.JButton btnCouleur;
     private javax.swing.JButton btnNom;
     private javax.swing.JButton btnQuitter;
+    private javax.swing.JButton btnSuperficie;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JCheckBox jCheckBox4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JLabel lbNomSalle;
+    private javax.swing.JLabel lbNom;
+    private javax.swing.JLabel lbTable;
     private javax.swing.JLabel txtTitle;
     // End of variables declaration//GEN-END:variables
 }

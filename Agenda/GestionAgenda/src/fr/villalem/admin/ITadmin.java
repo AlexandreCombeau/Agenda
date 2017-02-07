@@ -143,15 +143,17 @@ public class ITadmin extends javax.swing.JFrame {
             case "Modifier une salle":
                 String nomsalle;
             try {
-                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalle(), rq.getSalle()[0]);
+                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTache("Salle"), rq.getSalleTache("Salle")[0]);
                 System.out.println("ICIIII : "+nomsalle);
                 if(nomsalle != null){
                     ITmodif modif = new ITmodif();
                     modif.setTxtTitle("Salle : "+nomsalle);
-                    modif.setLbNomSalle(nomsalle);
-                    modif.getLbNomSalle().setVisible(false);
-                    System.out.println("ICII LA COULEUR : "+rq.hex2Rgb(nomsalle));
-                    modif.getBtnCouleur().setBackground(rq.hex2Rgb(nomsalle));
+                    modif.setLbNom(nomsalle);
+                    modif.getLbNom().setVisible(false);
+                    modif.setLbTable("Salle");
+                    modif.getLbTable().setVisible(false);
+                    System.out.println("ICII LA COULEUR : "+rq.hex2Rgb("Salle", nomsalle));
+                    modif.getBtnCouleur().setBackground(rq.hex2Rgb("Salle", nomsalle));
                     modif.setVisible(true); 
                 }
             }catch (SQLException ex){Logger.getLogger(ITadmin.class.getName()).log(Level.SEVERE, null, ex);}
@@ -160,7 +162,7 @@ public class ITadmin extends javax.swing.JFrame {
                 
             case "Supprimer une salle":
             try {
-                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalle(), rq.getSalle()[0]);
+                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Suppression -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTache("Salle"), rq.getSalleTache("Salle")[0]);
                 if(nomsalle != null){
                     int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer : "+nomsalle+"?", "Suppression de la salle : "+nomsalle, JOptionPane.YES_NO_OPTION);
                     if(choix == 0){
@@ -250,18 +252,21 @@ public class ITadmin extends javax.swing.JFrame {
                 
                 break;
                 
-            /*case "Modifier une tache":
-                String nomsalle;
+            case "Modifier une tache":
+                String nomTache;
             try {
-                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalle(), rq.getSalle()[0]);
-                System.out.println("ICIIII : "+nomsalle);
-                if(nomsalle != null){
+                nomTache = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une tache", "Options taches - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTache("Tache"), rq.getSalleTache("Tache")[0]);
+                System.out.println("ICIIII : "+nomTache);
+                if(nomTache != null){
                     ITmodif modif = new ITmodif();
-                    modif.setTxtTitle("Salle : "+nomsalle);
-                    modif.setLbNomSalle(nomsalle);
-                    modif.getLbNomSalle().setVisible(false);
-                    System.out.println("ICII LA COULEUR : "+rq.hex2Rgb(nomsalle));
-                    modif.getBtnCouleur().setBackground(rq.hex2Rgb(nomsalle));
+                    modif.setTxtTitle("Tache : "+nomTache);
+                    modif.setLbNom(nomTache);
+                    modif.getLbNom().setVisible(false);
+                    System.out.println("ICII LA COULEUR : "+rq.hex2Rgb("Tache", nomTache));
+                    modif.getBtnCouleur().setBackground(rq.hex2Rgb("Tache", nomTache));
+                    modif.getBtnSuperficie().setVisible(false);
+                    modif.setLbTable("Tache");
+                    modif.getLbTable().setVisible(false);
                     modif.setVisible(true); 
                 }
             }catch (SQLException ex){Logger.getLogger(ITadmin.class.getName()).log(Level.SEVERE, null, ex);}
@@ -270,13 +275,13 @@ public class ITadmin extends javax.swing.JFrame {
                 
             case "Supprimer une tache":
             try {
-                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalle(), rq.getSalle()[0]);
-                if(nomsalle != null){
-                    int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer : "+nomsalle+"?", "Suppression de la salle : "+nomsalle, JOptionPane.YES_NO_OPTION);
+                nomTache = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une tache", "Options taches - Suppression -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTache("Tache"), rq.getSalleTache("Tache")[0]);
+                if(nomTache != null){
+                    int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer : "+nomTache+"?", "Suppression de la tache : "+nomTache, JOptionPane.YES_NO_OPTION);
                     if(choix == 0){
                         //Requete DELETE sur la BD
-                        rq.delete("Salle", nomsalle);
-                        JOptionPane.showMessageDialog(null, "La salle '"+nomsalle+"' a été supprimée !");
+                        rq.delete("Tache", nomTache);
+                        JOptionPane.showMessageDialog(null, "La tache '"+nomTache+"' a été supprimée !");
                     }
                     else{
                         JOptionPane.showMessageDialog(null, "Annulation de la suppression !");
@@ -286,7 +291,7 @@ public class ITadmin extends javax.swing.JFrame {
                 Logger.getLogger(ITadmin.class.getName()).log(Level.SEVERE, null, ex);
             }
         
-                break;*/
+                break;
         }
         }
     }//GEN-LAST:event_btnOptionsTachesActionPerformed

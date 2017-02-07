@@ -68,7 +68,7 @@ public class ITajout extends javax.swing.JFrame {
 
         labelTitle.setText("Option Administrateur : Création ");
 
-        labelChoice.setText("Vous pouvez ici créer  ");
+        labelChoice.setText("Vous pouvez ici créer ");
 
         lbHautGauche.setText("Nom : ");
 
@@ -145,15 +145,6 @@ public class ITajout extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(labelChoice))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(120, 120, 120)
-                        .addComponent(labelTitle)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1)
@@ -183,6 +174,15 @@ public class ITajout extends javax.swing.JFrame {
                                 .addGap(8, 8, 8)))
                         .addContainerGap())
                     .addComponent(panelSalle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(120, 120, 120)
+                        .addComponent(labelTitle))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(labelChoice)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -232,36 +232,44 @@ public class ITajout extends javax.swing.JFrame {
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         //Mettre l'insertion dans la BD + gérer les éventuelles erreurs
-        //A MODIFIER ICI (is visible , etc ...) ********************************
         try{
+            String nom = txtName.getText();
+            String comment = txtComment.getText();
+            int aire = 0;
+            
             if(this.panelSalle.isVisible()){
                 int superficie = Integer.parseInt(txtSuperficie.getText());
                 if(superficie < 0){
                     JOptionPane.showMessageDialog(null, "La superficie doit être un nombre entier positif. \nVeuillez corriger.");
                 }
+                else{
+                    aire = superficie;
+                }
+            }
+            
+            if(nom == null || nom.equals("")){
+                JOptionPane.showMessageDialog(null, "Veuillez rentrer un nom de "+lbTable.getText());
+            }
+            else if(this.hex == null){
+                JOptionPane.showMessageDialog(null, "Veuillez choisir une couleur pour la "+lbTable.getText());
             }
             else{
-                String comment = txtComment.getText();
-                String nomsalle = txtName.getText();
-                if(nomsalle == null || nomsalle.equals("")){
-                    JOptionPane.showMessageDialog(null, "Veuillez rentrer un nom de salle");
-                }
-                else{
-                    if(this.hex == null){
-                        JOptionPane.showMessageDialog(null, "Veuillez choisir une couleur");
+                if(rq.checkErreurAjout(lbTable.getText(), nom, hex)){
+                    if(aire != 0){
+                        rq.ajoutSalle(nom, aire, hex, comment);
+                        JOptionPane.showMessageDialog(null, "Nouvelle salle créée avec succès !");
+                        this.dispose();
                     }
                     else{
-                        if(rq.checkErreurAjoutSalle(nomsalle, hex)){
-                            rq.ajoutSalle(nomsalle, superficie, hex, comment);
-                            JOptionPane.showMessageDialog(null, "Nouvelle salle créée avec succès !");
-                            this.dispose();
-                        }
-                        else{
-                            JOptionPane.showMessageDialog(null, "Nom de salle déjà existant ou code couleur déjà utilisé !");
-                        }
-                    }
+                        rq.ajoutTache(nom, hex, comment);
+                        JOptionPane.showMessageDialog(null, "Nouvelle tache créée avec succès !");
+                        this.dispose();
+                    } 
                 }
-            }      
+                else{
+                    JOptionPane.showMessageDialog(null, "Nom de "+lbTable.getText()+" déjà existant ou code couleur déjà utilisé !");
+                }
+            }  
         }catch(NumberFormatException e){
             JOptionPane.showMessageDialog(null, "La superficie doit être un nombre entier positif. \nVeuillez corriger.");
         }catch(NullPointerException e){
