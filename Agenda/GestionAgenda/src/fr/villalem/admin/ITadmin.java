@@ -38,6 +38,7 @@ public class ITadmin extends javax.swing.JFrame {
         btnQuitter = new javax.swing.JButton();
         btnOptionsUtilisateurs = new javax.swing.JButton();
         btnOptionsSalles = new javax.swing.JButton();
+        btnOptionsTaches = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,19 +66,30 @@ public class ITadmin extends javax.swing.JFrame {
             }
         });
 
+        btnOptionsTaches.setText("Options Tâches");
+        btnOptionsTaches.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOptionsTachesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(330, 330, 330)
-                .addComponent(jLabel1)
-                .addContainerGap(343, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnQuitter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnOptionsUtilisateurs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnQuitter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(330, 330, 330)
+                        .addComponent(jLabel1)
+                        .addGap(0, 337, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnOptionsTaches, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnOptionsUtilisateurs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -90,16 +102,18 @@ public class ITadmin extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+                .addGap(86, 86, 86)
                 .addComponent(btnOptionsUtilisateurs, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60)
+                .addGap(18, 18, 18)
+                .addComponent(btnOptionsTaches, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
                 .addComponent(btnQuitter, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(54, 54, 54)
                     .addComponent(btnOptionsSalles, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(195, Short.MAX_VALUE)))
+                    .addContainerGap(280, Short.MAX_VALUE)))
         );
 
         pack();
@@ -120,6 +134,8 @@ public class ITadmin extends javax.swing.JFrame {
                 ITajout ajout = new ITajout();
                 ajout.setLabelTitle(ajout.getLabelTitle()+"d'une salle");
                 ajout.setLabelChoice(ajout.getLabelChoice()+"votre salle");
+                ajout.setLabelTable("Salle");
+                ajout.getLabelTable().setVisible(false);
                 ajout.setVisible(true);
                 
                 break;
@@ -127,15 +143,17 @@ public class ITadmin extends javax.swing.JFrame {
             case "Modifier une salle":
                 String nomsalle;
             try {
-                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalle(), rq.getSalle()[0]);
+                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTache("Salle"), rq.getSalleTache("Salle")[0]);
                 System.out.println("ICIIII : "+nomsalle);
                 if(nomsalle != null){
                     ITmodif modif = new ITmodif();
                     modif.setTxtTitle("Salle : "+nomsalle);
-                    modif.setLbNomSalle(nomsalle);
-                    modif.getLbNomSalle().setVisible(false);
-                    System.out.println("ICII LA COULEUR : "+rq.hex2Rgb(nomsalle));
-                    modif.getBtnCouleur().setBackground(rq.hex2Rgb(nomsalle));
+                    modif.setLbNom(nomsalle);
+                    modif.getLbNom().setVisible(false);
+                    modif.setLbTable("Salle");
+                    modif.getLbTable().setVisible(false);
+                    System.out.println("ICII LA COULEUR : "+rq.hex2Rgb("Salle", nomsalle));
+                    modif.getBtnCouleur().setBackground(rq.hex2Rgb("Salle", nomsalle));
                     modif.setVisible(true); 
                 }
             }catch (SQLException ex){Logger.getLogger(ITadmin.class.getName()).log(Level.SEVERE, null, ex);}
@@ -144,7 +162,7 @@ public class ITadmin extends javax.swing.JFrame {
                 
             case "Supprimer une salle":
             try {
-                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalle(), rq.getSalle()[0]);
+                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Suppression -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTache("Salle"), rq.getSalleTache("Salle")[0]);
                 if(nomsalle != null){
                     int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer : "+nomsalle+"?", "Suppression de la salle : "+nomsalle, JOptionPane.YES_NO_OPTION);
                     if(choix == 0){
@@ -216,8 +234,71 @@ public class ITadmin extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnOptionsUtilisateursActionPerformed
 
+    private void btnOptionsTachesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOptionsTachesActionPerformed
+        String[] options = {"Ajouter une tache", "Modifier une tache", "Supprimer une tache"};
+        String nom = "";
+        nom = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une option","Options taches",JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+        System.out.println(nom);
+        if(nom != null){
+        switch(nom){
+            case "Ajouter une tache":
+                ITajout ajout = new ITajout();
+                ajout.setLabelTitle(ajout.getLabelTitle()+"d'une tache");
+                ajout.setLabelChoice(ajout.getLabelChoice()+"une tache");
+                ajout.getPanelSalle().setVisible(false);
+                ajout.setLabelTable("Tache");
+                ajout.getLabelTable().setVisible(false);
+                ajout.setVisible(true);
+                
+                break;
+                
+            case "Modifier une tache":
+                String nomTache;
+            try {
+                nomTache = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une tache", "Options taches - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTache("Tache"), rq.getSalleTache("Tache")[0]);
+                System.out.println("ICIIII : "+nomTache);
+                if(nomTache != null){
+                    ITmodif modif = new ITmodif();
+                    modif.setTxtTitle("Tache : "+nomTache);
+                    modif.setLbNom(nomTache);
+                    modif.getLbNom().setVisible(false);
+                    System.out.println("ICII LA COULEUR : "+rq.hex2Rgb("Tache", nomTache));
+                    modif.getBtnCouleur().setBackground(rq.hex2Rgb("Tache", nomTache));
+                    modif.getBtnSuperficie().setVisible(false);
+                    modif.setLbTable("Tache");
+                    modif.getLbTable().setVisible(false);
+                    modif.setVisible(true); 
+                }
+            }catch (SQLException ex){Logger.getLogger(ITadmin.class.getName()).log(Level.SEVERE, null, ex);}
+            
+                break;
+                
+            case "Supprimer une tache":
+            try {
+                nomTache = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une tache", "Options taches - Suppression -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTache("Tache"), rq.getSalleTache("Tache")[0]);
+                if(nomTache != null){
+                    int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer : "+nomTache+"?", "Suppression de la tache : "+nomTache, JOptionPane.YES_NO_OPTION);
+                    if(choix == 0){
+                        //Requete DELETE sur la BD
+                        rq.delete("Tache", nomTache);
+                        JOptionPane.showMessageDialog(null, "La tache '"+nomTache+"' a été supprimée !");
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Annulation de la suppression !");
+                    }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ITadmin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+                break;
+        }
+        }
+    }//GEN-LAST:event_btnOptionsTachesActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOptionsSalles;
+    private javax.swing.JButton btnOptionsTaches;
     private javax.swing.JButton btnOptionsUtilisateurs;
     private javax.swing.JButton btnQuitter;
     private javax.swing.JLabel jLabel1;
