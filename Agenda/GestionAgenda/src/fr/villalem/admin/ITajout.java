@@ -221,7 +221,10 @@ public class ITajout extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+ * Cette fonction sert à quitter l'interface de création.
+ * @param evt 
+ */
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         int choice;
         choice = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment annuler la création ?", "Annuler", JOptionPane.YES_NO_OPTION);
@@ -229,7 +232,10 @@ public class ITajout extends javax.swing.JFrame {
            this.dispose(); 
         }  
     }//GEN-LAST:event_btnCancelActionPerformed
-
+/**
+ * Cette fonction sert à créer la salle ou la tache en question en vérifiant que les différents champs sont remplis.
+ * @param evt 
+ */
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         //Mettre l'insertion dans la BD + gérer les éventuelles erreurs
         try{
@@ -278,7 +284,10 @@ public class ITajout extends javax.swing.JFrame {
             Logger.getLogger(ITajout.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSubmitActionPerformed
-
+/**
+ * Cette fonction sert à choisir une nouvelle couleur et repaint le bouton avec celle-ci.
+ * @param evt 
+ */
     private void btnColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColorActionPerformed
         Color couleur = JColorChooser.showDialog(null, "Code couleur de la "+lbTable.getText(), Color.WHITE);
         System.out.println(couleur);

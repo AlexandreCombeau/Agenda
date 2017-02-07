@@ -172,7 +172,10 @@ public class ITmodif extends javax.swing.JFrame {
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox1ActionPerformed
-
+/**
+ * Cette fonction sert à choisir une nouvelle couleur, repaint le bouton avec celle-ci et l'insère dans la base de données.
+ * @param evt 
+ */
     private void btnCouleurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCouleurActionPerformed
         Color couleur = JColorChooser.showDialog(null, "Code couleur", btnCouleur.getBackground());
         //Transcription du code couleur RGB en HEX
@@ -192,11 +195,17 @@ public class ITmodif extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnCouleurActionPerformed
-
+/**
+ * Quitte la fenêtre courante.
+ * @param evt 
+ */
     private void btnQuitterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitterActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnQuitterActionPerformed
-
+/**
+ * Cette fonction sert à changer le nom de la salle ou de la tache en vérifiant si le nom est disponible.
+ * @param evt 
+ */
     private void btnNomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNomActionPerformed
         String nouveauNom = "";
         while(nouveauNom == null || nouveauNom.equals("")){

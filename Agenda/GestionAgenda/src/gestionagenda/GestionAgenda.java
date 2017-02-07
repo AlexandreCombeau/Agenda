@@ -15,10 +15,6 @@ import java.util.Scanner;
  */
 public class GestionAgenda {
 
-    /**
-     * @param args the command line arguments
-     */
-    
     public static Connexion connexion = new Connexion("db/Agenda.db");
     public static BdDAO rq = new BdDAO(connexion);
     

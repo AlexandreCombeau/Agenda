@@ -122,7 +122,10 @@ public class ITadmin extends javax.swing.JFrame {
     private void btnQuitterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitterActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnQuitterActionPerformed
-
+/**
+ * Cette fonction sert pour choisir une option (Ajout, Modification, Suppression) relative à une salle.
+ * @param evt 
+ */
     private void btnOptionsSallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOptionsSallesActionPerformed
         String[] options = {"Ajouter une salle", "Modifier une salle", "Supprimer une salle"};
         String nom = "";
@@ -182,7 +185,10 @@ public class ITadmin extends javax.swing.JFrame {
         }
         }
     }//GEN-LAST:event_btnOptionsSallesActionPerformed
-
+/**
+ * Cette fonction sert pour choisir une option (Ajout, Modification, Suppression) relative à un utilisateur.
+ * @param evt 
+ */
     private void btnOptionsUtilisateursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOptionsUtilisateursActionPerformed
         String[] options = {"Ajouter un utilisateur", "Modifier un utilisateur", "Supprimer un utilisateur"};
         String nom;
@@ -233,7 +239,10 @@ public class ITadmin extends javax.swing.JFrame {
                 break;
         }
     }//GEN-LAST:event_btnOptionsUtilisateursActionPerformed
-
+/**
+ * Cette fonction sert pour choisir une option (Ajout, Modification, Suppression) relative à une tache.
+ * @param evt 
+ */
     private void btnOptionsTachesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOptionsTachesActionPerformed
         String[] options = {"Ajouter une tache", "Modifier une tache", "Supprimer une tache"};
         String nom = "";
