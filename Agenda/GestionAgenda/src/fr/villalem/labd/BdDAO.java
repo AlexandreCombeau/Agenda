@@ -9,6 +9,8 @@ import java.awt.Color;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 /**
  *
@@ -116,8 +118,14 @@ public class BdDAO {
         /**
          * @return Retourne les reservations d'une semaine donnée
          */
-        public ResultSet getReservationsSemaine(Date d) {
-            String request = "SELECT dateDebut, dateFin, nombrePersonnes, validation FROM Reservation";
+        public ResultSet getReservationsSemaine(Calendar cal) {
+            
+            cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String dateDebut = sdf.format(cal.getTime());
+            cal.add(Calendar.DATE, 7); // obtient le dernier jour de la semaine (un dimanche)
+            String dateFin = sdf.format(cal.getTime());
+            String request = "SELECT dateDebut, dateFin, nombrePersonnes, validation FROM Reservation WHERE dateDebut > '" + dateDebut +"' AND dateFin < '" + dateFin + "'";
             rs = co.query(request);
             return rs;
         }
