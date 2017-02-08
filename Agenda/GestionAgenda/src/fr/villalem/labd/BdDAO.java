@@ -114,6 +114,16 @@ public class BdDAO {
         }
         
         /**
+         * @return Retourne les reservations d'une semaine donnée
+         */
+        public ResultSet getReservationsSemaine(Date d) {
+            String request = "SELECT dateDebut, dateFin, nombrePersonnes, validation FROM Reservation";
+            rs = co.query(request);
+            return rs;
+        }
+        
+        
+        /**
          * 
          * @param nom Prend le nom de l'utilisateur
          * @param prenom Prend le prénom de l'utilisateur
@@ -217,11 +227,6 @@ public class BdDAO {
             return true;
         }
         
-        public ResultSet getReservationsSemaine(Date d) {
-            String request = "SELECT dateDebut, dateFin, nombrePersonnes, validation FROM Reservation";
-            rs = co.query(request);
-            return rs;
-        }
         
         /**
          * 
