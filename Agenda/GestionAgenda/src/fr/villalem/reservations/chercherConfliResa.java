@@ -38,7 +38,7 @@ public class chercherConfliResa extends javax.swing.JFrame {
         jLabelConflitOui = new javax.swing.JLabel();
         jLabelConflitNon = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Entrez une date de début et de fin:");
 
