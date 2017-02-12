@@ -5,9 +5,11 @@
  */
 package gestionagenda;
 
+
+import static fr.villalem.factures.Factures.creerFacture;
 import fr.villalem.labd.*;
 import java.sql.SQLException;
-import java.util.Scanner;
+
 
 /**
  *
@@ -20,7 +22,8 @@ public class GestionAgenda {
     
     public static void main(String[] args) throws SQLException {
         
-        new ITconnexion().setVisible(true);
+        //new ITconnexion().setVisible(true);
+        creerFacture();
 		
         //connexion.close();
     }
