@@ -12,6 +12,7 @@ import java.util.Date;
 import static gestionagenda.GestionAgenda.rq;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,15 +20,17 @@ import javax.swing.JPanel;
 public class PanelAgenda extends JPanel {
   SimpleDateFormat d = new SimpleDateFormat("yyyy-MM-dd");
   Date date = new Date();
+   //créé une liste d'evenements de la semaine à afficher plus tard sous forme de rectangles:
+  public ArrayList<Evenement> ListeEvenements = new ArrayList<Evenement>();
   
   public PanelAgenda() {
-
         super();
         this.setOpaque(true);
         this.setBackground(Color.red);
+        ListeEvenements.add(new Evenement(20, 20, 60, 60));
   }
-   
-
+  
+  
   public void setDate(Date date) {
     this.date = date;
   }
@@ -47,33 +50,13 @@ public class PanelAgenda extends JPanel {
         g.drawRect(i*120+40, 0, 120, hauteurFenetre);
     }
     
+    for (Evenement s : ListeEvenements) {
+        s.draw(g);
+    }
+    
     Calendar cal = Calendar.getInstance();
     ResultSet rs = rq.getReservationsLundi(cal);
     
-    //((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-    /*
-    g.setColor(Color.white);
-    g.fillRect(0, 0, getWidth(), getHeight());
-    g.setColor(Color.blue);
-    
-    g.drawString(month.format(date), 34, 36);
-    g.setColor(Color.black);
-    g.drawString(year.format(date), 235, 36);
-
-    Calendar today = Calendar.getInstance();
-    today.setTime(date);
-    Calendar cal = Calendar.getInstance();
-    cal.setTime(date);
-    cal.set(Calendar.DATE, 1);
-    cal.add(Calendar.DATE, -cal.get(Calendar.DAY_OF_WEEK) + 1);
-    for (int week = 0; week < 6; week++) {
-      for (int d = 0; d < 7; d++) {
-        Color col = Color.white;
-          g.drawString(day.format(cal.getTime()), d * 30 + 46 + 4,
-              week * 29 + 81 + 20);
-        cal.add(Calendar.DATE, +1);
-      }
-    } */
   } 
 
 
