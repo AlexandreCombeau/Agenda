@@ -107,33 +107,34 @@ public class TestTableau extends javax.swing.JFrame {
         c.add(c.DAY_OF_YEAR, -7);
         remplirTableau(c);
         jLabel1.setText(c.getTime().toString());
-        System.out.println(c.getTime());
+        //System.out.println(c.getTime());
     }//GEN-LAST:event_btnGaucheActionPerformed
 
     private void btnDroiteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDroiteActionPerformed
         c.add(c.DAY_OF_YEAR, 7);
         remplirTableau(c);
         jLabel1.setText(c.getTime().toString());
-        System.out.println(c.getTime());
+        //System.out.println(c.getTime());
     }//GEN-LAST:event_btnDroiteActionPerformed
 
     
     private void remplirTableau(Calendar cal) {
         Calendar cal2 = (Calendar)cal.clone();
         ResultSet rs = rq.getReservationsSemaine(cal2);
-         try {
-             while(jTable1.getRowCount() > 0) 
-             {
-                 ((DefaultTableModel) jTable1.getModel()).removeRow(0);
-             }
-             int columns = rs.getMetaData().getColumnCount();
-             while(rs.next())
+        try {
+            while(jTable1.getRowCount() > 0) //retire les lignes du tableau, s'il y en a
+            {
+                ((DefaultTableModel) jTable1.getModel()).removeRow(0);
+            }
+            int columns = rs.getMetaData().getColumnCount(); //obtient le nombre de colonnes dans le ResultSet
+            while(rs.next()) //pour chaque ligne du ResultSet:
             {  
                 Object[] row = new Object[columns];
                 for (int i = 1; i <= columns; i++)
                 {  
                     row[i - 1] = rs.getObject(i);
                 }
+                //insert la ligne de résultat dans le tableau:
                 ((DefaultTableModel) jTable1.getModel()).insertRow(rs.getRow()-1,row);
             }
             

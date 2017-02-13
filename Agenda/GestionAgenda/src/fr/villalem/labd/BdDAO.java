@@ -121,9 +121,23 @@ public class BdDAO {
         public ResultSet getReservationsSemaine(Calendar cal) {
             
             cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            //System.out.println(cal.getTime());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String dateDebut = sdf.format(cal.getTime());
             cal.add(Calendar.DATE, 7); // obtient le dernier jour de la semaine (un dimanche)
+            String dateFin = sdf.format(cal.getTime());
+            String request = "SELECT dateDebut, dateFin, nombrePersonnes, validation FROM Reservation WHERE dateDebut > '" + dateDebut +"' AND dateFin < '" + dateFin + "'";
+            rs = co.query(request);
+            return rs;
+        }
+        
+        public ResultSet getReservationsLundi(Calendar cal) {
+            
+            cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            //System.out.println(cal.getTime());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String dateDebut = sdf.format(cal.getTime());
+            cal.add(Calendar.DATE, 1); // obtient le jour suivant
             String dateFin = sdf.format(cal.getTime());
             String request = "SELECT dateDebut, dateFin, nombrePersonnes, validation FROM Reservation WHERE dateDebut > '" + dateDebut +"' AND dateFin < '" + dateFin + "'";
             rs = co.query(request);
