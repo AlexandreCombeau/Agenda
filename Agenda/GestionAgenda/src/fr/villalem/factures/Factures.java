@@ -96,6 +96,15 @@ public class Factures {
         fonte18Gras.setBold(true);
         HSSFCellStyle cellStyleFont18Gras = wb.createCellStyle();
         cellStyleFont18Gras.setFont(fonte18Gras);
+        //Bordures left, bottom, right avec font 16 en gras
+        HSSFCellStyle cellStyleLBR = wb.createCellStyle();
+        cellStyleLBR.setBorderLeft(BorderStyle.MEDIUM_DASHED);
+        cellStyleLBR.setLeftBorderColor((short)8);
+        cellStyleLBR.setBorderBottom(BorderStyle.MEDIUM_DASHED);
+        cellStyleLBR.setBottomBorderColor((short)8);
+        cellStyleLBR.setBorderRight(BorderStyle.MEDIUM_DASHED);
+        cellStyleLBR.setRightBorderColor((short)8);
+        cellStyleLBR.setFont(fonte16Gras);
         
         /*
         Fusion des cellules
@@ -397,6 +406,38 @@ public class Factures {
         
         /*
         FIN LIGNES 20 - 27
+        */
+        
+        /*
+        DEBUT LIGNES 28 - 30
+        */
+        
+        HSSFRow row27 = sheet.createRow(27);
+        HSSFRow row28 = sheet.createRow(28);
+        HSSFRow row29 = sheet.createRow(29);
+        lesRows[0] = row27;
+        lesRows[1] = row28;
+        lesRows[2] = row29;
+        
+        //Juste pour l'exemple (à voir)
+        String[] lesTotaux = {"TOTAL HT", "TVA 20%", "TOTAL TTC"};
+        double[] lesPrix = {105.00, 21.00, 126.00};
+        
+        for(int i = 27 ; i <= 29 ; i++){
+            for(int j = 4 ; j <= 5 ; j++){
+                cell = lesRows[i - 27].createCell(j);
+                cell.setCellStyle(cellStyleLBR);
+                if(j == 4){
+                    cell.setCellValue(lesTotaux[i - 27]);
+                }
+                else{
+                    cell.setCellValue(lesPrix[i - 27]+" €");
+                }
+            }
+        }
+        
+        /*
+        FIN LIGNES 28 - 30
         */
         
         
