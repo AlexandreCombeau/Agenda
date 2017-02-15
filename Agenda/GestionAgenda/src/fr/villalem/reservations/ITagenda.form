@@ -113,7 +113,7 @@
                       <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                       <Component id="btnSemainePrecedente" min="-2" pref="43" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnSemainePrecedente1" min="-2" pref="43" max="-2" attributes="0"/>
+                      <Component id="btnSemaineSuivante" min="-2" pref="43" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace pref="215" max="32767" attributes="0"/>
@@ -128,7 +128,7 @@
               <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnSemainePrecedente" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnSemainePrecedente1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnSemaineSuivante" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
@@ -203,13 +203,16 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="&lt;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSemainePrecedenteActionPerformed"/>
+      </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnSemainePrecedente1">
+    <Component class="javax.swing.JButton" name="btnSemaineSuivante">
       <Properties>
         <Property name="text" type="java.lang.String" value="&gt;"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSemainePrecedente1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSemaineSuivanteActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lbOJD">

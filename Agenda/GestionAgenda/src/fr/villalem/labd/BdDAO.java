@@ -4,12 +4,14 @@
  * and open the template in the editor.
  */
 package fr.villalem.labd;
+import fr.villalem.reservations.Evenement;
 import fr.villalem.usager.Usager;
 import java.awt.Color;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 /**
@@ -131,15 +133,14 @@ public class BdDAO {
             return rs;
         }
         
-        public ResultSet getReservationsLundi(Calendar cal) {
-            
-            cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-            //System.out.println(cal.getTime());
+        public ResultSet getReservationsJour(Calendar cal) throws SQLException {
+            ArrayList<Evenement> ListeEvenements = new ArrayList<>();            
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String dateDebut = sdf.format(cal.getTime());
             cal.add(Calendar.DATE, 1); // obtient le jour suivant
             String dateFin = sdf.format(cal.getTime());
             String request = "SELECT dateDebut, dateFin, nombrePersonnes, validation FROM Reservation WHERE dateDebut > '" + dateDebut +"' AND dateFin < '" + dateFin + "'";
+            cal.add(Calendar.DATE, -1); // reviens à la date de base
             rs = co.query(request);
             return rs;
         }

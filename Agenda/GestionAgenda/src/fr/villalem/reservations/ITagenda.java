@@ -7,8 +7,11 @@ package fr.villalem.reservations;
 
 import fr.villalem.admin.ITadmin;
 import fr.villalem.labd.ITconnexion;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
@@ -51,7 +54,7 @@ public class ITagenda extends javax.swing.JFrame {
         txtWelcome = new javax.swing.JLabel();
         panelAgenda1 = new fr.villalem.reservations.PanelAgenda();
         btnSemainePrecedente = new javax.swing.JButton();
-        btnSemainePrecedente1 = new javax.swing.JButton();
+        btnSemaineSuivante = new javax.swing.JButton();
         lbOJD = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -96,11 +99,16 @@ public class ITagenda extends javax.swing.JFrame {
         );
 
         btnSemainePrecedente.setText("<");
-
-        btnSemainePrecedente1.setText(">");
-        btnSemainePrecedente1.addActionListener(new java.awt.event.ActionListener() {
+        btnSemainePrecedente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSemainePrecedente1ActionPerformed(evt);
+                btnSemainePrecedenteActionPerformed(evt);
+            }
+        });
+
+        btnSemaineSuivante.setText(">");
+        btnSemaineSuivante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSemaineSuivanteActionPerformed(evt);
             }
         });
 
@@ -179,7 +187,7 @@ public class ITagenda extends javax.swing.JFrame {
                         .addGap(43, 43, 43)
                         .addComponent(btnSemainePrecedente, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSemainePrecedente1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnSemaineSuivante, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(215, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -190,7 +198,7 @@ public class ITagenda extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSemainePrecedente)
-                    .addComponent(btnSemainePrecedente1))
+                    .addComponent(btnSemaineSuivante))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -243,18 +251,27 @@ public class ITagenda extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuChercherConflitActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        TestTableau t1 = new TestTableau();
+        TestTableau t1 = null;
+        try {
+            t1 = new TestTableau();
+        } catch (SQLException ex) {
+            Logger.getLogger(ITagenda.class.getName()).log(Level.SEVERE, null, ex);
+        }
         t1.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void btnSemainePrecedente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSemainePrecedente1ActionPerformed
+    private void btnSemaineSuivanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSemaineSuivanteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnSemainePrecedente1ActionPerformed
+    }//GEN-LAST:event_btnSemaineSuivanteActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         ITCal cal = new ITCal();
         cal.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void btnSemainePrecedenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSemainePrecedenteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSemainePrecedenteActionPerformed
 
     //Méthodes
     
@@ -264,7 +281,7 @@ public class ITagenda extends javax.swing.JFrame {
     private javax.swing.JButton btnAdmin;
     private javax.swing.JButton btnDeconnexion;
     private javax.swing.JButton btnSemainePrecedente;
-    private javax.swing.JButton btnSemainePrecedente1;
+    private javax.swing.JButton btnSemaineSuivante;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

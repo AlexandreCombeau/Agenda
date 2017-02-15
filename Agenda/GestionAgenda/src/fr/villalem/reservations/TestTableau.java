@@ -9,6 +9,8 @@ import static gestionagenda.GestionAgenda.rq;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -20,7 +22,7 @@ public class TestTableau extends javax.swing.JFrame {
     /**
      * Creates new form TestTableau
      */
-    public TestTableau() {
+    public TestTableau() throws SQLException {
         initComponents();
         Calendar cal = Calendar.getInstance();
         remplirTableau(cal);
@@ -105,22 +107,30 @@ public class TestTableau extends javax.swing.JFrame {
     private Calendar c = Calendar.getInstance();
     private void btnGaucheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGaucheActionPerformed
         c.add(c.DAY_OF_YEAR, -7);
-        remplirTableau(c);
+        try {
+            remplirTableau(c);
+        } catch (SQLException ex) {
+            Logger.getLogger(TestTableau.class.getName()).log(Level.SEVERE, null, ex);
+        }
         jLabel1.setText(c.getTime().toString());
         //System.out.println(c.getTime());
     }//GEN-LAST:event_btnGaucheActionPerformed
 
     private void btnDroiteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDroiteActionPerformed
         c.add(c.DAY_OF_YEAR, 7);
-        remplirTableau(c);
+        try {
+            remplirTableau(c);
+        } catch (SQLException ex) {
+            Logger.getLogger(TestTableau.class.getName()).log(Level.SEVERE, null, ex);
+        }
         jLabel1.setText(c.getTime().toString());
         //System.out.println(c.getTime());
     }//GEN-LAST:event_btnDroiteActionPerformed
 
     
-    private void remplirTableau(Calendar cal) {
+    private void remplirTableau(Calendar cal) throws SQLException {
         Calendar cal2 = (Calendar)cal.clone();
-        ResultSet rs = rq.getReservationsSemaine(cal2);
+        ResultSet rs = rq.getReservationsJour(cal2);
         try {
             while(jTable1.getRowCount() > 0) //retire les lignes du tableau, s'il y en a
             {
@@ -172,7 +182,11 @@ public class TestTableau extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TestTableau().setVisible(true);
+                try {
+                    new TestTableau().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(TestTableau.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         
