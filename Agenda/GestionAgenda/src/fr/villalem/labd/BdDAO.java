@@ -131,7 +131,7 @@ public class BdDAO {
             return rs;
         }
         
-        public ResultSet getReservationsLundi(Calendar cal) {
+        public ResultSet getReservationsJour(Calendar cal) {
             
             cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
             //System.out.println(cal.getTime());
