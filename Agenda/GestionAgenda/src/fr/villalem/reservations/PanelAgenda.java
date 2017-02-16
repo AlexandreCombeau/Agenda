@@ -25,15 +25,15 @@ public class PanelAgenda extends javax.swing.JPanel {
 
     public ArrayList<Evenement> ListeEvenements = new ArrayList<>();
     private Calendar cal = Calendar.getInstance();
-    private int largeurColonneHeure = 40;
-    private int largeurColonneJour = 120;
-    private int espacementHeure = 30;
+    private int largeurColonneHeure = 40;//largeur de la première colonne, en px
+    private int largeurColonneJour = 120;//largeur de chaque colonne jour, en px
+    private int espacementHeure = 30;//espacement vertical entre chaque heure, en px
     /**
      * Creates new form PanelAgenda
      */
     public PanelAgenda() {
         initComponents();
-        //remplirTableau(cal); // rempli le tableau avec les reservations, à commenter pour editer le ITAgenda
+        //remplirTableau(cal); // rempli le tableau avec les reservations, à commenter pour éviter le bug d'affichage
     }
     /**
      * remplirTableau ne fonctionne que quand l'appli est lancée. Pour éditer
@@ -43,23 +43,36 @@ public class PanelAgenda extends javax.swing.JPanel {
      * toucher au design.
      * 
      */
-    public void remplirTableau(Calendar c) { 
+    public void remplirAgenda(Calendar c) { 
+      //copie le calendrier, sinon le calendrier 'c' changerait de date à cause de sa manipulation dans BdDAO.java avec rq.getReservationsJour()
       Calendar cal2 = (Calendar)c.clone();
-      cal2.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);//met le calendrier à Lundi
-      for (int i=0;i<7;i++) {
-          ResultSet rs;
+      cal2.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);//met le calendrier à Lundi pour commencer la semaine
+      for (int i=0;i<7;i++) { //pour chaque jour de la semaine (de 0 à 6)
+          ResultSet rs; //initialise le ResultSet
           try {
               rs = rq.getReservationsJour(cal2);
 
             try {
-                  while(rs.next()) {
-                      String dtDebut = new String();
-                      String dtFin = new String();
-                      dtDebut = rs.getObject("dateDebut").toString().substring(11,13);
-                      dtFin = rs.getObject("dateFin").toString().substring(11,13);
-                      int dtDebutInt = Integer.parseInt(dtDebut);
+                  while(rs.next()) { //obtient chaque réservation de la journée
+                      //obtient l'heure de début et de fin (il faudra faire en sorte d'inclure les minutes)
+                      String dtDebut = rs.getObject("dateDebut").toString().substring(11,13);
+                      String dtFin = rs.getObject("dateFin").toString().substring(11,13);
+                      //transforme en int:
+                      int dtDebutInt = Integer.parseInt(dtDebut); 
                       int dtFinInt = Integer.parseInt(dtFin);
-                      System.out.println( (dtFinInt-6)*espacementHeure );
+                      System.out.println( (dtFinInt-6)*espacementHeure ); //à supprimer
+                      /**
+                       * Pour chaque reservation, créé un évènement qui est en fait un rectangle
+                       * dont les coordonnées correspondent à l'heure de début et de fin, ainsi
+                       * qu'à la journée.
+                       * --pour l'abscisse 'x': le 1 est pour décaler d'un pixel, largeurColonneHeure est
+                       * pour tenir compte de la premiere colonne, et i*largeurColonneJour est pour décaler
+                       * de la largeur de chaque colonne 'jour'. Donc pour le lundi, celà vaut 0, car i=0.
+                       * --pour l'ordonnée 'y': on enlève 6 à l'heure de début, car le graph commence à 6h du matin
+                       * (et non 7h, le 6 correspond à y=0). On multiplie par espacementHeure pour le faire déscendre.
+                       * --La largeur est fixé arbitrairement à 60 pour l'instant.
+                       * --La hauteur correspond à la différence entre l'heure de début et de fin, fois espacementHeure.
+                       */
                       ListeEvenements.add(new Evenement(1+largeurColonneHeure+i*largeurColonneJour,
                               (dtDebutInt-6)*espacementHeure, 60, (dtFinInt-dtDebutInt)*espacementHeure));
                   }
@@ -69,6 +82,7 @@ public class PanelAgenda extends javax.swing.JPanel {
                       } catch (SQLException ex) {
                   Logger.getLogger(PanelAgenda.class.getName()).log(Level.SEVERE, null, ex);
               }
+        //ici, on incrémente le calendrier d'un jour pour obtenir les réservation du jour suivant.
         cal2.add(Calendar.DATE, 1);
       }
 
@@ -91,6 +105,9 @@ public class PanelAgenda extends javax.swing.JPanel {
         g.drawRect(i*largeurColonneJour+largeurColonneHeure, 0, largeurColonneJour, hauteurFenetre);
     }
     g.setColor(Color.DARK_GRAY);
+    /**
+     * méthode qui déssine les rectangles pour chaque évènement dans la liste:
+     */
     for (Evenement s : ListeEvenements) {
         s.draw(g);
     }

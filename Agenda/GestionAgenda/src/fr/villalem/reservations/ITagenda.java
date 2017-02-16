@@ -50,7 +50,6 @@ public class ITagenda extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         btnAdmin = new javax.swing.JButton();
         btnDeconnexion = new javax.swing.JButton();
         txtWelcome = new javax.swing.JLabel();
@@ -63,18 +62,18 @@ public class ITagenda extends javax.swing.JFrame {
         lblLundi = new javax.swing.JLabel();
         lblLundiStatic = new javax.swing.JLabel();
         lblMardiStatic = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        lblMercrediStatix = new javax.swing.JLabel();
+        lblJeudiStatic = new javax.swing.JLabel();
+        lblVendrediStatic = new javax.swing.JLabel();
+        lblSamediStatic = new javax.swing.JLabel();
+        lblDimancheStatic = new javax.swing.JLabel();
         lblMardi = new javax.swing.JLabel();
         lblMercredi = new javax.swing.JLabel();
         lblJeudi = new javax.swing.JLabel();
         lblSamedi = new javax.swing.JLabel();
         lblVendredi = new javax.swing.JLabel();
         lblDimanche = new javax.swing.JLabel();
-        lblSemaine = new javax.swing.JLabel();
+        lblLundiSemaine = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuParamAdmin = new javax.swing.JMenuItem();
@@ -82,14 +81,11 @@ public class ITagenda extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuChercherConflit = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
 
         jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
-
-        jLabel1.setText("ICI C LACCUEIL :DDDDDD");
 
         btnAdmin.setText("Paramètres administrateur");
         btnAdmin.addActionListener(new java.awt.event.ActionListener() {
@@ -127,7 +123,7 @@ public class ITagenda extends javax.swing.JFrame {
         );
         panelAgenda1Layout.setVerticalGroup(
             panelAgenda1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 515, Short.MAX_VALUE)
+            .addGap(0, 536, Short.MAX_VALUE)
         );
 
         btnRemplirTableau.setText("Remplir tableau");
@@ -143,15 +139,15 @@ public class ITagenda extends javax.swing.JFrame {
 
         lblMardiStatic.setText("mar.");
 
-        jLabel3.setText("mer.");
+        lblMercrediStatix.setText("mer.");
 
-        jLabel4.setText("jeu.");
+        lblJeudiStatic.setText("jeu.");
 
-        jLabel5.setText("ven.");
+        lblVendrediStatic.setText("ven.");
 
-        jLabel6.setText("sam.");
+        lblSamediStatic.setText("sam.");
 
-        jLabel7.setText("dim.");
+        lblDimancheStatic.setText("dim.");
 
         lblMardi.setText("00-00");
 
@@ -165,7 +161,7 @@ public class ITagenda extends javax.swing.JFrame {
 
         lblDimanche.setText("00-00");
 
-        lblSemaine.setText("semaine");
+        lblLundiSemaine.setText("...");
 
         jMenu1.setText("Fichier");
 
@@ -205,14 +201,6 @@ public class ITagenda extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem2);
 
-        jMenuItem1.setText("Cal");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem1);
-
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -224,9 +212,7 @@ public class ITagenda extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel1)
-                        .addComponent(txtWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(23, 23, 23)
@@ -245,6 +231,8 @@ public class ITagenda extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addComponent(btnRemplirTableau)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblLundiSemaine)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -253,34 +241,31 @@ public class ITagenda extends javax.swing.JFrame {
                         .addComponent(panelAgenda1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(192, 192, 192)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblSemaine)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblLundiStatic)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblLundi)
-                                .addGap(54, 54, 54)
-                                .addComponent(lblMardiStatic)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblMardi)
-                                .addGap(46, 46, 46)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblMercredi)))
+                        .addComponent(lblLundiStatic)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblLundi)
+                        .addGap(54, 54, 54)
+                        .addComponent(lblMardiStatic)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblMardi)
+                        .addGap(46, 46, 46)
+                        .addComponent(lblMercrediStatix)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblMercredi)
                         .addGap(48, 48, 48)
-                        .addComponent(jLabel4)
+                        .addComponent(lblJeudiStatic)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblJeudi)
                         .addGap(54, 54, 54)
-                        .addComponent(jLabel5)
+                        .addComponent(lblVendrediStatic)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblVendredi)
                         .addGap(50, 50, 50)
-                        .addComponent(jLabel6)
+                        .addComponent(lblSamediStatic)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblSamedi)
                         .addGap(41, 41, 41)
-                        .addComponent(jLabel7)
+                        .addComponent(lblDimancheStatic)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblDimanche)))
                 .addContainerGap(131, Short.MAX_VALUE))
@@ -294,17 +279,17 @@ public class ITagenda extends javax.swing.JFrame {
                     .addComponent(btnSemainePrecedente)
                     .addComponent(btnSemaineSuivante)
                     .addComponent(btnRemplirTableau)
-                    .addComponent(lblSemaine))
+                    .addComponent(lblLundiSemaine))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblLundi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblLundiStatic)
                     .addComponent(lblMardiStatic)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7)
+                    .addComponent(lblMercrediStatix)
+                    .addComponent(lblJeudiStatic)
+                    .addComponent(lblVendrediStatic)
+                    .addComponent(lblSamediStatic)
+                    .addComponent(lblDimancheStatic)
                     .addComponent(lblMardi)
                     .addComponent(lblMercredi)
                     .addComponent(lblJeudi)
@@ -312,13 +297,11 @@ public class ITagenda extends javax.swing.JFrame {
                     .addComponent(lblVendredi)
                     .addComponent(lblDimanche))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelAgenda1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(panelAgenda1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -369,38 +352,36 @@ public class ITagenda extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void btnSemaineSuivanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSemaineSuivanteActionPerformed
-        c.add(c.DAY_OF_YEAR, 7);
+        c.add(c.DAY_OF_YEAR, 7);//ajoute 7 jours au calendrier
         remplirLabelsJours();
-        panelAgenda1.ListeEvenements.clear();
-        panelAgenda1.remplirTableau(c);
-        panelAgenda1.repaint();
+        panelAgenda1.ListeEvenements.clear();//vide les évènements de la semaine précédente
+        panelAgenda1.remplirAgenda(c);
+        panelAgenda1.repaint();//repaint() redessine l'agenda
     }//GEN-LAST:event_btnSemaineSuivanteActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        ITCal cal = new ITCal();
-        cal.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
     private void btnSemainePrecedenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSemainePrecedenteActionPerformed
-        c.add(c.DAY_OF_YEAR, -7);
+        c.add(c.DAY_OF_YEAR, -7);//enlève 7 jours au calendrier
         remplirLabelsJours();
-        panelAgenda1.ListeEvenements.clear();
-        panelAgenda1.remplirTableau(c);
-        panelAgenda1.repaint();
+        panelAgenda1.ListeEvenements.clear();//vide les évènements de la semaine suivante
+        panelAgenda1.remplirAgenda(c);
+        panelAgenda1.repaint();//repaint() redessine l'agenda
     }//GEN-LAST:event_btnSemainePrecedenteActionPerformed
 
     private void btnRemplirTableauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemplirTableauActionPerformed
         remplirLabelsJours();
         panelAgenda1.ListeEvenements.clear();
-        panelAgenda1.remplirTableau(c);
+        panelAgenda1.remplirAgenda(c);
         panelAgenda1.repaint();
     }//GEN-LAST:event_btnRemplirTableauActionPerformed
 
     //Méthodes
+    /**
+     * affiche les dates de chaque jour:
+     */
     private void remplirLabelsJours() {
         c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        String lun = sdf2.format(c.getTime());
         lblLundi.setText(sdf.format(c.getTime()));
-        lblSemaine.setText("du " + sdf.format(c.getTime()) + "au " + sdf.format(Calendar.SUNDAY));
         c.add(c.DAY_OF_YEAR, 1);
         lblMardi.setText(sdf.format(c.getTime()));
         c.add(c.DAY_OF_YEAR, 1);
@@ -413,6 +394,8 @@ public class ITagenda extends javax.swing.JFrame {
         lblSamedi.setText(sdf.format(c.getTime()));
         c.add(c.DAY_OF_YEAR, 1);
         lblDimanche.setText(sdf.format(c.getTime()));
+        String dim = sdf2.format(c.getTime());
+        lblLundiSemaine.setText("Semaine du " + lun + " au " + dim);
     }
 
 
@@ -423,32 +406,30 @@ public class ITagenda extends javax.swing.JFrame {
     private javax.swing.JButton btnSemainePrecedente;
     private javax.swing.JButton btnSemaineSuivante;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuChercherConflit;
     private javax.swing.JMenuItem jMenuDeconnexion;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuParamAdmin;
     private javax.swing.JLabel lbOJD;
     private javax.swing.JLabel lblDimanche;
+    private javax.swing.JLabel lblDimancheStatic;
     private javax.swing.JLabel lblJeudi;
+    private javax.swing.JLabel lblJeudiStatic;
     private javax.swing.JLabel lblLundi;
+    private javax.swing.JLabel lblLundiSemaine;
     private javax.swing.JLabel lblLundiStatic;
     private javax.swing.JLabel lblMardi;
     private javax.swing.JLabel lblMardiStatic;
     private javax.swing.JLabel lblMercredi;
+    private javax.swing.JLabel lblMercrediStatix;
     private javax.swing.JLabel lblSamedi;
-    private javax.swing.JLabel lblSemaine;
+    private javax.swing.JLabel lblSamediStatic;
     private javax.swing.JLabel lblVendredi;
+    private javax.swing.JLabel lblVendrediStatic;
     private fr.villalem.reservations.PanelAgenda panelAgenda1;
     private javax.swing.JLabel txtWelcome;
     // End of variables declaration//GEN-END:variables

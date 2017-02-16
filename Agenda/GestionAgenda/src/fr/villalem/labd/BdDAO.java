@@ -259,15 +259,20 @@ public class BdDAO {
          * @throws SQLException
          */
         public boolean autreReservation(String dateDebut, String dateFin) throws SQLException {
+            /**
+             * (Le ET est prioritaire sur le OU)
+             * La requete vérifie si la réservation en paramètre commence après ou en meme temps 
+             * qu'une autre ET commence strictement avant que l'autre finisse,
+             * OU inversement, qu'une autre réservation commence après le début de notre réservation,
+             * ET commence avant la fin de celle-ci
+             * La requete sera utile pour gérer plusieurs options qui sont prise à la même date
+             */
             String request = "SELECT * FROM Reservation WHERE '" + dateDebut + "' >= dateDebut"
                     + " AND '" + dateDebut + "' < dateFin "
                     + " OR dateDebut >= '" + dateDebut + "'"
                     + " AND dateDebut < '" + dateFin + "'";
             rs = co.query(request);
-            if (rs.next()) {
-                return true;
-            }
-            return false;
+            return rs.next(); //si rs.next() est vrai, c'est que la requete a retourné au moins 1 résultat
         }
 
         /**

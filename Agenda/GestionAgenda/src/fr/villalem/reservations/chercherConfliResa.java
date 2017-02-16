@@ -104,7 +104,8 @@ public class chercherConfliResa extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDateDebutActionPerformed
 
     private void jButtonRechercheResaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRechercheResaActionPerformed
-               try {
+        try {
+            //vérifie si il existe une autre réservation à partir de BdDAO.java
             if (rq.autreReservation(txtDateDebut.getText(),txtDateFin.getText())) {
                 jLabelConflitOui.setVisible(true);
                 jLabelConflitNon.setVisible(false);
