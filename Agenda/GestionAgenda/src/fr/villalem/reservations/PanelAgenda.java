@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  * @author alexis
  */
 public class PanelAgenda extends javax.swing.JPanel {
-    
+
     private ArrayList<Evenement> ListeEvenements = new ArrayList<>();
     private Calendar cal = Calendar.getInstance();
     /**
@@ -30,43 +30,42 @@ public class PanelAgenda extends javax.swing.JPanel {
      */
     public PanelAgenda() {
         initComponents();
-        remplirTableau(cal);
     }
-    
-    private void remplirTableau(Calendar c) {
-      Calendar cal2 = (Calendar)c.clone();
-      cal2.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);//met le calendrier à Lundi
-      for (int i=0;i<7;i++) {
-          ResultSet rs;
-          try {
-              rs = rq.getReservationsJour(cal2);
 
+    private void remplirTableau(Calendar c) {
+        Calendar cal2 = (Calendar)c.clone();
+        cal2.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);//met le calendrier à Lundi
+        for (int i=0;i<7;i++) {
+            ResultSet rs;
             try {
-                  while(rs.next()) {
-                      String dtDebut = new String();
-                      String dtFin = new String();
-                      dtDebut = rs.getObject("dateDebut").toString().substring(11,13);
-                      dtFin = rs.getObject("dateFin").toString().substring(11,13);
-                      int dtDebutInt = Integer.parseInt(dtDebut);
-                      int dtFinInt = Integer.parseInt(dtFin);
-                      System.out.println( (dtFinInt-6)*30 );
-                      ListeEvenements.add(new Evenement(40+i*120, (dtDebutInt-6)*30, 60, (dtFinInt-dtDebutInt)*30));
-                  }
-              } catch (SQLException ex) {
-                  Logger.getLogger(PanelAgenda.class.getName()).log(Level.SEVERE, null, ex);
-              }
-                      } catch (SQLException ex) {
-                  Logger.getLogger(PanelAgenda.class.getName()).log(Level.SEVERE, null, ex);
-              }
-        cal2.add(Calendar.DATE, 1);
-      }
-      
-  }
-    
+                rs = rq.getReservationsJour(cal2);
+
+              try {
+                    while(rs.next()) {
+                        String dtDebut = new String();
+                        String dtFin = new String();
+                        dtDebut = rs.getObject("dateDebut").toString().substring(11,13);
+                        dtFin = rs.getObject("dateFin").toString().substring(11,13);
+                        int dtDebutInt = Integer.parseInt(dtDebut);
+                        int dtFinInt = Integer.parseInt(dtFin);
+                        System.out.println( (dtFinInt-6)*30 );
+                        ListeEvenements.add(new Evenement(40+i*120, (dtDebutInt-6)*30, 60, (dtFinInt-dtDebutInt)*30));
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(PanelAgenda.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                        } catch (SQLException ex) {
+                    Logger.getLogger(PanelAgenda.class.getName()).log(Level.SEVERE, null, ex);
+                }
+          cal2.add(Calendar.DATE, 1);
+        }
+    }
+
+
     public void paintComponent(Graphics g) {
+    remplirTableau(cal);
     //cette méthode construit l'arrière plan de l'agenda, avec une colonne par jour de la semaine
     setBackground(Color.white);
-    this.repaint();
     //Antialiasing pour lisser les chiffres et lettres éventuels:
     ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
     int hauteurFenetre = this.getHeight();
@@ -81,8 +80,8 @@ public class PanelAgenda extends javax.swing.JPanel {
     for (Evenement s : ListeEvenements) {
         s.draw(g);
     }
-    
-  } 
+
+  }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
