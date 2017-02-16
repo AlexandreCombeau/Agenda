@@ -4,12 +4,14 @@
  * and open the template in the editor.
  */
 package fr.villalem.labd;
+import fr.villalem.reservations.Evenement;
 import fr.villalem.usager.Usager;
 import java.awt.Color;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 /**
@@ -17,7 +19,7 @@ import java.util.Date;
  * @author Villalemons
  */
 public class BdDAO {
-    
+
     	/*
         ========================================================================
                                     VARIABLES
@@ -25,7 +27,7 @@ public class BdDAO {
         */
 	private Connexion co = null;
 	private ResultSet rs = null;
-	
+
 	/*
         ========================================================================
                                     CONSTRUCTEUR
@@ -35,42 +37,42 @@ public class BdDAO {
 		this.co = uneCo;
 		this.co.connect();
 	}
-	
+
         /***********************************************************************
                                     METHODES
         ************************************************************************
-        
+
         ========================================================================
                                     SELECTIONS DE DONNEES
         ========================================================================
         */
 
         /**
-         * 
+         *
          * @param login Reçois le login de l'utilisateur
          * @param pwd Reçois le mot de passe de l'utilisateur
          * @return Retourne l'utilisateur en question avec ses informations
-         * @throws SQLException 
+         * @throws SQLException
          */
         public Usager getUsager(String login, String pwd) throws SQLException{
             String request = "SELECT * FROM Usager WHERE login='"+login+"' AND password='"+pwd+"'";
             rs = co.query(request);
-            
+
             int identifiant = rs.getInt("idUsager");
             int admin = rs.getInt("administrateur");
             String nom = rs.getString("nom");
             String prenom = rs.getString("prenom");
-            
+
             Usager unUsager = new Usager(identifiant, admin, nom, prenom);
-            
+
             return unUsager;
         }
-        
+
         /**
-         * 
+         *
          * @param table Prend le nom de la table : Salle || Tache
          * @return Retourne toutes les Salles ou toutes les Taches
-         * @throws SQLException 
+         * @throws SQLException
          */
         public String[] getSalleTache(String table) throws SQLException{
             String quest = "SELECT * FROM "+table;
@@ -84,16 +86,16 @@ public class BdDAO {
                String name = rs.getString("nom"+table);
                nom[i] = name;
                i++;
-            }        
+            }
             return nom;
         }
-        
+
         /**
-         * 
+         *
          * @param table Prend le nom de la table : Salle || Tache
          * @param nom Prend le nom de la salle/tache concernée
          * @return Retourne un "Color" en RGB
-         * @throws SQLException 
+         * @throws SQLException
          */
         public Color hex2Rgb(String table, String nom) throws SQLException {
             String quest = "SELECT codeCouleur FROM "+table+" WHERE nom"+table+" = '"+nom+"'";
@@ -104,9 +106,9 @@ public class BdDAO {
             }
             return Color.decode(hex);
         }
-        
+
         /**
-         * 
+         *
          * @return Retourne toutes les réservations
          */
         public ResultSet getReservations() {
@@ -114,12 +116,12 @@ public class BdDAO {
             rs = co.query(request);
             return rs;
         }
-        
+
         /**
          * @return Retourne les reservations d'une semaine donnée
          */
         public ResultSet getReservationsSemaine(Calendar cal) {
-            
+
             cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
             //System.out.println(cal.getTime());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -130,27 +132,26 @@ public class BdDAO {
             rs = co.query(request);
             return rs;
         }
-        
-        public ResultSet getReservationsJour(Calendar cal) {
-            
-            cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-            //System.out.println(cal.getTime());
+
+        public ResultSet getReservationsJour(Calendar cal) throws SQLException {
+            ArrayList<Evenement> ListeEvenements = new ArrayList<>();            
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String dateDebut = sdf.format(cal.getTime());
             cal.add(Calendar.DATE, 1); // obtient le jour suivant
             String dateFin = sdf.format(cal.getTime());
             String request = "SELECT dateDebut, dateFin, nombrePersonnes, validation FROM Reservation WHERE dateDebut > '" + dateDebut +"' AND dateFin < '" + dateFin + "'";
+            cal.add(Calendar.DATE, -1); // reviens à la date de base
             rs = co.query(request);
             return rs;
         }
-        
-        
+
+
         /**
-         * 
+         *
          * @param nom Prend le nom de l'utilisateur
          * @param prenom Prend le prénom de l'utilisateur
          * @return Retourne les informations sur le mail, le login et le mot de passe d'une personne sous forme d'un tableau
-         * @throws SQLException 
+         * @throws SQLException
          */
         public String[] getUtilisateur(String nom, String prenom) throws SQLException{
             String quest = "SELECT * FROM Usager WHERE nom = '"+nom+"' AND prenom = '"+prenom+"'";
@@ -162,15 +163,15 @@ public class BdDAO {
                String login = rs.getString("login");
                user[1] = login;
                String mdp = rs.getString("password");
-               user[2] = mdp;  
-            }        
+               user[2] = mdp;
+            }
             return user;
         }
-        
+
         /**
-         * 
+         *
          * @return Retourne tout les utilisateur (nom + prenom dans une varaible)
-         * @throws SQLException 
+         * @throws SQLException
          */
         public String[] getNomUtilisateur() throws SQLException{
             String quest = "SELECT nom, prenom FROM Usager";
@@ -185,10 +186,10 @@ public class BdDAO {
                String name = rs.getString("prenom")+" "+rs.getString("nom");
                nom[i] = name;
                i++;
-            }        
+            }
             return nom;
         }
-        
+
         /*
         ========================================================================
                                     FIN SELECTIONS DONNEES /!\
@@ -198,13 +199,13 @@ public class BdDAO {
                                     CHECK (VÉRIFICATION)
         ========================================================================
         */
-        
+
         /**
-         * 
+         *
          * @param log Prend le login de l'usager
          * @param pwd Prend le mot de passe de l'usager
          * @return TRUE si l'authentification réussie sinon FALSE
-         * @throws SQLException 
+         * @throws SQLException
          */
         public boolean authentification(String log, String pwd) throws SQLException{
 		String request = "Select login, password From Usager Where login='"+log+"' And password='"+pwd+"'";
@@ -215,14 +216,14 @@ public class BdDAO {
 		}
 		return false;
 	}
-        
+
         /**
-         * 
+         *
          * @param nomTable Prend le nom de la table concernée : Salle || Tache
          * @param nom Prend le nom de la salle ou de la tache concernée
          * @param couleur Prend le code couleur HEXADECIMAL
          * @return TRUE si le nom ou le code couleur n'existe pas sinon FALSE
-         * @throws SQLException 
+         * @throws SQLException
          */
         public boolean checkErreurAjout(String nomTable, String nom, String couleur) throws SQLException{
             //Comparaison avec les données de la BD pour déterminer les doublons
@@ -231,15 +232,15 @@ public class BdDAO {
             if((rs = co.query(quest1)).next() || (rs = co.query(quest2)).next()){
                 return false;
             }
-            return true;   
+            return true;
         }
-        
+
         /**
-         * 
+         *
          * @param nomTable Prend le nom de la table concernée : Salle || Tache
          * @param nom Prend le nom de la salle ou de la tache concernée
          * @return TRUE si le nom n'existe pas sinon FALSE
-         * @throws SQLException 
+         * @throws SQLException
          */
         public boolean checkErreurModif(String nomTable, String nom) throws SQLException{
             String quest = "SELECT * FROM "+nomTable+" WHERE nom"+nomTable+" = '"+nom+"'";
@@ -248,14 +249,14 @@ public class BdDAO {
             }
             return true;
         }
-        
-        
+
+
         /**
-         * 
+         *
          * @param dateDebut Prend la date de début de l'événement
          * @param dateFin Prend la date de fin de l'événement
          * @return TRUE si une autre réservation se passe au même moment sinon FALSE
-         * @throws SQLException 
+         * @throws SQLException
          */
         public boolean autreReservation(String dateDebut, String dateFin) throws SQLException {
             String request = "SELECT * FROM Reservation WHERE '" + dateDebut + "' >= dateDebut"
@@ -268,15 +269,15 @@ public class BdDAO {
             }
             return false;
         }
-        
+
         /**
-         * 
+         *
          * @param nom Prend le nom de l'utilisateur
          * @param prenom Prend le prénom de l'utilisateur
          * @param login Prend le login de l'utilisateur
          * @param mdp Prend le mot de passe de l'utilisateur
-         * @return 
-         * @throws SQLException 
+         * @return
+         * @throws SQLException
          */
         public boolean checkUtilisateur(String nom, String prenom, String login, String mdp) throws SQLException{
             String request = "SELECT * FROM Usager WHERE nom = '"+nom+"' AND prenom = '"+prenom+"'";
@@ -284,17 +285,17 @@ public class BdDAO {
             if(rs.next()){
                 //Si il y a déjà un utilisateur avec le même nom et prénom, nous allons comparer ses identifiants
                 if(rs.getString("login").equals(login) && rs.getString("password").equals(mdp)){
-                   return false; 
+                   return false;
                 }
             }
             return true;
         }
-        
+
         /**
-         * 
+         *
          * @param email Prend l'email de l'utilisateur
          * @return TRUE si l'email est disponible sinon FALSE
-         * @throws SQLException 
+         * @throws SQLException
          */
         public boolean checkUtilisateurEmail(String email) throws SQLException{
             String request = "SELECT * FROM Usager WHERE mail = '"+email+"'";
@@ -304,12 +305,12 @@ public class BdDAO {
             }
             return true;
         }
-        
+
         /**
-         * 
+         *
          * @param login Prend le login de l'usager
          * @return TRUE si le login n'est pas utilisé sinon FALSE
-         * @throws SQLException 
+         * @throws SQLException
          */
         public boolean checkUtilisateurLogin(String login) throws SQLException{
             String request = "SELECT * FROM Usager WHERE login = '"+login+"'";
@@ -319,19 +320,19 @@ public class BdDAO {
             }
             return true;
         }
-        
+
         /*
         ========================================================================
-                                    FIN CHECK 
+                                    FIN CHECK
         ========================================================================
 
         ========================================================================
                                     MISES A JOUR
         ========================================================================
         */
-        
+
         /**
-         * 
+         *
          * @param nomTable Prend le nom de la table concernée : Salle || Tache
          * @param ancienNomChamps Prend l'ancien nom de l'attribut concerné
          * @param nouveauNomChamps Prend le nouveau nom de l'attribut concerné
@@ -341,14 +342,14 @@ public class BdDAO {
             co.query(quest);
             System.out.println("UPDATE REUSSIE");
         }
-        
+
         /**
-         * 
+         *
          * @param nomTable Prend le nom de la table concernée : Salle || Tache
          * @param nom Prend le nom de la salle / tache
          * @param hex Prend le code couleur HEXADECIMAL de la salle / tache
          * @return TRUE si l'update a réussie sinon FALSE
-         * @throws SQLException 
+         * @throws SQLException
          */
         public boolean MAJcodeCouleur(String nomTable, String nom, String hex) throws SQLException{
             String quest = "UPDATE "+nomTable+" SET codeCouleur = '"+hex+"' WHERE nom"+nomTable+" = '"+nom+"'";
@@ -360,12 +361,12 @@ public class BdDAO {
             else{
                 co.query(quest);
                 System.out.println("UPDATE REUSSIE");
-                return true; 
-            }   
+                return true;
+            }
         }
-        
+
         /**
-         * 
+         *
          * @param ancienLogin Prend l'ancien login de l'usager
          * @param nouveauLogin Prend le nouveau login de l'usager
          */
@@ -374,9 +375,9 @@ public class BdDAO {
             co.query(quest);
             System.out.println("UPDATE REUSSIE");
         }
-        
+
         /**
-         * 
+         *
          * @param ancienMdp Prend l'ancien mot de passe de l'usager
          * @param nouveauMdp Prend le nouveau mot de passe de l'usager
          */
@@ -385,9 +386,9 @@ public class BdDAO {
             co.query(quest);
             System.out.println("UPDATE REUSSIE");
         }
-        
+
         /**
-         * 
+         *
          * @param ancienMail Prend l'ancien mail de l'usager
          * @param nouveauMail Prend le nouveau mail de l'usager
          */
@@ -396,7 +397,7 @@ public class BdDAO {
             co.query(quest);
             System.out.println("UPDATE REUSSIE");
         }
-        
+
         /*
         ========================================================================
                                     FIN MISES A JOUR
@@ -406,9 +407,9 @@ public class BdDAO {
                                     INSERTION
         ========================================================================
         */
-        
+
         /**
-         * 
+         *
          * @param name Prend le nom que la nouvelle salle aura
          * @param superficie Prend la superficie que la nouvelle salle aura
          * @param couleur Prend le code couleur HEXADECIMAL que la nouvelle salle aura
@@ -419,9 +420,9 @@ public class BdDAO {
             co.query(quest);
             System.out.println("Insertion réussie");
         }
-        
+
         /**
-         * 
+         *
          * @param name Prend le nom que la nouvelle tache aura
          * @param couleur Prend le code couleur HEXADECIMAL que la nouvelle tache aura
          * @param comment Prend le commentaire que la nouvelle tache aura
@@ -431,9 +432,9 @@ public class BdDAO {
             co.query(quest);
             System.out.println("Insertion réussie");
         }
-        
+
         /**
-         * 
+         *
          * @param nom Prend le nom du nouvel utilisateur
          * @param prenom Prend le prenom du nouvel utilisateur
          * @param email Prend l'email du nouvel utilisateur
@@ -446,7 +447,7 @@ public class BdDAO {
             rs = co.query(request);
             System.out.println("Insertion du nouvel utilisateur "+prenom+" "+nom+" réussie !");
         }
-        
+
         /*
         ========================================================================
                                     FIN AJOUT
@@ -456,9 +457,9 @@ public class BdDAO {
                                     SUPPRESSION
         ========================================================================
         */
-        
+
         /**
-         * 
+         *
          * @param nomTable Prend le nom de la table concernée
          * @param nomSalle Prend le nom de l'attribut concerné
          */
@@ -467,9 +468,9 @@ public class BdDAO {
             co.query(request);
             System.out.println("DELETE REUSSIE");
         }
-        
+
         /**
-         * 
+         *
          * @param login Prend le login d'un utilisateur
          */
         public void deleteUser(String login){
@@ -477,11 +478,11 @@ public class BdDAO {
             co.query(quest);
             System.out.println("SUPPRESSION REUSSIE");
         }
-        
+
         /*
         ========================================================================
                                     FIN SUPPRESSION
         ========================================================================
         */
-        
+
 }

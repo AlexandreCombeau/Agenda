@@ -7,8 +7,11 @@ package fr.villalem.reservations;
 
 import fr.villalem.admin.ITadmin;
 import fr.villalem.labd.ITconnexion;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
@@ -30,7 +33,7 @@ public class ITagenda extends javax.swing.JFrame {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         //String st2  = Integer.toString(c.getFirstDayOfWeek());
         //String st = c.getTime().toString();
-        
+
         String st = sdf.format(c.getTime());
         jLabel2.setText(st);
     }
@@ -49,11 +52,11 @@ public class ITagenda extends javax.swing.JFrame {
         btnAdmin = new javax.swing.JButton();
         btnDeconnexion = new javax.swing.JButton();
         txtWelcome = new javax.swing.JLabel();
-        panelAgenda1 = new fr.villalem.reservations.PanelAgenda();
         btnSemainePrecedente = new javax.swing.JButton();
-        btnSemainePrecedente1 = new javax.swing.JButton();
+        btnSemaineSuivante = new javax.swing.JButton();
         lbOJD = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        panelAgenda1 = new fr.villalem.reservations.PanelAgenda();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuParamAdmin = new javax.swing.JMenuItem();
@@ -84,25 +87,30 @@ public class ITagenda extends javax.swing.JFrame {
             }
         });
 
+        btnSemainePrecedente.setText("<");
+        btnSemainePrecedente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSemainePrecedenteActionPerformed(evt);
+            }
+        });
+
+        btnSemaineSuivante.setText(">");
+        btnSemaineSuivante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSemaineSuivanteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelAgenda1Layout = new javax.swing.GroupLayout(panelAgenda1);
         panelAgenda1.setLayout(panelAgenda1Layout);
         panelAgenda1Layout.setHorizontalGroup(
             panelAgenda1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 880, Short.MAX_VALUE)
+            .addGap(0, 881, Short.MAX_VALUE)
         );
         panelAgenda1Layout.setVerticalGroup(
             panelAgenda1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 540, Short.MAX_VALUE)
+            .addGap(0, 537, Short.MAX_VALUE)
         );
-
-        btnSemainePrecedente.setText("<");
-
-        btnSemainePrecedente1.setText(">");
-        btnSemainePrecedente1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSemainePrecedente1ActionPerformed(evt);
-            }
-        });
 
         jMenu1.setText("Fichier");
 
@@ -158,58 +166,53 @@ public class ITagenda extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(txtWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(23, 23, 23)
+                        .addComponent(lbOJD)
+                        .addGap(65, 65, 65)
+                        .addComponent(btnSemainePrecedente, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSemaineSuivante, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1)
+                        .addComponent(txtWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnDeconnexion)
                 .addGap(50, 50, 50))
             .addGroup(layout.createSequentialGroup()
-                .addGap(82, 82, 82)
-                .addComponent(jLabel2)
-                .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbOJD)
-                    .addComponent(panelAgenda1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(btnSemainePrecedente, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSemainePrecedente1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(215, Short.MAX_VALUE))
+                .addGap(137, 137, 137)
+                .addComponent(panelAgenda1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lbOJD)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSemainePrecedente)
-                    .addComponent(btnSemainePrecedente1))
+                    .addComponent(btnSemaineSuivante))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelAgenda1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(panelAgenda1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(27, 27, 27))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(btnDeconnexion, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(jLabel2))))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnDeconnexion, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18))))
         );
 
         pack();
@@ -243,28 +246,37 @@ public class ITagenda extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuChercherConflitActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        TestTableau t1 = new TestTableau();
+        TestTableau t1 = null;
+        try {
+            t1 = new TestTableau();
+        } catch (SQLException ex) {
+            Logger.getLogger(ITagenda.class.getName()).log(Level.SEVERE, null, ex);
+        }
         t1.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void btnSemainePrecedente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSemainePrecedente1ActionPerformed
+    private void btnSemaineSuivanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSemaineSuivanteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnSemainePrecedente1ActionPerformed
+    }//GEN-LAST:event_btnSemaineSuivanteActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         ITCal cal = new ITCal();
         cal.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void btnSemainePrecedenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSemainePrecedenteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSemainePrecedenteActionPerformed
+
     //Méthodes
-    
-    
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdmin;
     private javax.swing.JButton btnDeconnexion;
     private javax.swing.JButton btnSemainePrecedente;
-    private javax.swing.JButton btnSemainePrecedente1;
+    private javax.swing.JButton btnSemaineSuivante;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -280,7 +292,7 @@ public class ITagenda extends javax.swing.JFrame {
     private fr.villalem.reservations.PanelAgenda panelAgenda1;
     private javax.swing.JLabel txtWelcome;
     // End of variables declaration//GEN-END:variables
-    
+
     public JButton getBtnAdmin() {return btnAdmin;}
     public JLabel getTxtWelcome() {return txtWelcome;}
 
