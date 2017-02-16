@@ -25,13 +25,17 @@ public class PanelAgenda extends JPanel {
    //créé une liste d'evenements de la semaine à afficher plus tard sous forme de rectangles:
   public ArrayList<Evenement> ListeEvenements = new ArrayList<>();
   
-  public PanelAgenda() throws SQLException {
+  public PanelAgenda() {
         super();
         this.setOpaque(true);
         this.setBackground(Color.red);
         //ListeEvenements.add(new Evenement(40, 40, 60, 120));//test
         Calendar cal = Calendar.getInstance();
-        remplirTableau(cal);
+      try {
+          remplirTableau(cal);
+      } catch (SQLException ex) {
+          Logger.getLogger(PanelAgenda.class.getName()).log(Level.SEVERE, null, ex);
+      }
         
   }
   private Calendar cal = Calendar.getInstance();
