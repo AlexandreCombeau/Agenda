@@ -51,9 +51,9 @@ public class Devis {
         sheet.setColumnWidth(3, 11000);
         sheet.setColumnWidth(1, 5000);
         sheet.setColumnWidth(2, 2200);
-        sheet.setColumnWidth(4, 3500);
-        sheet.setColumnWidth(5, 3500);
-        sheet.setColumnWidth(6, 3500);
+        sheet.setColumnWidth(4, 2500);
+        sheet.setColumnWidth(5, 6000);
+        sheet.setColumnWidth(6, 2725);
         
         /*
         FUSION DES CELLULES
@@ -72,11 +72,15 @@ public class Devis {
         sheet.addMergedRegion(new CellRangeAddress(16, 16, 1, 3));
         sheet.addMergedRegion(new CellRangeAddress(27, 27, 1, 3));
         sheet.addMergedRegion(new CellRangeAddress(36, 36, 1, 3));
-        sheet.addMergedRegion(new CellRangeAddress(21, 21, 1, 2));
+        sheet.addMergedRegion(new CellRangeAddress(23, 23, 1, 2));
         sheet.addMergedRegion(new CellRangeAddress(51, 51, 1, 2));
         sheet.addMergedRegion(new CellRangeAddress(25, 25, 1, 2));
         sheet.addMergedRegion(new CellRangeAddress(26, 26, 1, 2));
         sheet.addMergedRegion(new CellRangeAddress(18, 18, 2, 3));
+        sheet.addMergedRegion(new CellRangeAddress(14, 14, 1, 3));
+        sheet.addMergedRegion(new CellRangeAddress(55, 55, 1, 3));
+        sheet.addMergedRegion(new CellRangeAddress(56, 56, 1, 2));
+        sheet.addMergedRegion(new CellRangeAddress(57, 57, 1, 3));
         
         
         /*
@@ -181,6 +185,7 @@ public class Devis {
         cellStyle = wb.createCellStyle();
         cellStyle.setAlignment(HorizontalAlignment.CENTER);
         cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        cellStyle.setBorderLeft(BorderStyle.MEDIUM);
         cellStyle.setFillBackgroundColor(IndexedColors.BLACK.getIndex());
         cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         cellStyle.setFont(fonte);
@@ -192,6 +197,12 @@ public class Devis {
         cell = row.createCell(1);
         cell.setCellValue("01 45 44 42 99");
         cell.setCellStyle(cellStyleFont12);
+        
+        cell = row.createCell(4);
+        cellStyle = wb.createCellStyle();
+        cellStyle.setBorderLeft(BorderStyle.MEDIUM);
+        cell.setCellStyle(cellStyle);
+        
         
         //--------------------------------------------------------------------//
         
@@ -370,6 +381,13 @@ public class Devis {
         cellStyleFont13CT.setVerticalAlignment(VerticalAlignment.CENTER);
         cellStyleFont13CT.setFont(fonte13CT);
         
+        HSSFFont fonte13CTsansBordures = wb.createFont();
+        fonte13CTsansBordures.setFontHeightInPoints((short)13);
+        fonte13CTsansBordures.setFontName("Courier New");
+        HSSFCellStyle cellStyleFont13CTsansBordures = wb.createCellStyle();
+        cellStyleFont13CTsansBordures.setAlignment(HorizontalAlignment.CENTER);
+        cellStyleFont13CTsansBordures.setFont(fonte13CTsansBordures);
+        
         HSSFFont fonte13HCT = wb.createFont();
         fonte13CT.setFontHeightInPoints((short)13);
         fonte13CT.setFontName("Courier New");
@@ -377,11 +395,27 @@ public class Devis {
         cellStyleFont13HCT.setVerticalAlignment(VerticalAlignment.CENTER);
         cellStyleFont13HCT.setFont(fonte13HCT);
         
+        HSSFFont fonte13ET = wb.createFont();
+        fonte13ET.setFontHeightInPoints((short)13);
+        fonte13ET.setFontName("Courier New");
+        fonte13ET.setBold(true);
+        fonte13ET.setColor((short)HSSFColor.WHITE.index);
+        HSSFCellStyle cellStyle13ET = wb.createCellStyle();
+        cellStyle13ET.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle13ET.setBorderLeft(BorderStyle.MEDIUM);
+        cellStyle13ET.setFillBackgroundColor(IndexedColors.BLACK.getIndex());
+        cellStyle13ET.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        cellStyle13ET.setFont(fonte13ET);
+        
         for(int i = 14 ; i <= 52 ; i++){
-            for(int j = 1 ; j <= 6 ; j++){
+            for(int j = 1 ; j <= 7 ; j++){
                 cell = lesLignes[i - 14].createCell(j);
                 if(j == 1){
-                    if(i == 16 || i == 27 || i == 36){
+                    if(i == 14){
+                        cell.setCellValue("Désignation");
+                        cell.setCellStyle(cellStyle13ET);
+                    }
+                    else if(i == 16 || i == 27 || i == 36){
                         switch(i){
                             case 16: cell.setCellValue("Espaces"); break;
                             case 27: cell.setCellValue("Equipements"); break;
@@ -389,7 +423,7 @@ public class Devis {
                         }
                         cell.setCellStyle(cellStyleFont14Gras);
                     }
-                    if(i == 18 || i == 22 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48 || i == 51){
+                    else if(i == 18 || i == 22 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48 || i == 51){
                         switch(i){
                             case 18: cell.setCellValue("La Cabane"); break;
                             case 38: cell.setCellValue("Accueil petit déjeuner"); break;
@@ -401,7 +435,7 @@ public class Devis {
                         }
                         cell.setCellStyle(cellStyleFont13Gras);
                     }
-                    if(i == 19 || i == 39 || i == 41 || i == 43 || i == 45 || i == 47 || i == 49){
+                    else if(i == 19 || i == 39 || i == 41 || i == 43 || i == 45 || i == 47 || i == 49){
                         switch(i){
                             case 19: cell.setCellValue("Salle de 80 m² et espace bar de 25m²"); break;
                             case 39: cell.setCellValue("Thé, café, jus de fruit, eau et viennoiseries"); break;
@@ -413,7 +447,7 @@ public class Devis {
                         }
                         cell.setCellStyle(cellStyleFont11);
                     }
-                    if(i == 26 || i == 29 || i == 30 || i == 31 || i == 32 || i == 33 || i == 34){
+                    else if(i == 26 || i == 29 || i == 30 || i == 31 || i == 32 || i == 33 || i == 34){
                         switch(i){
                             case 29: cell.setCellValue("Chaises"); break;
                             case 30: cell.setCellValue("Tables"); break;
@@ -421,28 +455,28 @@ public class Devis {
                         }
                         cell.setCellStyle(cellStyleFont13);
                     }
-                    if(i == 20 || i == 21){
+                    else if(i == 21 || i == 23){
                         switch(i){
-                            case 20: cell.setCellValue("Participants :"); break;
-                            case 21: cell.setCellValue("1 février 2017"); break;
+                            case 21: cell.setCellValue("Participants :"); break;
+                            case 23: cell.setCellValue("1 février 2017"); break;
                         }
                         cell.setCellStyle(cellStyleFont13CT);
                     }
-                    if(i == 15 || i == 17 || i == 23 || i == 24 || i == 25 || i == 28 || i == 35 || i == 37 || i == 50){
-                        cell.setCellStyle(cellStyleLeft);
-                    }
-                    if(i == 52){
+                    else if(i == 52){
                         cell.setCellStyle(cellStyleFont14Gras);
+                    }
+                    else{
+                        cell.setCellStyle(cellStyleLeft);
                     }
                 }
                 else if(j == 2){
                     if(i == 16 || i == 27 || i == 36 || i == 52){
                         cell.setCellStyle(cellStyleBottom);
                     }
-                    if(i == 18 || i == 20){
+                    if(i == 18 || i == 21){
                         switch(i){
                             case 18: cell.setCellValue("Forfait Journée (8h)"); break;
-                            case 20: cell.setCellValue("20"); break;
+                            case 21: cell.setCellValue(20); break;
                         }
                         cell.setCellStyle(cellStyleFont13HCT);
                     }
@@ -451,10 +485,69 @@ public class Devis {
                     if(i == 16 || i == 27 || i == 36 || i == 52){
                         cell.setCellStyle(cellStyleBottom);
                     }
-                    if(i == 21){
+                    if(i == 23){
                         cell.setCellValue("9h à 17h");
                         cell.setCellStyle(cellStyleFont13HCT);
                     }
+                }
+                else if(j == 4){
+                    if(i == 14){
+                        cell.setCellValue("Nombre");
+                        cell.setCellStyle(cellStyle13ET);
+                    }
+                    else if(i == 18 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
+                        switch(i){
+                            case 18: cell.setCellValue(1); break;
+                            default: cell.setCellValue(0); break;
+                        }
+                        cell.setCellStyle(cellStyleFont13CT);
+                    }
+                    else if(i == 52){
+                        cell.setCellStyle(cellStyleFont14Gras);
+                    }
+                    else{
+                        cell.setCellStyle(cellStyleLeft);
+                    }
+                }
+                else if(j == 5){
+                    if(i == 14){
+                        cell.setCellValue("Prix unitaire HT");
+                        cell.setCellStyle(cellStyle13ET);
+                    }
+                    else if(i == 18 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
+                        switch(i){
+                            case 18: cell.setCellValue(550.00+" €"); break;
+                            case 38: cell.setCellValue(7.50+" €"); break;
+                            case 40: cell.setCellValue(5.00+" €"); break;
+                            case 42: cell.setCellValue(8.00+" €"); break;
+                            case 44: cell.setCellValue(19.90+" €"); break;
+                            case 46: cell.setCellValue(34.90+" €"); break;
+                            case 48: cell.setCellValue(3.90+" €"); break;
+                        }
+                        cell.setCellStyle(cellStyleFont13CTsansBordures);
+                    }
+                    else if(i == 52){
+                        cell.setCellStyle(cellStyleBottom);
+                    }
+                }
+                else if(j == 6){
+                    if(i == 14){
+                        cell.setCellValue("Prix HT");
+                        cell.setCellStyle(cellStyle13ET);
+                    }
+                    else if(i == 18 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
+                        switch(i){
+                            case 18: cell.setCellValue(550.00+" €"); break;
+                            default: cell.setCellValue(0.00+" €"); break;
+                        }
+                        cell.setCellStyle(cellStyleFont13CTsansBordures);
+                    }
+                    else if(i == 52){
+                        cell.setCellStyle(cellStyleBottom);
+                    }
+                }
+                else{
+                    if(i != 14) cell.setCellStyle(cellStyleLeft);
                 }
             }
         }
@@ -463,6 +556,171 @@ public class Devis {
         FIN BLOC CENTRAL
         */
         
+        /*
+        DEBUT LIGNES 56 - 58
+        */
+        
+        row = sheet.createRow(55);
+        cell = row.createCell(1);
+        fonte = wb.createFont();
+        fonte.setFontName("Courier New");
+        fonte.setFontHeightInPoints((short)12);
+        fonte.setBold(true);
+        cellStyle = wb.createCellStyle();
+        cellStyle.setFont(fonte);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("Acompte de 50% à la réservation.");
+        
+        cell = row.createCell(5);
+        fonte = wb.createFont();
+        fonte.setFontName("Courier New");
+        fonte.setFontHeightInPoints((short)12);
+        cellStyle = wb.createCellStyle();
+        cellStyle.setBorderLeft(BorderStyle.MEDIUM);
+        cellStyle.setFont(fonte);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("TVA 5,5%");
+        
+        cell = row.createCell(6);
+        fonte = wb.createFont();
+        fonte.setFontName("Courier New");
+        fonte.setFontHeightInPoints((short)12);
+        cellStyle = wb.createCellStyle();
+        cellStyle.setBorderRight(BorderStyle.MEDIUM);
+        cellStyle.setAlignment(HorizontalAlignment.RIGHT);
+        cellStyle.setFont(fonte);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue(0.00+" €");
+        
+        //--------------------------------------------------------------------//
+        
+        row = sheet.createRow(56);
+        cell = row.createCell(1);
+        fonte = wb.createFont();
+        fonte.setFontName("Courier New");
+        fonte.setFontHeightInPoints((short)12);
+        cellStyle = wb.createCellStyle();
+        cellStyle.setFont(fonte);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("Pour le présent devis :");
+        
+        cell = row.createCell(3);
+        fonte = wb.createFont();
+        fonte.setFontName("Courier New");
+        fonte.setFontHeightInPoints((short)12);
+        fonte.setBold(true);
+        cellStyle = wb.createCellStyle();
+        cellStyle.setFont(fonte);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("330.0 €");
+        
+        cell = row.createCell(5);
+        fonte = wb.createFont();
+        fonte.setFontName("Courier New");
+        fonte.setFontHeightInPoints((short)12);
+        cellStyle = wb.createCellStyle();
+        cellStyle.setBorderLeft(BorderStyle.MEDIUM);
+        cellStyle.setFont(fonte);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("TVA 10%");
+        
+        cell = row.createCell(6);
+        fonte = wb.createFont();
+        fonte.setFontName("Courier New");
+        fonte.setFontHeightInPoints((short)12);
+        cellStyle = wb.createCellStyle();
+        cellStyle.setBorderRight(BorderStyle.MEDIUM);
+        cellStyle.setAlignment(HorizontalAlignment.RIGHT);
+        cellStyle.setFont(fonte);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue(0.00+" €");
+        
+        //--------------------------------------------------------------------//
+        
+        row = sheet.createRow(57);
+        cell = row.createCell(1);
+        fonte = wb.createFont();
+        fonte.setFontName("Courier New");
+        fonte.setFontHeightInPoints((short)12);
+        fonte.setBold(true);
+        cellStyle = wb.createCellStyle();
+        cellStyle.setFont(fonte);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("Solde au plus tard 24h avant utilisation des locaux.");
+        
+        cell = row.createCell(5);
+        fonte = wb.createFont();
+        fonte.setFontName("Courier New");
+        fonte.setFontHeightInPoints((short)12);
+        cellStyle = wb.createCellStyle();
+        cellStyle.setBorderLeft(BorderStyle.MEDIUM);
+        cellStyle.setFont(fonte);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("TVA 20%");
+        
+        cell = row.createCell(6);
+        fonte = wb.createFont();
+        fonte.setFontName("Courier New");
+        fonte.setFontHeightInPoints((short)12);
+        cellStyle = wb.createCellStyle();
+        cellStyle.setBorderRight(BorderStyle.MEDIUM);
+        cellStyle.setAlignment(HorizontalAlignment.RIGHT);
+        cellStyle.setFont(fonte);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue(110.00+" €");
+        
+        /*
+        FIN LIGNES 56 - 58
+        */
+        
+        /*
+        DEBUT BLOC DU BAS 
+        */
+        
+        row = sheet.createRow(54);
+        cell = row.createCell(5);
+        fonte = wb.createFont();
+        fonte.setFontName("Courier New");
+        fonte.setFontHeightInPoints((short)12);
+        fonte.setBold(true);
+        fonte.setColor((short)HSSFColor.WHITE.index);
+        cellStyle = wb.createCellStyle();
+        cellStyle.setBorderLeft(BorderStyle.MEDIUM);
+        cellStyle.setFillBackgroundColor(IndexedColors.BLACK.getIndex());
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        cellStyle.setFont(fonte);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("TOTAL HT");
+        
+        cell = row.createCell(6);
+        fonte = wb.createFont();
+        fonte.setFontName("Courier New");
+        fonte.setFontHeightInPoints((short)12);
+        fonte.setBold(true);
+        fonte.setColor((short)HSSFColor.WHITE.index);
+        cellStyle = wb.createCellStyle();
+        cellStyle.setBorderLeft(BorderStyle.MEDIUM);
+        cellStyle.setFillBackgroundColor(IndexedColors.BLACK.getIndex());
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        cellStyle.setFont(fonte);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue(550.00+" €");
+        
+        /*HSSFFont fonte13ET = wb.createFont();
+        fonte13ET.setFontHeightInPoints((short)13);
+        fonte13ET.setFontName("Courier New");
+        fonte13ET.setBold(true);
+        fonte13ET.setColor((short)HSSFColor.WHITE.index);
+        HSSFCellStyle cellStyle13ET = wb.createCellStyle();
+        cellStyle13ET.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle13ET.setBorderLeft(BorderStyle.MEDIUM);
+        cellStyle13ET.setFillBackgroundColor(IndexedColors.BLACK.getIndex());
+        cellStyle13ET.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        cellStyle13ET.setFont(fonte13ET);*/
+        
+        /*
+        FIN BLOC DU BAS
+        */
         
         
         try{
