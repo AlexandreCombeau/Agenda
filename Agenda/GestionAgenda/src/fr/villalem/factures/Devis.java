@@ -5,9 +5,11 @@
  */
 package fr.villalem.factures;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -16,11 +18,17 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Picture;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.util.IOUtils;
 
 /**
  *
@@ -29,7 +37,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 public class Devis {
     
     
-    public static void creerDevis(){
+    public static void creerDevis() throws FileNotFoundException, IOException{
         
         /*
         DEFINITION DES VARIABLES
@@ -48,17 +56,20 @@ public class Devis {
         sheet.setDefaultRowHeightInPoints(22);
         */
         sheet.setColumnWidth(0, 500);
-        sheet.setColumnWidth(3, 11000);
+        sheet.setColumnWidth(3, 9500);
         sheet.setColumnWidth(1, 5000);
         sheet.setColumnWidth(2, 2200);
         sheet.setColumnWidth(4, 2500);
         sheet.setColumnWidth(5, 6000);
-        sheet.setColumnWidth(6, 2725);
+        sheet.setColumnWidth(6, 3500);
         
         /*
         FUSION DES CELLULES
         */
         sheet.addMergedRegion(new CellRangeAddress(4, 4, 1, 3));
+        sheet.addMergedRegion(new CellRangeAddress(1, 1, 2, 3));
+        sheet.addMergedRegion(new CellRangeAddress(2, 2, 2, 3));
+        sheet.addMergedRegion(new CellRangeAddress(1, 3, 1, 1));
         sheet.addMergedRegion(new CellRangeAddress(5, 5, 1, 3));
         sheet.addMergedRegion(new CellRangeAddress(6, 6, 1, 3));
         sheet.addMergedRegion(new CellRangeAddress(8, 8, 1, 3));
@@ -97,13 +108,13 @@ public class Devis {
         //Font 12
         HSSFFont fonte12 = wb.createFont();
         fonte12.setFontHeightInPoints((short)12);
-        fonte12.setFontName("Courier New");
+        fonte12.setFontName("Calibri (Corps)");
         HSSFCellStyle cellStyleFont12 = wb.createCellStyle();
         cellStyleFont12.setFont(fonte12);
         //Font 16 en gras
         HSSFFont fonte16Gras = wb.createFont();
         fonte16Gras.setFontHeightInPoints((short)16);
-        fonte16Gras.setFontName("Courier New");
+        fonte16Gras.setFontName("Calibri (Corps)");
         fonte16Gras.setBold(true);
         HSSFCellStyle cellStyleFont16Gras = wb.createCellStyle();
         cellStyleFont16Gras.setFont(fonte16Gras);
@@ -115,16 +126,29 @@ public class Devis {
         
         // /!\ METTRE IMAGE LOGO /!\
         
+        InputStream inputStream = new FileInputStream("images/lemons.png");
+        byte[] bytes = IOUtils.toByteArray(inputStream);
+        int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
+        inputStream.close();
+        CreationHelper helper = wb.getCreationHelper();
+        Drawing drawing = sheet.createDrawingPatriarch();
+        ClientAnchor anchor = helper.createClientAnchor();
+        anchor.setCol1(1);
+        anchor.setRow1(1);
+        anchor.setDx1(175);
+        Picture pict = drawing.createPicture(anchor, pictureIdx);
+        pict.resize(0.9 , 3);
+        
         /*
         DEBUT LIGNES 2 - 3
         */
         
         row = sheet.createRow(1);
-        cell = row.createCell(3);
+        cell = row.createCell(2);
         cell.setCellValue("Lemons Production");
         fonte = wb.createFont();
-        fonte.setFontName("Courier New");
-        fonte.setFontHeightInPoints((short)20);
+        fonte.setFontName("Calibri (Corps)");
+        fonte.setFontHeightInPoints((short)22);
         fonte.setBold(true);
         cellStyle = wb.createCellStyle();
         cellStyle.setAlignment(HorizontalAlignment.CENTER);
@@ -134,10 +158,10 @@ public class Devis {
         //--------------------------------------------------------------------//
         
         row = sheet.createRow(2);
-        cell = row.createCell(3);
+        cell = row.createCell(2);
         cell.setCellValue("Société de production audiovisuelle");
         fonte = wb.createFont();
-        fonte.setFontName("Courier New");
+        fonte.setFontName("Calibri (Corps)");
         fonte.setFontHeightInPoints((short)12);
         fonte.setBold(true);
         cellStyle = wb.createCellStyle();
@@ -148,7 +172,7 @@ public class Devis {
         /*
         FIN LIGNES 2 - 3
         */
-        
+
         /*
         DEBUT LIGNE 5 - 9
         */
@@ -179,16 +203,22 @@ public class Devis {
         //Font 14 gras + centré
         fonte = wb.createFont();
         fonte.setFontHeightInPoints((short)15);
-        fonte.setFontName("Courier New");
+        fonte.setFontName("Calibri (Corps)");
         fonte.setBold(true);
         fonte.setColor((short)HSSFColor.WHITE.index);
         cellStyle = wb.createCellStyle();
         cellStyle.setAlignment(HorizontalAlignment.CENTER);
         cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
         cellStyle.setBorderLeft(BorderStyle.MEDIUM);
+        cellStyle.setBorderRight(BorderStyle.MEDIUM);
         cellStyle.setFillBackgroundColor(IndexedColors.BLACK.getIndex());
         cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         cellStyle.setFont(fonte);
+        cell.setCellStyle(cellStyle);
+        
+        cell = row.createCell(6);
+        cellStyle = wb.createCellStyle();
+        cellStyle.setBorderRight(BorderStyle.MEDIUM);
         cell.setCellStyle(cellStyle);
         
         //--------------------------------------------------------------------//
@@ -201,6 +231,12 @@ public class Devis {
         cell = row.createCell(4);
         cellStyle = wb.createCellStyle();
         cellStyle.setBorderLeft(BorderStyle.MEDIUM);
+        cellStyle.setBorderRight(BorderStyle.MEDIUM);
+        cell.setCellStyle(cellStyle);
+        
+        cell = row.createCell(6);
+        cellStyle = wb.createCellStyle();
+        cellStyle.setBorderRight(BorderStyle.MEDIUM);
         cell.setCellStyle(cellStyle);
         
         
@@ -218,6 +254,8 @@ public class Devis {
         lesRows[2] = row10;
         lesRows[3] = row11;
         lesRows[4] = row12;
+        
+        lesRows[1].setHeight((short)1500);
         
         cell = lesRows[0].createCell(1);
         cell.setCellValue("contact@villalemons.fr");
@@ -238,7 +276,7 @@ public class Devis {
                     cell.setCellValue("CLIENT");
                     fonte = wb.createFont();
                     fonte.setFontHeightInPoints((short)15);
-                    fonte.setFontName("Courier New");
+                    fonte.setFontName("Calibri (Corps)");
                     fonte.setBold(true);
                     cellStyle = wb.createCellStyle();
                     cellStyle.setAlignment(HorizontalAlignment.CENTER);
@@ -257,7 +295,7 @@ public class Devis {
                         cell.setCellValue("TEL");
                         fonte = wb.createFont();
                         fonte.setFontHeightInPoints((short)13);
-                        fonte.setFontName("Courier New");
+                        fonte.setFontName("Calibri (Corps)");
                         cellStyle.setFont(fonte);
                         cellStyle.setAlignment(HorizontalAlignment.CENTER);
                     }
@@ -280,7 +318,7 @@ public class Devis {
                     }
                     fonte = wb.createFont();
                     fonte.setFontHeightInPoints((short)13);
-                    fonte.setFontName("Courier New");
+                    fonte.setFontName("Calibri (Corps)");
                     cellStyle = wb.createCellStyle();
                     cellStyle.setAlignment(HorizontalAlignment.CENTER);
                     cellStyle.setBorderLeft(BorderStyle.MEDIUM);
@@ -307,7 +345,7 @@ public class Devis {
         cell = lesRows[4].createCell(1);
         cell.setCellValue("PARIS, le");
         fonte = wb.createFont();
-        fonte.setFontName("Courier New");
+        fonte.setFontName("Calibri (Corps)");
         fonte.setFontHeightInPoints((short)12);
         cellStyle = wb.createCellStyle();
         cellStyle.setAlignment(HorizontalAlignment.RIGHT);
@@ -343,7 +381,7 @@ public class Devis {
         */
         HSSFFont fonte14Gras = wb.createFont();
         fonte14Gras.setFontHeightInPoints((short)14);
-        fonte14Gras.setFontName("Courier New");
+        fonte14Gras.setFontName("Calibri (Corps)");
         fonte14Gras.setBold(true);
         HSSFCellStyle cellStyleFont14Gras = wb.createCellStyle();
         cellStyleFont14Gras.setBorderLeft(BorderStyle.MEDIUM);
@@ -352,7 +390,7 @@ public class Devis {
         
         HSSFFont fonte13Gras = wb.createFont();
         fonte13Gras.setFontHeightInPoints((short)13);
-        fonte13Gras.setFontName("Courier New");
+        fonte13Gras.setFontName("Calibri (Corps)");
         fonte13Gras.setBold(true);
         HSSFCellStyle cellStyleFont13Gras = wb.createCellStyle();
         cellStyleFont13Gras.setBorderLeft(BorderStyle.MEDIUM);
@@ -360,21 +398,21 @@ public class Devis {
         
         HSSFFont fonte13 = wb.createFont();
         fonte13.setFontHeightInPoints((short)13);
-        fonte13.setFontName("Courier New");
+        fonte13.setFontName("Calibri (Corps)");
         HSSFCellStyle cellStyleFont13 = wb.createCellStyle();
         cellStyleFont13.setBorderLeft(BorderStyle.MEDIUM);
         cellStyleFont13.setFont(fonte13);
         
         HSSFFont fonte11 = wb.createFont();
         fonte11.setFontHeightInPoints((short)10);
-        fonte11.setFontName("Courier New");
+        fonte11.setFontName("Calibri (Corps)");
         HSSFCellStyle cellStyleFont11 = wb.createCellStyle();
         cellStyleFont11.setBorderLeft(BorderStyle.MEDIUM);
         cellStyleFont11.setFont(fonte11);
         
         HSSFFont fonte13CT = wb.createFont();
         fonte13CT.setFontHeightInPoints((short)13);
-        fonte13CT.setFontName("Courier New");
+        fonte13CT.setFontName("Calibri (Corps)");
         HSSFCellStyle cellStyleFont13CT = wb.createCellStyle();
         cellStyleFont13CT.setBorderLeft(BorderStyle.MEDIUM);
         cellStyleFont13CT.setAlignment(HorizontalAlignment.CENTER);
@@ -383,26 +421,27 @@ public class Devis {
         
         HSSFFont fonte13CTsansBordures = wb.createFont();
         fonte13CTsansBordures.setFontHeightInPoints((short)13);
-        fonte13CTsansBordures.setFontName("Courier New");
+        fonte13CTsansBordures.setFontName("Calibri (Corps)");
         HSSFCellStyle cellStyleFont13CTsansBordures = wb.createCellStyle();
         cellStyleFont13CTsansBordures.setAlignment(HorizontalAlignment.CENTER);
         cellStyleFont13CTsansBordures.setFont(fonte13CTsansBordures);
         
         HSSFFont fonte13HCT = wb.createFont();
-        fonte13CT.setFontHeightInPoints((short)13);
-        fonte13CT.setFontName("Courier New");
+        fonte13HCT.setFontHeightInPoints((short)13);
+        fonte13HCT.setFontName("Calibri (Corps)");
         HSSFCellStyle cellStyleFont13HCT = wb.createCellStyle();
         cellStyleFont13HCT.setVerticalAlignment(VerticalAlignment.CENTER);
         cellStyleFont13HCT.setFont(fonte13HCT);
         
         HSSFFont fonte13ET = wb.createFont();
         fonte13ET.setFontHeightInPoints((short)13);
-        fonte13ET.setFontName("Courier New");
+        fonte13ET.setFontName("Calibri (Corps)");
         fonte13ET.setBold(true);
         fonte13ET.setColor((short)HSSFColor.WHITE.index);
         HSSFCellStyle cellStyle13ET = wb.createCellStyle();
         cellStyle13ET.setAlignment(HorizontalAlignment.CENTER);
         cellStyle13ET.setBorderLeft(BorderStyle.MEDIUM);
+        cellStyle13ET.setBorderRight(BorderStyle.MEDIUM);
         cellStyle13ET.setFillBackgroundColor(IndexedColors.BLACK.getIndex());
         cellStyle13ET.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         cellStyle13ET.setFont(fonte13ET);
@@ -563,7 +602,7 @@ public class Devis {
         row = sheet.createRow(55);
         cell = row.createCell(1);
         fonte = wb.createFont();
-        fonte.setFontName("Courier New");
+        fonte.setFontName("Calibri (Corps)");
         fonte.setFontHeightInPoints((short)12);
         fonte.setBold(true);
         cellStyle = wb.createCellStyle();
@@ -573,7 +612,7 @@ public class Devis {
         
         cell = row.createCell(5);
         fonte = wb.createFont();
-        fonte.setFontName("Courier New");
+        fonte.setFontName("Calibri (Corps)");
         fonte.setFontHeightInPoints((short)12);
         cellStyle = wb.createCellStyle();
         cellStyle.setBorderLeft(BorderStyle.MEDIUM);
@@ -583,7 +622,7 @@ public class Devis {
         
         cell = row.createCell(6);
         fonte = wb.createFont();
-        fonte.setFontName("Courier New");
+        fonte.setFontName("Calibri (Corps)");
         fonte.setFontHeightInPoints((short)12);
         cellStyle = wb.createCellStyle();
         cellStyle.setBorderRight(BorderStyle.MEDIUM);
@@ -597,7 +636,7 @@ public class Devis {
         row = sheet.createRow(56);
         cell = row.createCell(1);
         fonte = wb.createFont();
-        fonte.setFontName("Courier New");
+        fonte.setFontName("Calibri (Corps)");
         fonte.setFontHeightInPoints((short)12);
         cellStyle = wb.createCellStyle();
         cellStyle.setFont(fonte);
@@ -606,7 +645,7 @@ public class Devis {
         
         cell = row.createCell(3);
         fonte = wb.createFont();
-        fonte.setFontName("Courier New");
+        fonte.setFontName("Calibri (Corps)");
         fonte.setFontHeightInPoints((short)12);
         fonte.setBold(true);
         cellStyle = wb.createCellStyle();
@@ -616,7 +655,7 @@ public class Devis {
         
         cell = row.createCell(5);
         fonte = wb.createFont();
-        fonte.setFontName("Courier New");
+        fonte.setFontName("Calibri (Corps)");
         fonte.setFontHeightInPoints((short)12);
         cellStyle = wb.createCellStyle();
         cellStyle.setBorderLeft(BorderStyle.MEDIUM);
@@ -626,7 +665,7 @@ public class Devis {
         
         cell = row.createCell(6);
         fonte = wb.createFont();
-        fonte.setFontName("Courier New");
+        fonte.setFontName("Calibri (Corps)");
         fonte.setFontHeightInPoints((short)12);
         cellStyle = wb.createCellStyle();
         cellStyle.setBorderRight(BorderStyle.MEDIUM);
@@ -640,7 +679,7 @@ public class Devis {
         row = sheet.createRow(57);
         cell = row.createCell(1);
         fonte = wb.createFont();
-        fonte.setFontName("Courier New");
+        fonte.setFontName("Calibri (Corps)");
         fonte.setFontHeightInPoints((short)12);
         fonte.setBold(true);
         cellStyle = wb.createCellStyle();
@@ -650,7 +689,7 @@ public class Devis {
         
         cell = row.createCell(5);
         fonte = wb.createFont();
-        fonte.setFontName("Courier New");
+        fonte.setFontName("Calibri (Corps)");
         fonte.setFontHeightInPoints((short)12);
         cellStyle = wb.createCellStyle();
         cellStyle.setBorderLeft(BorderStyle.MEDIUM);
@@ -660,7 +699,7 @@ public class Devis {
         
         cell = row.createCell(6);
         fonte = wb.createFont();
-        fonte.setFontName("Courier New");
+        fonte.setFontName("Calibri (Corps)");
         fonte.setFontHeightInPoints((short)12);
         cellStyle = wb.createCellStyle();
         cellStyle.setBorderRight(BorderStyle.MEDIUM);
@@ -680,7 +719,7 @@ public class Devis {
         row = sheet.createRow(54);
         cell = row.createCell(5);
         fonte = wb.createFont();
-        fonte.setFontName("Courier New");
+        fonte.setFontName("Calibri (Corps)");
         fonte.setFontHeightInPoints((short)12);
         fonte.setBold(true);
         fonte.setColor((short)HSSFColor.WHITE.index);
@@ -694,7 +733,25 @@ public class Devis {
         
         cell = row.createCell(6);
         fonte = wb.createFont();
-        fonte.setFontName("Courier New");
+        fonte.setFontName("Calibri (Corps)");
+        fonte.setFontHeightInPoints((short)12);
+        fonte.setBold(true);
+        fonte.setColor((short)HSSFColor.WHITE.index);
+        cellStyle = wb.createCellStyle();
+        cellStyle.setAlignment(HorizontalAlignment.RIGHT);
+        cellStyle.setBorderRight(BorderStyle.MEDIUM);
+        cellStyle.setFillBackgroundColor(IndexedColors.BLACK.getIndex());
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        cellStyle.setFont(fonte);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue(550.00+" €");
+        
+        //--------------------------------------------------------------------//
+        
+        row = sheet.createRow(58);
+        cell = row.createCell(5);
+        fonte = wb.createFont();
+        fonte.setFontName("Calibri (Corps)");
         fonte.setFontHeightInPoints((short)12);
         fonte.setBold(true);
         fonte.setColor((short)HSSFColor.WHITE.index);
@@ -704,19 +761,22 @@ public class Devis {
         cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         cellStyle.setFont(fonte);
         cell.setCellStyle(cellStyle);
-        cell.setCellValue(550.00+" €");
+        cell.setCellValue("TOTAL TTC");
         
-        /*HSSFFont fonte13ET = wb.createFont();
-        fonte13ET.setFontHeightInPoints((short)13);
-        fonte13ET.setFontName("Courier New");
-        fonte13ET.setBold(true);
-        fonte13ET.setColor((short)HSSFColor.WHITE.index);
-        HSSFCellStyle cellStyle13ET = wb.createCellStyle();
-        cellStyle13ET.setAlignment(HorizontalAlignment.CENTER);
-        cellStyle13ET.setBorderLeft(BorderStyle.MEDIUM);
-        cellStyle13ET.setFillBackgroundColor(IndexedColors.BLACK.getIndex());
-        cellStyle13ET.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        cellStyle13ET.setFont(fonte13ET);*/
+        cell = row.createCell(6);
+        fonte = wb.createFont();
+        fonte.setFontName("Calibri (Corps)");
+        fonte.setFontHeightInPoints((short)12);
+        fonte.setBold(true);
+        fonte.setColor((short)HSSFColor.WHITE.index);
+        cellStyle = wb.createCellStyle();
+        cellStyle.setAlignment(HorizontalAlignment.RIGHT);
+        cellStyle.setBorderRight(BorderStyle.MEDIUM);
+        cellStyle.setFillBackgroundColor(IndexedColors.BLACK.getIndex());
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        cellStyle.setFont(fonte);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue(660.00+" €");
         
         /*
         FIN BLOC DU BAS
