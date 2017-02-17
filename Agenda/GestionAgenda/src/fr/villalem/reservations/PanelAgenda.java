@@ -26,7 +26,7 @@ public class PanelAgenda extends javax.swing.JPanel {
     public ArrayList<Evenement> ListeEvenements = new ArrayList<>();
     private Calendar cal = Calendar.getInstance();
     private int largeurColonneHeure = 40;//largeur de la première colonne, en px
-    private int largeurColonneJour = 120;//largeur de chaque colonne jour, en px
+    private int largeurColonneJour = 140;//largeur de chaque colonne jour, en px
     private int espacementHeure = 30;//espacement vertical entre chaque heure, en px
     /**
      * Creates new form PanelAgenda
