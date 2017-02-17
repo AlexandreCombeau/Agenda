@@ -54,7 +54,7 @@ public class ITconnexion extends javax.swing.JFrame {
 
         jLabel2.setText("Identifiant : ");
 
-        txtIdentifiant.setText("matryb");
+        txtIdentifiant.setText("alexis");
         txtIdentifiant.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtIdentifiantActionPerformed(evt);
@@ -85,7 +85,7 @@ public class ITconnexion extends javax.swing.JFrame {
         labelErreur.setBackground(new java.awt.Color(255, 51, 51));
         labelErreur.setForeground(new java.awt.Color(255, 51, 51));
 
-        txtMdp.setText("matryb");
+        txtMdp.setText("alexis");
         txtMdp.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtMdpKeyReleased(evt);

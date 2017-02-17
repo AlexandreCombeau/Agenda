@@ -116,7 +116,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtIdentifiant">
           <Properties>
-            <Property name="text" type="java.lang.String" value="matryb"/>
+            <Property name="text" type="java.lang.String" value="alexis"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtIdentifiantActionPerformed"/>
@@ -156,7 +156,7 @@
         </Component>
         <Component class="javax.swing.JPasswordField" name="txtMdp">
           <Properties>
-            <Property name="text" type="java.lang.String" value="matryb"/>
+            <Property name="text" type="java.lang.String" value="alexis"/>
           </Properties>
           <Events>
             <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtMdpKeyReleased"/>
