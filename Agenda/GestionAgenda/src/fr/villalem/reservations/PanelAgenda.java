@@ -28,6 +28,7 @@ public class PanelAgenda extends javax.swing.JPanel {
     private int largeurColonneHeure = 40;//largeur de la première colonne, en px
     private int largeurColonneJour = 140;//largeur de chaque colonne jour, en px
     private int espacementHeure = 30;//espacement vertical entre chaque heure, en px
+    private int largeurEven = 60;
     /**
      * Creates new form PanelAgenda
      */
@@ -70,11 +71,11 @@ public class PanelAgenda extends javax.swing.JPanel {
                        * de la largeur de chaque colonne 'jour'. Donc pour le lundi, celà vaut 0, car i=0.
                        * --pour l'ordonnée 'y': on enlève 6 à l'heure de début, car le graph commence à 6h du matin
                        * (et non 7h, le 6 correspond à y=0). On multiplie par espacementHeure pour le faire déscendre.
-                       * --La largeur est fixé arbitrairement à 60 pour l'instant.
+                       * --La largeur est fixé arbitrairement pour l'instant.
                        * --La hauteur correspond à la différence entre l'heure de début et de fin, fois espacementHeure.
                        */
                       ListeEvenements.add(new Evenement(1+largeurColonneHeure+i*largeurColonneJour,
-                              (dtDebutInt-6)*espacementHeure, 60, (dtFinInt-dtDebutInt)*espacementHeure));
+                              (dtDebutInt-6)*espacementHeure, largeurEven, (dtFinInt-dtDebutInt)*espacementHeure));
                   }
               } catch (SQLException ex) {
                   Logger.getLogger(PanelAgenda.class.getName()).log(Level.SEVERE, null, ex);

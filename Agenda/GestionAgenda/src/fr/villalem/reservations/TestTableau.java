@@ -130,7 +130,7 @@ public class TestTableau extends javax.swing.JFrame {
     
     private void remplirTableau(Calendar cal) throws SQLException {
         Calendar cal2 = (Calendar)cal.clone();
-        ResultSet rs = rq.getReservationsJour(cal2);
+        ResultSet rs = rq.getReservationsSemaine(cal2);
         try {
             while(jTable1.getRowCount() > 0) //retire les lignes du tableau, s'il y en a
             {
