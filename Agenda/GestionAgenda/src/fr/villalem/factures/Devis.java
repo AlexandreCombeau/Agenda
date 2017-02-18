@@ -82,12 +82,14 @@ public class Devis {
         sheet.addMergedRegion(new CellRangeAddress(12, 12, 4, 6));
         sheet.addMergedRegion(new CellRangeAddress(16, 16, 1, 3));
         sheet.addMergedRegion(new CellRangeAddress(27, 27, 1, 3));
+        sheet.addMergedRegion(new CellRangeAddress(23, 23, 1, 3));
         sheet.addMergedRegion(new CellRangeAddress(36, 36, 1, 3));
-        sheet.addMergedRegion(new CellRangeAddress(23, 23, 1, 2));
+        sheet.addMergedRegion(new CellRangeAddress(21, 21, 1, 2));
         sheet.addMergedRegion(new CellRangeAddress(51, 51, 1, 2));
         sheet.addMergedRegion(new CellRangeAddress(25, 25, 1, 2));
         sheet.addMergedRegion(new CellRangeAddress(26, 26, 1, 2));
         sheet.addMergedRegion(new CellRangeAddress(18, 18, 2, 3));
+        sheet.addMergedRegion(new CellRangeAddress(22, 22, 2, 3));
         sheet.addMergedRegion(new CellRangeAddress(14, 14, 1, 3));
         sheet.addMergedRegion(new CellRangeAddress(55, 55, 1, 3));
         sheet.addMergedRegion(new CellRangeAddress(56, 56, 1, 2));
@@ -474,7 +476,7 @@ public class Devis {
                         }
                         cell.setCellStyle(cellStyleFont13Gras);
                     }
-                    else if(i == 19 || i == 39 || i == 41 || i == 43 || i == 45 || i == 47 || i == 49){
+                    else if(i == 19 || i == 23 || i == 39 || i == 41 || i == 43 || i == 45 || i == 47 || i == 49){
                         switch(i){
                             case 19: cell.setCellValue("Salle de 80 m² et espace bar de 25m²"); break;
                             case 39: cell.setCellValue("Thé, café, jus de fruit, eau et viennoiseries"); break;
@@ -494,10 +496,10 @@ public class Devis {
                         }
                         cell.setCellStyle(cellStyleFont13);
                     }
-                    else if(i == 21 || i == 23){
+                    else if(i == 20 || i == 21 || i == 24 || i == 25 || i == 26){
                         switch(i){
-                            case 21: cell.setCellValue("Participants :"); break;
-                            case 23: cell.setCellValue("1 février 2017"); break;
+                            case 20: cell.setCellValue("Participants :"); break;
+                            case 21: cell.setCellValue("1 février 2017"); break;
                         }
                         cell.setCellStyle(cellStyleFont13CT);
                     }
@@ -512,10 +514,10 @@ public class Devis {
                     if(i == 16 || i == 27 || i == 36 || i == 52){
                         cell.setCellStyle(cellStyleBottom);
                     }
-                    if(i == 18 || i == 21){
+                    if(i == 18 || i == 20 || i == 22 || i == 24){
                         switch(i){
                             case 18: cell.setCellValue("Forfait Journée (8h)"); break;
-                            case 21: cell.setCellValue(20); break;
+                            case 20: cell.setCellValue(20); break;
                         }
                         cell.setCellStyle(cellStyleFont13HCT);
                     }
@@ -524,7 +526,7 @@ public class Devis {
                     if(i == 16 || i == 27 || i == 36 || i == 52){
                         cell.setCellStyle(cellStyleBottom);
                     }
-                    if(i == 23){
+                    if(i == 21){
                         cell.setCellValue("9h à 17h");
                         cell.setCellStyle(cellStyleFont13HCT);
                     }
