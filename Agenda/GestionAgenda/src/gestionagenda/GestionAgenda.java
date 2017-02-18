@@ -5,9 +5,13 @@
  */
 package gestionagenda;
 
+
+import static fr.villalem.factures.Devis.creerDevis;
+import static fr.villalem.factures.Factures.creerFacture;
 import fr.villalem.labd.*;
+import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Scanner;
+
 
 /**
  *
@@ -18,10 +22,11 @@ public class GestionAgenda {
     public static Connexion connexion = new Connexion("db/Agenda.db");
     public static BdDAO rq = new BdDAO(connexion);
     
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, IOException {
         
-        new ITconnexion().setVisible(true);
-		
+        //new ITconnexion().setVisible(true);
+        //creerFacture();
+	creerDevis();
         //connexion.close();
     }
     
