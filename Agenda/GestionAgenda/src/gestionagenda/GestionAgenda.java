@@ -24,9 +24,9 @@ public class GestionAgenda {
     
     public static void main(String[] args) throws SQLException, IOException {
         
-        new ITconnexion().setVisible(true);
+        //new ITconnexion().setVisible(true);
         //creerFacture();
-	//creerDevis();
+	creerDevis();
         //connexion.close();
     }
     
