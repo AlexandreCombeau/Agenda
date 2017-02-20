@@ -74,7 +74,7 @@ public class BdDAO {
          * @return Retourne toutes les Salles ou toutes les Taches
          * @throws SQLException
          */
-        public String[] getSalleTache(String table) throws SQLException{
+        public String[] getSalleTacheEntiteFormule(String table) throws SQLException{
             String quest = "SELECT * FROM "+table;
             String quest1 = "SELECT COUNT(id"+table+") From "+table;
             rs = co.query(quest1);
@@ -89,6 +89,38 @@ public class BdDAO {
             }
             return nom;
         }
+        
+        /*public String[] getFormule() throws SQLException{
+            String quest = "SELECT * FROM Formule";
+            String quest1 = "SELECT COUNT(idFormule) FROM Formule";
+            rs = co.query(quest1);
+            int longueurTableau = rs.getInt("COUNT(idFormule)");
+            int i = 0;
+            String[] nom = new String[longueurTableau];
+            rs = co.query(quest);
+            while(rs.next()){
+                String name = rs.getString("libelle");
+                nom[i] = name;
+                i++;
+            }
+            return nom;
+        }
+        
+        public String[] getEntite() throws SQLException{
+            String quest = "SELECT entite FROM Client";
+            String quest1 = "SELECT COUNT(idFormule) FROM Formule";
+            rs = co.query(quest1);
+            int longueurTableau = rs.getInt("COUNT(idFormule)");
+            int i = 0;
+            String[] nom = new String[longueurTableau];
+            rs = co.query(quest);
+            while(rs.next()){
+                String name = rs.getString("libelle");
+                nom[i] = name;
+                i++;
+            }
+            return nom;
+        }*/
 
         /**
          *
