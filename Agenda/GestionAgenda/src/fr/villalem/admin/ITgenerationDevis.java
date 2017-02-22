@@ -5,8 +5,10 @@
  */
 package fr.villalem.admin;
 
+import static fr.villalem.factures.Devis.creerDevis;
 import static gestionagenda.GestionAgenda.rq;
 import java.awt.Dimension;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -405,11 +407,31 @@ public class ITgenerationDevis extends javax.swing.JFrame {
             facturation.equals("") || dateDebutSalle1.equals("") || dateFinSalle1.equals("") || horaireDebutSalle1.equals("") || horaireFinSalle1.equals("") || dateDebutSalle2.equals("") || dateFinSalle2.equals("") || horaireDebutSalle2.equals("") || horaireFinSalle2.equals("")){
                 JOptionPane.showMessageDialog(null, "Veuillez remplir tout les champs !");
             }
+            else{
+                String nomContact = nom+" "+prenom;
+                try {
+                    creerDevis(nomContact, email, tel);
+                    JOptionPane.showMessageDialog(null, "Devis créé !\nRetour aux paramètres administrateurs.");
+                    this.dispose();
+                } catch (IOException ex) {
+                    Logger.getLogger(ITgenerationDevis.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         else{
             if(nom.equals("") || prenom.equals("") || email.equals("") || tel.equals("") || nbHeures.equals("") || nbParticipants.equals("") || 
             facturation.equals("") || dateDebutSalle1.equals("") || dateFinSalle1.equals("") || horaireDebutSalle1.equals("") || horaireFinSalle1.equals("")){
                 JOptionPane.showMessageDialog(null, "Veuillez remplir tout les champs !");
+            }
+            else{
+                String nomContact = nom+" "+prenom;
+                try {
+                    creerDevis(nomContact, email, tel);
+                    JOptionPane.showMessageDialog(null, "Devis créé !\nRetour aux paramètres administrateurs.");
+                    this.dispose();
+                } catch (IOException ex) {
+                    Logger.getLogger(ITgenerationDevis.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }//GEN-LAST:event_btnGenererActionPerformed

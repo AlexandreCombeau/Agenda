@@ -37,7 +37,7 @@ import org.apache.poi.util.IOUtils;
 public class Devis {
     
     
-    public static void creerDevis() throws FileNotFoundException, IOException{
+    public static void creerDevis(String nomContact, String email, String tel) throws FileNotFoundException, IOException{
         
         /*
         DEFINITION DES VARIABLES
@@ -294,7 +294,7 @@ public class Devis {
                 if(i == 9 && j == 4 || i == 12 && j == 4){
                     cellStyle = wb.createCellStyle();
                     if(i == 12){
-                        cell.setCellValue("TEL");
+                        cell.setCellValue(tel); //Prend le tel du contact en paramètre
                         fonte = wb.createFont();
                         fonte.setFontHeightInPoints((short)13);
                         fonte.setFontName("Calibri (Corps)");
@@ -313,10 +313,10 @@ public class Devis {
                 }
                 if(i == 10 && j == 4 || i == 11 && j == 4){
                     if(i == 10){
-                        cell.setCellValue("Nom du contact");
+                        cell.setCellValue(nomContact); //Prend le nom du contact en paramètre
                     }
                     else{
-                        cell.setCellValue("Mail");
+                        cell.setCellValue(email); //Prend l'email en paramètre
                     }
                     fonte = wb.createFont();
                     fonte.setFontHeightInPoints((short)13);
@@ -787,7 +787,7 @@ public class Devis {
         
         try{
             
-            FileOutputStream fileOut = new FileOutputStream("devis.xls");
+            FileOutputStream fileOut = new FileOutputStream("devis_"+nomContact+".xls");
             wb.write(fileOut);
             fileOut.close();
             
