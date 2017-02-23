@@ -530,6 +530,10 @@ public class Devis {
                         cell.setCellValue("9h à 17h");
                         cell.setCellStyle(cellStyleFont13HCT);
                     }
+                    if(i == 29){
+                        cell.setCellValue("Disposition : En U");
+                        cell.setCellStyle(cellStyleFont13HCT);
+                    }
                 }
                 else if(j == 4){
                     if(i == 14){

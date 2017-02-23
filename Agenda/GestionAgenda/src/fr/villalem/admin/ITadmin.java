@@ -320,7 +320,6 @@ public class ITadmin extends javax.swing.JFrame {
 
     private void btnGenerationDevisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerationDevisActionPerformed
         ITgenerationDevis devis = new ITgenerationDevis();
-        devis.getPanelSalle2().setVisible(false);
         devis.setVisible(true);
     }//GEN-LAST:event_btnGenerationDevisActionPerformed
 

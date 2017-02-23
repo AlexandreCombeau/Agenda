@@ -76,7 +76,7 @@ public class BdDAO {
          */
         public String[] getSalleTacheEntiteFormule(String table) throws SQLException{
             String quest = "SELECT * FROM "+table;
-            String quest1 = "SELECT COUNT(id"+table+") From "+table;
+            String quest1 = "SELECT COUNT(id"+table+") FROM "+table;
             rs = co.query(quest1);
             int longueurTableau = rs.getInt("COUNT(id"+table+")");
             int i = 0;
@@ -84,6 +84,22 @@ public class BdDAO {
             rs = co.query(quest);
             while(rs.next()){
                String name = rs.getString("nom"+table);
+               nom[i] = name;
+               i++;
+            }
+            return nom;
+        }
+        
+        public String[] getOptionService(String choix) throws SQLException{
+            String quest = "SELECT libelle FROM Facultatif WHERE nature = '"+choix+"'";
+            String quest1 = "SELECT COUNT(idFacultatif) FROM Facultatif WHERE nature = '"+choix+"'";
+            rs = co.query(quest1);
+            int longueurTableau = rs.getInt("COUNT(idFacultatif)");
+            int i = 0;
+            String[] nom = new String[longueurTableau];
+            rs = co.query(quest);
+            while(rs.next()){
+               String name = rs.getString("libelle");
                nom[i] = name;
                i++;
             }

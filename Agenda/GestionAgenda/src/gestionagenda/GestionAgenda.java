@@ -26,7 +26,7 @@ public class GestionAgenda {
         
         new ITconnexion().setVisible(true);
         //creerFacture();
-	//creerDevis();
+	//creerDevis("test", "test", "test");
         //connexion.close();
     }
     
