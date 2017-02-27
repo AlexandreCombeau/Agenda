@@ -90,6 +90,12 @@ public class BdDAO {
             return nom;
         }
         
+        /**
+         * 
+         * @param choix Prend "Option" ou "Service"
+         * @return Retourne toutes les options ou tout les services
+         * @throws SQLException 
+         */
         public String[] getOptionService(String choix) throws SQLException{
             String quest = "SELECT libelle FROM Facultatif WHERE nature = '"+choix+"'";
             String quest1 = "SELECT COUNT(idFacultatif) FROM Facultatif WHERE nature = '"+choix+"'";
@@ -104,6 +110,38 @@ public class BdDAO {
                i++;
             }
             return nom;
+        }
+        
+        /**
+         * 
+         * @param nomSalle Prend le nom de la salle concernée
+         * @return Retourne le descriptif de la salle en question
+         * @throws SQLException 
+         */
+        public String getCommentSalle(String nomSalle) throws SQLException{
+            String quest = "SELECT descriptif FROM Salle WHERE nomSalle = '"+nomSalle+"'";
+            rs = co.query(quest);
+            if(rs.next()){
+                String comment = rs.getString("descriptif");
+                return comment;
+            }
+            return null;
+        }
+        
+        /**
+         * 
+         * @param service Prend le service concerné
+         * @return Retourne le descriptif de ce service
+         * @throws SQLException 
+         */
+        public String getCommentService(String service) throws SQLException{
+            String quest = "SELECT descriptif FROM Facultatif WHERE libelle = '"+service+"'";
+            rs = co.query(quest);
+            if(rs.next()){
+                String comment = rs.getString("descriptif");
+                return comment;
+            }
+            return null;
         }
 
         /**

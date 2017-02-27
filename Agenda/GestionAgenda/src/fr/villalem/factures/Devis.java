@@ -37,7 +37,7 @@ import org.apache.poi.util.IOUtils;
 public class Devis {
     
     
-    public static void creerDevis(String nomContact, String email, String tel) throws FileNotFoundException, IOException{
+    public static void creerDevis(String[] client, String[] salle1, String[] salle2, String[] equipements, String[] services) throws FileNotFoundException, IOException{
         
         /*
         DEFINITION DES VARIABLES
@@ -153,7 +153,7 @@ public class Devis {
         fonte.setFontHeightInPoints((short)22);
         fonte.setBold(true);
         cellStyle = wb.createCellStyle();
-        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        //cellStyle.setAlignment(HorizontalAlignment.CENTER);
         cellStyle.setFont(fonte);
         cell.setCellStyle(cellStyle);
         
@@ -167,7 +167,7 @@ public class Devis {
         fonte.setFontHeightInPoints((short)12);
         fonte.setBold(true);
         cellStyle = wb.createCellStyle();
-        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        //cellStyle.setAlignment(HorizontalAlignment.CENTER);
         cellStyle.setFont(fonte);
         cell.setCellStyle(cellStyle);
         
@@ -275,7 +275,7 @@ public class Devis {
             for(int j = 4 ; j <= 6 ; j++){
                 cell = lesRows[i - 8].createCell(j);
                 if(i == 8 && j == 4){
-                    cell.setCellValue("CLIENT");
+                    cell.setCellValue(client[0]); //ON AJOUTE L'ADRESSE DE FACTURATION A L'EMPLACEMENT "CLIENT"
                     fonte = wb.createFont();
                     fonte.setFontHeightInPoints((short)15);
                     fonte.setFontName("Calibri (Corps)");
@@ -294,7 +294,7 @@ public class Devis {
                 if(i == 9 && j == 4 || i == 12 && j == 4){
                     cellStyle = wb.createCellStyle();
                     if(i == 12){
-                        cell.setCellValue(tel); //Prend le tel du contact en paramètre
+                        cell.setCellValue(client[3]); //Prend le tel du contact en paramètre
                         fonte = wb.createFont();
                         fonte.setFontHeightInPoints((short)13);
                         fonte.setFontName("Calibri (Corps)");
@@ -313,10 +313,10 @@ public class Devis {
                 }
                 if(i == 10 && j == 4 || i == 11 && j == 4){
                     if(i == 10){
-                        cell.setCellValue(nomContact); //Prend le nom du contact en paramètre
+                        cell.setCellValue(client[1]); //Prend le nom du contact en paramètre
                     }
                     else{
-                        cell.setCellValue(email); //Prend l'email en paramètre
+                        cell.setCellValue(client[2]); //Prend l'email en paramètre
                     }
                     fonte = wb.createFont();
                     fonte.setFontHeightInPoints((short)13);
@@ -466,40 +466,47 @@ public class Devis {
                     }
                     else if(i == 18 || i == 22 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48 || i == 51){
                         switch(i){
-                            case 18: cell.setCellValue("La Cabane"); break;
-                            case 38: cell.setCellValue("Accueil petit déjeuner"); break;
-                            case 40: cell.setCellValue("Pause café"); break;
-                            case 42: cell.setCellValue("Pause café gourmand"); break;
-                            case 44: cell.setCellValue("Plateaux repas"); break;
-                            case 46: cell.setCellValue("Afterwork"); break;
-                            case 48: cell.setCellValue("Bloc-notes et stylos"); break;
+                            case 18: cell.setCellValue(salle1[0]); break; //NOM DE LA SALLE 1
+                            case 22: cell.setCellValue(salle2[0]); break; //NOM DE LA SALLE 2
+                            case 38: cell.setCellValue(services[0]); break; //NOM DU SERVICE 1
+                            case 40: cell.setCellValue(services[2]); break; //NOM DU SERVICE 2
+                            case 42: cell.setCellValue(services[4]); break; //NOM DU SERVICE 3
+                            case 44: cell.setCellValue(services[6]); break; //NOM DU SERVICE 4
+                            case 46: cell.setCellValue(services[8]); break; //NOM DU SERVICE 5
+                            case 48: cell.setCellValue(services[10]); break; //NOM DU SERVICE 6
                         }
                         cell.setCellStyle(cellStyleFont13Gras);
                     }
                     else if(i == 19 || i == 23 || i == 39 || i == 41 || i == 43 || i == 45 || i == 47 || i == 49){
                         switch(i){
-                            case 19: cell.setCellValue("Salle de 80 m² et espace bar de 25m²"); break;
-                            case 39: cell.setCellValue("Thé, café, jus de fruit, eau et viennoiseries"); break;
-                            case 41: cell.setCellValue("Thé, café, eau"); break;
-                            case 43: cell.setCellValue("Thé, café, eau, petits fours sucrés"); break;
-                            case 45: cell.setCellValue("Entrée, plat et dessert. 21 menus au choix, softs et vins sur commande"); break;
-                            case 47: cell.setCellValue("10 pièces/personne boissons comprises"); break;
-                            case 49: cell.setCellValue("Bloc A5 et stylo pour chaque participant"); break;
+                            case 19: cell.setCellValue(salle1[7]); break; //COMMENTAIRE DE LA SALLE 1
+                            case 23: cell.setCellValue(salle2[7]); break; //COMMENTAIRE DE LA SALLE 2
+                            case 39: cell.setCellValue(services[1]); break; //COMMENTAIRE DU PREMIER SERVICE
+                            case 41: cell.setCellValue(services[3]); break; //COMMENTAIRE DU DEUXIEME SERVICE
+                            case 43: cell.setCellValue(services[5]); break; //COMMENTAIRE DU TROISIEME SERVICE
+                            case 45: cell.setCellValue(services[7]); break; //COMMENTAIRE DU QUATRIEME SERVICE
+                            case 47: cell.setCellValue(services[9]); break; //COMMENTAIRE DU CINQUIEME SERVICE
+                            case 49: cell.setCellValue(services[10]); break; //COMMENTAIRE DU SIXIEME SERVICE
                         }
                         cell.setCellStyle(cellStyleFont11);
                     }
                     else if(i == 26 || i == 29 || i == 30 || i == 31 || i == 32 || i == 33 || i == 34){
                         switch(i){
-                            case 29: cell.setCellValue("Chaises"); break;
-                            case 30: cell.setCellValue("Tables"); break;
-                            case 31: cell.setCellValue("Paperboard"); break;
+                            case 29: cell.setCellValue(equipements[0]); break; //NOM DE L'OPTION 1
+                            case 30: cell.setCellValue(equipements[1]); break; //NOM DE L'OPTION 2
+                            case 31: cell.setCellValue(equipements[2]); break; //NOM DE L'OPTION 3
+                            case 32: cell.setCellValue(equipements[3]); break; //NOM DE L'OPTION 4
+                            case 33: cell.setCellValue(equipements[4]); break; //NOM DE L'OPTION 5
+                            case 34: cell.setCellValue(equipements[5]); break; //NOM DE L'OPTION 6
                         }
                         cell.setCellStyle(cellStyleFont13);
                     }
                     else if(i == 20 || i == 21 || i == 24 || i == 25 || i == 26){
                         switch(i){
                             case 20: cell.setCellValue("Participants :"); break;
-                            case 21: cell.setCellValue("1 février 2017"); break;
+                            case 21: cell.setCellValue(salle1[4]); break; //DATE SALLE 1
+                            case 24: if(!(salle2[0].equals(""))) cell.setCellValue("Participants :"); break;//SI IL EXISTE UNE DEUXIEME SALLE
+                            case 25: cell.setCellValue(salle2[4]); break; //DATE SALLE 2
                         }
                         cell.setCellStyle(cellStyleFont13CT);
                     }
@@ -516,8 +523,10 @@ public class Devis {
                     }
                     if(i == 18 || i == 20 || i == 22 || i == 24){
                         switch(i){
-                            case 18: cell.setCellValue("Forfait Journée (8h)"); break;
-                            case 20: cell.setCellValue(20); break;
+                            case 18: cell.setCellValue(salle1[1]+" ("+salle1[2]+"h)"); break; //NOM FORMULE + HEURE FORMULE SALLE 1 
+                            case 20: cell.setCellValue(salle1[3]); break; //LE NOMBRE DE PARTICIPANT A LA SALLE 1
+                            case 22: cell.setCellValue(salle2[1]+" ("+salle2[2]+"h)"); break; //NOM FORMULE + HEURE FORMULE SALLE 2
+                            case 24: cell.setCellValue(salle2[3]); break; //LE NOMBRE DE PARTICIPANT A LA SALLE 2
                         }
                         cell.setCellStyle(cellStyleFont13HCT);
                     }
@@ -526,12 +535,15 @@ public class Devis {
                     if(i == 16 || i == 27 || i == 36 || i == 52){
                         cell.setCellStyle(cellStyleBottom);
                     }
-                    if(i == 21){
-                        cell.setCellValue("9h à 17h");
+                    if(i == 21 || i == 25){
+                        switch(i){
+                            case 21: cell.setCellValue(salle1[5]+" à "+salle1[6]); break;//HORAIRE DEBUT + FIN SALLE 1
+                            case 25: cell.setCellValue(salle2[5]+" à "+salle2[6]); break;//HORAIRE DEBUT + FIN SALLE 2
+                        }
                         cell.setCellStyle(cellStyleFont13HCT);
                     }
                     if(i == 29){
-                        cell.setCellValue("Disposition : En U");
+                        cell.setCellValue("Disposition : "+equipements[6]); //DISPOSITION
                         cell.setCellStyle(cellStyleFont13HCT);
                     }
                 }
@@ -791,7 +803,7 @@ public class Devis {
         
         try{
             
-            FileOutputStream fileOut = new FileOutputStream("devis_"+nomContact+".xls");
+            FileOutputStream fileOut = new FileOutputStream("devis_"+client[1]+".xls");
             wb.write(fileOut);
             fileOut.close();
             

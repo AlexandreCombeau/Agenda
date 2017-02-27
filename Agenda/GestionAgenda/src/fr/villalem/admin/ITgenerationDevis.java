@@ -116,7 +116,7 @@ public class ITgenerationDevis extends javax.swing.JFrame {
         }
         
         //On attribut une dimension minimale pour ne pas être embêté avec des soucis graphique.
-        Dimension minimumSize = new Dimension(760, 630);
+        Dimension minimumSize = new Dimension(805, 680);
         this.setMinimumSize(minimumSize);
     }
 
@@ -293,8 +293,9 @@ public class ITgenerationDevis extends javax.swing.JFrame {
                         .addComponent(txtHoraireDebutSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel23)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtHoraireFinSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtHoraireFinSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(panelSalle2Layout.createSequentialGroup()
                         .addComponent(jLabel14)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -658,64 +659,145 @@ public class ITgenerationDevis extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAnnulerActionPerformed
 
     private void btnGenererActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenererActionPerformed
-        String nom = txtNom.getText();
-        String prenom = txtPrenom.getText();
-        String email = txtEmail.getText();
-        String tel = txtTel.getText();
-        //String nbHeures = txtNombreHeures.getText();
-        //String nbParticipants = txtNombreParticipants.getText();
-        String facturation = txtFacturation.getText(); //Coordonnées de facturation
-        String dateSalle1 = txtDateSalle1.getText();
-        String horaireDebutSalle1 = txtHoraireDebutSalle1.getText();
-        String horaireFinSalle1 = txtHoraireFinSalle1.getText();
-        String dateSalle2 = "";
-        String horaireDebutSalle2 = "";
-        String horaireFinSalle2 = "";
-        String nbHeuresSalle1 = txtNombreHeuresSalle1.getText();
-        String nbParticipantsSalle1 = txtNombreParticipantsSalle1.getText();
-        String nbHeuresSalle2 = "";
-        String nbParticipantsSalle2 = "";
-        
-        String choix = (String)cbSalle2.getSelectedItem();
-        if(!(choix.equals("Aucune"))){
-            dateSalle2 = txtDateSalle2.getText();
-            horaireDebutSalle2 = txtHoraireDebutSalle2.getText();
-            horaireFinSalle2 = txtHoraireFinSalle2.getText();
-            nbHeuresSalle2 = txtNombreHeuresSalle2.getText();
-            nbParticipantsSalle2 = txtNombreParticipantsSalle2.getText();
+        try {
+            //CLIENT
+            String nomContact = txtNom.getText()+" "+txtPrenom.getText();
+            String email = txtEmail.getText();
+            String tel = txtTel.getText();
+            String facturation = txtFacturation.getText(); //Coordonnées de facturation
+            
+            //SALLE 1
+            String nomSalle1 = (String)cbSalle1.getSelectedItem();
+            String formuleSalle1 = (String)cbFormuleSalle1.getSelectedItem();
+            String dateSalle1 = txtDateSalle1.getText();
+            String horaireDebutSalle1 = txtHoraireDebutSalle1.getText();
+            String horaireFinSalle1 = txtHoraireFinSalle1.getText();
+            String nbHeuresSalle1 = txtNombreHeuresSalle1.getText();
+            String nbParticipantsSalle1 = txtNombreParticipantsSalle1.getText();
+            
+            //SALLE 2
+            String nomSalle2 = "";
+            String formuleSalle2 = "";
+            String dateSalle2 = "";
+            String horaireDebutSalle2 = "";
+            String horaireFinSalle2 = "";
+            String nbHeuresSalle2 = "";
+            String nbParticipantsSalle2 = "";
+            
+            //LES OPTIONS
+            String o1 = (String)cbOption1.getSelectedItem();
+            String o2 = (String)cbOption2.getSelectedItem();
+            String o3 = (String)cbOption3.getSelectedItem();
+            String o4 = (String)cbOption4.getSelectedItem();
+            String o5 = (String)cbOption5.getSelectedItem();
+            String o6 = (String)cbOption6.getSelectedItem();
+            
+            //LES SERVICES
+            String s1 = (String)cbService1.getSelectedItem();
+            String s2 = (String)cbService2.getSelectedItem();
+            String s3 = (String)cbService3.getSelectedItem();
+            String s4 = (String)cbService4.getSelectedItem();
+            String s5 = (String)cbService5.getSelectedItem();
+            String s6 = (String)cbService6.getSelectedItem();
+            
+            //LA DISPOSITION
+            String dispo = (String)cbDisposition.getSelectedItem();
             
             
-            if(nom.equals("") || prenom.equals("") || email.equals("") || tel.equals("") || facturation.equals("") || dateSalle1.equals("") ||
-            horaireDebutSalle1.equals("") || horaireFinSalle1.equals("") || nbHeuresSalle1.equals("") || nbParticipantsSalle1.equals("") || 
-            dateSalle2.equals("") || horaireDebutSalle2.equals("") || horaireFinSalle2.equals("") || nbHeuresSalle2.equals("") || nbParticipantsSalle2.equals("")){
-                JOptionPane.showMessageDialog(null, "Veuillez remplir tout les champs !");
-            }
-            else{
-                String nomContact = nom+" "+prenom;
-                try {
-                    creerDevis(nomContact, email, tel);
-                    JOptionPane.showMessageDialog(null, "Devis créé !\nRetour aux paramètres administrateurs.");
-                    this.dispose();
-                } catch (IOException ex) {
-                    Logger.getLogger(ITgenerationDevis.class.getName()).log(Level.SEVERE, null, ex);
+            //LES COMMENTAIRES DES SALLES
+            String commentSalle1 = rq.getCommentSalle(nomSalle1);
+            String commentSalle2 = "";
+            
+            
+            //LES COMMENTAIRES DES SERVICES
+            String commentS1 = rq.getCommentService(s1);
+            String commentS2 = rq.getCommentService(s2);
+            String commentS3 = rq.getCommentService(s3);
+            String commentS4 = rq.getCommentService(s4);
+            String commentS5 = rq.getCommentService(s5);
+            String commentS6 = rq.getCommentService(s6);
+            
+            
+            
+            //Création des tableaux pour transmettre les valeurs à la fonction créer devis
+            String[] client = {facturation, nomContact, email, tel};
+            String[] salle1 = {nomSalle1, formuleSalle1, nbHeuresSalle1, nbParticipantsSalle1, dateSalle1, horaireDebutSalle1, horaireFinSalle1, commentSalle1};
+            String[] salle2 = new String[8];
+            String[] equipements = {o1, o2, o3, o4, o5, o6, dispo};
+            String[] services = {s1, commentS1, s2,  commentS2, s3,  commentS3, s4,  commentS4, s5,  commentS5, s6, commentS6};
+            
+            //REMPLACEMENT DES "AUCUNE" DANS EQUIPEMENTS
+            for(int i = 0 ; i < equipements.length ; i++){
+                if(equipements[i].equals("Aucune")){
+                    equipements[i] = "";
                 }
             }
-        }
-        else{
-            if(nom.equals("") || prenom.equals("") || email.equals("") || tel.equals("") || 
-            facturation.equals("") || dateSalle1.equals("") || horaireDebutSalle1.equals("") || horaireFinSalle1.equals("") || nbHeuresSalle1.equals("") || nbParticipantsSalle1.equals("")){
-                JOptionPane.showMessageDialog(null, "Veuillez remplir tout les champs !");
-            }
-            else{
-                String nomContact = nom+" "+prenom;
-                try {
-                    creerDevis(nomContact, email, tel);
-                    JOptionPane.showMessageDialog(null, "Devis créé !\nRetour aux paramètres administrateurs.");
-                    this.dispose();
-                } catch (IOException ex) {
-                    Logger.getLogger(ITgenerationDevis.class.getName()).log(Level.SEVERE, null, ex);
+            
+            String choix = (String)cbSalle2.getSelectedItem();
+            if(!(choix.equals("Aucune"))){
+                nomSalle2 = (String)cbSalle2.getSelectedItem();
+                formuleSalle2 = (String)cbFormuleSalle2.getSelectedItem();
+                dateSalle2 = txtDateSalle2.getText();
+                horaireDebutSalle2 = txtHoraireDebutSalle2.getText();
+                horaireFinSalle2 = txtHoraireFinSalle2.getText();
+                nbHeuresSalle2 = txtNombreHeuresSalle2.getText();
+                nbParticipantsSalle2 = txtNombreParticipantsSalle2.getText();
+                
+                if(!(nomSalle2.equals("Aucune"))){
+                    commentSalle2 = rq.getCommentSalle(nomSalle2);
+                }   
+                
+                salle2[0] = nomSalle2;
+                salle2[1] = formuleSalle2;
+                salle2[2] = nbHeuresSalle2;
+                salle2[3] = nbParticipantsSalle2;
+                salle2[4] = dateSalle2;
+                salle2[5] = horaireDebutSalle2;
+                salle2[6] = horaireFinSalle2;
+                salle2[7] = commentSalle2;
+                
+                
+                if(nomContact.equals("") || email.equals("") || tel.equals("") || facturation.equals("") || dateSalle1.equals("") ||
+                        horaireDebutSalle1.equals("") || horaireFinSalle1.equals("") || nbHeuresSalle1.equals("") || nbParticipantsSalle1.equals("") ||
+                        dateSalle2.equals("") || horaireDebutSalle2.equals("") || horaireFinSalle2.equals("") || nbHeuresSalle2.equals("") || nbParticipantsSalle2.equals("")){
+                    JOptionPane.showMessageDialog(null, "Veuillez remplir tout les champs !");
+                }
+                else{
+                    try {
+                        creerDevis(client, salle1, salle2, equipements, services);
+                        JOptionPane.showMessageDialog(null, "Devis créé !\nRetour aux paramètres administrateurs.");
+                        this.dispose();
+                    } catch (IOException ex) {
+                        Logger.getLogger(ITgenerationDevis.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
+            else{
+                
+                salle2[0] = "";
+                salle2[1] = "";
+                salle2[2] = "";
+                salle2[3] = "";
+                salle2[4] = "";
+                salle2[5] = "";
+                salle2[6] = "";
+                
+                if(nomContact.equals("") || email.equals("") || tel.equals("") ||
+                        facturation.equals("") || dateSalle1.equals("") || horaireDebutSalle1.equals("") || horaireFinSalle1.equals("") || nbHeuresSalle1.equals("") || nbParticipantsSalle1.equals("")){
+                    JOptionPane.showMessageDialog(null, "Veuillez remplir tout les champs !");
+                }
+                else{
+                    try {
+                        creerDevis(client, salle1, salle2, equipements, services);
+                        JOptionPane.showMessageDialog(null, "Devis créé !\nRetour aux paramètres administrateurs.");
+                        this.dispose();
+                    } catch (IOException ex) {
+                        Logger.getLogger(ITgenerationDevis.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ITgenerationDevis.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnGenererActionPerformed
 
