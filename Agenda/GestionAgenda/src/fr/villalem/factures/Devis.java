@@ -37,7 +37,7 @@ import org.apache.poi.util.IOUtils;
 public class Devis {
     
     
-    public static void creerDevis(String[] client, String[] salle1, String[] salle2, String[] equipements, String[] services) throws FileNotFoundException, IOException{
+    public static void creerDevis(String[] client, String[] salle1, String[] salle2, String[] equipements, String[] services, String[] nbOptions, int[] nbServices) throws FileNotFoundException, IOException{
         
         /*
         DEFINITION DES VARIABLES
@@ -521,12 +521,18 @@ public class Devis {
                     if(i == 16 || i == 27 || i == 36 || i == 52){
                         cell.setCellStyle(cellStyleBottom);
                     }
-                    if(i == 18 || i == 20 || i == 22 || i == 24){
+                    if(i == 18 || i == 20 || i == 22 || i == 24 || i == 29 || i == 30 || i == 31 || i == 32 || i == 33 || i == 34){
                         switch(i){
                             case 18: cell.setCellValue(salle1[1]+" ("+salle1[2]+"h)"); break; //NOM FORMULE + HEURE FORMULE SALLE 1 
                             case 20: cell.setCellValue(salle1[3]); break; //LE NOMBRE DE PARTICIPANT A LA SALLE 1
-                            case 22: cell.setCellValue(salle2[1]+" ("+salle2[2]+"h)"); break; //NOM FORMULE + HEURE FORMULE SALLE 2
+                            case 22: if(!(salle2[0].equals(""))) cell.setCellValue(salle2[1]+" ("+salle2[2]+"h)"); break; //NOM FORMULE + HEURE FORMULE SALLE 2
                             case 24: cell.setCellValue(salle2[3]); break; //LE NOMBRE DE PARTICIPANT A LA SALLE 2
+                            case 29: cell.setCellValue(nbOptions[0]); break; //LE NOMBRE DE L'OPTION 1
+                            case 30: cell.setCellValue(nbOptions[1]); break; //LE NOMBRE DE L'OPTION 2
+                            case 31: cell.setCellValue(nbOptions[2]); break; //LE NOMBRE DE L'OPTION 3
+                            case 32: cell.setCellValue(nbOptions[3]); break; //LE NOMBRE DE L'OPTION 4
+                            case 33: cell.setCellValue(nbOptions[4]); break; //LE NOMBRE DE L'OPTION 5
+                            case 34: cell.setCellValue(nbOptions[5]); break; //LE NOMBRE DE L'OPTION 6    
                         }
                         cell.setCellStyle(cellStyleFont13HCT);
                     }
@@ -538,7 +544,7 @@ public class Devis {
                     if(i == 21 || i == 25){
                         switch(i){
                             case 21: cell.setCellValue(salle1[5]+" à "+salle1[6]); break;//HORAIRE DEBUT + FIN SALLE 1
-                            case 25: cell.setCellValue(salle2[5]+" à "+salle2[6]); break;//HORAIRE DEBUT + FIN SALLE 2
+                            case 25: if(!(salle2[0].equals(""))) cell.setCellValue(salle2[5]+" à "+salle2[6]); break;//HORAIRE DEBUT + FIN SALLE 2
                         }
                         cell.setCellStyle(cellStyleFont13HCT);
                     }
@@ -555,7 +561,12 @@ public class Devis {
                     else if(i == 18 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
                         switch(i){
                             case 18: cell.setCellValue(1); break;
-                            default: cell.setCellValue(0); break;
+                            case 38: cell.setCellValue(nbServices[0]); break;//LE NOMBRE DU SERVICE 1
+                            case 40: cell.setCellValue(nbServices[1]); break;//LE NOMBRE DU SERVICE 2
+                            case 42: cell.setCellValue(nbServices[2]); break;//LE NOMBRE DU SERVICE 3
+                            case 44: cell.setCellValue(nbServices[3]); break;//LE NOMBRE DU SERVICE 4
+                            case 46: cell.setCellValue(nbServices[4]); break;//LE NOMBRE DU SERVICE 5
+                            case 48: cell.setCellValue(nbServices[5]); break;//LE NOMBRE DU SERVICE 6
                         }
                         cell.setCellStyle(cellStyleFont13CT);
                     }

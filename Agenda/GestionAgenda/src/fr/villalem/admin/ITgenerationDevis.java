@@ -692,6 +692,14 @@ public class ITgenerationDevis extends javax.swing.JFrame {
             String o5 = (String)cbOption5.getSelectedItem();
             String o6 = (String)cbOption6.getSelectedItem();
             
+            //LE NOMBRE D'OPTIONS CHOISIS
+            String nbO1 = txtNbOption1.getText();
+            String nbO2 = txtNbOption2.getText();
+            String nbO3 = txtNbOption3.getText();
+            String nbO4 = txtNbOption4.getText();
+            String nbO5 = txtNbOption5.getText();
+            String nbO6 = txtNbOption6.getText();
+            
             //LES SERVICES
             String s1 = (String)cbService1.getSelectedItem();
             String s2 = (String)cbService2.getSelectedItem();
@@ -699,6 +707,35 @@ public class ITgenerationDevis extends javax.swing.JFrame {
             String s4 = (String)cbService4.getSelectedItem();
             String s5 = (String)cbService5.getSelectedItem();
             String s6 = (String)cbService6.getSelectedItem();
+            
+            //GESTION DES GETTEXT() POUR LE NOMBRE DE SERVICES (SINON PROBLEME AVEC LE PARSE)
+            System.out.println("ICIIIIIIIII : "+txtNbService1.getText());
+            if(txtNbService1.getText().equals("")){
+                txtNbService1.setText("0");
+            }
+            if(txtNbService2.getText().equals("")){
+                txtNbService2.setText("0");
+            }
+            if(txtNbService3.getText().equals("")){
+                txtNbService3.setText("0");
+            }
+            if(txtNbService4.getText().equals("")){
+                txtNbService4.setText("0");
+            }
+            if(txtNbService5.getText().equals("")){
+                txtNbService5.setText("0");
+            }
+            if(txtNbService6.getText().equals("")){
+                txtNbService6.setText("0");
+            }
+
+            //LE NOMBRE DE SERVICES CHOISIS
+            int nbS1 = Integer.parseInt(txtNbService1.getText());
+            int nbS2 = Integer.parseInt(txtNbService2.getText());
+            int nbS3 = Integer.parseInt(txtNbService3.getText());
+            int nbS4 = Integer.parseInt(txtNbService4.getText());
+            int nbS5 = Integer.parseInt(txtNbService5.getText());
+            int nbS6 = Integer.parseInt(txtNbService6.getText());
             
             //LA DISPOSITION
             String dispo = (String)cbDisposition.getSelectedItem();
@@ -725,6 +762,9 @@ public class ITgenerationDevis extends javax.swing.JFrame {
             String[] salle2 = new String[8];
             String[] equipements = {o1, o2, o3, o4, o5, o6, dispo};
             String[] services = {s1, commentS1, s2,  commentS2, s3,  commentS3, s4,  commentS4, s5,  commentS5, s6, commentS6};
+            String[] nbOptions = {nbO1, nbO2, nbO3, nbO4, nbO5, nbO6};
+            int[] nbServices = {nbS1, nbS2, nbS3, nbS4, nbS5, nbS6};
+            
             
             //REMPLACEMENT DES "AUCUNE" DANS EQUIPEMENTS
             for(int i = 0 ; i < equipements.length ; i++){
@@ -732,6 +772,13 @@ public class ITgenerationDevis extends javax.swing.JFrame {
                     equipements[i] = "";
                 }
             }
+            
+            //REMPLACEMENT DES "" DES SERVICES PAR LA VALEUR 0
+            /*for(int i = 0 ; i < nbServices.length ; i++){
+                if(nbServices[i].equals("")){
+                    nbServices[i] = "";
+                }
+            }*/
             
             String choix = (String)cbSalle2.getSelectedItem();
             if(!(choix.equals("Aucune"))){
@@ -764,7 +811,7 @@ public class ITgenerationDevis extends javax.swing.JFrame {
                 }
                 else{
                     try {
-                        creerDevis(client, salle1, salle2, equipements, services);
+                        creerDevis(client, salle1, salle2, equipements, services, nbOptions, nbServices);
                         JOptionPane.showMessageDialog(null, "Devis créé !\nRetour aux paramètres administrateurs.");
                         this.dispose();
                     } catch (IOException ex) {
@@ -788,7 +835,7 @@ public class ITgenerationDevis extends javax.swing.JFrame {
                 }
                 else{
                     try {
-                        creerDevis(client, salle1, salle2, equipements, services);
+                        creerDevis(client, salle1, salle2, equipements, services, nbOptions, nbServices);
                         JOptionPane.showMessageDialog(null, "Devis créé !\nRetour aux paramètres administrateurs.");
                         this.dispose();
                     } catch (IOException ex) {
