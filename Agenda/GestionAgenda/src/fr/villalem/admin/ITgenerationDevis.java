@@ -656,6 +656,8 @@ public class ITgenerationDevis extends javax.swing.JFrame {
 
     private void btnAnnulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnnulerActionPerformed
         this.dispose();
+        //lol
+        
     }//GEN-LAST:event_btnAnnulerActionPerformed
 
     private void btnGenererActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenererActionPerformed
