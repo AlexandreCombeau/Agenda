@@ -37,7 +37,7 @@ import org.apache.poi.util.IOUtils;
 public class Devis {
     
     
-    public static void creerDevis(String[] client, String[] salle1, String[] salle2, String[] equipements, String[] services, String[] nbOptions, int[] nbServices) throws FileNotFoundException, IOException{
+    public static void creerDevis(String[] client, String[] salle1, String[] salle2, String[] equipements, String[] services, String[] nbOptions, int[] nbServices, double[] tarifs) throws FileNotFoundException, IOException{
         
         /*
         DEFINITION DES VARIABLES
@@ -558,9 +558,10 @@ public class Devis {
                         cell.setCellValue("Nombre");
                         cell.setCellStyle(cellStyle13ET);
                     }
-                    else if(i == 18 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
+                    else if(i == 18 || i == 22 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
                         switch(i){
                             case 18: cell.setCellValue(1); break;
+                            case 22: if(!(salle2[0].equals(""))) cell.setCellValue(1); break;
                             case 38: cell.setCellValue(nbServices[0]); break;//LE NOMBRE DU SERVICE 1
                             case 40: cell.setCellValue(nbServices[1]); break;//LE NOMBRE DU SERVICE 2
                             case 42: cell.setCellValue(nbServices[2]); break;//LE NOMBRE DU SERVICE 3
@@ -582,9 +583,10 @@ public class Devis {
                         cell.setCellValue("Prix unitaire HT");
                         cell.setCellStyle(cellStyle13ET);
                     }
-                    else if(i == 18 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
+                    else if(i == 18 || i == 22 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
                         switch(i){
-                            case 18: cell.setCellValue(550.00+" €"); break;
+                            case 18: cell.setCellValue(tarifs[0]+" €"); break; //TARIF DE LA SALLE 1 EN FONCTION DE LA FORMULE CHOISIE
+                            case 22: if(!(salle2[0].equals(""))) cell.setCellValue(tarifs[1]+" €"); break; //TARIF DE LA SALLE 2 EN FONCTION DE LA FORMULE CHOISIE
                             case 38: cell.setCellValue(7.50+" €"); break;
                             case 40: cell.setCellValue(5.00+" €"); break;
                             case 42: cell.setCellValue(8.00+" €"); break;

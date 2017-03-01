@@ -756,6 +756,19 @@ public class ITgenerationDevis extends javax.swing.JFrame {
             String commentS5 = rq.getCommentService(s5);
             String commentS6 = rq.getCommentService(s6);
             
+            //LE PRIX UNITAIRE HT DES SERVICES
+            double prixS1 = rq.getTarifService(s1);
+            double prixS2 = rq.getTarifService(s2);
+            double prixS3 = rq.getTarifService(s3);
+            double prixS4 = rq.getTarifService(s4);
+            double prixS5 = rq.getTarifService(s5);
+            double prixS6 = rq.getTarifService(s6);
+            
+            
+            //LE TARIF DES SALLES
+            double tarifSalle1 = rq.getTarifSalle(nomSalle1, formuleSalle1);
+            double tarifSalle2 = 0;
+            
             
             
             //Création des tableaux pour transmettre les valeurs à la fonction créer devis
@@ -766,6 +779,7 @@ public class ITgenerationDevis extends javax.swing.JFrame {
             String[] services = {s1, commentS1, s2,  commentS2, s3,  commentS3, s4,  commentS4, s5,  commentS5, s6, commentS6};
             String[] nbOptions = {nbO1, nbO2, nbO3, nbO4, nbO5, nbO6};
             int[] nbServices = {nbS1, nbS2, nbS3, nbS4, nbS5, nbS6};
+            double[] tarifSalle = new double[2]; tarifSalle[0] = tarifSalle1;
             
             
             //REMPLACEMENT DES "AUCUNE" DANS EQUIPEMENTS
@@ -791,6 +805,7 @@ public class ITgenerationDevis extends javax.swing.JFrame {
                 horaireFinSalle2 = txtHoraireFinSalle2.getText();
                 nbHeuresSalle2 = txtNombreHeuresSalle2.getText();
                 nbParticipantsSalle2 = txtNombreParticipantsSalle2.getText();
+                tarifSalle2 = rq.getTarifSalle(nomSalle2, formuleSalle2);
                 
                 if(!(nomSalle2.equals("Aucune"))){
                     commentSalle2 = rq.getCommentSalle(nomSalle2);
@@ -804,6 +819,7 @@ public class ITgenerationDevis extends javax.swing.JFrame {
                 salle2[5] = horaireDebutSalle2;
                 salle2[6] = horaireFinSalle2;
                 salle2[7] = commentSalle2;
+                tarifSalle[1] = tarifSalle2;
                 
                 
                 if(nomContact.equals("") || email.equals("") || tel.equals("") || facturation.equals("") || dateSalle1.equals("") ||
@@ -813,7 +829,7 @@ public class ITgenerationDevis extends javax.swing.JFrame {
                 }
                 else{
                     try {
-                        creerDevis(client, salle1, salle2, equipements, services, nbOptions, nbServices);
+                        creerDevis(client, salle1, salle2, equipements, services, nbOptions, nbServices, tarifSalle);
                         JOptionPane.showMessageDialog(null, "Devis créé !\nRetour aux paramètres administrateurs.");
                         this.dispose();
                     } catch (IOException ex) {
@@ -830,6 +846,7 @@ public class ITgenerationDevis extends javax.swing.JFrame {
                 salle2[4] = "";
                 salle2[5] = "";
                 salle2[6] = "";
+                tarifSalle[1] = 0;
                 
                 if(nomContact.equals("") || email.equals("") || tel.equals("") ||
                         facturation.equals("") || dateSalle1.equals("") || horaireDebutSalle1.equals("") || horaireFinSalle1.equals("") || nbHeuresSalle1.equals("") || nbParticipantsSalle1.equals("")){
@@ -837,7 +854,7 @@ public class ITgenerationDevis extends javax.swing.JFrame {
                 }
                 else{
                     try {
-                        creerDevis(client, salle1, salle2, equipements, services, nbOptions, nbServices);
+                        creerDevis(client, salle1, salle2, equipements, services, nbOptions, nbServices, tarifSalle);
                         JOptionPane.showMessageDialog(null, "Devis créé !\nRetour aux paramètres administrateurs.");
                         this.dispose();
                     } catch (IOException ex) {

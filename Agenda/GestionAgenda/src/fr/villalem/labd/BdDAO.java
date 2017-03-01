@@ -143,6 +143,33 @@ public class BdDAO {
             }
             return null;
         }
+        
+        /**
+         * 
+         * @param nomSalle Prend le nom de la salle concernée
+         * @param nomFormule Prend le nom de la formule concernée
+         * @return retourne le tarif
+         * @throws SQLException 
+         */
+        public double getTarifSalle(String nomSalle, String nomFormule) throws SQLException{
+            String quest = "SELECT montant FROM TarifSalleFormule, Salle, Formule WHERE Salle.idSalle = TarifSalleFormule.fk_idSalle AND Formule.idFormule = TarifSalleFormule.fk_idFormule AND Salle.nomSalle = '"+nomSalle+"' AND Formule.nomFormule = '"+nomFormule+"'";
+            rs = co.query(quest);
+            if(rs.next()){
+                double tarif = rs.getDouble("montant");
+                return tarif;
+            }
+            return 0;
+        }
+        
+        public double getTarifService(String nomService) throws SQLException{
+            String quest = "SELECT prixHT FROM Facultatif WHERE libelle = '"+nomService+"'";
+            rs = co.query(quest);
+            if(rs.next()){
+                double tarif = rs.getDouble("prixHT");
+                return tarif;
+            }
+            return 0;
+        }
 
         /**
          *
