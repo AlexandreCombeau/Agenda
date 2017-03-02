@@ -25,9 +25,13 @@ public class Connexion {
      * Cette fonction sert à se connecter à la base de données
      */
     public void connect() {
+        String url = "jdbc:mysql://localhost/villalemagenda";
+        String login = "root";
+        String mdp = "";
+        
         try {
-            Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:" + DBPath);
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection(url,login,mdp);
             statement = connection.createStatement();
             System.out.println("Connexion a " + DBPath + " avec succès");
         } catch (ClassNotFoundException notFoundException) {

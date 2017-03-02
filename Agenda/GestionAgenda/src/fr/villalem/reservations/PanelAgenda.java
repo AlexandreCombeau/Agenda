@@ -24,11 +24,11 @@ import java.util.logging.Logger;
 public class PanelAgenda extends javax.swing.JPanel {
 
     public ArrayList<Evenement> ListeEvenements = new ArrayList<>();
-    private Calendar cal = Calendar.getInstance();
-    private int largeurColonneHeure = 40;//largeur de la première colonne, en px
-    private int largeurColonneJour = 140;//largeur de chaque colonne jour, en px
-    private int espacementHeure = 30;//espacement vertical entre chaque heure, en px
-    private int largeurEven = 60;
+    private final Calendar cal = Calendar.getInstance();
+    private final int largeurColonneHeure = 40;//largeur de la première colonne, en px
+    private final int largeurColonneJour = 140;//largeur de chaque colonne jour, en px
+    private final int espacementHeure = 30;//espacement vertical entre chaque heure, en px
+    private final int largeurEven = 60;
     /**
      * Creates new form PanelAgenda
      */
@@ -43,6 +43,7 @@ public class PanelAgenda extends javax.swing.JPanel {
      * Sinon, une erreur d'affichage sera lancée, il faut l'ignorer et ne pas
      * toucher au design.
      * 
+     * @param c
      */
     public void remplirAgenda(Calendar c) { 
       //copie le calendrier, sinon le calendrier 'c' changerait de date à cause de sa manipulation dans BdDAO.java avec rq.getReservationsJour()
@@ -90,6 +91,7 @@ public class PanelAgenda extends javax.swing.JPanel {
   }
 
 
+    @Override
     public void paintComponent(Graphics g) {
     //cette méthode construit l'arrière plan de l'agenda, avec une colonne par jour de la semaine
     setBackground(Color.white);

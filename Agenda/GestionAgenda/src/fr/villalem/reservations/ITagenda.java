@@ -342,6 +342,7 @@ public class ITagenda extends javax.swing.JFrame {
         chercherConflit.setVisible(true);
     }//GEN-LAST:event_jMenuChercherConflitActionPerformed
 
+    @SuppressWarnings("null")
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         TestTableau t1 = null;
         try {
@@ -353,7 +354,7 @@ public class ITagenda extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void btnSemaineSuivanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSemaineSuivanteActionPerformed
-        c.add(c.DAY_OF_YEAR, 7);//ajoute 7 jours au calendrier
+        c.add(Calendar.DAY_OF_YEAR, 7);//ajoute 7 jours au calendrier
         remplirLabelsJours();
         panelAgenda1.ListeEvenements.clear();//vide les évènements de la semaine précédente
         panelAgenda1.remplirAgenda(c);
@@ -361,7 +362,7 @@ public class ITagenda extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSemaineSuivanteActionPerformed
 
     private void btnSemainePrecedenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSemainePrecedenteActionPerformed
-        c.add(c.DAY_OF_YEAR, -7);//enlève 7 jours au calendrier
+        c.add(Calendar.DAY_OF_YEAR, -7);//enlève 7 jours au calendrier
         remplirLabelsJours();
         panelAgenda1.ListeEvenements.clear();//vide les évènements de la semaine suivante
         panelAgenda1.remplirAgenda(c);
@@ -383,17 +384,17 @@ public class ITagenda extends javax.swing.JFrame {
         c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         String lun = sdf2.format(c.getTime());
         lblLundi.setText(sdf.format(c.getTime()));
-        c.add(c.DAY_OF_YEAR, 1);
+        c.add(Calendar.DAY_OF_YEAR, 1);
         lblMardi.setText(sdf.format(c.getTime()));
-        c.add(c.DAY_OF_YEAR, 1);
+        c.add(Calendar.DAY_OF_YEAR, 1);
         lblMercredi.setText(sdf.format(c.getTime()));
-        c.add(c.DAY_OF_YEAR, 1);
+        c.add(Calendar.DAY_OF_YEAR, 1);
         lblJeudi.setText(sdf.format(c.getTime()));
-        c.add(c.DAY_OF_YEAR, 1);
+        c.add(Calendar.DAY_OF_YEAR, 1);
         lblVendredi.setText(sdf.format(c.getTime()));
-        c.add(c.DAY_OF_YEAR, 1);
+        c.add(Calendar.DAY_OF_YEAR, 1);
         lblSamedi.setText(sdf.format(c.getTime()));
-        c.add(c.DAY_OF_YEAR, 1);
+        c.add(Calendar.DAY_OF_YEAR, 1);
         lblDimanche.setText(sdf.format(c.getTime()));
         String dim = sdf2.format(c.getTime());
         lblLundiSemaine.setText("Semaine du " + lun + " au " + dim);
