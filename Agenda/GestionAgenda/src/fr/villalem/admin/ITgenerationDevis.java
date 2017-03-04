@@ -153,11 +153,9 @@ public class ITgenerationDevis extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         txtNombreParticipantsSalle1 = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        txtFacturation = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         cbSalle1 = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
-        txtDateSalle1 = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         txtHoraireDebutSalle1 = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
@@ -166,7 +164,6 @@ public class ITgenerationDevis extends javax.swing.JFrame {
         cbSalle2 = new javax.swing.JComboBox<>();
         panelSalle2 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
-        txtDateSalle2 = new javax.swing.JTextField();
         jLabel22 = new javax.swing.JLabel();
         txtHoraireDebutSalle2 = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
@@ -177,6 +174,11 @@ public class ITgenerationDevis extends javax.swing.JFrame {
         txtNombreHeuresSalle2 = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
         txtNombreParticipantsSalle2 = new javax.swing.JTextField();
+        jLabel29 = new javax.swing.JLabel();
+        txtNombreFormuleSalle2 = new javax.swing.JTextField();
+        txtDateJJSalle2 = new javax.swing.JTextField();
+        txtDateMMSalle2 = new javax.swing.JTextField();
+        txtDateAAAASalle2 = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         btnGenerer = new javax.swing.JButton();
         btnAnnuler = new javax.swing.JButton();
@@ -207,6 +209,14 @@ public class ITgenerationDevis extends javax.swing.JFrame {
         txtNbOption5 = new javax.swing.JTextField();
         txtNbOption6 = new javax.swing.JTextField();
         jSeparator4 = new javax.swing.JSeparator();
+        jLabel21 = new javax.swing.JLabel();
+        txtNombreFormuleSalle1 = new javax.swing.JTextField();
+        txtEntreprise = new javax.swing.JTextField();
+        txtVille = new javax.swing.JTextField();
+        txtCp = new javax.swing.JTextField();
+        txtDateJJSalle1 = new javax.swing.JTextField();
+        txtDateMMSalle1 = new javax.swing.JTextField();
+        txtDateAAAASalle1 = new javax.swing.JTextField();
 
         jLabel18.setText("Date du :");
 
@@ -277,6 +287,8 @@ public class ITgenerationDevis extends javax.swing.JFrame {
 
         jLabel28.setText("Nombre de participants :");
 
+        jLabel29.setText("Nombre formule :");
+
         javax.swing.GroupLayout panelSalle2Layout = new javax.swing.GroupLayout(panelSalle2);
         panelSalle2.setLayout(panelSalle2Layout);
         panelSalle2Layout.setHorizontalGroup(
@@ -284,49 +296,60 @@ public class ITgenerationDevis extends javax.swing.JFrame {
             .addGroup(panelSalle2Layout.createSequentialGroup()
                 .addGroup(panelSalle2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelSalle2Layout.createSequentialGroup()
-                        .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDateSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel22)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtHoraireDebutSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel23)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtHoraireFinSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(panelSalle2Layout.createSequentialGroup()
                         .addComponent(jLabel14)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbFormuleSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel29)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNombreFormuleSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelSalle2Layout.createSequentialGroup()
+                        .addComponent(jLabel20)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtDateJJSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtDateMMSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtDateAAAASalle2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel22)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtHoraireDebutSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel23)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtHoraireFinSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelSalle2Layout.createSequentialGroup()
                         .addComponent(jLabel27)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtNombreHeuresSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(20, 20, 20)
                         .addComponent(jLabel28)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtNombreParticipantsSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addContainerGap(86, Short.MAX_VALUE))
         );
         panelSalle2Layout.setVerticalGroup(
             panelSalle2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelSalle2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelSalle2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelSalle2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtHoraireDebutSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel23)
-                        .addComponent(txtHoraireFinSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelSalle2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel20)
-                        .addComponent(txtDateSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel22)))
+                .addGroup(panelSalle2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel20)
+                    .addComponent(jLabel22)
+                    .addComponent(txtDateJJSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDateMMSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDateAAAASalle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtHoraireDebutSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel23)
+                    .addComponent(txtHoraireFinSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelSalle2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
                     .addComponent(cbFormuleSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel29)
+                    .addComponent(txtNombreFormuleSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelSalle2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel27)
                     .addComponent(txtNombreHeuresSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel28)
@@ -395,22 +418,55 @@ public class ITgenerationDevis extends javax.swing.JFrame {
         jLabel26.setText("Services :");
 
         cbService1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbService1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbService1ActionPerformed(evt);
+            }
+        });
 
         cbService2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbService2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbService2ActionPerformed(evt);
+            }
+        });
 
         cbService3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbService3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbService3ActionPerformed(evt);
+            }
+        });
 
         cbService4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbService4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbService4ActionPerformed(evt);
+            }
+        });
 
         cbService5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbService5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbService5ActionPerformed(evt);
+            }
+        });
 
         cbService6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbService6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbService6ActionPerformed(evt);
+            }
+        });
+
+        jLabel21.setText("Nombre formule :");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -420,78 +476,44 @@ public class ITgenerationDevis extends javax.swing.JFrame {
                         .addComponent(cbDisposition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cbOption2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel24)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cbOption1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(cbOption3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbOption4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbOption5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbOption6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtNbOption1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel26)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtNbOption6, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNbOption5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNbOption4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNbOption2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNbOption3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(83, 83, 83)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(cbService1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtNbService1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(cbService3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cbService2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cbService4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cbService5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cbService6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtNbService2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNbService3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNbService4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNbService5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNbService6, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jSeparator1)
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnGenerer, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnAnnuler, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                            .addComponent(jLabel11)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(txtFacturation))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                            .addComponent(jLabel3)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jLabel4)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(txtPrenom, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jLabel6)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jLabel5)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(txtTel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addComponent(jLabel11)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtEntreprise))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addComponent(jLabel3)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel4)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtPrenom, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel6)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(txtVille))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel5)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtTel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(txtCp)))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel12)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -499,21 +521,13 @@ public class ITgenerationDevis extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel8)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(cbFormuleSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLabel9)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(txtNombreHeuresSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLabel10)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(txtNombreParticipantsSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
                                                 .addComponent(jLabel13)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(txtDateSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(txtDateJJSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtDateMMSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtDateAAAASalle1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jLabel15)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -521,21 +535,80 @@ public class ITgenerationDevis extends javax.swing.JFrame {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jLabel16)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(txtHoraireFinSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                .addComponent(txtHoraireFinSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addComponent(jLabel8)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(cbFormuleSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addComponent(jLabel9)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(txtNombreHeuresSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addComponent(jLabel10)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(txtNombreParticipantsSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addComponent(jLabel21)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(txtNombreFormuleSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(cbOption2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel24)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(cbOption1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(cbOption3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(cbOption4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(cbOption5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(cbOption6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(txtNbOption1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabel26)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(txtNbOption6, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(txtNbOption5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(txtNbOption4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(txtNbOption2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(txtNbOption3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(83, 83, 83)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(cbService1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtNbService1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(cbService3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(cbService2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(cbService4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(cbService5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(cbService6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(txtNbService2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(txtNbService3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(txtNbService4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(txtNbService5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(txtNbService6, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel17)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(cbSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(12, 12, 12)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(panelSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnGenerer, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnAnnuler, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 6, Short.MAX_VALUE)))
                         .addContainerGap())))
-            .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -559,7 +632,9 @@ public class ITgenerationDevis extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(txtFacturation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEntreprise, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtVille, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -621,34 +696,40 @@ public class ITgenerationDevis extends javax.swing.JFrame {
                     .addComponent(jLabel12)
                     .addComponent(cbSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13)
-                    .addComponent(txtDateSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15)
                     .addComponent(txtHoraireDebutSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel16)
-                    .addComponent(txtHoraireFinSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtHoraireFinSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDateJJSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDateMMSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDateAAAASalle1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(cbFormuleSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel21)
+                    .addComponent(txtNombreFormuleSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(txtNombreHeuresSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
                     .addComponent(txtNombreParticipantsSalle1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
+                        .addGap(4, 4, 4)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cbSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel17)))
-                    .addComponent(panelSalle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel17))))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGenerer, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAnnuler, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(53, 53, 53))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -666,16 +747,25 @@ public class ITgenerationDevis extends javax.swing.JFrame {
             String nomContact = txtNom.getText()+" "+txtPrenom.getText();
             String email = txtEmail.getText();
             String tel = txtTel.getText();
-            String facturation = txtFacturation.getText(); //Coordonnées de facturation
+            String entreprise = txtEntreprise.getText();
+            String ville = txtVille.getText();
+            String codepostal = txtCp.getText();
+            String facturation = entreprise+" "+ville+" "+codepostal; //Coordonnées de facturation
             
             //SALLE 1
             String nomSalle1 = (String)cbSalle1.getSelectedItem();
             String formuleSalle1 = (String)cbFormuleSalle1.getSelectedItem();
-            String dateSalle1 = txtDateSalle1.getText();
             String horaireDebutSalle1 = txtHoraireDebutSalle1.getText();
             String horaireFinSalle1 = txtHoraireFinSalle1.getText();
             String nbHeuresSalle1 = txtNombreHeuresSalle1.getText();
             String nbParticipantsSalle1 = txtNombreParticipantsSalle1.getText();
+            String jj1 = txtDateJJSalle1.getText();
+            String mm1 = txtDateMMSalle1.getText(); //MOIS EN CHIFFRE QUI SERVIRA POUR LE NOM DU FICHIER
+            //ON UTILISE LA FONCTION "getMois(String mm)" DE LA CLASSE POUR OBTENIR LE MOIS EN TOUTE LETTRE EN FONCTION DU NUMERO RENTREE PAR L'UTILISATEUR
+            String mois1 = getMois(mm1); //MOIS EN LETTRE QUI SERVIRA POUR L'ECRITURE SUR LE DEVIS
+            String aaaa1 = txtDateAAAASalle1.getText();
+            String dateSalle1 = jj1+" "+mois1+" "+aaaa1; //POUR LE DEVIS
+            String dateFichier = jj1+mm1+aaaa1; //POUR LE NOM DU FICHIER
             
             //SALLE 2
             String nomSalle2 = "";
@@ -685,6 +775,11 @@ public class ITgenerationDevis extends javax.swing.JFrame {
             String horaireFinSalle2 = "";
             String nbHeuresSalle2 = "";
             String nbParticipantsSalle2 = "";
+            String jj2 = "";
+            String mm2 = "";
+            String aaaa2 = "";
+            String mois2 = "";
+            
             
             //LES OPTIONS
             String o1 = (String)cbOption1.getSelectedItem();
@@ -710,8 +805,15 @@ public class ITgenerationDevis extends javax.swing.JFrame {
             String s5 = (String)cbService5.getSelectedItem();
             String s6 = (String)cbService6.getSelectedItem();
             
+            //LE NOMBRE DE FORMULE CHOISIE
+            if(txtNombreFormuleSalle1.getText().equals("")){
+                txtNombreFormuleSalle1.setText("1");
+            }
+
+            int nbFormuleSalle1 = Integer.parseInt(txtNombreFormuleSalle1.getText());
+            int nbFormuleSalle2 = 0;
+            
             //GESTION DES GETTEXT() POUR LE NOMBRE DE SERVICES (SINON PROBLEME AVEC LE PARSE)
-            System.out.println("ICIIIIIIIII : "+txtNbService1.getText());
             if(txtNbService1.getText().equals("")){
                 txtNbService1.setText("0");
             }
@@ -764,24 +866,33 @@ public class ITgenerationDevis extends javax.swing.JFrame {
             double prixS5 = rq.getTarifService(s5);
             double prixS6 = rq.getTarifService(s6);
             
-            
+            //TVA SERVICES
+            double tvaS1 = 0;
+            double tvaS2 = 0;
+            double tvaS3 = 0;
+            double tvaS4 = 0;
+            double tvaS5 = 0;
+            double tvaS6 = 0;
+                
             //LE TARIF DES SALLES
             double tarifSalle1 = rq.getTarifSalle(nomSalle1, formuleSalle1);
             double tarifSalle2 = 0;
-            
-            
-            
+                     
             //Création des tableaux pour transmettre les valeurs à la fonction créer devis
-            String[] client = {facturation, nomContact, email, tel};
+            String[] fichier = {entreprise, dateFichier};
+            String[] client = {entreprise, ville, codepostal, nomContact, email, tel};
             String[] salle1 = {nomSalle1, formuleSalle1, nbHeuresSalle1, nbParticipantsSalle1, dateSalle1, horaireDebutSalle1, horaireFinSalle1, commentSalle1};
             String[] salle2 = new String[8];
             String[] equipements = {o1, o2, o3, o4, o5, o6, dispo};
-            String[] services = {s1, commentS1, s2,  commentS2, s3,  commentS3, s4,  commentS4, s5,  commentS5, s6, commentS6};
+            String[] services = {s1,  s2,   s3,   s4,   s5,   s6};
+            String[] commentairesServices = {commentS1, commentS2, commentS3, commentS4, commentS5, commentS6};
             String[] nbOptions = {nbO1, nbO2, nbO3, nbO4, nbO5, nbO6};
             int[] nbServices = {nbS1, nbS2, nbS3, nbS4, nbS5, nbS6};
+            double[] prixServices = {prixS1, prixS2, prixS3, prixS4, prixS5, prixS6};
             double[] tarifSalle = new double[2]; tarifSalle[0] = tarifSalle1;
-            
-            
+            double[] tvaServices = new double[3];
+            int[] nbFormules = new int[2]; nbFormules[0] = nbFormuleSalle1;
+     
             //REMPLACEMENT DES "AUCUNE" DANS EQUIPEMENTS
             for(int i = 0 ; i < equipements.length ; i++){
                 if(equipements[i].equals("Aucune")){
@@ -789,27 +900,52 @@ public class ITgenerationDevis extends javax.swing.JFrame {
                 }
             }
             
-            //REMPLACEMENT DES "" DES SERVICES PAR LA VALEUR 0
-            /*for(int i = 0 ; i < nbServices.length ; i++){
-                if(nbServices[i].equals("")){
-                    nbServices[i] = "";
-                }
-            }*/
+            //CALCUL DU TVA DES SERVICES
+            double totalTVA5 = 0; //TOTAL DU TVA 5,5%
+            double totalTVA10 = 0; //TOTAL DU TVA 10%
+            double totalTVA20 = 0; //TOTAL DU TVA 20%
             
+            for(int i = 0 ; i < services.length ; i++){
+                if(services[i].substring(0,5).equals("Pause") || services[i].equals("Accueil petit déjeuner")){
+                    totalTVA5 += nbServices[i] * prixServices[i] * 0.055;
+                }
+                else if(services[i].equals("Plateaux repas") || services[i].equals("Afterwork") || services[i].equals("Champagne")){
+                    totalTVA10 += nbServices[i] * prixServices[i] * 0.1;
+                }
+                else{
+                    totalTVA20 += nbServices[i] * prixServices[i] * 0.2;
+                }
+            }
+            
+            /*java.text.DecimalFormat df = new java.text.DecimalFormat("0.##");
+            tvaServices[0] = df.format(tvaServices[0]);*/
+            
+            tvaServices[0] = round(totalTVA5, 2); //VOIR METHODE "ROUND" PLUS BAS SUR LA PAGE
+            tvaServices[1] = round(totalTVA10, 2);
+            tvaServices[2] = round(totalTVA20, 2); 
+            
+            //SI IL EXISTE UNE DEUXIEME SALLE
             String choix = (String)cbSalle2.getSelectedItem();
             if(!(choix.equals("Aucune"))){
                 nomSalle2 = (String)cbSalle2.getSelectedItem();
                 formuleSalle2 = (String)cbFormuleSalle2.getSelectedItem();
-                dateSalle2 = txtDateSalle2.getText();
                 horaireDebutSalle2 = txtHoraireDebutSalle2.getText();
                 horaireFinSalle2 = txtHoraireFinSalle2.getText();
                 nbHeuresSalle2 = txtNombreHeuresSalle2.getText();
                 nbParticipantsSalle2 = txtNombreParticipantsSalle2.getText();
+                if(txtNombreFormuleSalle2.getText().equals("")){ //ON GERE L'ERREUR DU PARSE
+                txtNombreFormuleSalle2.setText("1");
+                }
+                nbFormuleSalle2 = Integer.parseInt(txtNombreFormuleSalle2.getText());
                 tarifSalle2 = rq.getTarifSalle(nomSalle2, formuleSalle2);
-                
                 if(!(nomSalle2.equals("Aucune"))){
                     commentSalle2 = rq.getCommentSalle(nomSalle2);
-                }   
+                }
+                jj2 = txtDateJJSalle2.getText();
+                mm2 = txtDateMMSalle2.getText();
+                aaaa2 = txtDateAAAASalle2.getText();
+                mois2 = getMois(mm2);
+                dateSalle2 = jj2+" "+mois2+" "+aaaa2;                
                 
                 salle2[0] = nomSalle2;
                 salle2[1] = formuleSalle2;
@@ -820,16 +956,17 @@ public class ITgenerationDevis extends javax.swing.JFrame {
                 salle2[6] = horaireFinSalle2;
                 salle2[7] = commentSalle2;
                 tarifSalle[1] = tarifSalle2;
+                nbFormules[1] = nbFormuleSalle2;
                 
                 
                 if(nomContact.equals("") || email.equals("") || tel.equals("") || facturation.equals("") || dateSalle1.equals("") ||
-                        horaireDebutSalle1.equals("") || horaireFinSalle1.equals("") || nbHeuresSalle1.equals("") || nbParticipantsSalle1.equals("") ||
-                        dateSalle2.equals("") || horaireDebutSalle2.equals("") || horaireFinSalle2.equals("") || nbHeuresSalle2.equals("") || nbParticipantsSalle2.equals("")){
+                        horaireDebutSalle1.equals("") || horaireFinSalle1.equals("") || nbParticipantsSalle1.equals("") ||
+                        dateSalle2.equals("") || horaireDebutSalle2.equals("") || horaireFinSalle2.equals("") || nbParticipantsSalle2.equals("")){
                     JOptionPane.showMessageDialog(null, "Veuillez remplir tout les champs !");
                 }
                 else{
                     try {
-                        creerDevis(client, salle1, salle2, equipements, services, nbOptions, nbServices, tarifSalle);
+                        creerDevis(fichier, client, salle1, salle2, equipements, services, commentairesServices, nbOptions, nbServices, tarifSalle, prixServices, nbFormules, tvaServices);
                         JOptionPane.showMessageDialog(null, "Devis créé !\nRetour aux paramètres administrateurs.");
                         this.dispose();
                     } catch (IOException ex) {
@@ -846,15 +983,16 @@ public class ITgenerationDevis extends javax.swing.JFrame {
                 salle2[4] = "";
                 salle2[5] = "";
                 salle2[6] = "";
+                salle2[7] = "";
                 tarifSalle[1] = 0;
                 
                 if(nomContact.equals("") || email.equals("") || tel.equals("") ||
-                        facturation.equals("") || dateSalle1.equals("") || horaireDebutSalle1.equals("") || horaireFinSalle1.equals("") || nbHeuresSalle1.equals("") || nbParticipantsSalle1.equals("")){
+                facturation.equals("") || dateSalle1.equals("") || horaireDebutSalle1.equals("") || horaireFinSalle1.equals("") || nbParticipantsSalle1.equals("")){
                     JOptionPane.showMessageDialog(null, "Veuillez remplir tout les champs !");
                 }
                 else{
                     try {
-                        creerDevis(client, salle1, salle2, equipements, services, nbOptions, nbServices, tarifSalle);
+                        creerDevis(fichier, client, salle1, salle2, equipements, services, commentairesServices, nbOptions, nbServices, tarifSalle, prixServices, nbFormules, tvaServices);
                         JOptionPane.showMessageDialog(null, "Devis créé !\nRetour aux paramètres administrateurs.");
                         this.dispose();
                     } catch (IOException ex) {
@@ -960,6 +1098,96 @@ public class ITgenerationDevis extends javax.swing.JFrame {
         }*/
     }//GEN-LAST:event_cbOption6ActionPerformed
 
+    private void cbService1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbService1ActionPerformed
+        String choix = (String)cbService1.getSelectedItem();
+        if(choix != null){
+            if(choix.equals("Plateaux repas")){
+                gestionPrix();
+            } 
+        }
+    }//GEN-LAST:event_cbService1ActionPerformed
+
+    private void cbService2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbService2ActionPerformed
+        String choix = (String)cbService2.getSelectedItem();
+        if(choix != null){
+            if(choix.equals("Plateaux repas")){
+                gestionPrix();
+            } 
+        }
+    }//GEN-LAST:event_cbService2ActionPerformed
+
+    private void cbService3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbService3ActionPerformed
+        String choix = (String)cbService3.getSelectedItem();
+        if(choix != null){
+            if(choix.equals("Plateaux repas")){
+                gestionPrix();
+            } 
+        }
+    }//GEN-LAST:event_cbService3ActionPerformed
+
+    private void cbService4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbService4ActionPerformed
+        String choix = (String)cbService4.getSelectedItem();
+        if(choix != null){
+            if(choix.equals("Plateaux repas")){
+                gestionPrix();
+            } 
+        }
+    }//GEN-LAST:event_cbService4ActionPerformed
+
+    private void cbService5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbService5ActionPerformed
+        String choix = (String)cbService5.getSelectedItem();
+        if(choix != null){
+            if(choix.equals("Plateaux repas")){
+                gestionPrix();
+            } 
+        }
+    }//GEN-LAST:event_cbService5ActionPerformed
+
+    private void cbService6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbService6ActionPerformed
+        String choix = (String)cbService6.getSelectedItem();
+        if(choix != null){
+            if(choix.equals("Plateaux repas")){
+                gestionPrix();
+            } 
+        }
+    }//GEN-LAST:event_cbService6ActionPerformed
+
+    private String getMois(String mm){
+        String mois = null;
+        switch(mm){
+                case "01": mois = "Janvier"; break;
+                case "02": mois = "Février"; break;
+                case "03": mois = "Mars"; break;
+                case "04": mois = "Avril"; break;
+                case "05": mois = "Mai"; break;
+                case "06": mois = "Juin"; break;
+                case "07": mois = "Juillet"; break;
+                case "08": mois = "Août"; break;
+                case "09": mois = "Septembre"; break;
+                case "10": mois = "Octobre"; break;
+                case "11": mois = "Novembre"; break;
+                case "12": mois = "Décembre"; break;
+            }
+        return mois;
+    }
+    
+    private void gestionPrix(){
+        String nouveauPrix;
+        double prix;
+        nouveauPrix = (String)JOptionPane.showInputDialog(null, "Quel sera le prix unitaire pour le plateaux repas ?", "Modification du prix du plateau repas", JOptionPane.QUESTION_MESSAGE);
+        prix = Double.parseDouble(nouveauPrix);
+        rq.MAJprixPlateauxRepas(prix);
+    }
+    
+    //POUR ARRONDIR A DEUX CHIFFRES APRÈS LA VIRGULE D'UN "DOUBLE"
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnnuler;
@@ -994,6 +1222,7 @@ public class ITgenerationDevis extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
@@ -1001,6 +1230,7 @@ public class ITgenerationDevis extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1013,10 +1243,15 @@ public class ITgenerationDevis extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JPanel panelSalle2;
-    private javax.swing.JTextField txtDateSalle1;
-    private javax.swing.JTextField txtDateSalle2;
+    private javax.swing.JTextField txtCp;
+    private javax.swing.JTextField txtDateAAAASalle1;
+    private javax.swing.JTextField txtDateAAAASalle2;
+    private javax.swing.JTextField txtDateJJSalle1;
+    private javax.swing.JTextField txtDateJJSalle2;
+    private javax.swing.JTextField txtDateMMSalle1;
+    private javax.swing.JTextField txtDateMMSalle2;
     private javax.swing.JTextField txtEmail;
-    private javax.swing.JTextField txtFacturation;
+    private javax.swing.JTextField txtEntreprise;
     private javax.swing.JTextField txtHoraireDebutSalle1;
     private javax.swing.JTextField txtHoraireDebutSalle2;
     private javax.swing.JTextField txtHoraireFinSalle1;
@@ -1034,12 +1269,15 @@ public class ITgenerationDevis extends javax.swing.JFrame {
     private javax.swing.JTextField txtNbService5;
     private javax.swing.JTextField txtNbService6;
     private javax.swing.JTextField txtNom;
+    private javax.swing.JTextField txtNombreFormuleSalle1;
+    private javax.swing.JTextField txtNombreFormuleSalle2;
     private javax.swing.JTextField txtNombreHeuresSalle1;
     private javax.swing.JTextField txtNombreHeuresSalle2;
     private javax.swing.JTextField txtNombreParticipantsSalle1;
     private javax.swing.JTextField txtNombreParticipantsSalle2;
     private javax.swing.JTextField txtPrenom;
     private javax.swing.JTextField txtTel;
+    private javax.swing.JTextField txtVille;
     // End of variables declaration//GEN-END:variables
     private String[] lesSalles = null;
     private String[] lesFormules = null;

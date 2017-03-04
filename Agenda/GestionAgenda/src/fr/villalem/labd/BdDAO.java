@@ -483,6 +483,11 @@ public class BdDAO {
             co.query(quest);
             System.out.println("UPDATE REUSSIE");
         }
+        
+        public void MAJprixPlateauxRepas(double prix){
+            String quest = "UPDATE Facultatif SET prixHT = "+prix+" WHERE libelle = 'Plateaux repas'";
+            co.query(quest);
+        }
 
         /*
         ========================================================================

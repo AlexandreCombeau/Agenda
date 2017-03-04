@@ -5,11 +5,14 @@
  */
 package fr.villalem.factures;
 
+import static fr.villalem.admin.ITgenerationDevis.round;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -37,7 +40,7 @@ import org.apache.poi.util.IOUtils;
 public class Devis {
     
     
-    public static void creerDevis(String[] client, String[] salle1, String[] salle2, String[] equipements, String[] services, String[] nbOptions, int[] nbServices, double[] tarifs) throws FileNotFoundException, IOException{
+    public static void creerDevis(String[] fichier, String[] client, String[] salle1, String[] salle2, String[] equipements, String[] services, String[] commentaires, String[] nbOptions, int[] nbServices, double[] tarifs, double[] prixServices, int[] nbFormules, double[] tvaServices) throws FileNotFoundException, IOException{
         
         /*
         DEFINITION DES VARIABLES
@@ -49,6 +52,25 @@ public class Devis {
         HSSFCell cell = null;
         HSSFFont fonte = null;
         
+        //LA DATE DU JOUR
+        SimpleDateFormat formater = null;
+        Date aujourdhui = new Date();
+        
+        //PRIX FINAL HT
+        double salle1FINAL = tarifs[0]*nbFormules[0];
+        double salle2FINAL = 0;
+        if(!(salle2[0].equals(""))) salle2FINAL = tarifs[1] * nbFormules[1];
+        double service1FINAL = prixServices[0] * nbServices[0];
+        double service2FINAL = prixServices[1] * nbServices[1];
+        double service3FINAL = prixServices[2] * nbServices[2];
+        double service4FINAL = prixServices[3] * nbServices[3];
+        double service5FINAL = prixServices[4] * nbServices[4];
+        double service6FINAL = prixServices[5] * nbServices[5];
+        
+        double prixFinalHT = salle1FINAL + salle2FINAL + service1FINAL + service2FINAL + service3FINAL + service4FINAL + service5FINAL + service6FINAL; //PRIX FINAL DU DEVIS HT
+        double tvaFinal = tvaServices[0] + tvaServices[1] + tvaServices[2] + tarifs[0] * nbFormules[0] * 0.2;
+        if(!(salle2[0].equals(""))) tvaFinal += tarifs[1] * nbFormules[1] * 0.2; //SI IL EXISTE UNE DEUXIEME SALLE ON RAJOUTE LA TVA DE CELLE CI
+        double prixFinalTTC = prixFinalHT + tvaFinal;
         /*
         REDIMENSSIONEMENT
         
@@ -59,9 +81,9 @@ public class Devis {
         sheet.setColumnWidth(3, 9500);
         sheet.setColumnWidth(1, 5000);
         sheet.setColumnWidth(2, 2200);
-        sheet.setColumnWidth(4, 2500);
-        sheet.setColumnWidth(5, 6000);
-        sheet.setColumnWidth(6, 3500);
+        sheet.setColumnWidth(4, 2800);
+        sheet.setColumnWidth(5, 6300);
+        sheet.setColumnWidth(6, 3800);
         
         /*
         FUSION DES CELLULES
@@ -275,7 +297,7 @@ public class Devis {
             for(int j = 4 ; j <= 6 ; j++){
                 cell = lesRows[i - 8].createCell(j);
                 if(i == 8 && j == 4){
-                    cell.setCellValue(client[0]); //ON AJOUTE L'ADRESSE DE FACTURATION A L'EMPLACEMENT "CLIENT"
+                    cell.setCellValue(client[0]+"\n"+client[1]+"\n"+client[2]); //ON AJOUTE L'ADRESSE DE FACTURATION A L'EMPLACEMENT "CLIENT" TROUVER MOYEN METTRE A LA LIGNE
                     fonte = wb.createFont();
                     fonte.setFontHeightInPoints((short)15);
                     fonte.setFontName("Calibri (Corps)");
@@ -294,7 +316,7 @@ public class Devis {
                 if(i == 9 && j == 4 || i == 12 && j == 4){
                     cellStyle = wb.createCellStyle();
                     if(i == 12){
-                        cell.setCellValue(client[3]); //Prend le tel du contact en paramètre
+                        cell.setCellValue(client[5]); //Prend le tel du contact en paramètre
                         fonte = wb.createFont();
                         fonte.setFontHeightInPoints((short)13);
                         fonte.setFontName("Calibri (Corps)");
@@ -313,10 +335,10 @@ public class Devis {
                 }
                 if(i == 10 && j == 4 || i == 11 && j == 4){
                     if(i == 10){
-                        cell.setCellValue(client[1]); //Prend le nom du contact en paramètre
+                        cell.setCellValue(client[3]); //Prend le nom du contact en paramètre
                     }
                     else{
-                        cell.setCellValue(client[2]); //Prend l'email en paramètre
+                        cell.setCellValue(client[4]); //Prend l'email en paramètre
                     }
                     fonte = wb.createFont();
                     fonte.setFontHeightInPoints((short)13);
@@ -357,7 +379,8 @@ public class Devis {
         //--------------------------------------------------------------------//
         
         cell = lesRows[4].createCell(2);
-        cell.setCellValue("14 février 2017");
+        formater = new SimpleDateFormat("dd MMMM yyyy");
+        cell.setCellValue(formater.format(aujourdhui));
         cell.setCellStyle(cellStyleFont12);
         
         /*
@@ -405,6 +428,13 @@ public class Devis {
         cellStyleFont13.setBorderLeft(BorderStyle.MEDIUM);
         cellStyleFont13.setFont(fonte13);
         
+        HSSFFont fonte12left = wb.createFont();
+        fonte12left.setFontHeightInPoints((short)12);
+        fonte12left.setFontName("Calibri (Corps)");
+        HSSFCellStyle cellStyleFont12left = wb.createCellStyle();
+        cellStyleFont12left.setBorderLeft(BorderStyle.MEDIUM);
+        cellStyleFont12left.setFont(fonte12left);
+        
         HSSFFont fonte11 = wb.createFont();
         fonte11.setFontHeightInPoints((short)10);
         fonte11.setFontName("Calibri (Corps)");
@@ -412,28 +442,28 @@ public class Devis {
         cellStyleFont11.setBorderLeft(BorderStyle.MEDIUM);
         cellStyleFont11.setFont(fonte11);
         
-        HSSFFont fonte13CT = wb.createFont();
-        fonte13CT.setFontHeightInPoints((short)13);
-        fonte13CT.setFontName("Calibri (Corps)");
-        HSSFCellStyle cellStyleFont13CT = wb.createCellStyle();
-        cellStyleFont13CT.setBorderLeft(BorderStyle.MEDIUM);
-        cellStyleFont13CT.setAlignment(HorizontalAlignment.CENTER);
-        cellStyleFont13CT.setVerticalAlignment(VerticalAlignment.CENTER);
-        cellStyleFont13CT.setFont(fonte13CT);
+        HSSFFont fonte12CT = wb.createFont();
+        fonte12CT.setFontHeightInPoints((short)12);
+        fonte12CT.setFontName("Calibri (Corps)");
+        HSSFCellStyle cellStyleFont12CT = wb.createCellStyle();
+        cellStyleFont12CT.setBorderLeft(BorderStyle.MEDIUM);
+        cellStyleFont12CT.setAlignment(HorizontalAlignment.CENTER);
+        cellStyleFont12CT.setVerticalAlignment(VerticalAlignment.CENTER);
+        cellStyleFont12CT.setFont(fonte12CT);
         
-        HSSFFont fonte13CTsansBordures = wb.createFont();
-        fonte13CTsansBordures.setFontHeightInPoints((short)13);
-        fonte13CTsansBordures.setFontName("Calibri (Corps)");
-        HSSFCellStyle cellStyleFont13CTsansBordures = wb.createCellStyle();
-        cellStyleFont13CTsansBordures.setAlignment(HorizontalAlignment.CENTER);
-        cellStyleFont13CTsansBordures.setFont(fonte13CTsansBordures);
+        HSSFFont fonte12CTsansBordures = wb.createFont();
+        fonte12CTsansBordures.setFontHeightInPoints((short)12);
+        fonte12CTsansBordures.setFontName("Calibri (Corps)");
+        HSSFCellStyle cellStyleFont12CTsansBordures = wb.createCellStyle();
+        cellStyleFont12CTsansBordures.setAlignment(HorizontalAlignment.CENTER);
+        cellStyleFont12CTsansBordures.setFont(fonte12CTsansBordures);
         
-        HSSFFont fonte13HCT = wb.createFont();
-        fonte13HCT.setFontHeightInPoints((short)13);
-        fonte13HCT.setFontName("Calibri (Corps)");
-        HSSFCellStyle cellStyleFont13HCT = wb.createCellStyle();
-        cellStyleFont13HCT.setVerticalAlignment(VerticalAlignment.CENTER);
-        cellStyleFont13HCT.setFont(fonte13HCT);
+        HSSFFont fonte12HCT = wb.createFont();
+        fonte12HCT.setFontHeightInPoints((short)12);
+        fonte12HCT.setFontName("Calibri (Corps)");
+        HSSFCellStyle cellStyleFont12HCT = wb.createCellStyle();
+        cellStyleFont12HCT.setVerticalAlignment(VerticalAlignment.CENTER);
+        cellStyleFont12HCT.setFont(fonte12HCT);
         
         HSSFFont fonte13ET = wb.createFont();
         fonte13ET.setFontHeightInPoints((short)13);
@@ -469,11 +499,11 @@ public class Devis {
                             case 18: cell.setCellValue(salle1[0]); break; //NOM DE LA SALLE 1
                             case 22: cell.setCellValue(salle2[0]); break; //NOM DE LA SALLE 2
                             case 38: cell.setCellValue(services[0]); break; //NOM DU SERVICE 1
-                            case 40: cell.setCellValue(services[2]); break; //NOM DU SERVICE 2
-                            case 42: cell.setCellValue(services[4]); break; //NOM DU SERVICE 3
-                            case 44: cell.setCellValue(services[6]); break; //NOM DU SERVICE 4
-                            case 46: cell.setCellValue(services[8]); break; //NOM DU SERVICE 5
-                            case 48: cell.setCellValue(services[10]); break; //NOM DU SERVICE 6
+                            case 40: cell.setCellValue(services[1]); break; //NOM DU SERVICE 2
+                            case 42: cell.setCellValue(services[2]); break; //NOM DU SERVICE 3
+                            case 44: cell.setCellValue(services[3]); break; //NOM DU SERVICE 4
+                            case 46: cell.setCellValue(services[4]); break; //NOM DU SERVICE 5
+                            case 48: cell.setCellValue(services[5]); break; //NOM DU SERVICE 6
                         }
                         cell.setCellStyle(cellStyleFont13Gras);
                     }
@@ -481,12 +511,12 @@ public class Devis {
                         switch(i){
                             case 19: cell.setCellValue(salle1[7]); break; //COMMENTAIRE DE LA SALLE 1
                             case 23: cell.setCellValue(salle2[7]); break; //COMMENTAIRE DE LA SALLE 2
-                            case 39: cell.setCellValue(services[1]); break; //COMMENTAIRE DU PREMIER SERVICE
-                            case 41: cell.setCellValue(services[3]); break; //COMMENTAIRE DU DEUXIEME SERVICE
-                            case 43: cell.setCellValue(services[5]); break; //COMMENTAIRE DU TROISIEME SERVICE
-                            case 45: cell.setCellValue(services[7]); break; //COMMENTAIRE DU QUATRIEME SERVICE
-                            case 47: cell.setCellValue(services[9]); break; //COMMENTAIRE DU CINQUIEME SERVICE
-                            case 49: cell.setCellValue(services[10]); break; //COMMENTAIRE DU SIXIEME SERVICE
+                            case 39: cell.setCellValue(commentaires[0]); break; //COMMENTAIRE DU PREMIER SERVICE
+                            case 41: cell.setCellValue(commentaires[1]); break; //COMMENTAIRE DU DEUXIEME SERVICE
+                            case 43: cell.setCellValue(commentaires[2]); break; //COMMENTAIRE DU TROISIEME SERVICE
+                            case 45: cell.setCellValue(commentaires[3]); break; //COMMENTAIRE DU QUATRIEME SERVICE
+                            case 47: cell.setCellValue(commentaires[4]); break; //COMMENTAIRE DU CINQUIEME SERVICE
+                            case 49: cell.setCellValue(commentaires[5]); break; //COMMENTAIRE DU SIXIEME SERVICE
                         }
                         cell.setCellStyle(cellStyleFont11);
                     }
@@ -499,7 +529,7 @@ public class Devis {
                             case 33: cell.setCellValue(equipements[4]); break; //NOM DE L'OPTION 5
                             case 34: cell.setCellValue(equipements[5]); break; //NOM DE L'OPTION 6
                         }
-                        cell.setCellStyle(cellStyleFont13);
+                        cell.setCellStyle(cellStyleFont12left);
                     }
                     else if(i == 20 || i == 21 || i == 24 || i == 25 || i == 26){
                         switch(i){
@@ -508,7 +538,7 @@ public class Devis {
                             case 24: if(!(salle2[0].equals(""))) cell.setCellValue("Participants :"); break;//SI IL EXISTE UNE DEUXIEME SALLE
                             case 25: cell.setCellValue(salle2[4]); break; //DATE SALLE 2
                         }
-                        cell.setCellStyle(cellStyleFont13CT);
+                        cell.setCellStyle(cellStyleFont12CT);
                     }
                     else if(i == 52){
                         cell.setCellStyle(cellStyleFont14Gras);
@@ -523,9 +553,9 @@ public class Devis {
                     }
                     if(i == 18 || i == 20 || i == 22 || i == 24 || i == 29 || i == 30 || i == 31 || i == 32 || i == 33 || i == 34){
                         switch(i){
-                            case 18: cell.setCellValue(salle1[1]+" ("+salle1[2]+"h)"); break; //NOM FORMULE + HEURE FORMULE SALLE 1 
+                            case 18: if(!(salle1[1].equals("Forfait Heure"))) cell.setCellValue(salle1[1]+" ("+salle1[2]+"h)"); else cell.setCellValue(salle1[1]); break; //NOM FORMULE + HEURE FORMULE SALLE 1 
                             case 20: cell.setCellValue(salle1[3]); break; //LE NOMBRE DE PARTICIPANT A LA SALLE 1
-                            case 22: if(!(salle2[0].equals(""))) cell.setCellValue(salle2[1]+" ("+salle2[2]+"h)"); break; //NOM FORMULE + HEURE FORMULE SALLE 2
+                            case 22: if(!(salle2[0].equals(""))){if(!(salle2[1].equals("Forfait Heure"))) cell.setCellValue(salle2[1]+" ("+salle2[2]+"h)"); else cell.setCellValue(salle2[1]);} break; //NOM FORMULE + HEURE FORMULE SALLE 2
                             case 24: cell.setCellValue(salle2[3]); break; //LE NOMBRE DE PARTICIPANT A LA SALLE 2
                             case 29: cell.setCellValue(nbOptions[0]); break; //LE NOMBRE DE L'OPTION 1
                             case 30: cell.setCellValue(nbOptions[1]); break; //LE NOMBRE DE L'OPTION 2
@@ -534,7 +564,7 @@ public class Devis {
                             case 33: cell.setCellValue(nbOptions[4]); break; //LE NOMBRE DE L'OPTION 5
                             case 34: cell.setCellValue(nbOptions[5]); break; //LE NOMBRE DE L'OPTION 6    
                         }
-                        cell.setCellStyle(cellStyleFont13HCT);
+                        cell.setCellStyle(cellStyleFont12HCT);
                     }
                 }
                 else if(j == 3){
@@ -546,11 +576,11 @@ public class Devis {
                             case 21: cell.setCellValue(salle1[5]+" à "+salle1[6]); break;//HORAIRE DEBUT + FIN SALLE 1
                             case 25: if(!(salle2[0].equals(""))) cell.setCellValue(salle2[5]+" à "+salle2[6]); break;//HORAIRE DEBUT + FIN SALLE 2
                         }
-                        cell.setCellStyle(cellStyleFont13HCT);
+                        cell.setCellStyle(cellStyleFont12HCT);
                     }
                     if(i == 29){
                         cell.setCellValue("Disposition : "+equipements[6]); //DISPOSITION
-                        cell.setCellStyle(cellStyleFont13HCT);
+                        cell.setCellStyle(cellStyleFont12HCT);
                     }
                 }
                 else if(j == 4){
@@ -560,8 +590,8 @@ public class Devis {
                     }
                     else if(i == 18 || i == 22 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
                         switch(i){
-                            case 18: cell.setCellValue(1); break;
-                            case 22: if(!(salle2[0].equals(""))) cell.setCellValue(1); break;
+                            case 18: cell.setCellValue(nbFormules[0]); break; //LE NOMBRE DE FORMULE SALLE 1
+                            case 22: if(!(salle2[0].equals(""))) cell.setCellValue(nbFormules[1]); break; //LE NOMBRE DE FORMULE SALLE 2
                             case 38: cell.setCellValue(nbServices[0]); break;//LE NOMBRE DU SERVICE 1
                             case 40: cell.setCellValue(nbServices[1]); break;//LE NOMBRE DU SERVICE 2
                             case 42: cell.setCellValue(nbServices[2]); break;//LE NOMBRE DU SERVICE 3
@@ -569,7 +599,7 @@ public class Devis {
                             case 46: cell.setCellValue(nbServices[4]); break;//LE NOMBRE DU SERVICE 5
                             case 48: cell.setCellValue(nbServices[5]); break;//LE NOMBRE DU SERVICE 6
                         }
-                        cell.setCellStyle(cellStyleFont13CT);
+                        cell.setCellStyle(cellStyleFont12CT);
                     }
                     else if(i == 52){
                         cell.setCellStyle(cellStyleFont14Gras);
@@ -587,14 +617,14 @@ public class Devis {
                         switch(i){
                             case 18: cell.setCellValue(tarifs[0]+" €"); break; //TARIF DE LA SALLE 1 EN FONCTION DE LA FORMULE CHOISIE
                             case 22: if(!(salle2[0].equals(""))) cell.setCellValue(tarifs[1]+" €"); break; //TARIF DE LA SALLE 2 EN FONCTION DE LA FORMULE CHOISIE
-                            case 38: cell.setCellValue(7.50+" €"); break;
-                            case 40: cell.setCellValue(5.00+" €"); break;
-                            case 42: cell.setCellValue(8.00+" €"); break;
-                            case 44: cell.setCellValue(19.90+" €"); break;
-                            case 46: cell.setCellValue(34.90+" €"); break;
-                            case 48: cell.setCellValue(3.90+" €"); break;
+                            case 38: cell.setCellValue(prixServices[0]+" €"); break; //PRIX DU SERVICE 1
+                            case 40: cell.setCellValue(prixServices[1]+" €"); break; //PRIX DU SERVICE 2
+                            case 42: cell.setCellValue(prixServices[2]+" €"); break; //PRIX DU SERVICE 3
+                            case 44: cell.setCellValue(prixServices[3]+" €"); break; //PRIX DU SERVICE 4
+                            case 46: cell.setCellValue(prixServices[4]+" €"); break; //PRIX DU SERVICE 5
+                            case 48: cell.setCellValue(prixServices[5]+" €"); break; //PRIX DU SERVICE 6
                         }
-                        cell.setCellStyle(cellStyleFont13CTsansBordures);
+                        cell.setCellStyle(cellStyleFont12CTsansBordures);
                     }
                     else if(i == 52){
                         cell.setCellStyle(cellStyleBottom);
@@ -605,12 +635,18 @@ public class Devis {
                         cell.setCellValue("Prix HT");
                         cell.setCellStyle(cellStyle13ET);
                     }
-                    else if(i == 18 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
+                    else if(i == 18 || i == 22 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
                         switch(i){
-                            case 18: cell.setCellValue(550.00+" €"); break;
-                            default: cell.setCellValue(0.00+" €"); break;
+                            case 18: cell.setCellValue(salle1FINAL+" €"); break; //PRIX FINAL SALLE 1
+                            case 22: if(!(salle2[0].equals(""))) cell.setCellValue(salle2FINAL+" €"); break; //PRIX FINAL SALLE 2 {SI EXISTE}
+                            case 38: cell.setCellValue(service1FINAL+" €"); break; //PRIX FINAL SERVICE 1
+                            case 40: cell.setCellValue(service2FINAL+" €"); break; //PRIX FINAL SERVICE 2
+                            case 42: cell.setCellValue(service3FINAL+" €"); break; //PRIX FINAL SERVICE 3
+                            case 44: cell.setCellValue(service4FINAL+" €"); break; //PRIX FINAL SERVICE 4
+                            case 46: cell.setCellValue(service5FINAL+" €"); break; //PRIX FINAL SERVICE 5
+                            case 48: cell.setCellValue(service6FINAL+" €"); break; //PRIX FINAL SERVICE 6
                         }
-                        cell.setCellStyle(cellStyleFont13CTsansBordures);
+                        cell.setCellStyle(cellStyleFont12CTsansBordures);
                     }
                     else if(i == 52){
                         cell.setCellStyle(cellStyleBottom);
@@ -660,7 +696,7 @@ public class Devis {
         cellStyle.setAlignment(HorizontalAlignment.RIGHT);
         cellStyle.setFont(fonte);
         cell.setCellStyle(cellStyle);
-        cell.setCellValue(0.00+" €");
+        cell.setCellValue(tvaServices[0]+" €"); //TVA 10% 
         
         //--------------------------------------------------------------------//
         
@@ -682,7 +718,7 @@ public class Devis {
         cellStyle = wb.createCellStyle();
         cellStyle.setFont(fonte);
         cell.setCellStyle(cellStyle);
-        cell.setCellValue("330.0 €");
+        cell.setCellValue(round(prixFinalTTC/2, 2)+" €"); //L'ACCOMPTE 50% PRIX FINAL TTC
         
         cell = row.createCell(5);
         fonte = wb.createFont();
@@ -703,7 +739,7 @@ public class Devis {
         cellStyle.setAlignment(HorizontalAlignment.RIGHT);
         cellStyle.setFont(fonte);
         cell.setCellStyle(cellStyle);
-        cell.setCellValue(0.00+" €");
+        cell.setCellValue(tvaServices[1]+" €"); //TVA 10 %
         
         //--------------------------------------------------------------------//
         
@@ -737,7 +773,9 @@ public class Devis {
         cellStyle.setAlignment(HorizontalAlignment.RIGHT);
         cellStyle.setFont(fonte);
         cell.setCellStyle(cellStyle);
-        cell.setCellValue(110.00+" €");
+        tvaServices[2] += tarifs[0] * nbFormules[0] * 0.2;
+        if(!(salle2[0].equals(""))) tvaServices[2] += tarifs[1] * nbFormules[1] * 0.2;
+        cell.setCellValue(tvaServices[2]+" €");
         
         /*
         FIN LIGNES 56 - 58
@@ -775,7 +813,7 @@ public class Devis {
         cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         cellStyle.setFont(fonte);
         cell.setCellStyle(cellStyle);
-        cell.setCellValue(550.00+" €");
+        cell.setCellValue(round(prixFinalHT, 2)+" €"); //PRIX FINAL DU DEVIS HT
         
         //--------------------------------------------------------------------//
         
@@ -807,7 +845,7 @@ public class Devis {
         cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         cellStyle.setFont(fonte);
         cell.setCellStyle(cellStyle);
-        cell.setCellValue(660.00+" €");
+        cell.setCellValue(round(prixFinalTTC, 2)+" €"); //PRIX FINAL DU DEVIS TTC
         
         /*
         FIN BLOC DU BAS
@@ -816,7 +854,7 @@ public class Devis {
         
         try{
             
-            FileOutputStream fileOut = new FileOutputStream("devis_"+client[1]+".xls");
+            FileOutputStream fileOut = new FileOutputStream("devis "+fichier[0]+" "+fichier[1]+".xls");
             wb.write(fileOut);
             fileOut.close();
             
