@@ -74,9 +74,9 @@ public class BdDAO {
          * @return Retourne toutes les Salles ou toutes les Taches
          * @throws SQLException
          */
-        public String[] getSalleTache(String table) throws SQLException{
+        public String[] getSalleTacheEntiteFormule(String table) throws SQLException{
             String quest = "SELECT * FROM "+table;
-            String quest1 = "SELECT COUNT(id"+table+") From "+table;
+            String quest1 = "SELECT COUNT(id"+table+") FROM "+table;
             rs = co.query(quest1);
             int longueurTableau = rs.getInt("COUNT(id"+table+")");
             int i = 0;
@@ -88,6 +88,87 @@ public class BdDAO {
                i++;
             }
             return nom;
+        }
+        
+        /**
+         * 
+         * @param choix Prend "Option" ou "Service"
+         * @return Retourne toutes les options ou tout les services
+         * @throws SQLException 
+         */
+        public String[] getOptionService(String choix) throws SQLException{
+            String quest = "SELECT libelle FROM Facultatif WHERE nature = '"+choix+"'";
+            String quest1 = "SELECT COUNT(idFacultatif) FROM Facultatif WHERE nature = '"+choix+"'";
+            rs = co.query(quest1);
+            int longueurTableau = rs.getInt("COUNT(idFacultatif)");
+            int i = 0;
+            String[] nom = new String[longueurTableau];
+            rs = co.query(quest);
+            while(rs.next()){
+               String name = rs.getString("libelle");
+               nom[i] = name;
+               i++;
+            }
+            return nom;
+        }
+        
+        /**
+         * 
+         * @param nomSalle Prend le nom de la salle concernée
+         * @return Retourne le descriptif de la salle en question
+         * @throws SQLException 
+         */
+        public String getCommentSalle(String nomSalle) throws SQLException{
+            String quest = "SELECT descriptif FROM Salle WHERE nomSalle = '"+nomSalle+"'";
+            rs = co.query(quest);
+            if(rs.next()){
+                String comment = rs.getString("descriptif");
+                return comment;
+            }
+            return null;
+        }
+        
+        /**
+         * 
+         * @param service Prend le service concerné
+         * @return Retourne le descriptif de ce service
+         * @throws SQLException 
+         */
+        public String getCommentService(String service) throws SQLException{
+            String quest = "SELECT descriptif FROM Facultatif WHERE libelle = '"+service+"'";
+            rs = co.query(quest);
+            if(rs.next()){
+                String comment = rs.getString("descriptif");
+                return comment;
+            }
+            return null;
+        }
+        
+        /**
+         * 
+         * @param nomSalle Prend le nom de la salle concernée
+         * @param nomFormule Prend le nom de la formule concernée
+         * @return retourne le tarif
+         * @throws SQLException 
+         */
+        public double getTarifSalle(String nomSalle, String nomFormule) throws SQLException{
+            String quest = "SELECT montant FROM TarifSalleFormule, Salle, Formule WHERE Salle.idSalle = TarifSalleFormule.fk_idSalle AND Formule.idFormule = TarifSalleFormule.fk_idFormule AND Salle.nomSalle = '"+nomSalle+"' AND Formule.nomFormule = '"+nomFormule+"'";
+            rs = co.query(quest);
+            if(rs.next()){
+                double tarif = rs.getDouble("montant");
+                return tarif;
+            }
+            return 0;
+        }
+        
+        public double getTarifService(String nomService) throws SQLException{
+            String quest = "SELECT prixHT FROM Facultatif WHERE libelle = '"+nomService+"'";
+            rs = co.query(quest);
+            if(rs.next()){
+                double tarif = rs.getDouble("prixHT");
+                return tarif;
+            }
+            return 0;
         }
 
         /**
@@ -401,6 +482,11 @@ public class BdDAO {
             String quest = "UPDATE Usager SET mail = '"+nouveauMail+"' WHERE mail = '"+ancienMail+"'";
             co.query(quest);
             System.out.println("UPDATE REUSSIE");
+        }
+        
+        public void MAJprixPlateauxRepas(double prix){
+            String quest = "UPDATE Facultatif SET prixHT = "+prix+" WHERE libelle = 'Plateaux repas'";
+            co.query(quest);
         }
 
         /*

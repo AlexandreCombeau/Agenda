@@ -10,6 +10,7 @@ import static fr.villalem.factures.Devis.creerDevis;
 import static fr.villalem.factures.Factures.creerFacture;
 import fr.villalem.labd.*;
 import java.io.IOException;
+import static java.lang.Math.round;
 import java.sql.SQLException;
 
 
@@ -24,9 +25,9 @@ public class GestionAgenda {
     
     public static void main(String[] args) throws SQLException, IOException {
         
-        //new ITconnexion().setVisible(true);
+        new ITconnexion().setVisible(true);
         //creerFacture();
-	creerDevis();
+	//creerDevis("test", "test", "test");
         //connexion.close();
     }
     
