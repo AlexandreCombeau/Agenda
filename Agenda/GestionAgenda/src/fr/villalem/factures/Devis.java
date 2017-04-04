@@ -37,8 +37,7 @@ import org.apache.poi.util.IOUtils;
 public class Devis {
     
     
-    public static void creerDevis() throws FileNotFoundException, IOException{
-        
+public static void creerDevis(String[] fichier, String[] client, String[] salle1, String[] salle2, String[] equipements, String[] services, String[] commentaires, String[] nbOptions, int[] nbServices, double[] tarifs, double[] prixServices, int[] nbFormules, double[] tvaServices) throws FileNotFoundException, IOException{        
         /*
         DEFINITION DES VARIABLES
         */

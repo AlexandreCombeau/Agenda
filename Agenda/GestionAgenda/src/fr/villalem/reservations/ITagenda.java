@@ -371,9 +371,10 @@ public class ITagenda extends javax.swing.JFrame {
 
     private void btnRemplirTableauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemplirTableauActionPerformed
         remplirLabelsJours();
-        panelAgenda1.ListeEvenements.clear();
+        panelAgenda1.ListeEvenements.clear();//vide les évènements de la semaine suivante
+        
+        panelAgenda1.repaint();//repaint() redessine l'agenda
         panelAgenda1.remplirAgenda(c);
-        panelAgenda1.repaint();
     }//GEN-LAST:event_btnRemplirTableauActionPerformed
 
     //Méthodes
