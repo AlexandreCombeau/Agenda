@@ -6,9 +6,7 @@
 package fr.villalem.admin;
 
 import static gestionagenda.GestionAgenda.rq;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -127,160 +125,213 @@ public class ITboutonsModifier extends javax.swing.JFrame {
     private void btnReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservationActionPerformed
        
     try {
-            
             String[] clients = rq.getClients();
             String[] noms = rq.getnomsClients();
             String[] prenoms = rq.getprenomsClients();
             String client = "";
             client = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner un client","Rechercher un client",JOptionPane.QUESTION_MESSAGE, null,clients,clients[0]);
-            int longueur = noms.length;
-            String[] client2 = new String[longueur];
-            String leNom = "";
-            String lePrenom = "";
-            for(int i = 0; i<longueur; i++){
-                client2[i] = prenoms[i]+" "+noms[i];
-                if(client2[i] == null ? client == null : client2[i].equals(client)){
-                    leNom = noms[i];
-                    lePrenom = prenoms[i];
-                }
-            }
-            int idClient = rq.getIdClient(leNom, lePrenom);
-            String[] dates = rq.getDatesReservations(idClient);
-            String date = "";
-            date = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner une date de début de réservation","Rechercher une date",JOptionPane.QUESTION_MESSAGE, null,dates,dates[0]);
-            int idReservation = rq.getIdReservation(idClient, date);
-          //  String[] lesInfos = rq.getInfosReservation(idReservation);
-            String[] lesChangements ={"validite de la réservation(option)", "date de début", "date de fin", "heure de début", "heure de fin","nombres de personnes", "nombre d'heures", "formule", "client", "modifier un service", "ajouter un service","modifier une option", "ajouter une option", "modifier une salle", "ajouter une salle", "disposition"};
-            String changement = "";
-            if (!"".equals(dates[0])){
-                changement = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner ce que vous voulez changer dans la réservation","Information à modifier",JOptionPane.QUESTION_MESSAGE, null,lesChangements,lesChangements[0]);
-                if("validite de la réservation(option)".equals(changement)){
-                    String validite[] = {"valider reservation", "invalider reservation"};
-                    String validiteActuelle = rq.getValidite(idReservation);
-                    String valide = (String)JOptionPane.showInputDialog(null, "Validite actuelle : "+validiteActuelle,"Validite",JOptionPane.QUESTION_MESSAGE, null,validite,validite[0]);
-                    if ("valider reservation".equals(valide)){
-                        int valider = 1;
-                        rq.MAJvalide(valider, idReservation);
-                    }
-                    else {
-                        int valider = 0;
-                        rq.MAJvalide(valider, idReservation);
+            if (client!=null){
+                int longueur = noms.length;
+                String[] client2 = new String[longueur];
+                String leNom = "";
+                String lePrenom = "";
+                for(int i = 0; i<longueur; i++){
+                    client2[i] = prenoms[i]+" "+noms[i];
+                    if(client2[i] == null ? client == null : client2[i].equals(client)){
+                        leNom = noms[i];
+                        lePrenom = prenoms[i];
                     }
                 }
-                if("date de début".equals(changement)){
-                    String infos[] = rq.getInfosReservation(idReservation);
-                    String dateActuelle = infos[0];
-                    String dateDe = (String)JOptionPane.showInputDialog(null, "date de debut actuelle : "+dateActuelle,"date de debut",JOptionPane.QUESTION_MESSAGE);
-                    rq.MAJdateD(dateDe, idReservation);
-                }
-                if("date de fin".equals(changement)){
-                    String infos[] = rq.getInfosReservation(idReservation);
-                    String dateActuelle = infos[1];
-                    String dateFi = (String)JOptionPane.showInputDialog(null, "date de fin actuelle : "+dateActuelle,"date de fin",JOptionPane.QUESTION_MESSAGE);
-                    rq.MAJdateF(dateFi, idReservation);
-                }
-                if("heure de debut".equals(changement)){
-                    String infos[] = rq.getInfosReservation(idReservation);
-                    String heureActuelle = infos[2];
-                    String heureDe = (String)JOptionPane.showInputDialog(null, "heure de debut actuelle : "+heureActuelle,"heure de debut",JOptionPane.QUESTION_MESSAGE);
-                    rq.MAJheureD(heureDe, idReservation);
-                }
-                if("heure de fin".equals(changement)){
-                    String infos[] = rq.getInfosReservation(idReservation);
-                    String heureActuelle = infos[3];
-                    String heureFi = (String)JOptionPane.showInputDialog(null, "heure de fin actuelle : "+heureActuelle,"heure de fin",JOptionPane.QUESTION_MESSAGE);
-                    rq.MAJheureF(heureFi, idReservation);
-                }
-                if("nombre de personnes".equals(changement)){
-                    String infos[] = rq.getInfosReservation(idReservation);
-                    String nbPActuel = infos[7];
-                    String nbP = (String)JOptionPane.showInputDialog(null, "nombre de personnes actuel : "+nbPActuel,"nombre de personnes",JOptionPane.QUESTION_MESSAGE);
-                    int nb = Integer.parseInt(nbP, 10);
-                    rq.MAJnbPersonnes(nb, idReservation);
-                }
-                if("nombre d'heures".equals(changement)){
-                    String infos[] = rq.getInfosReservation(idReservation);
-                    String nbHActuel = infos[8];
-                    String nbH = (String)JOptionPane.showInputDialog(null, "nombre d'heures actuel : "+nbHActuel,"nombre d'heures",JOptionPane.QUESTION_MESSAGE);
-                    int nb = Integer.parseInt(nbH, 10);
-                    rq.MAJnbHeures(nb, idReservation);
-                }
-                if("modifier un service".equals(changement)){
-                    String infos[] = rq.getInfosReservation(idReservation);
-                    String serviceActuel = infos[4];
-                    String service = (String)JOptionPane.showInputDialog(null, "service(s) actuel(s) : "+serviceActuel,"modifier Service",JOptionPane.QUESTION_MESSAGE);
-                    rq.MAJchoix(idReservation, service);
-                }
-                if("ajouter un service".equals(changement)){
-                    String services[] = rq.getServices();
-                    String choix = (String)JOptionPane.showInputDialog(null, "quel service voulez vous ajouter?","ajouter service",JOptionPane.QUESTION_MESSAGE, null, services, services[0]);
-                    rq.ajoutChoix(idReservation, choix);
-                }
-                if("modifier une option".equals(changement)){
-                    String infos[] = rq.getInfosReservation(idReservation);
-                    String serviceActuel = infos[4];
-                    String service = (String)JOptionPane.showInputDialog(null, "option(s) actuel(s) : "+serviceActuel,"modifier une option",JOptionPane.QUESTION_MESSAGE);
-                    rq.MAJchoix(idReservation, service);
-                }
-                if("ajouter une option".equals(changement)){
-                    String options[] = rq.getOptions();
-                    String choix = (String)JOptionPane.showInputDialog(null, "quel service voulez vous ajouter?","ajouter service",JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                    rq.ajoutChoix(idReservation, choix);   
-                }
-                String salles[] = {"studio", "cabane", "bureau", "atelier"};
-                if("modifier une salle".equals(changement)){
-                    String infos[] = rq.getInfosReservation(idReservation);
-                    String salleActuelle = infos[4];
-                    String salle = (String)JOptionPane.showInputDialog(null, "salle(s) actuelle(s) : "+salleActuelle,"modifier une salle",JOptionPane.QUESTION_MESSAGE, null, salles, salles[0]);
-                    rq.MAJsalle(idReservation, salle);
-                }
-                if("ajouter une salle".equals(changement)){
+                int idClient = rq.getIdClient(leNom, lePrenom);
+                String[] dates = rq.getDatesReservations(idClient);
+                String date = "";
+                date = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner une date de début de réservation","Rechercher une date",JOptionPane.QUESTION_MESSAGE, null,dates,dates[0]);
+                if (date!=null){
+                    int idReservation = rq.getIdReservation(idClient, date);
+
                     String infos[] = rq.getInfosReservation(idReservation);
                     String disposition = infos[10];
-                    String salle = (String)JOptionPane.showInputDialog(null, "quelle salle voulez vous ajouter?","ajouter salle",JOptionPane.QUESTION_MESSAGE, null, salles, salles[0]);
-                    rq.ajoutSalle(idReservation, salle, disposition);   
-                }
-                if("client".equals(changement)){
-                    String infos[] = rq.getInfosReservation(idReservation);
-                    String clientActuel = infos[11];
-                    String[] lesClients = rq.getClients();
-                    String[] nom = rq.getnomsClients();
-                    String[] prenom = rq.getprenomsClients();
-                    String leClient = (String)JOptionPane.showInputDialog(null, "client actuel : "+clientActuel,"modifier une option",JOptionPane.QUESTION_MESSAGE, null, lesClients,lesClients[0]);
-                    int lg = lesClients.length;
-                    String[] leClient2 = new String[lg];
-                    String nom2 = "";
-                    String prenom2 = "";
-                    for(int i = 0; i<longueur; i++){
-                        leClient2[i] = prenom[i]+" "+nom[i];
-                        if(client2[i] == null ? client == null : client2[i].equals(client)){
-                            nom2 = noms[i];
-                            prenom2 = prenoms[i];
+                    String salle = infos[9];
+                    String[] lesChangements ={"validite de la réservation(option)", "date de début", "date de fin", "heure de début", "heure de fin","nombre de personnes", "nombre d'heures", "formule", "client", "modifier un service", "ajouter un service","modifier une option", "ajouter une option", "modifier une salle", "ajouter une salle", "disposition"};
+                    String changement = "";
+                    if (!"".equals(dates[0])){
+                        changement = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner ce que vous voulez changer dans la réservation","Information à modifier",JOptionPane.QUESTION_MESSAGE, null,lesChangements,lesChangements[0]);
+                        if (changement!=null){
+                            if("validite de la réservation(option)".equals(changement)){
+                                String validite[] = {"valider reservation", "invalider reservation"};
+                                String validiteActuelle = rq.getValidite(idReservation);
+                                String valide = (String)JOptionPane.showInputDialog(null, "Modifier la validite actuelle : "+validiteActuelle,"Validite",JOptionPane.QUESTION_MESSAGE, null,validite,validite[0]);
+                                if (valide!=null){
+                                    if ("valider reservation".equals(valide)){
+                                        int valider = 1;
+                                        rq.MAJvalide(valider, idReservation);
+                                        JOptionPane.showMessageDialog(null, "La reservation a bien été validée ! ", "Information", JOptionPane.INFORMATION_MESSAGE); 
+                                    }
+                                    else {
+                                        int valider = 0;
+                                        rq.MAJvalide(valider, idReservation);
+                                        JOptionPane.showMessageDialog(null, "La reservation a bien été invalidée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
+                                    }
+                                }
+                            }
+                            if("date de début".equals(changement)){
+                                String dateActuelle = infos[0];
+                                String dateDe = (String)JOptionPane.showInputDialog(null, "Modifier la "+dateActuelle,"date de debut",JOptionPane.QUESTION_MESSAGE);
+                                if (dateDe!=null){
+                                    rq.MAJdateD(dateDe, idReservation);
+                                    JOptionPane.showMessageDialog(null, "La date de début a bien été modifiée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
+                            if("date de fin".equals(changement)){
+                                String dateActuelle = infos[1];
+                                String dateFi = (String)JOptionPane.showInputDialog(null, "Modifier la "+dateActuelle,"date de fin",JOptionPane.QUESTION_MESSAGE);
+                                if (dateFi!=null){
+                                    rq.MAJdateF(dateFi, idReservation);
+                                    JOptionPane.showMessageDialog(null, "La date de fin a bien été modifiée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
+                            if("heure de début".equals(changement)){
+                                String heureActuelle = infos[2];
+                                String heureDe = (String)JOptionPane.showInputDialog(null, "Modifier l'"+heureActuelle,"heure de debut",JOptionPane.QUESTION_MESSAGE);
+                                if (heureDe!=null){
+                                    rq.MAJheureD(heureDe, idReservation);
+                                    JOptionPane.showMessageDialog(null, "L'heure de début a bien été modifiée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
+                            if("heure de fin".equals(changement)){
+                                String heureActuelle = infos[3];
+                                String heureFi = (String)JOptionPane.showInputDialog(null, "Modifier l'"+heureActuelle,"heure de fin",JOptionPane.QUESTION_MESSAGE);
+                                if (heureFi!=null){
+                                    rq.MAJheureF(heureFi, idReservation);
+                                    JOptionPane.showMessageDialog(null, "L'heure de fin a bien été modifiée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
+                            if("nombre de personnes".equals(changement)){
+                                String nbPActuel = infos[7];
+                                String nbP = (String)JOptionPane.showInputDialog(null, "Modifier le "+nbPActuel,"nombre de personnes",JOptionPane.QUESTION_MESSAGE);
+                                if (nbP!=null){
+                                    int nb = Integer.parseInt(nbP, 10);
+                                    rq.MAJnbPersonnes(nb, idReservation);
+                                    JOptionPane.showMessageDialog(null, "Le nombre de personnes a bien été modifié ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
+                            if("nombre d'heures".equals(changement)){
+                                String nbHActuel = infos[8];
+                                String nbH = (String)JOptionPane.showInputDialog(null, "Modifier le "+nbHActuel,"nombre d'heures",JOptionPane.QUESTION_MESSAGE);
+                                if (nbH!=null){
+                                    int nb = Integer.parseInt(nbH, 10);
+                                    rq.MAJnbHeures(nb, idReservation);
+                                    JOptionPane.showMessageDialog(null, "Le nombre d'heures a bien été modifié ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
+                            if("modifier un service".equals(changement)){
+                                String services[] = rq.getServices();
+                                String serviceActuel = infos[4];
+                                if (!"aucun service".equals(serviceActuel)){
+                                    String service = (String)JOptionPane.showInputDialog(null, "Modifier le(s) "+serviceActuel,"modifier Service",JOptionPane.QUESTION_MESSAGE, null, services, services[0]);
+                                    if (service!=null){
+                                        rq.MAJchoix(idReservation, service);
+                                        JOptionPane.showMessageDialog(null, "Le service a bien été modifié ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
+                                    }
+                                }
+                                else{
+                                   JOptionPane.showInputDialog(null, "Il n'y a aucun service à modifier", "modifier service",JOptionPane.INFORMATION_MESSAGE); 
+                                }
+                            }
+                            if("ajouter un service".equals(changement)){
+                                String services[] = rq.getServices();
+                                String choix = (String)JOptionPane.showInputDialog(null, "quel service voulez vous ajouter?","ajouter service",JOptionPane.QUESTION_MESSAGE, null, services, services[0]);
+                                if (choix!=null){
+                                    rq.ajoutChoix(idReservation, choix);
+                                    JOptionPane.showMessageDialog(null, "Le service a bien été ajouté ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
+                            if("modifier une option".equals(changement)){
+                                String options[] = rq.getOptions();
+                                String optionActuelle = infos[5];
+                                if (!"aucun service".equals(optionActuelle)){
+                                    String option = (String)JOptionPane.showInputDialog(null, "Modifier l'"+optionActuelle,"modifier une option",JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                                    if (option!=null){
+                                        rq.MAJchoix(idReservation, option);
+                                        JOptionPane.showMessageDialog(null, "L'option a bien été modifié ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
+                                    }
+                                }
+                                else{
+                                    
+                                }      
+                            }
+                            if("ajouter une option".equals(changement)){
+                                String options[] = rq.getOptions();
+                                String choix = (String)JOptionPane.showInputDialog(null, "quel service voulez vous ajouter?","ajouter service",JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                                if (choix!=null){
+                                    rq.ajoutChoix(idReservation, choix);   
+                                    JOptionPane.showMessageDialog(null, "L'option a bien été ajouté ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
+                            String salles[] = {"studio", "cabane", "bureau", "atelier"};
+                            if("modifier une salle".equals(changement)){
+                                String salleActuelle = infos[9];
+                                salle = (String)JOptionPane.showInputDialog(null, "Modifier la "+salleActuelle,"modifier une salle",JOptionPane.QUESTION_MESSAGE, null, salles, salles[0]);
+                                if (salle!=null){
+                                    rq.MAJsalle(salle, disposition, idReservation);
+                                    JOptionPane.showMessageDialog(null, "La salle a bien été modifiée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
+                            if("ajouter une salle".equals(changement)){
+                                salle = (String)JOptionPane.showInputDialog(null, "quelle salle voulez vous ajouter?","ajouter salle",JOptionPane.QUESTION_MESSAGE, null, salles, salles[0]);
+                                if (salle!=null){
+                                    rq.ajoutSalle(idReservation, salle, disposition);  
+                                    JOptionPane.showMessageDialog(null, "La salle a bien été ajoutée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
+                            if("client".equals(changement)){
+                                String clientActuel = infos[11];
+                                String[] lesClients = rq.getClients();
+                                String[] nom = rq.getnomsClients();
+                                String[] prenom = rq.getprenomsClients();
+                                String leClient = (String)JOptionPane.showInputDialog(null, "Modifier le "+clientActuel,"modifier une option",JOptionPane.QUESTION_MESSAGE, null, lesClients,lesClients[0]);
+                                if (leClient!=null){
+                                    int lg = lesClients.length;
+                                    String[] leClient2 = new String[lg];
+                                    String nom2 = "";
+                                    String prenom2 = "";
+                                    for(int i = 0; i<longueur; i++){
+                                        leClient2[i] = prenom[i]+" "+nom[i];
+                                        if(client2[i] == null ? client == null : client2[i].equals(client)){
+                                            nom2 = noms[i];
+                                            prenom2 = prenoms[i];
+                                        }
+                                    }
+                                    rq.MAJclient(idReservation, prenom2, nom2);
+                                    JOptionPane.showMessageDialog(null, "Le client a bien été modifié ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
+                            if("disposition".equals(changement)){
+                                String lesDisposition[] ={"en_U", "ecole", "theatre", "ilots", "central", "salle_vide"}; 
+                                String dispositionActuelle = infos[10];
+                                disposition = (String)JOptionPane.showInputDialog(null, "Modifier la "+dispositionActuelle,"modifier une option",JOptionPane.QUESTION_MESSAGE, null, lesDisposition, lesDisposition[0]);
+                                if (disposition!=null){
+                                    rq.MAJdisposition(salle, disposition, idReservation);
+                                    JOptionPane.showMessageDialog(null, "La disposition a bien été modifiée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
+                            if("formule".equals(changement)){
+                                String formules[] = {"heure", "demi-journée", "journée"};
+                                String formuleActuelle = infos[6];
+                                String formule = (String)JOptionPane.showInputDialog(null, "Modifier la "+formuleActuelle,"modifier une formule",JOptionPane.QUESTION_MESSAGE, null, formules, formules[0]);
+                                if (formule!=null){
+                                    rq.MAJformule(idReservation, formule);
+                                    JOptionPane.showMessageDialog(null, "La formule a bien été modifiée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
+
+                            
+                        } 
+                        else{
+                            JOptionPane.showMessageDialog(null, "Il n'y a pas de reservation pour ce client", "information",JOptionPane.INFORMATION_MESSAGE);
                         }
                     }
-                    rq.MAJclient(idReservation, prenom2, nom2);
                 }
-                if("disposition".equals(changement)){
-                    String infos[] = rq.getInfosReservation(idReservation);
-                    String lesDisposition[] ={"en_U", "ecole", "theatre", "ilots", "central", "salle_vide"}; 
-                    String dispositionActuelle = infos[10];
-                    String disposition = (String)JOptionPane.showInputDialog(null, "disposition actuelle : "+dispositionActuelle,"modifier une option",JOptionPane.QUESTION_MESSAGE, null, lesDisposition, lesDisposition[0]);
-                    rq.MAJdisposition(idReservation, disposition);
-                }
-                if("formule".equals(changement)){
-                    String formule[] = {"heure", "demi-journée", "journée"};
-                    String infos[] = rq.getInfosReservation(idReservation);
-                    String formuleActuelle = infos[6];
-                    String disposition = (String)JOptionPane.showInputDialog(null, "formule actuelle : "+formuleActuelle,"modifier une formule",JOptionPane.QUESTION_MESSAGE, null, formule, formule[0]);
-                    rq.MAJdisposition(idReservation, disposition);
-                }
-                
-                
-                
-                String choix[] = {"petit dejeuner", "pause cafe", "pause cafe sucre", "pause cafe gourmand", "pause permanente", "plateaux repas", "afterwork", "champagne", "bloc note et stylos", "wifi", "tables", "chaises", "tableau", "microphone", "video-projecteur"};
-            } 
-            else{
-                JOptionPane.showMessageDialog(null, "Il n'y a pas de reservation pour ce client", "information",JOptionPane.INFORMATION_MESSAGE);
             }
         } 
         catch (SQLException ex) {
