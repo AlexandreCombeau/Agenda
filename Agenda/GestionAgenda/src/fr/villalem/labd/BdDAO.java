@@ -7,13 +7,11 @@ package fr.villalem.labd;
 import fr.villalem.reservations.Evenement;
 import fr.villalem.usager.Usager;
 import java.awt.Color;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 /**
  *
  * @author Villalemons
@@ -27,6 +25,7 @@ public class BdDAO {
         */
 	private Connexion co = null;
 	private ResultSet rs = null;
+        private Usager unUsager;
 
 	/*
         ========================================================================
@@ -57,16 +56,17 @@ public class BdDAO {
         public Usager getUsager(String login, String pwd) throws SQLException{
             String request = "SELECT * FROM Usager WHERE login='"+login+"' AND password='"+pwd+"'";
             rs = co.query(request);
-
-            int identifiant = rs.getInt("idUsager");
-            int admin = rs.getInt("administrateur");
-            String nom = rs.getString("nom");
-            String prenom = rs.getString("prenom");
-
-            Usager unUsager = new Usager(identifiant, admin, nom, prenom);
-
+            while (rs.next() ) {
+                int identifiant = rs.getInt("idUsager");
+                int admin = rs.getInt("administrateur");
+                String nom = rs.getString("nom");
+                String prenom = rs.getString("prenom");
+            
+                unUsager = new Usager(identifiant, admin, nom, prenom);
+            }
             return unUsager;
         }
+
 
         /**
          *
@@ -78,12 +78,15 @@ public class BdDAO {
             String quest = "SELECT * FROM "+table;
             String quest1 = "SELECT COUNT(id"+table+") FROM "+table;
             rs = co.query(quest1);
-            int longueurTableau = rs.getInt("COUNT(id"+table+")");
+            String[] nom = null ;
+            while(rs.next()){
+                int longueurTableau = rs.getInt("COUNT(id"+table+")");
+                nom = new String[longueurTableau];
+            }
             int i = 0;
-            String[] nom = new String[longueurTableau];
             rs = co.query(quest);
             while(rs.next()){
-               String name = rs.getString("nom"+table);
+               String name = rs.getString("libelle");
                nom[i] = name;
                i++;
             }
@@ -193,36 +196,39 @@ public class BdDAO {
          * @return Retourne toutes les réservations
          */
         public ResultSet getReservations() {
-            String request = "SELECT dateDebut, dateFin, nombrePersonnes, validation FROM Reservation";
+            String request = "SELECT dateDebut, dateFin, nbPersonnes, validation FROM réservation";
             rs = co.query(request);
             return rs;
         }
 
         /**
+     * @param cal
          * @return Retourne les reservations d'une semaine donnée
          */
         public ResultSet getReservationsSemaine(Calendar cal) {
 
             cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-            //System.out.println(cal.getTime());
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             String dateDebut = sdf.format(cal.getTime());
             cal.add(Calendar.DATE, 7); // obtient le dernier jour de la semaine (un dimanche)
             String dateFin = sdf.format(cal.getTime());
-            String request = "SELECT dateDebut, dateFin, nombrePersonnes, validation FROM Reservation WHERE dateDebut > '" + dateDebut +"' AND dateFin < '" + dateFin + "'";
+            String request = "SELECT dateDebut, dateFin, nbPersonnes, valide FROM reservations WHERE dateDebut > '" + dateDebut +"' AND dateFin < '" + dateFin + "'";
             rs = co.query(request);
             return rs;
         }
 
+        
+        // in work <tag>
         public ResultSet getReservationsJour(Calendar cal) throws SQLException {
             ArrayList<Evenement> ListeEvenements = new ArrayList<>();            
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             String dateDebut = sdf.format(cal.getTime());
-            cal.add(Calendar.DATE, 1); // obtient le jour suivant
+            //cal.add(Calendar.DATE, 1); // obtient le jour suivant
             String dateFin = sdf.format(cal.getTime());
-            String request = "SELECT dateDebut, dateFin, nombrePersonnes, validation FROM Reservation WHERE dateDebut > '" + dateDebut +"' AND dateFin < '" + dateFin + "'";
-            cal.add(Calendar.DATE, -1); // reviens à la date de base
-            rs = co.query(request);
+            String request = "SELECT dateDebut, dateFin, nbPersonnes, estValide, heureDebut, heureFin FROM reservations WHERE dateDebut <= '" + dateDebut +"' AND dateFin >= '" + dateFin + "'";
+            //cal.add(Calendar.DATE, -1); // reviens à la date de base
+            rs = co.query(request);    
             return rs;
         }
 
@@ -259,7 +265,6 @@ public class BdDAO {
             String quest1 = "SELECT COUNT(idUsager) From Usager";
             rs = co.query(quest1);
             int longueurTableau = rs.getInt("COUNT(idUsager)");
-            //longueurTableau = Integer.parseInt();
             int i = 0;
             String[] nom = new String[longueurTableau];
             rs = co.query(quest);
@@ -269,6 +274,324 @@ public class BdDAO {
                i++;
             }
             return nom;
+        }
+        
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
+    public String[] getClients() throws SQLException{
+            String quest = "SELECT nom, prenom FROM clients";
+            ArrayList<String> nom = new ArrayList<String>();
+            int i = 0;
+            rs = co.query(quest);
+            while(rs.next()){
+               String name = rs.getString("prenom")+" "+rs.getString("nom");
+               nom.add(name);
+               i++;
+            }
+            String nom2[] = new String[nom.size()];
+            nom2 = nom.toArray(nom2);
+            return nom2;
+        }
+
+        /**
+         *
+         * @param id
+         * @return
+         * @throws SQLException
+         */
+        public String[] getInfosClient(int id) throws SQLException{
+            String quest = "SELECT nom, prenom, adresseFacturation, entite, telephone, eMail FROM clients WHERE idClient='"+id+"'";
+            rs = co.query(quest);
+            ArrayList<String> client = new ArrayList<>(); 
+            while (rs.next()){
+                String nom = rs.getString("nom")+" "+rs.getString("prenom");
+                String adresse = rs.getString("adresseFacturation");
+                String entite = rs.getString("entite"); 
+                String telephone = rs.getString("telephone");
+                String eMail = rs.getString("eMail");
+                client.add(nom);
+                client.add(adresse);
+                client.add(entite);
+                client.add(telephone);
+                client.add(eMail);   
+            }
+            String client2[] = new String[6];
+            client2 = client.toArray(client2);
+            return client2;
+        }
+        
+        public int getIdClient(String nom, String prenom) throws SQLException{
+            String quest = "SELECT idClient FROM clients WHERE nom='"+nom+"' AND prenom='"+prenom+"'";
+            rs = co.query(quest);
+            int idClient=5;
+            while (rs.next()){
+                idClient = rs.getInt("idClient");
+            }
+            return idClient;
+        }
+        
+        public String[] getnomsClients() throws SQLException{
+            String quest = "SELECT nom FROM clients";
+            ArrayList<String> nom = new ArrayList<String>();
+            int i = 0;
+            rs = co.query(quest);
+            while(rs.next()){
+               String name = rs.getString("nom");
+               nom.add(name);
+               i++;
+            }
+            String nom2[] = new String[nom.size()];
+            nom2 = nom.toArray(nom2);
+            return nom2;
+        }
+        
+        public String[] getprenomsClients() throws SQLException{
+            String quest = "SELECT prenom FROM clients";
+            ArrayList<String> nom = new ArrayList<String>();
+            int i = 0;
+            rs = co.query(quest);
+            while(rs.next()){
+               String name = rs.getString("prenom");
+               nom.add(name);
+               i++;
+            }
+            String nom2[] = new String[nom.size()];
+            nom2 = nom.toArray(nom2);
+            return nom2;
+        }
+        
+        public int getIdReservation(int idClient, String dateDe) throws SQLException{
+            String quest = "SELECT idReservation FROM reservations WHERE fkidClient='"+idClient+"' AND dateDebut='"+dateDe+"'";
+            rs = co.query(quest);
+            int IdReservation=0;
+            while (rs.next()){
+                IdReservation = rs.getInt("IdReservation");
+                System.out.println(IdReservation);
+            }
+            return IdReservation;
+        }
+    /**
+     *
+     * @param idReservation
+     * @param laFormule
+     * @return
+     * @throws SQLException
+     */
+        public String[] getInfosReservation(int idReservation) throws SQLException{
+            String heureF = "SELECT heureFin FROM reservations WHERE idReservation='"+idReservation+"'";
+            String nom = "SELECT nom, prenom FROM clients, reservations WHERE clients.idClient=reservations.fkidClient AND reservations.idReservation='"+idReservation+"'";
+            String heureD = "SELECT heureDebut  FROM reservations WHERE idReservation='"+idReservation+"'";
+            String dateF = "SELECT dateFin FROM reservations WHERE idReservation='"+idReservation+"'";
+            String nbP = "SELECT nbPersonnes  FROM reservations WHERE idReservation='"+idReservation+"'";
+            String nbH = "SELECT nbHeures  FROM reservations WHERE idReservation='"+idReservation+"'";
+            String dateD = "SELECT dateDebut FROM reservations WHERE idReservation='"+idReservation+"'";
+            String service = "SELECT libelle FROM optionsServices, choix WHERE optionsServices.idOptionsServices=choix.fkidOptionsServices AND choix.fkidReservation='"+idReservation+"' AND optionsServices.nature='service'";
+            String option = "SELECT libelle FROM optionsServices, choix WHERE optionsServices.idOptionsServices=choix.fkidOptionsServices AND choix.fkidReservation='"+idReservation+"' AND optionsservices.nature='option'";
+            String formule = "SELECT libelle FROM formule, reservations WHERE formule.idFormule=reservations.fkidFormule AND reservations.idReservation='"+idReservation+"'";
+            String salle = "SELECT libelle FROM salle, infoSalle, sallesResa WHERE infoSalle.fkidSalle=salle.idSalle AND sallesResa.fkidInfoSalle=infoSalle.idInfoSalle AND sallesResa.fkidReservation='"+idReservation+"'";
+            String disposition = "SELECT libelle FROM sallesResa, disposition, infoSalle WHERE infoSalle.fkidDisposition=disposition.idDisposition AND sallesResa.fkidInfoSalle=infoSalle.idInfoSalle AND sallesResa.fkidReservation='"+idReservation+"'";
+            
+            ArrayList<String> infosReservation = new ArrayList<>();  
+            
+            rs = co.query(dateD);
+            while(rs.next()){
+                String DateDebut = rs.getString("dateDebut");
+                infosReservation.add("Date de début: " +DateDebut);
+            }
+            
+            rs = co.query(dateF);
+            while(rs.next()){
+                String dateFin = rs.getString("dateFin");
+                infosReservation.add("Date de fin : " +dateFin);
+            }
+            
+            rs = co.query(heureD);
+            while(rs.next()){
+                String heureDebut = rs.getString("heureDebut");
+                infosReservation.add("Heure de début : "+heureDebut);
+            }
+            
+            rs = co.query(heureF);
+            while(rs.next()){
+                String heureFin = rs.getString("heureFin");
+                infosReservation.add("Heure de fin : "+ heureFin);
+            }
+            
+            rs = co.query(service);
+            ArrayList<String> lesServices = new ArrayList<>();  
+            while(rs.next()){
+                String leService = rs.getString("libelle");
+                lesServices.add(leService);
+            }
+            if (!lesServices.isEmpty()){
+                infosReservation.add("Service(s) : " +lesServices);
+            }
+            else{
+                infosReservation.add("Service(s) : aucun service");
+            }
+            
+            
+            rs = co.query(option);
+            ArrayList<String> lesOptions = new ArrayList<>();  
+            while(rs.next()){
+                String lOption = rs.getString("libelle");
+                lesOptions.add(lOption);
+            }
+            if (!lesOptions.isEmpty()){
+                infosReservation.add("Option(s) : " +lesOptions);
+            }
+            else{
+                infosReservation.add("Option(s) : aucune option");
+            }
+            
+            
+            rs = co.query(formule);
+            while(rs.next()){
+                String laformule = rs.getString("libelle");
+                infosReservation.add("Formule : "+laformule);
+            }
+            
+            rs = co.query(nbP);
+            while(rs.next()){
+                int nb = rs.getInt("nbPersonnes");
+                String nbS = Integer.toString(nb);
+                infosReservation.add("Nombre de personnes :"+nbS);
+            }
+            
+            rs = co.query(nbH);
+            while(rs.next()){
+                int nb = rs.getInt("nbHeures");
+                String nbS = Integer.toString(nb);
+                infosReservation.add("Nombre d'heures :"+nbS);
+            }
+            
+            rs = co.query(salle);
+            ArrayList<String> lesSalles = new ArrayList<>();  
+            while(rs.next()){
+               String laSalle = rs.getString("libelle");
+               lesSalles.add(laSalle);
+            }         
+            infosReservation.add("Salle(s) : "+lesSalles);
+            
+            rs = co.query(disposition);
+            while(rs.next()){
+                String laDisposition = rs.getString("libelle");
+                infosReservation.add("Disposition : "+laDisposition);
+            }
+            
+            rs = co.query(nom);
+            while(rs.next()){
+               String name = rs.getString("prenom")+" "+rs.getString("nom");
+               infosReservation.add("Client : "+name);
+            }
+           
+            
+            String tableau[] = new String[infosReservation.size()];
+            tableau = infosReservation.toArray(tableau);
+            
+            return tableau;
+        }
+            
+        
+        public String getNomClient(int idReservation) throws SQLException{
+            String nom = "SELECT nom FROM clients, reservations WHERE clients.idClient=reservations.fkidClient AND reservations.idReservation='"+idReservation+"'";
+            rs = co.query(nom);
+            String name = "";
+            while(rs.next()){
+               name = rs.getString("nom");
+            }
+            return name; 
+        }
+        public String getPrenomClient(int idReservation) throws SQLException{
+            String prenom = "SELECT nom, prenom FROM clients, reservations WHERE clients.idClient=reservations.fkidClient AND reservations.idReservation='"+idReservation+"'";
+            rs = co.query(prenom);
+            String name = "";
+            while(rs.next()){
+               name = rs.getString("prenom");
+            }
+            return name;
+        }
+        
+        
+        public String[] getDatesReservations(int idClient) throws SQLException{
+            String dates = "SELECT dateDebut FROM reservations WHERE fkidClient='"+idClient+"'";
+            ArrayList<String> datesR = new ArrayList<>();
+            rs = co.query(dates);
+            String date = "";
+            while(rs.next()){
+               date = rs.getString("dateDebut");
+               datesR.add(date);
+            }
+            datesR.add("");
+            String datesRe[] = new String[datesR.size()];
+            datesRe = datesR.toArray(datesRe);
+            return datesRe;
+        }
+        public String getDateDebut(int idReservation) throws SQLException{
+            String dateR = "SELECT dateDebut FROM reservations WHERE idReservation='"+idReservation+"'";
+            rs = co.query(dateR);
+            String date = "";
+            while(rs.next()){
+               date = rs.getString("dateDebut");
+            }
+            return date;
+        }
+        
+        public String getValidite(int idReservation) throws SQLException{
+            String validite = "SELECT estValide FROM reservations WHERE idReservation='"+idReservation+"'";
+            rs = co.query(validite);
+            String valide = "";
+            while(rs.next()){
+               valide = rs.getString("estValide");
+            }
+            if("1".equals(valide)){
+                valide = "valide";
+            }
+            else{
+                valide = "non valide";
+            }
+            return valide;
+        }
+        
+       
+        /*public int reservationExiste(int idClient, String dateDebut) throws SQLException{
+            String existe = "SELECT count(*) as nombre FROM reservations WHERE '"+idClient+"'=fkidClient AND '"+dateDebut+"'=dateDebut";
+            rs = co.query(existe);
+            int resa = 0;
+            while(rs.next()){
+            resa = rs.getInt("nombre");
+            }           
+            return resa;
+        }
+        */
+        
+        public String[] getServices() throws SQLException{
+            String service = "SELECT libelle FROM optionsServices WHERE nature='service'";
+            ArrayList<String> lesServices = new ArrayList<>();  
+            rs = co.query(service);
+            while(rs.next()){
+                String services = rs.getString("libelle");
+                lesServices.add(services);
+            }
+            String lesServicestab[] = new String[lesServices.size()];
+            lesServicestab = lesServices.toArray(lesServicestab);
+            return lesServicestab;
+        }
+        
+        public String[] getOptions() throws SQLException{
+            String option = "SELECT libelle FROM optionsServices WHERE nature='option'";
+            ArrayList<String> lesOptions = new ArrayList<>();  
+            rs = co.query(option);
+            while(rs.next()){
+                String services = rs.getString("libelle");
+                lesOptions.add(services);
+            }
+            String lesOptionstab[] = new String[lesOptions.size()];
+            lesOptionstab = lesOptions.toArray(lesOptionstab);
+            return lesOptionstab;
         }
 
         /*
@@ -291,11 +614,7 @@ public class BdDAO {
         public boolean authentification(String log, String pwd) throws SQLException{
 		String request = "Select login, password From Usager Where login='"+log+"' And password='"+pwd+"'";
 		rs = co.query(request);
-		if(rs.next()){
-                    //co.close();
-                    return true;
-		}
-		return false;
+		return rs.next();
 	}
 
         /**
@@ -309,11 +628,8 @@ public class BdDAO {
         public boolean checkErreurAjout(String nomTable, String nom, String couleur) throws SQLException{
             //Comparaison avec les données de la BD pour déterminer les doublons
             String quest1 = "SELECT * FROM "+nomTable+" WHERE nom"+nomTable+" = '"+nom+"'";
-            String quest2 = "SELECT * FROM Salle, Tache WHERE Salle.codeCouleur = '"+couleur+"' OR Tache.codeCouleur = '"+couleur+"'";
-            if((rs = co.query(quest1)).next() || (rs = co.query(quest2)).next()){
-                return false;
-            }
-            return true;
+            String quest2 = "SELECT * FROM Salle, Taches WHERE Salle.codeCouleur = '"+couleur+"' OR Tache.codeCouleur = '"+couleur+"'";
+            return !((rs = co.query(quest1)).next() || (rs = co.query(quest2)).next());
         }
 
         /**
@@ -325,10 +641,7 @@ public class BdDAO {
          */
         public boolean checkErreurModif(String nomTable, String nom) throws SQLException{
             String quest = "SELECT * FROM "+nomTable+" WHERE nom"+nomTable+" = '"+nom+"'";
-            if(co.query(quest).next()){
-                return false;
-            }
-            return true;
+            return !co.query(quest).next();
         }
 
 
@@ -386,10 +699,7 @@ public class BdDAO {
         public boolean checkUtilisateurEmail(String email) throws SQLException{
             String request = "SELECT * FROM Usager WHERE mail = '"+email+"'";
             rs = co.query(request);
-            if(rs.next()){
-                return false;
-            }
-            return true;
+            return !rs.next();
         }
 
         /**
@@ -401,10 +711,7 @@ public class BdDAO {
         public boolean checkUtilisateurLogin(String login) throws SQLException{
             String request = "SELECT * FROM Usager WHERE login = '"+login+"'";
             rs = co.query(request);
-            if(rs.next()){
-                return false;
-            }
-            return true;
+            return !rs.next();
         }
 
         /*
@@ -485,10 +792,70 @@ public class BdDAO {
         }
         
         public void MAJprixPlateauxRepas(double prix){
-            String quest = "UPDATE Facultatif SET prixHT = "+prix+" WHERE libelle = 'Plateaux repas'";
+            String quest = "UPDATE OptionsServices SET prixHT = "+prix+" WHERE libelle = 'Plateaux repas'";
             co.query(quest);
         }
 
+        public void MAJvalide(int valide,int idReservation) throws SQLException{
+             String quest = "UPDATE reservations SET estValide = '"+valide+"' WHERE idReservation = '"+idReservation+"'";
+             co.update(quest);
+             System.out.println("UPDATE REUSSIE");
+        }
+        
+        public void MAJdateD(String dateD,int idReservation) throws SQLException{
+             String quest = "UPDATE reservations SET dateDebut = '"+dateD+"' WHERE idReservation = '"+idReservation+"'";
+             co.update(quest);
+        } 
+        
+        public void MAJdateF(String dateF, int idReservation) throws SQLException{
+             String quest = "UPDATE reservations SET dateFin='"+dateF+"' WHERE idReservation = '"+idReservation+"'";
+             co.update(quest);
+        } 
+        
+        public void MAJheureD(String heureD, int idReservation) throws SQLException{
+             String quest = "UPDATE reservations SET heureDebut = '"+heureD+"' WHERE idReservation = '"+idReservation+"'";
+             co.update(quest);
+        }
+         
+        public void MAJheureF(String heureF, int idReservation) throws SQLException{
+             String quest = "UPDATE reservations SET heureFin = '"+heureF+"' WHERE idReservation = '"+idReservation+"'";
+             co.update(quest);
+        }
+        
+        public void MAJnbPersonnes(int nbP, int idReservation) throws SQLException{
+             String quest = "UPDATE reservations SET nbPersonnes = '"+nbP+"' WHERE idReservation = '"+idReservation+"'";
+             co.update(quest);
+        }
+        
+        public void MAJnbHeures(int nbH,int idReservation) throws SQLException{
+             String quest = "UPDATE reservations SET nbHeures = '"+nbH+"' WHERE idReservation = '"+idReservation+"'";
+             co.update(quest);
+        }
+        
+        public void MAJformule(int idReservation, String formule) throws SQLException{
+             String quest = "UPDATE reservations SET fkidFormule=(SELECT idFormule FROM formule WHERE libelle='"+formule+"') WHERE idReservation = '"+idReservation+"'";
+             co.update(quest);
+        }
+        
+        public void MAJclient(int idReservation, String prenom, String nom) throws SQLException{
+             String quest = "UPDATE reservations SET fkidClient = (SELECT idClient from clients where nom = '"+nom+"' AND prenom = '"+prenom+"') WHERE idReservation = '"+idReservation+"'";
+             co.update(quest);
+        }
+        
+        public void MAJchoix(int idReservation, String choix) throws SQLException{
+             String quest = "UPDATE choix SET fkidOptionsServices = (SELECT idOptionsServices from optionsServices where libelle = '"+choix+"') WHERE idReservation = '"+idReservation+"'";
+             co.update(quest);
+        }
+        
+        public void MAJsalle(String salle, String disposition, int idReservation) throws SQLException{
+            String quest = "UPDATE sallesResa SET fkidInfoSalle = (SELECT idInfoSalle FROM infoSalle WHERE idSalle = (SELECT idSalle FROM salle WHERE libelle ='"+salle+"') AND idDisposition=(SELECT idDisposition FROM disposition WHERE libelle = '"+disposition+"') WHERE fkidReservation = '"+idReservation+"')";
+            co.update(quest);
+        }
+        
+        public void MAJdisposition(String salle, String disposition, int idReservation) throws SQLException{
+             String quest = "UPDATE sallesResa SET fkidInfoSalle = (SELECT idInfoSalle FROM infoSalle WHERE idSalle = (SELECT idSalle FROM salle WHERE libelle ='"+salle+"') AND idDisposition=(SELECT idDisposition FROM disposition WHERE libelle = '"+disposition+"') WHERE fkidReservation = '"+idReservation+"')";
+             co.update(quest);
+        }
         /*
         ========================================================================
                                     FIN MISES A JOUR
@@ -519,7 +886,7 @@ public class BdDAO {
          * @param comment Prend le commentaire que la nouvelle tache aura
          */
         public void ajoutTache(String name, String couleur, String comment){
-            String quest = "INSERT INTO Tache(nomTache, codeCouleur, descriptif) VALUES('"+name+"', '"+couleur+"', '"+comment+"')";
+            String quest = "INSERT INTO Taches(nomTache, codeCouleur, descriptif) VALUES('"+name+"', '"+couleur+"', '"+comment+"')";
             co.query(quest);
             System.out.println("Insertion réussie");
         }
@@ -536,7 +903,16 @@ public class BdDAO {
         public void ajoutUtilisateur(String nom, String prenom, String email, int admin, String login, String mdp){
             String request = "INSERT INTO Usager(nom, prenom, mail, administrateur, login, password) VALUES('"+nom+"','"+prenom+"','"+email+"',"+admin+",'"+login+"','"+mdp+"')";
             rs = co.query(request);
-            System.out.println("Insertion du nouvel utilisateur "+prenom+" "+nom+" réussie !");
+        }
+        
+        public void ajoutChoix(int idReservation, String choix) throws SQLException{
+             String nouveauChoix = "INSERT INTO choix (fkidReservation, fkidOptionsServices) VALUES ('"+idReservation+"', (SELECT idOptionsServices FROM optionsServices WHERE libelle='"+choix+"'))";
+             rs = co.query(nouveauChoix);
+        }
+        
+        public void ajoutSalle(int idReservation, String salle, String disposition) throws SQLException{
+             String nouvelleSalle = "INSERT INTO sallesResa (fkidReservation, fkidInfoSalle) VALUES ('"+idReservation+"', (SELECT idInfoSalle FROM infoSalle WHERE fkidSalle=(SELECT idSalle FROM salle WHERE libelle = '"+salle+"') AND fkiddisposition=(SELECT idDisposition FROM disposition WHERE libelle='"+disposition+"')))";
+             rs = co.query(nouvelleSalle);
         }
 
         /*
@@ -569,11 +945,11 @@ public class BdDAO {
             co.query(quest);
             System.out.println("SUPPRESSION REUSSIE");
         }
-
+}
         /*
         ========================================================================
                                     FIN SUPPRESSION
         ========================================================================
         */
 
-}
+ 

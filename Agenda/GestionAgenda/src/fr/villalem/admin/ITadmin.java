@@ -40,12 +40,14 @@ public class ITadmin extends javax.swing.JFrame {
         btnOptionsSalles = new javax.swing.JButton();
         btnOptionsTaches = new javax.swing.JButton();
         btnGenerationDevis = new javax.swing.JButton();
+        btnRechercher = new javax.swing.JButton();
+        btnModifier = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Paramètres administrateur");
 
-        btnQuitter.setBackground(java.awt.Color.green);
+        btnQuitter.setBackground(java.awt.Color.white);
         btnQuitter.setText("Quitter");
         btnQuitter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -81,26 +83,45 @@ public class ITadmin extends javax.swing.JFrame {
             }
         });
 
+        btnRechercher.setText("Recherches d'informations");
+        btnRechercher.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRechercherActionPerformed(evt);
+            }
+        });
+
+        btnModifier.setText("Modifier des informations");
+        btnModifier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifierActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnQuitter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(330, 330, 330)
-                        .addComponent(jLabel1)
-                        .addGap(0, 337, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnOptionsTaches, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(btnOptionsUtilisateurs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(btnModifier, javax.swing.GroupLayout.PREFERRED_SIZE, 923, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(404, 404, 404)
+                                .addComponent(jLabel1)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(btnGenerationDevis, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnQuitter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnOptionsTaches, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnGenerationDevis, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnRechercher, javax.swing.GroupLayout.PREFERRED_SIZE, 923, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -119,14 +140,18 @@ public class ITadmin extends javax.swing.JFrame {
                 .addComponent(btnOptionsTaches, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnGenerationDevis, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnRechercher, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnModifier, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btnQuitter, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37))
+                .addContainerGap(22, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(54, 54, 54)
                     .addComponent(btnOptionsSalles, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(280, Short.MAX_VALUE)))
+                    .addContainerGap(341, Short.MAX_VALUE)))
         );
 
         pack();
@@ -136,14 +161,13 @@ public class ITadmin extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnQuitterActionPerformed
 /**
- * Cette fonction sert pour choisir une option (Ajout, Modification, Suppression) relative à une salle.
+ * Cette fonction sert à choisir une option (Ajout, Modification, Suppression) relative à une salle.
  * @param evt 
  */
     private void btnOptionsSallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOptionsSallesActionPerformed
         String[] options = {"Ajouter une salle", "Modifier une salle", "Supprimer une salle"};
         String nom = "";
         nom = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une option","Options salles",JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-        System.out.println(nom);
         if(nom != null){
         switch(nom){
             case "Ajouter une salle":
@@ -160,7 +184,6 @@ public class ITadmin extends javax.swing.JFrame {
                 String nomsalle;
             try {
                 nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTacheEntiteFormule("Salle"), rq.getSalleTacheEntiteFormule("Salle")[0]);
-                System.out.println("ICIIII : "+nomsalle);
                 if(nomsalle != null){
                     ITmodif modif = new ITmodif();
                     modif.setTxtTitle("Salle : "+nomsalle);
@@ -168,7 +191,6 @@ public class ITadmin extends javax.swing.JFrame {
                     modif.getLbNom().setVisible(false);
                     modif.setLbTable("Salle");
                     modif.getLbTable().setVisible(false);
-                    System.out.println("ICII LA COULEUR : "+rq.hex2Rgb("Salle", nomsalle));
                     modif.getBtnCouleur().setBackground(rq.hex2Rgb("Salle", nomsalle));
                     modif.setVisible(true); 
                 }
@@ -183,7 +205,7 @@ public class ITadmin extends javax.swing.JFrame {
                     int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer : "+nomsalle+"?", "Suppression de la salle : "+nomsalle, JOptionPane.YES_NO_OPTION);
                     if(choix == 0){
                         //Requete DELETE sur la BD
-                        rq.delete("Salle", nomsalle);
+                        rq.delete("salle", nomsalle);
                         JOptionPane.showMessageDialog(null, "La salle '"+nomsalle+"' a été supprimée !");
                     }
                     else{
@@ -206,7 +228,6 @@ public class ITadmin extends javax.swing.JFrame {
         String[] options = {"Ajouter un utilisateur", "Modifier un utilisateur", "Supprimer un utilisateur"};
         String nom;
         nom = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une option","Options utilisateurs",JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-        System.out.println(nom);
         switch(nom){
             case "Ajouter un utilisateur":
                 ITajoutUtilisateur ajout = new ITajoutUtilisateur();
@@ -259,8 +280,7 @@ public class ITadmin extends javax.swing.JFrame {
     private void btnOptionsTachesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOptionsTachesActionPerformed
         String[] options = {"Ajouter une tache", "Modifier une tache", "Supprimer une tache"};
         String nom = "";
-        nom = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une option","Options taches",JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-        System.out.println(nom);
+        nom = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une option","Options taches",JOptionPane.QUESTION_MESSAGE,null,options,options[0]);;
         if(nom != null){
         switch(nom){
             case "Ajouter une tache":
@@ -284,7 +304,6 @@ public class ITadmin extends javax.swing.JFrame {
                     modif.setTxtTitle("Tache : "+nomTache);
                     modif.setLbNom(nomTache);
                     modif.getLbNom().setVisible(false);
-                    System.out.println("ICII LA COULEUR : "+rq.hex2Rgb("Tache", nomTache));
                     modif.getBtnCouleur().setBackground(rq.hex2Rgb("Tache", nomTache));
                     modif.getBtnSuperficie().setVisible(false);
                     modif.setLbTable("Tache");
@@ -323,12 +342,24 @@ public class ITadmin extends javax.swing.JFrame {
         devis.setVisible(true);
     }//GEN-LAST:event_btnGenerationDevisActionPerformed
 
+    private void btnRechercherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRechercherActionPerformed
+        ITboutonsRechercher rechercher = new ITboutonsRechercher();
+        rechercher.setVisible(true);
+    }//GEN-LAST:event_btnRechercherActionPerformed
+
+    private void btnModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifierActionPerformed
+        ITboutonsModifier modifier = new ITboutonsModifier();
+        modifier.setVisible(true);
+    }//GEN-LAST:event_btnModifierActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerationDevis;
+    private javax.swing.JButton btnModifier;
     private javax.swing.JButton btnOptionsSalles;
     private javax.swing.JButton btnOptionsTaches;
     private javax.swing.JButton btnOptionsUtilisateurs;
     private javax.swing.JButton btnQuitter;
+    private javax.swing.JButton btnRechercher;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

@@ -50,7 +50,7 @@
                                       <Component id="txtName" min="-2" pref="130" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                                       <Component id="lbHautDroit" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="24" max="32767" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
                                       <Component id="btnColor" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
@@ -151,7 +151,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Choisir la couleur"/>
         <Property name="borderPainted" type="boolean" value="false"/>
-        <Property name="opaque" type="boolean" value="true"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnColorActionPerformed"/>

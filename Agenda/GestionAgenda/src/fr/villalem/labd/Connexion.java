@@ -25,9 +25,12 @@ public class Connexion {
      * Cette fonction sert à se connecter à la base de données
      */
     public void connect() {
+        String url = "jdbc:mysql://127.0.0.1/villalemagenda";
+        String login = "java";
+        String mdp = "Villa2017";
         try {
-            Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:" + DBPath);
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection(url, login, mdp);
             statement = connection.createStatement();
             System.out.println("Connexion a " + DBPath + " avec succès");
         } catch (ClassNotFoundException notFoundException) {
@@ -47,7 +50,6 @@ public class Connexion {
             statement.close();
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
     
@@ -61,10 +63,28 @@ public class Connexion {
         try {
             result = statement.executeQuery(request);
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println("Erreur dans la requête : " + request);
         }
         return result;
+    }
+    
+    /**
+     *
+     * @param request
+     * @return 
+     */
+    public int update (String request) {
+        int result = 0;
+        try {
+            statement.executeUpdate(request);
+        } catch (SQLException e) {
+            System.out.println("Erreur dans la requête : " + request);
+        }
+        return result;
+    }
+
+    Statement createStatement(int TYPE_SCROLL_SENSITIVE, int CONCUR_UPDATABLE) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

@@ -7,6 +7,7 @@ package fr.villalem.labd;
 
 import fr.villalem.reservations.ITagenda;
 import static gestionagenda.GestionAgenda.rq;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -170,10 +171,8 @@ public class ITconnexion extends javax.swing.JFrame {
             if(rq.authentification(login, pwd)){
                 //Transmettre les données de la personne connecté
                 Usager unUsager = rq.getUsager(login, pwd);
-                System.out.println(unUsager);
                 //Fin transmission
                 this.dispose();
-                System.out.println(System.getProperty("user.name"));
                 ITagenda it = new ITagenda();
                 if(unUsager.getAdmin() != 1){
                     it.getBtnAdmin().setVisible(false);
