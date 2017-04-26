@@ -196,7 +196,7 @@ public class BdDAO {
          * @return Retourne toutes les réservations
          */
         public ResultSet getReservations() {
-            String request = "SELECT dateDebut, dateFin, nbPersonnes, validation FROM réservation";
+            String request = "SELECT dateDebut, dateFin, nbPersonnes, validation FROM reservation";
             rs = co.query(request);
             return rs;
         }
@@ -282,7 +282,7 @@ public class BdDAO {
      * @throws SQLException
      */
     public String[] getClients() throws SQLException{
-            String quest = "SELECT nom, prenom FROM clients";
+            String quest = "SELECT nom, prenom FROM client";
             ArrayList<String> nom = new ArrayList<String>();
             int i = 0;
             rs = co.query(quest);
@@ -303,7 +303,7 @@ public class BdDAO {
          * @throws SQLException
          */
         public String[] getInfosClient(int id) throws SQLException{
-            String quest = "SELECT nom, prenom, adresseFacturation, entite, telephone, eMail FROM clients WHERE idClient='"+id+"'";
+            String quest = "SELECT nom, prenom, adresseFacturation, entite, telephone, eMail FROM client WHERE idClient='"+id+"'";
             rs = co.query(quest);
             ArrayList<String> client = new ArrayList<>(); 
             while (rs.next()){
@@ -324,7 +324,7 @@ public class BdDAO {
         }
         
         public int getIdClient(String nom, String prenom) throws SQLException{
-            String quest = "SELECT idClient FROM clients WHERE nom='"+nom+"' AND prenom='"+prenom+"'";
+            String quest = "SELECT idClient FROM client WHERE nom='"+nom+"' AND prenom='"+prenom+"'";
             rs = co.query(quest);
             int idClient=5;
             while (rs.next()){
@@ -334,7 +334,7 @@ public class BdDAO {
         }
         
         public String[] getnomsClients() throws SQLException{
-            String quest = "SELECT nom FROM clients";
+            String quest = "SELECT nom FROM client";
             ArrayList<String> nom = new ArrayList<String>();
             int i = 0;
             rs = co.query(quest);
@@ -349,7 +349,7 @@ public class BdDAO {
         }
         
         public String[] getprenomsClients() throws SQLException{
-            String quest = "SELECT prenom FROM clients";
+            String quest = "SELECT prenom FROM client";
             ArrayList<String> nom = new ArrayList<String>();
             int i = 0;
             rs = co.query(quest);
@@ -382,7 +382,7 @@ public class BdDAO {
      */
         public String[] getInfosReservation(int idReservation) throws SQLException{
             String heureF = "SELECT heureFin FROM reservations WHERE idReservation='"+idReservation+"'";
-            String nom = "SELECT nom, prenom FROM clients, reservations WHERE clients.idClient=reservations.fkidClient AND reservations.idReservation='"+idReservation+"'";
+            String nom = "SELECT nom, prenom FROM client, reservations WHERE client.idClient=reservations.fkidClient AND reservations.idReservation='"+idReservation+"'";
             String heureD = "SELECT heureDebut  FROM reservations WHERE idReservation='"+idReservation+"'";
             String dateF = "SELECT dateFin FROM reservations WHERE idReservation='"+idReservation+"'";
             String nbP = "SELECT nbPersonnes  FROM reservations WHERE idReservation='"+idReservation+"'";
@@ -497,7 +497,7 @@ public class BdDAO {
             
         
         public String getNomClient(int idReservation) throws SQLException{
-            String nom = "SELECT nom FROM clients, reservations WHERE clients.idClient=reservations.fkidClient AND reservations.idReservation='"+idReservation+"'";
+            String nom = "SELECT nom FROM client, reservations WHERE client.idClient=reservations.fkidClient AND reservations.idReservation='"+idReservation+"'";
             rs = co.query(nom);
             String name = "";
             while(rs.next()){
@@ -506,7 +506,7 @@ public class BdDAO {
             return name; 
         }
         public String getPrenomClient(int idReservation) throws SQLException{
-            String prenom = "SELECT nom, prenom FROM clients, reservations WHERE clients.idClient=reservations.fkidClient AND reservations.idReservation='"+idReservation+"'";
+            String prenom = "SELECT nom, prenom FROM client, reservations WHERE client.idClient=reservations.fkidClient AND reservations.idReservation='"+idReservation+"'";
             rs = co.query(prenom);
             String name = "";
             while(rs.next()){
@@ -612,7 +612,7 @@ public class BdDAO {
          * @throws SQLException
          */
         public boolean authentification(String log, String pwd) throws SQLException{
-		String request = "Select login, password From Usager Where login='"+log+"' And password='"+pwd+"'";
+		String request = "SELECT login, password FROM Usager WHERE login='"+log+"' AND password='"+pwd+"'";
 		rs = co.query(request);
 		return rs.next();
 	}
@@ -838,7 +838,7 @@ public class BdDAO {
         }
         
         public void MAJclient(int idReservation, String prenom, String nom) throws SQLException{
-             String quest = "UPDATE reservations SET fkidClient = (SELECT idClient from clients where nom = '"+nom+"' AND prenom = '"+prenom+"') WHERE idReservation = '"+idReservation+"'";
+             String quest = "UPDATE reservations SET fkidClient = (SELECT idClient FROM client WHERE nom = '"+nom+"' AND prenom = '"+prenom+"') WHERE idReservation = '"+idReservation+"'";
              co.update(quest);
         }
         

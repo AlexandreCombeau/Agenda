@@ -144,15 +144,19 @@ public class ITboutonsRechercher extends javax.swing.JFrame {
             int idClient = rq.getIdClient(leNom, lePrenom);
             String[] dates = rq.getDatesReservations(idClient);
             String date = "";
-            date = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner un client","Rechercher un client",JOptionPane.QUESTION_MESSAGE, null,dates,dates[0]);
             int idReservation = rq.getIdReservation(idClient, date);
             String[] lesInfos = rq.getInfosReservation(idReservation);
-            if (!"".equals(dates[0])){
-                JOptionPane.showMessageDialog(null, lesInfos, "Informations sur la réservation",JOptionPane.INFORMATION_MESSAGE);
-            } 
-            else{
-                JOptionPane.showMessageDialog(null, "Il n'y a pas de reservation pour ce client", "information",JOptionPane.INFORMATION_MESSAGE);
+            if(client!=null){
+                if (!"".equals(dates[0])){
+                    date = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner une date de début de réservation","Rechercher une date",JOptionPane.QUESTION_MESSAGE, null,dates,dates[0]);
+                    if (date!=null){
+                        JOptionPane.showMessageDialog(null, lesInfos, "Informations sur la réservation",JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } 
+                else{
+                    JOptionPane.showMessageDialog(null, "Il n'y a pas de reservation pour ce client", "information",JOptionPane.INFORMATION_MESSAGE);
 
+                }
             }
         } 
         catch (SQLException ex) {
