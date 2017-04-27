@@ -38,7 +38,7 @@ public class ITboutonsModifier extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Que voulez vous rechercher?");
+        jLabel1.setText("Que voulez vous modifier?");
 
         btnClient.setText("Client");
         btnClient.addActionListener(new java.awt.event.ActionListener() {
