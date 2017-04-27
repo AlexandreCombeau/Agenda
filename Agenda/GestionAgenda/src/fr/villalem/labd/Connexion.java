@@ -82,6 +82,16 @@ public class Connexion {
         }
         return result;
     }
+    
+    public boolean execut (String request) {
+        boolean result = true;
+        try {
+            statement.execute(request);
+        } catch (SQLException e) {
+            System.out.println("Erreur dans la requête : " + request);
+        }
+        return result;
+    }
 
     Statement createStatement(int TYPE_SCROLL_SENSITIVE, int CONCUR_UPDATABLE) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

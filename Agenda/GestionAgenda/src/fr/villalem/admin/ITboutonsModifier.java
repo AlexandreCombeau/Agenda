@@ -154,8 +154,11 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                 if (date!=null){
                     int idReservation = rq.getIdReservation(idClient, date);
                     String infos[] = rq.getInfosReservation(idReservation);
-                    String disposition = infos[10];
+                    System.out.println(infos);
+                    String disposition = "";
                     String salle = infos[9];
+                    String salles[] = {"studio", "cabane", "bureau", "atelier"};
+                    String dispositions[] = {"ecole", "en U", "theatre", "salle vide", "central", "ilots"};
                     String[] lesChangements ={"validite de la réservation(option)", "date de début", "date de fin", "heure de début", "heure de fin","nombre de personnes", "nombre d'heures", "formule", "client", "modifier un service", "ajouter un service","modifier une option", "ajouter une option", "modifier une salle", "ajouter une salle", "disposition"};
                     String changement = "";
                     if (!"".equals(dates[0])){
@@ -231,7 +234,7 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                             if("modifier un service".equals(changement)){
                                 String services[] = rq.getServices();
                                 String serviceActuel = infos[4];
-                                if (!"aucun service".equals(serviceActuel)){
+                                if (!"Service(s) : aucun service".equals(serviceActuel)){
                                     String service = (String)JOptionPane.showInputDialog(null, "Modifier le(s) "+serviceActuel,"modifier Service",JOptionPane.QUESTION_MESSAGE, null, services, services[0]);
                                     if (service!=null){
                                         rq.MAJchoix(idReservation, service);
@@ -239,7 +242,7 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                                     }
                                 }
                                 else{
-                                   JOptionPane.showInputDialog(null, "Il n'y a aucun service à modifier", "modifier service",JOptionPane.INFORMATION_MESSAGE); 
+                                   JOptionPane.showMessageDialog(null, "Il n'y a aucun service à modifier", "modifier service",JOptionPane.INFORMATION_MESSAGE); 
                                 }
                             }
                             if("ajouter un service".equals(changement)){
@@ -272,10 +275,14 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                                     JOptionPane.showMessageDialog(null, "L'option a bien été ajouté ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
                                 }
                             }
-                            String salles[] = {"studio", "cabane", "bureau", "atelier"};
+                           
                             if("modifier une salle".equals(changement)){
-                                String salleActuelle = infos[9];
-                                salle = (String)JOptionPane.showInputDialog(null, "Modifier la "+salleActuelle,"modifier une salle",JOptionPane.QUESTION_MESSAGE, null, salles, salles[0]);
+                                String[] sallesActuelles = rq.getSalles(idReservation);
+                                salle = (String)JOptionPane.showInputDialog(null, "Quelle salle voulez vous modifier?", "modifier une salle",JOptionPane.QUESTION_MESSAGE, null, sallesActuelles, sallesActuelles[0]);
+                                disposition = rq.getDisposition(idReservation, salle);
+                                if (salle!=null){
+                                    salle = (String)JOptionPane.showInputDialog(null, "Par quelle salle voulez vous la modifier?","modifier une salle",JOptionPane.QUESTION_MESSAGE, null, salles, salles[0]);
+                                }
                                 if (salle!=null){
                                     rq.MAJsalle(salle, disposition, idReservation);
                                     JOptionPane.showMessageDialog(null, "La salle a bien été modifiée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
@@ -283,7 +290,8 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                             }
                             if("ajouter une salle".equals(changement)){
                                 salle = (String)JOptionPane.showInputDialog(null, "quelle salle voulez vous ajouter?","ajouter salle",JOptionPane.QUESTION_MESSAGE, null, salles, salles[0]);
-                                if (salle!=null){
+                                disposition = (String)JOptionPane.showInputDialog(null, "A quelle disposition voulez vous l'associer?","ajouter salle",JOptionPane.QUESTION_MESSAGE, null, dispositions, dispositions[0]);
+                                if (salle!=null && disposition!=null){
                                     rq.ajoutSalle(idReservation, salle, disposition);  
                                     JOptionPane.showMessageDialog(null, "La salle a bien été ajoutée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
                                 }
@@ -311,12 +319,16 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                                 }
                             }
                             if("disposition".equals(changement)){
-                                String lesDisposition[] ={"en_U", "ecole", "theatre", "ilots", "central", "salle_vide"}; 
-                                String dispositionActuelle = infos[10];
-                                disposition = (String)JOptionPane.showInputDialog(null, "Modifier la "+dispositionActuelle,"modifier une option",JOptionPane.QUESTION_MESSAGE, null, lesDisposition, lesDisposition[0]);
-                                if (disposition!=null){
-                                    rq.MAJdisposition(salle, disposition, idReservation);
-                                    JOptionPane.showMessageDialog(null, "La disposition a bien été modifiée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
+                                String lesSalles[] = rq.getSalles(idReservation);
+                                salle = (String)JOptionPane.showInputDialog(null, "de quelle salle voulez vous modifier la disposition","salle de la disposition",JOptionPane.QUESTION_MESSAGE, null, lesSalles, lesSalles[0]);
+                                if(salle!=null){
+                                    String dispositionActuelle = rq.getDisposition(idReservation, salle);
+                                    disposition = (String)JOptionPane.showInputDialog(null, "Modifier la disposition : "+dispositionActuelle,"modifier une disposition",JOptionPane.QUESTION_MESSAGE, null, dispositions, dispositions[0]);
+                                    if (disposition!=null){
+                                        rq.MAJdisposition(salle, disposition, idReservation);
+                                        JOptionPane.showMessageDialog(null, "La disposition a bien été modifiée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
+                                
+                                    }
                                 }
                             }
                             if("formule".equals(changement)){

@@ -398,7 +398,6 @@ public class BdDAO {
             ArrayList<String> infosReservation = new ArrayList<>();  
             
             rs = co.query(dateD);
-
             while(rs.next()){
                 String DateDebut = rs.getString("dateDebut");
                 infosReservation.add("Date de début: " +DateDebut);
@@ -597,7 +596,30 @@ public class BdDAO {
             lesOptionstab = lesOptions.toArray(lesOptionstab);
             return lesOptionstab;
         }
-
+        
+         public String[] getSalles(int idReservation) throws SQLException{
+             String salle = "SELECT libelle FROM salle, infoSalle, sallesResa WHERE infoSalle.fkidSalle=salle.idSalle AND sallesResa.fkidInfoSalle=infoSalle.idInfoSalle AND sallesResa.fkidReservation='"+idReservation+"'";
+             ArrayList<String> salles = new ArrayList<>();  
+             rs = co.query(salle);
+             while(rs.next()){
+                String lasalle = rs.getString("libelle");
+                salles.add(lasalle);
+            }
+             String tableau[] = new String[salles.size()];
+             tableau = salles.toArray(tableau);
+             return tableau;
+         }
+         
+         public String getDisposition(int idReservation, String salle) throws SQLException{
+             String disposition = "SELECT disposition.libelle FROM disposition, salle, infoSalle, sallesResa WHERE disposition.idDisposition=infoSalle.fkidDisposition AND salle.idSalle=infoSalle.fkidSalle AND sallesResa.fkidInfoSalle=infoSalle.idInfoSalle AND salle.libelle='"+salle+"' AND sallesResa.fkidReservation='"+idReservation+"'";
+             rs = co.query(disposition);
+             String dispo=null;
+             while(rs.next()){
+                dispo = rs.getString("libelle");
+            }
+             return dispo;
+         }
+         
         /*
         ========================================================================
                                     FIN SELECTIONS DONNEES /!\
@@ -796,7 +818,7 @@ public class BdDAO {
         }
         
         public void MAJprixPlateauxRepas(double prix){
-            String quest = "UPDATE OptionsServices SET prixHT = "+prix+" WHERE libelle = 'Plateaux repas'";
+            String quest = "UPDATE optionsServices SET prixHT = "+prix+" WHERE libelle = 'Plateaux repas'";
             co.query(quest);
         }
 
@@ -847,17 +869,17 @@ public class BdDAO {
         }
         
         public void MAJchoix(int idReservation, String choix) throws SQLException{
-             String quest = "UPDATE choix SET fkidOptionsServices = (SELECT idOptionsServices from optionsServices where libelle = '"+choix+"') WHERE idReservation = '"+idReservation+"'";
+             String quest = "UPDATE choix SET fkidOptionsServices = (SELECT idOptionsServices from optionsServices where libelle = '"+choix+"') WHERE fkidReservation = '"+idReservation+"'";
              co.update(quest);
         }
         
         public void MAJsalle(String salle, String disposition, int idReservation) throws SQLException{
-            String quest = "UPDATE sallesResa SET fkidInfoSalle = (SELECT idInfoSalle FROM infoSalle WHERE idSalle = (SELECT idSalle FROM salle WHERE libelle ='"+salle+"') AND idDisposition=(SELECT idDisposition FROM disposition WHERE libelle = '"+disposition+"') WHERE fkidReservation = '"+idReservation+"')";
+            String quest = "UPDATE sallesResa SET fkidInfoSalle = (SELECT idInfoSalle FROM infoSalle WHERE fkidSalle = (SELECT idSalle FROM salle WHERE libelle ='"+salle+"') AND fkidDisposition=(SELECT idDisposition FROM disposition WHERE libelle = '"+disposition+"')) WHERE fkidReservation = '"+idReservation+"'";
             co.update(quest);
         }
         
         public void MAJdisposition(String salle, String disposition, int idReservation) throws SQLException{
-             String quest = "UPDATE sallesResa SET fkidInfoSalle = (SELECT idInfoSalle FROM infoSalle WHERE idSalle = (SELECT idSalle FROM salle WHERE libelle ='"+salle+"') AND idDisposition=(SELECT idDisposition FROM disposition WHERE libelle = '"+disposition+"') WHERE fkidReservation = '"+idReservation+"')";
+             String quest = "UPDATE sallesResa SET fkidInfoSalle = (SELECT idInfoSalle FROM infoSalle WHERE fkidSalle = (SELECT idSalle FROM salle WHERE libelle ='"+salle+"') AND fkidDisposition=(SELECT idDisposition FROM disposition WHERE libelle = '"+disposition+"')) WHERE fkidReservation ='101' '"+idReservation+"'";
              co.update(quest);
         }
         /*
@@ -911,12 +933,12 @@ public class BdDAO {
         
         public void ajoutChoix(int idReservation, String choix) throws SQLException{
              String nouveauChoix = "INSERT INTO choix (fkidReservation, fkidOptionsServices) VALUES ('"+idReservation+"', (SELECT idOptionsServices FROM optionsServices WHERE libelle='"+choix+"'))";
-             rs = co.query(nouveauChoix);
+             co.update(nouveauChoix);
         }
         
         public void ajoutSalle(int idReservation, String salle, String disposition) throws SQLException{
              String nouvelleSalle = "INSERT INTO sallesResa (fkidReservation, fkidInfoSalle) VALUES ('"+idReservation+"', (SELECT idInfoSalle FROM infoSalle WHERE fkidSalle=(SELECT idSalle FROM salle WHERE libelle = '"+salle+"') AND fkiddisposition=(SELECT idDisposition FROM disposition WHERE libelle='"+disposition+"')))";
-             rs = co.query(nouvelleSalle);
+             co.update(nouvelleSalle);
         }
 
         /*
