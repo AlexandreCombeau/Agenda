@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 /**
  *
@@ -393,10 +394,11 @@ public class BdDAO {
             String formule = "SELECT libelle FROM formule, reservations WHERE formule.idFormule=reservations.fkidFormule AND reservations.idReservation='"+idReservation+"'";
             String salle = "SELECT libelle FROM salle, infoSalle, sallesResa WHERE infoSalle.fkidSalle=salle.idSalle AND sallesResa.fkidInfoSalle=infoSalle.idInfoSalle AND sallesResa.fkidReservation='"+idReservation+"'";
             String disposition = "SELECT libelle FROM sallesResa, disposition, infoSalle WHERE infoSalle.fkidDisposition=disposition.idDisposition AND sallesResa.fkidInfoSalle=infoSalle.idInfoSalle AND sallesResa.fkidReservation='"+idReservation+"'";
-            
+
             ArrayList<String> infosReservation = new ArrayList<>();  
             
             rs = co.query(dateD);
+
             while(rs.next()){
                 String DateDebut = rs.getString("dateDebut");
                 infosReservation.add("Date de début: " +DateDebut);
@@ -492,6 +494,7 @@ public class BdDAO {
             String tableau[] = new String[infosReservation.size()];
             tableau = infosReservation.toArray(tableau);
             
+            System.out.println(Arrays.toString(tableau));
             return tableau;
         }
             
@@ -505,6 +508,7 @@ public class BdDAO {
             }
             return name; 
         }
+        
         public String getPrenomClient(int idReservation) throws SQLException{
             String prenom = "SELECT nom, prenom FROM client, reservations WHERE client.idClient=reservations.fkidClient AND reservations.idReservation='"+idReservation+"'";
             rs = co.query(prenom);

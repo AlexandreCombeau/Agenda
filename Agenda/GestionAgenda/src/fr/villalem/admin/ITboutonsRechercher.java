@@ -144,11 +144,11 @@ public class ITboutonsRechercher extends javax.swing.JFrame {
             int idClient = rq.getIdClient(leNom, lePrenom);
             String[] dates = rq.getDatesReservations(idClient);
             String date = "";
-            int idReservation = rq.getIdReservation(idClient, date);
-            String[] lesInfos = rq.getInfosReservation(idReservation);
             if(client!=null){
                 if (!"".equals(dates[0])){
                     date = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner une date de début de réservation","Rechercher une date",JOptionPane.QUESTION_MESSAGE, null,dates,dates[0]);
+                    int idReservation = rq.getIdReservation(idClient, date);
+                    String[] lesInfos = rq.getInfosReservation(idReservation);
                     if (date!=null){
                         JOptionPane.showMessageDialog(null, lesInfos, "Informations sur la réservation",JOptionPane.INFORMATION_MESSAGE);
                     }
