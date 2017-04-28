@@ -367,7 +367,8 @@ public class ITadmin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnModifierActionPerformed
 
     private void btnReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservationActionPerformed
-        // TODO add your handling code here:
+        ITcreerReservation1 nouvelleResa = new ITcreerReservation1();
+        nouvelleResa.setVisible(true);
     }//GEN-LAST:event_btnReservationActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

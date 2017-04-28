@@ -101,16 +101,21 @@ public class BdDAO {
          * @throws SQLException 
          */
         public String[] getOptionService(String choix) throws SQLException{
-            String quest = "SELECT libelle FROM Facultatif WHERE nature = '"+choix+"'";
-            String quest1 = "SELECT COUNT(idFacultatif) FROM Facultatif WHERE nature = '"+choix+"'";
+            String quest = "SELECT libelle FROM optionsServices WHERE nature = '"+choix+"'";
+            String quest1 = "SELECT COUNT(idOptionsServices) FROM optionsServices WHERE nature = '"+choix+"'";
+
+            int longueurTableau = 0;
+            
             rs = co.query(quest1);
-            int longueurTableau = rs.getInt("COUNT(idFacultatif)");
-            int i = 0;
+            while(rs.next()){
+                longueurTableau = rs.getInt("COUNT(idOptionsServices)");
+            }
             String[] nom = new String[longueurTableau];
+            int i = 0;
             rs = co.query(quest);
             while(rs.next()){
                String name = rs.getString("libelle");
-               nom[i] = name;
+               nom[i]=name;
                i++;
             }
             return nom;
@@ -619,6 +624,9 @@ public class BdDAO {
             }
              return dispo;
          }
+         
+         
+
          
         /*
         ========================================================================
