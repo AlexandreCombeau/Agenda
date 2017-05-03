@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.villalem.admin;
+package villalem.admin;
 
-import static gestionagenda.GestionAgenda.rq;
+import static villalem.gestion.GestionAgenda.rq;
+
 import java.awt.Color;
 import java.sql.SQLException;
 import java.util.logging.Level;

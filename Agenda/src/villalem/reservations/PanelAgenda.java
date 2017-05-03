@@ -3,19 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.villalem.reservations;
+package villalem.reservations;
 
-import static gestionagenda.GestionAgenda.rq;
+import static villalem.gestion.GestionAgenda.rq;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 
 /**
  *
@@ -24,6 +31,7 @@ import java.util.logging.Logger;
 public class PanelAgenda extends javax.swing.JPanel {
 
     public ArrayList<Evenement> ListeEvenements = new ArrayList<>();
+    
     private final Calendar cal = Calendar.getInstance();
     private final int largeurColonneHeure = 40;//largeur de la première colonne, en px
     private final int largeurColonneJour = 140;//largeur de chaque colonne jour, en px
@@ -35,7 +43,32 @@ public class PanelAgenda extends javax.swing.JPanel {
     public PanelAgenda() {
         initComponents();
         //remplirTableau(cal); // rempli le tableau avec les reservations, à commenter pour éviter le bug d'affichage
+        
+       this.addMouseListener(new MouseAdapter() {
+    	   public void mouseClicked(MouseEvent e) {
+    		   for(Evenement evt:ListeEvenements) {
+    			   if(evt.contain(e.getPoint())) {
+    				   affichePopup(evt);
+    			   }
+    		   }
+    	   }
+       });        
     }
+    
+    
+    private void affichePopup(Evenement evt) {
+    	String message ="";
+		try {
+			message = rq.getInfoEvenement(evt.getId());
+			if(rq.getEstReservation(evt.getId())) {
+				message = rq.getInfoReservation(evt.getId());
+			}
+		} catch (SQLException e) {	
+			e.printStackTrace();
+		}
+		JOptionPane.showMessageDialog(this, message);
+    }
+    
     /**
      * remplirTableau ne fonctionne que quand l'appli est lancée. Pour éditer
      * le ITAgenda en mode Design, il faut mettre la fonction en commentaire,
@@ -45,36 +78,37 @@ public class PanelAgenda extends javax.swing.JPanel {
      * 
      * @param c
      */
-    // in work <tag>
+   
     
     public void remplirAgenda(Calendar c) { 
       //copie le calendrier, sinon le calendrier 'c' changerait de date à cause de sa manipulation dans BdDAO.java avec rq.getReservationsJour()
       Calendar cal2 = (Calendar)c.clone();
-     
+      
       cal2.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);//met le calendrier à Lundi pour commencer la semaine
       for (int i=0;i<7;i++) { //pour chaque jour de la semaine (de 0 à 6)
           ResultSet rs; //initialise le ResultSet
-          
+          int decalageEvenement = 3; // decale les evenemets sur le cote afin de pouvoir les differencier
           try {
-              rs = rq.getReservationsJour(cal2);
+              rs = rq.getEvenementsJour(cal2);
               if(rs != null) { // on test pour determiner si il existe une reservation pour la date de cal2
             try {
+            	
                   while(rs.next()) { //obtient chaque réservation de la journée
+                	 
                       //obtient l'heure de début et de fin (il faudra faire en sorte d'inclure les minutes)
-                      String dtDebut = rs.getObject("heureDebut").toString().split(":")[0];
-                      String dtFin = rs.getObject("heureFin").toString().split(":")[0];
+                	 
+                	  String[] strDebut = rs.getString("dateDebut").split("-");
+                	  String[] strFin = rs.getString("dateFin").split("-");
+                	  
+                      Integer heureDebut = Integer.parseInt(rs.getString("heureDebut").split(":")[0]);
+                      Integer heureFin = Integer.parseInt(rs.getString("heureFin").split(":")[0]);
+                
+                      Integer jourDebut = Integer.parseInt(rs.getString("dateDebut").split("-")[0]);
+                      Integer jourFin = Integer.parseInt(rs.getString("dateFin").split("-")[0]);
                       
-                      String jourDebut = rs.getObject("dateDebut").toString().split("-")[0];
-                      String jourFin = rs.getObject("dateFin").toString().split("-")[0];
-                      System.out.println(dtDebut+"\t"+dtFin);
-                      
-                      //transforme en int:
-                      Integer jourDebutInt =  Integer.parseInt(jourDebut);
-                      Integer jourFinInt = Integer.parseInt(jourFin);
-                      
-                      int dtDebutInt = Integer.parseInt(dtDebut); 
-                      int dtFinInt = Integer.parseInt(dtFin);
-                      System.out.println( (dtFinInt-6)*espacementHeure ); //à supprimer                                            
+                      int idEvenement = rs.getInt("evenement.id");
+                      String couleur = rq.getCouleurEvenement(idEvenement);
+                      //System.out.println( (heureFin-6)*espacementHeure ); //à supprimer                                            
                       /**
                        * Pour chaque reservation, créé un évènement qui est en fait un rectangle
                        * dont les coordonnées correspondent à l'heure de début et de fin, ainsi
@@ -87,8 +121,31 @@ public class PanelAgenda extends javax.swing.JPanel {
                        * --La largeur est fixé arbitrairement pour l'instant.
                        * --La hauteur correspond à la différence entre l'heure de début et de fin, fois espacementHeure.
                       **/                   
-                      ListeEvenements.add(new Evenement(1+largeurColonneHeure+i*largeurColonneJour,
-                        (dtDebutInt-6)*espacementHeure, largeurEven, (dtFinInt-dtDebutInt)*espacementHeure));                          
+                      
+
+                      if(jourDebut != jourFin) {
+                    	 if(((Integer)new Calendar.Builder().setDate(Integer.parseInt(strDebut[0]),Integer.parseInt(strDebut[1]),Integer.parseInt(strDebut[2])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))) {
+                    	  ListeEvenements.add(new Evenement(1+largeurColonneHeure+i*largeurColonneJour+decalageEvenement,
+                                  (heureDebut-6)*espacementHeure, largeurEven, (23 - heureDebut)*espacementHeure,idEvenement,couleur));
+                    	  
+	                      }
+	                      else if(!((Integer)new Calendar.Builder().setDate(Integer.parseInt(strDebut[0]),Integer.parseInt(strDebut[1]),Integer.parseInt(strDebut[2])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))
+	                    		  && !((Integer)new Calendar.Builder().setDate(Integer.parseInt(strFin[0]),Integer.parseInt(strFin[1]),Integer.parseInt(strFin[2])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))) {
+	                    	  ListeEvenements.add(new Evenement(1+largeurColonneHeure+i*largeurColonneJour+decalageEvenement,
+	                                  (7-6)*espacementHeure, largeurEven, (23 - 7)*espacementHeure,idEvenement,couleur));  
+	                      }
+	                      else if(((Integer)new Calendar.Builder().setDate(Integer.parseInt(strFin[0]),Integer.parseInt(strFin[1]),Integer.parseInt(strFin[2])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))) {
+	                    	  ListeEvenements.add(new Evenement(1+largeurColonneHeure+i*largeurColonneJour+decalageEvenement,
+	                                  (7-6)*espacementHeure, largeurEven, (heureFin - 7)*espacementHeure,idEvenement,couleur));
+	                      } 
+                      }
+                      
+                      else {
+                    	  ListeEvenements.add(new Evenement(1+largeurColonneHeure+i*largeurColonneJour+decalageEvenement,
+                                  (heureDebut-6)*espacementHeure, largeurEven, (heureFin - heureDebut)*espacementHeure,idEvenement,couleur));                          
+                      }
+                      decalageEvenement+=70;
+                     
                   }
               } catch (SQLException ex) {
                   Logger.getLogger(PanelAgenda.class.getName()).log(Level.SEVERE, null, ex);
@@ -102,27 +159,12 @@ public class PanelAgenda extends javax.swing.JPanel {
       } 
 
   }
-    /*
-    public void remplirAgenda(Calendar c) {
-        //copie le calendrier, sinon le calendrier 'c' changerait de date à cause de sa manipulation dans BdDAO.java avec rq.getReservationsJour()
-      Calendar cal2 = (Calendar)c.clone();
-      cal2.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);//met le calendrier à Lundi pour commencer la semaine
-      
-      ResultSet rs = rq.getReservationsSemaine(cal2);
-      if(rs != null) {
-          try {
-              while(rs.next()) {
-                  
-              }
-          } catch (SQLException ex) {
-              Logger.getLogger(PanelAgenda.class.getName()).log(Level.SEVERE, null, ex);
-          }
-      }
-    }
-*/
 
     @Override
     public void paintComponent(Graphics g) {
+    	
+    	super.paintComponent(g);
+    	
         //cette méthode construit l'arrière plan de l'agenda, avec une colonne par jour de la semaine
         setBackground(Color.white);
         g.setColor(Color.BLACK);
@@ -141,9 +183,11 @@ public class PanelAgenda extends javax.swing.JPanel {
         /**
          * méthode qui déssine les rectangles pour chaque évènement dans la liste:
          */
-        for (Evenement s : ListeEvenements) {
-            s.draw(g);
+        for (Evenement s : ListeEvenements) {       	
+        	s.draw(g);  
+        	
         }
+        
   }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -156,6 +200,7 @@ public class PanelAgenda extends javax.swing.JPanel {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
+        
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 400, Short.MAX_VALUE)

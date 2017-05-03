@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.villalem.labd;
+package villalem.labd;
 import java.sql.*;
 
 /**
@@ -12,11 +12,11 @@ import java.sql.*;
  */
 public class Connexion {
     
-    	
+	
     private String DBPath = "Chemin aux base de donnée SQLite";
     private Connection connection = null;
     private Statement statement = null;
- 
+    
     public Connexion(String dBPath) {
         DBPath = dBPath;
     }
@@ -25,7 +25,7 @@ public class Connexion {
      * Cette fonction sert à se connecter à la base de données
      */
     public void connect() {
-        String url = "jdbc:mysql://127.0.0.1/villalemagenda";
+        String url = "jdbc:mysql://127.0.0.1/villalemons";
         String login = "java";
         String mdp = "Villa2017";
         
@@ -87,5 +87,15 @@ public class Connexion {
     Statement createStatement(int TYPE_SCROLL_SENSITIVE, int CONCUR_UPDATABLE) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+	public Connection getConnection() {
+		return connection;
+	}
+
+	public void setConnection(Connection connection) {
+		this.connection = connection;
+	}
+    
+    
     
 }

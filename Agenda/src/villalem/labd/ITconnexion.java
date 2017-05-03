@@ -3,15 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.villalem.labd;
+package villalem.labd;
 
-import fr.villalem.reservations.ITagenda;
-import static gestionagenda.GestionAgenda.rq;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import fr.villalem.reservations.ITagenda;
-import fr.villalem.usager.Usager;
+
+import villalem.reservations.ITagenda;
+import villalem.usager.Usager;
+
+import static villalem.gestion.GestionAgenda.rq;
+
 import java.awt.event.KeyEvent;
 
 /**

@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.villalem.admin;
+package villalem.admin;
 
-import static fr.villalem.factures.Devis.creerDevis;
-import static gestionagenda.GestionAgenda.rq;
+import static villalem.gestion.GestionAgenda.rq;
+import static villalem.factures.Devis.creerDevis;
+
 import java.awt.Dimension;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -27,9 +28,9 @@ public class ITgenerationDevis extends javax.swing.JFrame {
         initComponents();
         try {
             //On initialise les tableaux avec les données de la base de données.
-            lesSalles = rq.getSalleTacheEntiteFormule("Salle");
-            lesFormules = rq.getSalleTacheEntiteFormule("Formule");
-            lesDispositions = rq.getSalleTacheEntiteFormule("Disposition");
+            lesSalles = rq.getSalleTacheEntiteFormule("Salle"); //get salles
+            lesFormules = rq.getSalleTacheEntiteFormule("Formule"); // get formules
+            lesDispositions = rq.getSalleTacheEntiteFormule("Disposition"); // get dispositions
             lesOptions = rq.getOptionService("Option");
             lesServices = rq.getOptionService("Service");
 
