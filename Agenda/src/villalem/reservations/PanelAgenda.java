@@ -20,7 +20,6 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 
@@ -103,8 +102,8 @@ public class PanelAgenda extends javax.swing.JPanel {
                       Integer heureDebut = Integer.parseInt(rs.getString("heureDebut").split(":")[0]);
                       Integer heureFin = Integer.parseInt(rs.getString("heureFin").split(":")[0]);
                 
-                      Integer jourDebut = Integer.parseInt(rs.getString("dateDebut").split("-")[0]);
-                      Integer jourFin = Integer.parseInt(rs.getString("dateFin").split("-")[0]);
+                      Integer jourDebut = Integer.parseInt(rs.getString("dateDebut").split("-")[2]);
+                      Integer jourFin = Integer.parseInt(rs.getString("dateFin").split("-")[2]);
                       
                       int idEvenement = rs.getInt("evenement.id");
                       String couleur = rq.getCouleurEvenement(idEvenement);
@@ -122,28 +121,28 @@ public class PanelAgenda extends javax.swing.JPanel {
                        * --La hauteur correspond à la différence entre l'heure de début et de fin, fois espacementHeure.
                       **/                   
                       
-
-                      if(jourDebut != jourFin) {
+                      System.out.println(jourDebut+"-"+jourFin+"-"+jourDebut.equals(jourFin));
+                      if(!(jourDebut.equals(jourFin))) {
                     	 if(((Integer)new Calendar.Builder().setDate(Integer.parseInt(strDebut[0]),Integer.parseInt(strDebut[1]),Integer.parseInt(strDebut[2])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))) {
                     	  ListeEvenements.add(new Evenement(1+largeurColonneHeure+i*largeurColonneJour+decalageEvenement,
                                   (heureDebut-6)*espacementHeure, largeurEven, (23 - heureDebut)*espacementHeure,idEvenement,couleur));
                     	  
-	                      }
+	                      } // commence ce jour et finit après
 	                      else if(!((Integer)new Calendar.Builder().setDate(Integer.parseInt(strDebut[0]),Integer.parseInt(strDebut[1]),Integer.parseInt(strDebut[2])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))
 	                    		  && !((Integer)new Calendar.Builder().setDate(Integer.parseInt(strFin[0]),Integer.parseInt(strFin[1]),Integer.parseInt(strFin[2])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))) {
 	                    	  ListeEvenements.add(new Evenement(1+largeurColonneHeure+i*largeurColonneJour+decalageEvenement,
 	                                  (7-6)*espacementHeure, largeurEven, (23 - 7)*espacementHeure,idEvenement,couleur));  
-	                      }
+	                      } // commence avant et finit après ce jour
 	                      else if(((Integer)new Calendar.Builder().setDate(Integer.parseInt(strFin[0]),Integer.parseInt(strFin[1]),Integer.parseInt(strFin[2])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))) {
 	                    	  ListeEvenements.add(new Evenement(1+largeurColonneHeure+i*largeurColonneJour+decalageEvenement,
 	                                  (7-6)*espacementHeure, largeurEven, (heureFin - 7)*espacementHeure,idEvenement,couleur));
-	                      } 
+	                      } // commence avant et finit ce jour
                       }
                       
                       else {
                     	  ListeEvenements.add(new Evenement(1+largeurColonneHeure+i*largeurColonneJour+decalageEvenement,
                                   (heureDebut-6)*espacementHeure, largeurEven, (heureFin - heureDebut)*espacementHeure,idEvenement,couleur));                          
-                      }
+                      } // commence et fini le même jour
                       decalageEvenement+=70;
                      
                   }

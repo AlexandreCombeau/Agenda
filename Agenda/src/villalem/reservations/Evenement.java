@@ -17,7 +17,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 
 public class Evenement extends JComponent {
     private int x;

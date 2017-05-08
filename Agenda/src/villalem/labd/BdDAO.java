@@ -4,24 +4,18 @@
  * and open the template in the editor.
  */
 package villalem.labd;
-import villalem.reservations.Evenement;
-import villalem.usager.Usager;
-
 import java.awt.Color;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.IntStream;
+
+import villalem.usager.Usager;
 
 /**
  *

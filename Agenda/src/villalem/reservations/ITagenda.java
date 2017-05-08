@@ -5,28 +5,27 @@
  */
 package villalem.reservations;
 
-import villalem.admin.ITadmin;
-import villalem.labd.ITconnexion;
-
+import java.awt.CardLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.GroupLayout;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.ScrollPaneConstants;
-
-import java.awt.event.ActionListener;
-import java.awt.CardLayout;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+
+import villalem.admin.ITadmin;
+import villalem.labd.ITconnexion;
 
 
 /**
@@ -364,8 +363,8 @@ public class ITagenda extends javax.swing.JFrame {
         					.addGap(18))))
         );
         getContentPane().setLayout(layout);
-        JScrollPane scrollPane = new JScrollPane(panelJour,   ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollPane.setPreferredSize(new Dimension(300, 300));
+        JScrollPane scrollPane = new JScrollPane(panelJour,   ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(25);
         panelCardLayout.add(panelAgenda1, VU_SEMAINE);
         panelCardLayout.add(scrollPane, VU_JOUR);
         ((CardLayout)panelCardLayout.getLayout()).show(panelCardLayout, VU_SEMAINE);

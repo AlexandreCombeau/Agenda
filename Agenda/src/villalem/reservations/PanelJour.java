@@ -1,39 +1,31 @@
 package villalem.reservations;
 
-import java.awt.BorderLayout;
+import static villalem.gestion.GestionAgenda.rq;
+
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.RenderingHints;
-import java.awt.Scrollbar;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import static villalem.gestion.GestionAgenda.rq;
 
-import javax.swing.JLabel;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.border.LineBorder;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import java.awt.Component;
-import javax.swing.Box;
-import javax.swing.JRadioButton;
 
 public class PanelJour extends JPanel {
 	
 	private int hauteurLigne;
 	private int largeurEvenement;
+	private int decalageInitial = 50;
 	private List<Evenement> listeEvenements;
 	
     private final int largeurColonneHeure = 40;//largeur de la première colonne, en px
@@ -42,36 +34,78 @@ public class PanelJour extends JPanel {
     
     
 	public PanelJour() {
-		this.setLayout(null);
-
-
-		largeurEvenement = this.getWidth()/3;
-		hauteurLigne = this.getHeight()/10; 
-		listeEvenements = new ArrayList<>();
-		this.repaint();
-		this.updateUI();
-		
-		
+		listeEvenements = new ArrayList<>();	
+		this.setPreferredSize(new Dimension(1000, 1700));
+		this.addMouseListener(new MouseAdapter() {
+	    	   public void mouseClicked(MouseEvent e) {
+	    		   for(Evenement evt:listeEvenements) {
+	    			   if(evt.contain(e.getPoint())) {
+	    				   affichePopup(evt);
+	    			   }
+	    		   }
+	    	   }
+	       }); 
 	}	
 	
+	private void affichePopup(Evenement evt) {
+    	String message ="";
+		try {
+			message = rq.getInfoEvenement(evt.getId());
+			if(rq.getEstReservation(evt.getId())) {
+				message = rq.getInfoReservation(evt.getId());
+			}
+		} catch (SQLException e) {	
+			e.printStackTrace();
+		}
+		JOptionPane pane = new JOptionPane(message);
+		JDialog d = pane.createDialog((Frame)null, "Information sur l'événement");
+		
+		d.setLocationRelativeTo(this.getParent());
+		
+		
+		d.setVisible(true);
+		//JOptionPane.showMessageDialog(this, message);
+    }
 	
 	public void remplirAgenda(Calendar c) {
 		try {
+			Calendar cal2 = (Calendar)c.clone();
+			largeurEvenement = this.getWidth()/3;
+			hauteurLigne = this.getHeight()/(24-7); 
 			ResultSet rs = rq.getEvenementsJour(c);
+			int decalageEvenement = 0;
 			while(rs.next()) {
+				
 				String[] strDebut = rs.getString("dateDebut").split("-");
           	  	String[] strFin = rs.getString("dateFin").split("-");
           	  
                 Integer heureDebut = Integer.parseInt(rs.getString("heureDebut").split(":")[0]);
                 Integer heureFin = Integer.parseInt(rs.getString("heureFin").split(":")[0]);
           
-                Integer jourDebut = Integer.parseInt(rs.getString("dateDebut").split("-")[0]);
-                Integer jourFin = Integer.parseInt(rs.getString("dateFin").split("-")[0]);
+                Integer jourDebut = Integer.parseInt(rs.getString("dateDebut").split("-")[2]);
+                Integer jourFin = Integer.parseInt(rs.getString("dateFin").split("-")[2]);
                 
                 int idEvenement = rs.getInt("evenement.id");
                 String couleur = rq.getCouleurEvenement(idEvenement);
+                System.out.println(heureDebut+"-"+heureFin);
+                //listeEvenements.add(new Evenement(decalageInitial, (heureDebut-6)*hauteurLigne, 150, hauteurLigne*(heureFin-heureDebut), idEvenement, couleur));
+                if(!(jourDebut.equals(jourFin))) {
+                	if(((Integer)new Calendar.Builder().setDate(Integer.parseInt(strDebut[0]),Integer.parseInt(strDebut[1]),Integer.parseInt(strDebut[2])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))) {
+            		   listeEvenements.add(new Evenement(decalageInitial, (heureDebut-6)*hauteurLigne, 150, hauteurLigne*(23-heureDebut), idEvenement, couleur));
+                	} // commence ce jour et finit après
+                	else if(!((Integer)new Calendar.Builder().setDate(Integer.parseInt(strDebut[0]),Integer.parseInt(strDebut[1]),Integer.parseInt(strDebut[2])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))
+                			&& !((Integer)new Calendar.Builder().setDate(Integer.parseInt(strFin[0]),Integer.parseInt(strFin[1]),Integer.parseInt(strFin[2])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))) {
+                		listeEvenements.add(new Evenement(decalageInitial, (7-6)*hauteurLigne, 150, hauteurLigne*(23-7), idEvenement, couleur));
+        	   		} // commence avant et finit après ce jour
+                	else if(((Integer)new Calendar.Builder().setDate(Integer.parseInt(strFin[0]),Integer.parseInt(strFin[1]),Integer.parseInt(strFin[2])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))) {
+                		listeEvenements.add(new Evenement(decalageInitial, (7-6)*hauteurLigne, 150, hauteurLigne*(heureFin-7), idEvenement, couleur));
+                	} // commence avant et finit ce jour
+                }
+                else {
+                	listeEvenements.add(new Evenement(decalageInitial, (heureDebut-6)*hauteurLigne, 150, hauteurLigne*(heureFin-heureDebut), idEvenement, couleur));
+                }
+                	 decalageEvenement++;
 				
-				//listeEvenements.add();
 			}
  		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -82,63 +116,36 @@ public class PanelJour extends JPanel {
 		
 	@Override
     public void paintComponent(Graphics g) {
-    	
+		int nbHeure = this.getHeight()/(24-7);
     	super.paintComponent(g);
-        //cette méthode construit l'arrière plan de l'agenda, avec une colonne par jour de la semaine
+        
         setBackground(Color.white);
         g.setColor(Color.BLACK);
         //Antialiasing pour lisser les chiffres et lettres éventuels:
-        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-        int hauteurFenetre = this.getHeight();
-        g.drawRect(0, 0, this.getWidth()-1, hauteurFenetre/10);//première colonne où on placera les heures de 7 à 23h     
-        
-        for(int i=0; i<24; i++) { //affiche une colonne pour chaque jour de la semaine
-            g.drawRect(0, i*(this.getHeight()/10), this.getWidth()-1, this.getHeight()/10);
+        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);       
+        for(int i=7; i<24; i++) { //affiche une colonne pour chaque jour de la semaine
+        	g.drawRect(0, (i-7)*nbHeure, this.getWidth()-1, nbHeure);
         }
         for(int i=7; i<24; i++) { //affiche l'heure de 7 à 23h
             String heure = Integer.toString(i);
-            g.drawString(heure + ":00", 0, (i-6)*(this.getHeight()/10));//une heure = 30px
-            
-            	
+            g.drawString(heure + ":00", 0, (i-6)*nbHeure);//une heure = 30px           	
         }
         
         g.setColor(Color.DARK_GRAY);
         /**
          * méthode qui déssine les rectangles pour chaque évènement dans la liste:
          */   
-        
-        this.updateUI();
-        
-        
+        for (Evenement s : listeEvenements) {       	
+        	s.draw(g);  
+        	
+        }
 	}
 	
-	private void addScroll() {
-		
-	
-	}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
-        );
-    }// </editor-fold>//GEN-END:initComponents
-    
-
 
 	public int getHauteurLigne() {
 		return hauteurLigne;
