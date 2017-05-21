@@ -197,7 +197,7 @@ public class ITadmin extends javax.swing.JFrame {
             case "Modifier une salle":
                 String nomsalle;
             try {
-                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTacheEntiteFormule("Salle"), rq.getSalleTacheEntiteFormule("Salle")[0]);
+                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getElementByIdFromTable("salles", "Salle", "libelle"), rq.getElementByIdFromTable("salles", "Salle", "libelle")[0]);
                 if(nomsalle != null){
                     ITmodif modif = new ITmodif();
                     modif.setTxtTitle("Salle : "+nomsalle);
@@ -205,7 +205,7 @@ public class ITadmin extends javax.swing.JFrame {
                     modif.getLbNom().setVisible(false);
                     modif.setLbTable("Salle");
                     modif.getLbTable().setVisible(false);
-                    modif.getBtnCouleur().setBackground(rq.hex2Rgb("Salle", nomsalle));
+                    //modif.getBtnCouleur().setBackground(rq.hex2Rgb("Salle", nomsalle));
                     modif.setVisible(true); 
                 }
             }catch (SQLException ex){Logger.getLogger(ITadmin.class.getName()).log(Level.SEVERE, null, ex);}
@@ -214,12 +214,12 @@ public class ITadmin extends javax.swing.JFrame {
                 
             case "Supprimer une salle":
             try {
-                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Suppression -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTacheEntiteFormule("Salle"), rq.getSalleTacheEntiteFormule("Salle")[0]);
+                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Suppression -", JOptionPane.QUESTION_MESSAGE, null, rq.getElementByIdFromTable("salles", "Salle", "libelle"), rq.getElementByIdFromTable("salles", "Salle", "libelle")[0]);
                 if(nomsalle != null){
                     int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer : "+nomsalle+"?", "Suppression de la salle : "+nomsalle, JOptionPane.YES_NO_OPTION);
                     if(choix == 0){
                         //Requete DELETE sur la BD
-                        rq.delete("salle", nomsalle);
+                        rq.delete("salles", "libelle", nomsalle);
                         JOptionPane.showMessageDialog(null, "La salle '"+nomsalle+"' a été supprimée !");
                     }
                     else{
@@ -252,7 +252,7 @@ public class ITadmin extends javax.swing.JFrame {
             case "Modifier un utilisateur":
                 String nomutilisateur;
             try {
-                nomutilisateur = (String)JOptionPane.showInputDialog(null, "Veuillez choisir un utilisateur à modifier", "Options utilisateurs - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getNomUtilisateur(), rq.getNomUtilisateur()[0]);
+                nomutilisateur = (String)JOptionPane.showInputDialog(null, "Veuillez choisir un utilisateur à modifier", "Options utilisateurs - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getElementByIdFromTable("usager", "Usager", "login"), rq.getElementByIdFromTable("usager", "Usager", "nom")[0]);
                 if(nomutilisateur != null){
                     ITmodifUtilisateur modif = new ITmodifUtilisateur();
                     modif.setTxtTitle("Utilisateur : "+nomutilisateur);
@@ -266,14 +266,14 @@ public class ITadmin extends javax.swing.JFrame {
                 
             case "Supprimer un utilisateur":
             try {
-                nomutilisateur = (String)JOptionPane.showInputDialog(null, "Veuillez choisir un utilisateur à supprimer", "Options utilisateurs - Suppression -", JOptionPane.QUESTION_MESSAGE, null, rq.getNomUtilisateur(), rq.getNomUtilisateur()[0]);
+                nomutilisateur = (String)JOptionPane.showInputDialog(null, "Veuillez choisir un utilisateur à supprimer", "Options utilisateurs - Suppression -", JOptionPane.QUESTION_MESSAGE, null, rq.getElementByIdFromTable("usager", "Usager", "login"), rq.getElementByIdFromTable("usager", "Usager", "nom")[0]);
                 if(nomutilisateur != null){
                     int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer : "+nomutilisateur+"?", "Suppression de l'utilisateur : "+nomutilisateur, JOptionPane.YES_NO_OPTION);
                     if(choix == 0){
                         //Requete DELETE sur la BD
-                        String[] nomUsager = getNomPrenom(nomutilisateur);
-                        String log = rq.getUtilisateur(nomUsager[1], nomUsager[0])[1];
-                        rq.deleteUser(log);
+                        //String[] nomUsager = getNomPrenom(nomutilisateur);
+                        //String log = rq.getUtilisateur(nomUsager[1], nomUsager[0])[1];
+                        rq.delete("usager", "login", nomutilisateur);
                         JOptionPane.showMessageDialog(null, "L'utilisateur '"+nomutilisateur+"' a été supprimé !");
                     }
                     else{
@@ -311,7 +311,7 @@ public class ITadmin extends javax.swing.JFrame {
             case "Modifier une tache":
                 String nomTache;
             try {
-                nomTache = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une tache", "Options taches - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTacheEntiteFormule("Tache"), rq.getSalleTacheEntiteFormule("Tache")[0]);
+                nomTache = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une tache", "Options taches - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTacheEntiteFormule("taches", "Tache"), rq.getSalleTacheEntiteFormule("taches", "Tache")[0]);
                 System.out.println("ICIIII : "+nomTache);
                 if(nomTache != null){
                     ITmodif modif = new ITmodif();
@@ -330,7 +330,7 @@ public class ITadmin extends javax.swing.JFrame {
                 
             case "Supprimer une tache":
             try {
-                nomTache = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une tache", "Options taches - Suppression -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTacheEntiteFormule("Tache"), rq.getSalleTacheEntiteFormule("Tache")[0]);
+                nomTache = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une tache", "Options taches - Suppression -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTacheEntiteFormule("tache", "Tache"), rq.getSalleTacheEntiteFormule("taches", "Tache")[0]);
                 if(nomTache != null){
                     int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer : "+nomTache+"?", "Suppression de la tache : "+nomTache, JOptionPane.YES_NO_OPTION);
                     if(choix == 0){

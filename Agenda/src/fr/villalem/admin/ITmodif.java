@@ -91,8 +91,18 @@ public class ITmodif extends javax.swing.JFrame {
         });
 
         jButton3.setText("Changer le commentaire");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDescriptionActionPerformed(evt);
+            }
+        });
 
         btnSuperficie.setText("Changer la superficie");
+        btnSuperficie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuperficieActionPerformed(evt);
+            }
+        });
 
         txtTitle.setFont(new java.awt.Font("Malayalam MN", 1, 18)); // NOI18N
         txtTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -208,7 +218,7 @@ public class ITmodif extends javax.swing.JFrame {
             System.out.println("LE NOUVEAU NOM EST : "+nouveauNom);
             if(nouveauNom != null && !(nouveauNom.equals(""))){
                 try {
-                    if(rq.checkErreurModif(lbTable.getText(), nouveauNom) == false){
+                    if(rq.checkErreurModif("salles", nouveauNom, "libelle") == false){
                         JOptionPane.showMessageDialog(null, "Ce nom de "+lbTable.getText()+" existe déjà");
                         nouveauNom = "";
                     }
@@ -225,12 +235,74 @@ public class ITmodif extends javax.swing.JFrame {
             System.out.println("ICIIIIIIII LE CHOIXX : "+choix); // OK = 0 // REFUSER = 1
             if(choix == 0){
                 //UPDATE SUR LA BD
-                rq.MAJnom(lbTable.getText(), lbNom.getText(), nouveauNom);
+                rq.MAJnom("salles", lbNom.getText(), nouveauNom, "libelle");
                 this.setTxtTitle(nouveauNom);
                 this.setLbNom(nouveauNom);
             }
         }
     }//GEN-LAST:event_btnNomActionPerformed
+    
+    
+    /**
+     * Cette fonction sert à changer le nom de la salle ou de la tache en vérifiant si le nom est disponible.
+     * @param evt 
+     */
+        private void btnDescriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNomActionPerformed
+            String nouveauDesc = "";
+            while(nouveauDesc == null || nouveauDesc.equals("")){
+                nouveauDesc = (String)JOptionPane.showInputDialog(null, "Le nom actuel est : "+getDesc(lbNom.getText())+".\nQuel sera le nouveau nom ?", "Modification de la "+lbTable.getText()+" : "+lbNom.getText(), JOptionPane.QUESTION_MESSAGE);
+                System.out.println("LE NOUVEAU NOM EST : "+nouveauDesc);
+                
+            }
+            if(!(nouveauDesc == null) && !(nouveauDesc.equals(""))){
+                int choix = (int)JOptionPane.showConfirmDialog(null, "Le nouveau nom de la "+lbTable.getText()+" sera : "+nouveauDesc+".\nConfirmer ?", "Modification de la "+lbTable.getText()+" : "+lbNom.getText(), JOptionPane.YES_NO_OPTION);
+                System.out.println("ICIIIIIIII LE CHOIXX : "+choix); // OK = 0 // REFUSER = 1
+                if(choix == 0){
+                    //UPDATE SUR LA BD
+                    rq.MAJnom("salles", getDesc(lbNom.getText()), nouveauDesc, "descriptif");
+                    this.setTxtTitle(nouveauDesc);
+                    this.setLbNom(nouveauDesc);
+                }
+            }
+        }//GEN-LAST:event_btnNomActionPerformed
+    
+    
+    /**
+     * Cette fonction sert à changer la superficie de la salle ou de la tache en vérifiant si le nom est disponible.
+     * @param evt 
+     */
+        private void btnSuperficieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNomActionPerformed
+            String nouveauSuperficie = "";
+            while(nouveauSuperficie == null || nouveauSuperficie.equals("")){
+                nouveauSuperficie = (String)JOptionPane.showInputDialog(null, "Le nom actuel est : "+getArea(lbNom.getText())+".\nQuel sera le nouveau nom ?", "Modification de la "+lbTable.getText()+" : "+lbNom.getText(), JOptionPane.QUESTION_MESSAGE);
+                System.out.println("LE NOUVEAU NOM EST : "+nouveauSuperficie);
+                if(nouveauSuperficie != null && !(nouveauSuperficie.equals(""))){
+                	try{
+                	int superficie = Integer.parseInt(nouveauSuperficie);
+                    if(superficie < 0){
+                        JOptionPane.showMessageDialog(null, "La superficie doit être un nombre entier positif. \nVeuillez corriger.");
+                        nouveauSuperficie=null;
+                    }
+                	}catch (NumberFormatException e){
+                		JOptionPane.showMessageDialog(null, "La superficie doit être un nombre entier positif. \nVeuillez corriger.");
+                		nouveauSuperficie=null;
+                	}
+                }
+                else if(nouveauSuperficie == null || nouveauSuperficie.equals("")){
+                    break;
+                }
+            }
+            if(!(nouveauSuperficie == null) && !(nouveauSuperficie.equals(""))){
+                int choix = (int)JOptionPane.showConfirmDialog(null, "Le nouveau nom de la "+lbTable.getText()+" sera : "+nouveauSuperficie+".\nConfirmer ?", "Modification de la "+lbTable.getText()+" : "+lbNom.getText(), JOptionPane.YES_NO_OPTION);
+                System.out.println("ICIIIIIIII LE CHOIXX : "+choix); // OK = 0 // REFUSER = 1
+                if(choix == 0){
+                    //UPDATE SUR LA BD
+                    rq.MAJSuperficie("salles", lbNom.getText(), Integer.parseInt(nouveauSuperficie), "superficie");
+                    this.setTxtTitle(nouveauSuperficie);
+                    this.setLbNom(nouveauSuperficie);
+                }
+            }
+        }//GEN-LAST:event_btnNomActionPerformed
 
     
     public JLabel getTxtTitle() {
@@ -245,6 +317,14 @@ public class ITmodif extends javax.swing.JFrame {
         return lbNom;
     }
 
+    public int getArea (String nom){
+    	return rq.getSuperficieSalle(nom);
+    }
+    
+    public String getDesc (String nom){
+    	return rq.getCommentSalle(nom);
+    }
+    
     public void setLbNom(String txt) {
         this.lbNom.setText(txt);
     }

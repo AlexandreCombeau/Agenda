@@ -25,9 +25,9 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         initComponents();
         try {
             //On initialise les tableaux avec les données de la base de données.
-            lesSalles = rq.getSalleTacheEntiteFormule("Salle");
-            lesFormules = rq.getSalleTacheEntiteFormule("Formule");
-            lesDispositions = rq.getSalleTacheEntiteFormule("Disposition");
+            lesSalles = rq.getSalleTacheEntiteFormule("salles", "Salle");
+            lesFormules = rq.getSalleTacheEntiteFormule("formule", "Formule");
+            lesDispositions = rq.getSalleTacheEntiteFormule("disposition", "Disposition");
             lesOptions = rq.getOptionService("option");
             lesServices = rq.getOptionService("service");
             lesClients= rq.getClients();
@@ -515,8 +515,8 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             //CLIENT
             String[] clients;
             clients = rq.getClients();
-            String[] noms = rq.getnomsClients();
-            String[] prenoms = rq.getprenomsClients();
+            String[] noms = rq.getElementByIdFromTable("clients", "Client", "nom");
+            String[] prenoms = rq.getElementByIdFromTable("clients", "Client", "prenom");
             String client = (String)cbClient.getSelectedItem();
             int longueur = noms.length;
             String[] client2 = new String[longueur];
@@ -530,6 +530,9 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
                 }
             }
             int idClient = rq.getIdClient(leNom, lePrenom);
+            int idFormule = rq.getIdFormule(formule);
+            rq.ajoutReservation(dateDebut,dateFin,horaireDebut,horaireFin,Integer.parseInt(nbParticipants),Integer.parseInt(nbHeures), idClient, idFormule);
+            
             int idReservation = rq.getIdReservation(idClient, dateDebut);
             
 
@@ -567,6 +570,24 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             String s4 = (String)cbService4.getSelectedItem();
             String s5 = (String)cbService5.getSelectedItem();
             String s6 = (String)cbService6.getSelectedItem();
+            if (!"aucune".equals(s1)){
+                rq.ajoutChoix(idReservation, s1);
+            }
+            if (!"aucune".equals(s2)){
+                rq.ajoutChoix(idReservation, s2);
+            }
+            if (!"aucune".equals(s3)){
+                rq.ajoutChoix(idReservation, s3);
+            }
+            if (!"aucune".equals(s4)){
+                rq.ajoutChoix(idReservation, s4);
+            }
+            if (!"aucune".equals(s5)){
+                rq.ajoutChoix(idReservation, s5);
+            }
+            if (!"aucune".equals(s6)){
+                rq.ajoutChoix(idReservation, s6);
+            }
 
             //SI IL EXISTE UNE DEUXIEME SALLE
             String existe = (String)cbSalle2.getSelectedItem();

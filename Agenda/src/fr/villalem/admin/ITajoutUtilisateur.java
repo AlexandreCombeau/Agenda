@@ -257,7 +257,7 @@ public class ITajoutUtilisateur extends javax.swing.JFrame {
             else if(email.charAt(i) == '.' && arobase == true){
                 point = true;
             }
-            System.out.println(email.charAt(i));
+            //System.out.println(email.charAt(i));
         }
         if(arobase == true && point == true){
             return true;

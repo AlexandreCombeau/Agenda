@@ -5,6 +5,7 @@
  */
 package fr.villalem.admin;
 
+import static fr.villalem.factures.Factures.creerFacture;
 import static gestionagenda.GestionAgenda.rq;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -57,7 +58,12 @@ public class ITboutonsModifier extends javax.swing.JFrame {
         btnFacture.setText("Facture");
         btnFacture.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFactureActionPerformed(evt);
+                try {
+					btnFactureActionPerformed(evt);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
 
@@ -171,12 +177,12 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                                 if (valide!=null){
                                     if ("valider reservation".equals(valide)){
                                         int valider = 1;
-                                        rq.MAJvalide(valider, idReservation);
+                                        rq.MAJIntfromId("r�servations", "estValide", valider, idReservation, "idReservation");
                                         JOptionPane.showMessageDialog(null, "La reservation a bien été validée ! ", "Information", JOptionPane.INFORMATION_MESSAGE); 
                                     }
                                     else {
                                         int valider = 0;
-                                        rq.MAJvalide(valider, idReservation);
+                                        rq.MAJIntfromId("r�servations", "estValide", valider, idReservation, "idReservation");
                                         JOptionPane.showMessageDialog(null, "La reservation a bien été invalidée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
                                     }
                                 }
@@ -185,7 +191,7 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                                 String dateActuelle = infos[0];
                                 String dateDe = (String)JOptionPane.showInputDialog(null, "Modifier la "+dateActuelle,"date de debut",JOptionPane.QUESTION_MESSAGE);
                                 if (dateDe!=null){
-                                    rq.MAJdateD(dateDe, idReservation);
+                                    rq.MAJStrfromId("r�servations", "dateDebut", dateDe, idReservation, "idReservation");
                                     JOptionPane.showMessageDialog(null, "La date de début a bien été modifiée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
                                 }
                             }
@@ -193,7 +199,7 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                                 String dateActuelle = infos[1];
                                 String dateFi = (String)JOptionPane.showInputDialog(null, "Modifier la "+dateActuelle,"date de fin",JOptionPane.QUESTION_MESSAGE);
                                 if (dateFi!=null){
-                                    rq.MAJdateF(dateFi, idReservation);
+                                	rq.MAJStrfromId("r�servations", "dateFin", dateFi, idReservation, "idReservation");
                                     JOptionPane.showMessageDialog(null, "La date de fin a bien été modifiée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
                                 }
                             }
@@ -201,7 +207,7 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                                 String heureActuelle = infos[2];
                                 String heureDe = (String)JOptionPane.showInputDialog(null, "Modifier l'"+heureActuelle,"heure de debut",JOptionPane.QUESTION_MESSAGE);
                                 if (heureDe!=null){
-                                    rq.MAJheureD(heureDe, idReservation);
+                                	rq.MAJTimefromId("r�servations", "heureDebut", heureDe, idReservation, "idReservation");
                                     JOptionPane.showMessageDialog(null, "L'heure de début a bien été modifiée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
                                 }
                             }
@@ -209,7 +215,7 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                                 String heureActuelle = infos[3];
                                 String heureFi = (String)JOptionPane.showInputDialog(null, "Modifier l'"+heureActuelle,"heure de fin",JOptionPane.QUESTION_MESSAGE);
                                 if (heureFi!=null){
-                                    rq.MAJheureF(heureFi, idReservation);
+                                	rq.MAJTimefromId("r�servations", "heureFin", heureFi, idReservation, "idReservation");
                                     JOptionPane.showMessageDialog(null, "L'heure de fin a bien été modifiée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
                                 }
                             }
@@ -218,7 +224,7 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                                 String nbP = (String)JOptionPane.showInputDialog(null, "Modifier le "+nbPActuel,"nombre de personnes",JOptionPane.QUESTION_MESSAGE);
                                 if (nbP!=null){
                                     int nb = Integer.parseInt(nbP, 10);
-                                    rq.MAJnbPersonnes(nb, idReservation);
+                                    rq.MAJIntfromId("r�servations", "nbPersonnes", nb, idReservation, "idReservation");
                                     JOptionPane.showMessageDialog(null, "Le nombre de personnes a bien été modifié ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
                                 }
                             }
@@ -227,7 +233,7 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                                 String nbH = (String)JOptionPane.showInputDialog(null, "Modifier le "+nbHActuel,"nombre d'heures",JOptionPane.QUESTION_MESSAGE);
                                 if (nbH!=null){
                                     int nb = Integer.parseInt(nbH, 10);
-                                    rq.MAJnbHeures(nb, idReservation);
+                                    rq.MAJIntfromId("r�servations", "nbHeures", nb, idReservation, "idReservation");
                                     JOptionPane.showMessageDialog(null, "Le nombre d'heures a bien été modifié ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
                                 }
                             }
@@ -292,7 +298,7 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                                 salle = (String)JOptionPane.showInputDialog(null, "quelle salle voulez vous ajouter?","ajouter salle",JOptionPane.QUESTION_MESSAGE, null, salles, salles[0]);
                                 disposition = (String)JOptionPane.showInputDialog(null, "A quelle disposition voulez vous l'associer?","ajouter salle",JOptionPane.QUESTION_MESSAGE, null, dispositions, dispositions[0]);
                                 if (salle!=null && disposition!=null){
-                                    rq.ajoutSalle(idReservation, salle, disposition);  
+                                    rq.ajoutSalleResa(idReservation, salle, disposition);  
                                     JOptionPane.showMessageDialog(null, "La salle a bien été ajoutée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
                                 }
                             }
@@ -364,11 +370,35 @@ public class ITboutonsModifier extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReservationActionPerformed
 
     private void btnClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientActionPerformed
-        
-       
-        
-        
-    
+    	try{
+    		String[] clients = rq.getClients();
+    		String client = "";
+    		String[] noms = rq.getnomsClients();
+    		String[] prenoms = rq.getprenomsClients();
+    		client = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner un client","Rechercher un client",JOptionPane.QUESTION_MESSAGE, null,clients,clients[0]);
+    		if (client!=null){
+    			int longueur = noms.length;
+    			String[] client2 = new String[longueur];
+    			String leNom = "";
+    			String lePrenom = "";
+    			for(int i = 0; i<longueur; i++){
+    				client2[i] = prenoms[i]+" "+noms[i];
+    				if(client2[i] == null ? client == null : client2[i].equals(client)){
+    					leNom = noms[i];
+    					lePrenom = prenoms[i];
+    				}
+    			}
+    			int idClient = rq.getIdClient(leNom, lePrenom);
+    			String[] dates = rq.getDatesReservations(idClient);
+    			String date = null;
+    			ITmodifClient clientmodif = new ITmodifClient();
+    			clientmodif.setlabelprenom(lePrenom);
+    			clientmodif.setlabelnom(leNom);
+    			clientmodif.setVisible(true);
+    		}
+    	}catch (SQLException ex) {
+            Logger.getLogger(ITboutonsRechercher.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnClientActionPerformed
 
     private void btnDevisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDevisActionPerformed
@@ -381,8 +411,9 @@ public class ITboutonsModifier extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnQuitterActionPerformed
 
-    private void btnFactureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFactureActionPerformed
-        // TODO add your handling code here:
+    private void btnFactureActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_btnFactureActionPerformed
+    	String strFac = (String)JOptionPane.showInputDialog(null, "Veuillez choisir facture a editer", "Edition de facture", JOptionPane.QUESTION_MESSAGE, null, rq.getElementByIdFromTable("r�servations", "Reservation", "idReservation"), rq.getElementByIdFromTable("r�servations", "Reservation", "idReservation")[0]);
+        creerFacture(Integer.parseInt(strFac));
     }//GEN-LAST:event_btnFactureActionPerformed
 
     /**

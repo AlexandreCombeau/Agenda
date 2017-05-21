@@ -124,6 +124,7 @@ public class PanelAgenda extends javax.swing.JPanel {
     @Override
     public void paintComponent(Graphics g) {
         //cette méthode construit l'arrière plan de l'agenda, avec une colonne par jour de la semaine
+    	super.paintComponent(g);
         setBackground(Color.white);
         g.setColor(Color.BLACK);
         //Antialiasing pour lisser les chiffres et lettres éventuels:

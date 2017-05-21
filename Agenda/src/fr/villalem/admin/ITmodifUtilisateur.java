@@ -141,15 +141,15 @@ public class ITmodifUtilisateur extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         try{
         String nouveauLogin = "";
-        String[] nomUsager = this.getNomPrenom(lbUser.getText());
-        nouveauLogin = (String)JOptionPane.showInputDialog(null, "L'ancien login de "+lbUser.getText()+" est : "+rq.getUtilisateur(nomUsager[1], nomUsager[0])[1]+"\nQuel sera le nouveau login ?", "Modification de l'utilisateur : "+lbUser.getText(), JOptionPane.QUESTION_MESSAGE);
+        //String[] nomUsager = this.getNomPrenom(lbUser.getText());
+        nouveauLogin = (String)JOptionPane.showInputDialog(null, "L'ancien login de "+lbUser.getText()+" est : "+lbUser.getText()+"\nQuel sera le nouveau login ?", "Modification de l'utilisateur : "+lbUser.getText(), JOptionPane.QUESTION_MESSAGE);
         if(!(rq.checkUtilisateurLogin(nouveauLogin))){
             JOptionPane.showMessageDialog(null, "Ce login n'est pas disponible !\nVeuillez en choisir un autre");
         }
         else if(nouveauLogin != null && !(nouveauLogin.equals(""))){
             int choix = (int)JOptionPane.showConfirmDialog(null, "Le nouveau login pour "+lbUser.getText()+" sera : "+nouveauLogin+".\nConfirmer ?", "Modification de l'utilisateur : "+lbUser.getText(), JOptionPane.YES_NO_OPTION);
             if(choix == 0){
-                rq.MAJlogin(rq.getUtilisateur(nomUsager[1], nomUsager[0])[1], nouveauLogin);
+                rq.MAJnom("usager", lbUser.getText(), nouveauLogin, "login");
                 JOptionPane.showMessageDialog(null, "Le nouveau login de "+lbUser.getText()+" est : "+nouveauLogin);
             }
             }
@@ -184,8 +184,8 @@ public class ITmodifUtilisateur extends javax.swing.JFrame {
     private void btnEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmailActionPerformed
         try{
         String nouveauMail = "";
-        String[] nomUsager = this.getNomPrenom(lbUser.getText());
-        nouveauMail = (String)JOptionPane.showInputDialog(null, "L'ancien mail de "+lbUser.getText()+" est : "+rq.getUtilisateur(nomUsager[1], nomUsager[0])[0]+"\nQuel sera le nouveau mail ?", "Modification de l'utilisateur : "+lbUser.getText(), JOptionPane.QUESTION_MESSAGE);
+        //String[] nomUsager = this.getNomPrenom(lbUser.getText());
+        nouveauMail = (String)JOptionPane.showInputDialog(null, "L'ancien mail de "+lbUser.getText()+" est : "+rq.getEmail(lbUser.getText())+"\nQuel sera le nouveau mail ?", "Modification de l'utilisateur : "+lbUser.getText(), JOptionPane.QUESTION_MESSAGE);
         if(!(rq.checkUtilisateurEmail(nouveauMail))){
             JOptionPane.showMessageDialog(null, "Ce mail est déjà utlisé !\nVeuillez en choisir un autre");
         }
@@ -195,7 +195,7 @@ public class ITmodifUtilisateur extends javax.swing.JFrame {
         else if(nouveauMail != null && !(nouveauMail.equals(""))){
             int choix = (int)JOptionPane.showConfirmDialog(null, "Le nouveau mail pour "+lbUser.getText()+" sera : "+nouveauMail+".\nConfirmer ?", "Modification de l'utilisateur : "+lbUser.getText(), JOptionPane.YES_NO_OPTION);
             if(choix == 0){
-                rq.MAJmail(rq.getUtilisateur(nomUsager[1], nomUsager[0])[0], nouveauMail);
+            	rq.MAJnom("usager", rq.getEmail(lbUser.getText()), nouveauMail, "mail");
                 JOptionPane.showMessageDialog(null, "Le nouveau mail de "+lbUser.getText()+" est : "+nouveauMail);
             }
         }
@@ -215,6 +215,8 @@ public class ITmodifUtilisateur extends javax.swing.JFrame {
     public JLabel getLbUser() {
         return lbUser;
     }
+    
+    
     
     public void setLbUser(String txt) {
         this.lbUser.setText(txt);

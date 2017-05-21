@@ -243,12 +243,17 @@ public class ITajout extends javax.swing.JFrame {
             int aire = 0;
             
             if(this.panelSalle.isVisible()){
+            	try{
                 int superficie = Integer.parseInt(txtSuperficie.getText());
                 if(superficie < 0){
                     JOptionPane.showMessageDialog(null, "La superficie doit être un nombre entier positif. \nVeuillez corriger.");
                 }
                 else{
                     aire = superficie;
+                }
+                }catch (NumberFormatException e){
+                	JOptionPane.showMessageDialog(null, "La superficie doit être un nombre entier positif. \nVeuillez corriger.");
+                	nom=null;
                 }
             }
             
@@ -259,14 +264,14 @@ public class ITajout extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Veuillez choisir une couleur pour la "+lbTable.getText());
             }
             else{
-                if(rq.checkErreurAjout(lbTable.getText(), nom, hex)){
+                if(rq.checkErreurAjout("salles", nom, hex)){
                     if(aire != 0){
                         rq.ajoutSalle(nom, aire, hex, comment);
                         JOptionPane.showMessageDialog(null, "Nouvelle salle créée avec succès !");
                         this.dispose();
                     }
                     else{
-                        rq.ajoutTache(nom, hex, comment);
+                        //rq.ajoutTache(nom, hex, comment);
                         JOptionPane.showMessageDialog(null, "Nouvelle tache créée avec succès !");
                         this.dispose();
                     } 

@@ -172,7 +172,7 @@ public class ITboutonsRechercher extends javax.swing.JFrame {
             String[] prenoms = rq.getprenomsClients();
          
             String client = "";
-            client = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner une date de début de réservation","Rechercher un client",JOptionPane.QUESTION_MESSAGE, null,clients,clients[0]);
+            client = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner un client","Rechercher un client",JOptionPane.QUESTION_MESSAGE, null,clients,clients[0]);
             
             int longueur = noms.length;
             String[] client2 = new String[longueur];

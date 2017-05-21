@@ -7,10 +7,13 @@ package fr.villalem.factures;
 
 import java.io.FileOutputStream;
 import org.apache.poi.hssf.usermodel.*;
-
+import static gestionagenda.GestionAgenda.rq;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -28,8 +31,27 @@ public class Factures {
         
     }
     
-    public static void creerFacture(){
-    
+    public static void creerFacture(int idResa) throws SQLException{
+    	
+    	//Recuperer montant, et créer facture dans la bdd
+    	DecimalFormat dcf= new DecimalFormat ("0.00");
+    	double montant = getmontant(idResa);
+    	rq.ajoutFacture(montant,idResa);
+    	int idclient = rq.getUniqueIntByIdFromTable("réservations", "idReservation", idResa, "fkidClient");
+    	System.out.println();
+    	System.out.println(Integer.toString(idclient));
+    	String adresseclient= rq.getUniqueStringByIdFromTable("clients", "idClient", idclient, "adresseFacturation");
+    	System.out.println(adresseclient);
+    	String [] adresseprete=adresseclient.split(",");
+    	String nom= rq.getUniqueStringByIdFromTable("clients", "idClient", idclient, "nom");
+    	String prenom= rq.getUniqueStringByIdFromTable("clients", "idClient", idclient, "prenom");
+    	String intituleclient= prenom+" "+nom;
+    	String[] optselib = getlibelleoption(idResa);
+    	double[] optseprix = getprixoption(idResa);
+    	
+    	
+    	
+    	
         /*
         CrÃ©ation des variables
         */
@@ -59,7 +81,6 @@ public class Factures {
         HSSFCellStyle cellStyleBottom = wb.createCellStyle();
         cellStyleBottom.setBorderBottom(BorderStyle.MEDIUM);
         cellStyleBottom.setBottomBorderColor((short)8);
-        
         
         /*
         DEFINITION DES FONTS
@@ -263,6 +284,7 @@ public class Factures {
                     cellStyle.setBorderLeft(BorderStyle.MEDIUM);
                     cellStyle.setLeftBorderColor((short)8);
                     cellStyle.setAlignment(HorizontalAlignment.CENTER);
+                    
                     if(j == 7){
                         fonte.setFontHeightInPoints((short)20);
                         cell.setCellValue("FACTURE");
@@ -271,15 +293,15 @@ public class Factures {
                         
                     }
                     else if(j == 8){
-                        cell.setCellValue("Bird Office");
+                        cell.setCellValue(intituleclient);
                         
                     }
                     else if(j == 9){
-                        cell.setCellValue("29 Bid Lannes");
+                        cell.setCellValue(adresseprete[0]);
                         
                     }
                     else if(j == 10){
-                        cell.setCellValue("75116 Paris");
+                        cell.setCellValue(adresseprete[1]);
                         cellStyle.setBorderBottom(BorderStyle.MEDIUM);
                         cellStyle.setBottomBorderColor((short)8);
                         cellStyle.setBorderRight(BorderStyle.MEDIUM);
@@ -314,8 +336,13 @@ public class Factures {
         */
         
         row = sheet.createRow(14);
+        SimpleDateFormat formatter = new SimpleDateFormat ("yyyy.MM.dd" );
+     
+        Date currentTime_1 = new Date();
+      
+        String dateString = formatter.format(currentTime_1);
         cell = row.createCell(4);
-        cell.setCellValue("Paris, 03/01/2017");
+        cell.setCellValue("Paris, "+dateString+"");
         cell.setCellStyle(cellStyleFont16);
         
         /*
@@ -346,7 +373,7 @@ public class Factures {
                 fonte = wb.createFont();
                 fonte.setFontHeightInPoints((short)17);
                 fonte.setFontName("Courier New");
-                cell.setCellValue("003/2017");
+                cell.setCellValue(rq.getidFacture(idResa,montant)+" /2017");
                 cellStyle.setFont(fonte);
                 cellStyle.setBorderRight(BorderStyle.MEDIUM_DASHED);
                 cellStyle.setRightBorderColor((short)8);
@@ -370,7 +397,15 @@ public class Factures {
         HSSFRow row24 = sheet.createRow(24);
         HSSFRow row25 = sheet.createRow(25);
         HSSFRow row26 = sheet.createRow(26);
-        HSSFRow[] lesRows = new HSSFRow[8];
+        HSSFRow row27 = sheet.createRow(27);
+        HSSFRow row28 = sheet.createRow(28);
+        HSSFRow row29 = sheet.createRow(29);
+        HSSFRow row30 = sheet.createRow(30);
+        HSSFRow row31 = sheet.createRow(31);
+        HSSFRow row32 = sheet.createRow(32);
+        HSSFRow row33 = sheet.createRow(33);
+        HSSFRow row34 = sheet.createRow(34);
+        HSSFRow[] lesRows = new HSSFRow[16];
         lesRows[0] = row19;
         lesRows[1] = row20;
         lesRows[2] = row21;
@@ -379,30 +414,50 @@ public class Factures {
         lesRows[5] = row24;
         lesRows[6] = row25;
         lesRows[7] = row26;
+        lesRows[8] = row27;
+        lesRows[9] = row28;
+        lesRows[10] = row29;
+        lesRows[11] = row30;
+        lesRows[12] = row31;
+        lesRows[13] = row32;
+        lesRows[14] = row33;
+        lesRows[15] = row34;
         
-        for(int i = 19 ; i <= 26 ; i++){
+        for(int i = 19 ; i <= 34 ; i++){
             for(int j = 0 ; j <= 5 ; j++){
-                cell = lesRows[i - 19].createCell(j);
-                cellStyle = wb.createCellStyle();
-                if(i == 19){
-                    cellStyle.setBorderTop(BorderStyle.MEDIUM);
-                    cellStyle.setTopBorderColor((short)8);
-                }
-                if(i == 26){
-                    cellStyle.setBorderBottom(BorderStyle.MEDIUM);
-                    cellStyle.setBottomBorderColor((short)8);
-                }
-                if(j >= 3 && j <= 5){
-                    cellStyle.setBorderRight(BorderStyle.MEDIUM);
-                    cellStyle.setRightBorderColor((short)8);
-                }
-                if( i == 20 && j == 4 || i == 20 && j == 5){
-                    cellStyle.setBorderBottom(BorderStyle.MEDIUM);
-                    cellStyle.setBottomBorderColor((short)8);
-                }
-                cell.setCellStyle(cellStyle);
+            	
+            	cell = lesRows[i - 19].createCell(j);
+            	cellStyle = wb.createCellStyle();
+            	
+            	if(i == 19){
+            		cellStyle.setBorderTop(BorderStyle.MEDIUM);
+            		cellStyle.setTopBorderColor((short)8);
+            	}
+            	if(i == 34){
+            		cellStyle.setBorderBottom(BorderStyle.MEDIUM);
+            		cellStyle.setBottomBorderColor((short)8);
+            	}
+            	if(j >= 3 && j <= 5){
+            		cellStyle.setBorderRight(BorderStyle.MEDIUM);
+            		cellStyle.setRightBorderColor((short)8);
+            	}
+            	if(i == 20 && j == 4 || i == 20 && j == 5){
+            		cellStyle.setBorderBottom(BorderStyle.MEDIUM);
+            		cellStyle.setBottomBorderColor((short)8);
+            	}
+            	cell.setCellStyle(cellStyle);
+            	for(int k = 21;k<35;k++){
+            		if(i == k && j==0){
+            			cell.setCellValue(optselib[k-21]);
+            		}
+            		if(i == k && j==5 && optselib[k-21]!=null){
+            			cell.setCellValue(optseprix[k-21]+" €");
+            		}
+            		
+            	}
             }
         }
+        
         
         /*
         FIN LIGNES 20 - 27
@@ -412,26 +467,28 @@ public class Factures {
         DEBUT LIGNES 28 - 30
         */
         
-        HSSFRow row27 = sheet.createRow(27);
-        HSSFRow row28 = sheet.createRow(28);
-        HSSFRow row29 = sheet.createRow(29);
-        lesRows[0] = row27;
-        lesRows[1] = row28;
-        lesRows[2] = row29;
+        HSSFRow row35 = sheet.createRow(35);
+        HSSFRow row36 = sheet.createRow(36);
+        HSSFRow row37 = sheet.createRow(37);
+        lesRows[0] = row35;
+        lesRows[1] = row36;
+        lesRows[2] = row37;
         
         //Juste pour l'exemple (Ã  voir)
         String[] lesTotaux = {"TOTAL HT", "TVA 20%", "TOTAL TTC"};
-        double[] lesPrix = {105.00, 21.00, 126.00};
+        double prix = montant;
+        double tva = prix/100*20;
+        double[] lesPrix = {prix, tva, prix+tva};
         
-        for(int i = 27 ; i <= 29 ; i++){
+        for(int i = 35 ; i <= 37 ; i++){
             for(int j = 4 ; j <= 5 ; j++){
-                cell = lesRows[i - 27].createCell(j);
+                cell = lesRows[i - 35].createCell(j);
                 cell.setCellStyle(cellStyleLBR);
                 if(j == 4){
-                    cell.setCellValue(lesTotaux[i - 27]);
+                    cell.setCellValue(lesTotaux[i - 35]);
                 }
                 else{
-                    cell.setCellValue(lesPrix[i - 27]+" â‚¬");
+                    cell.setCellValue(dcf.format(lesPrix[i - 35])+" €");
                 }
             }
         }
@@ -468,7 +525,7 @@ public class Factures {
         
         try{
             
-            FileOutputStream fileOut = new FileOutputStream("facture.xls");
+            FileOutputStream fileOut = new FileOutputStream("facture"+idResa+".xls");
             wb.write(fileOut);
             fileOut.close();
             
@@ -480,4 +537,39 @@ public class Factures {
         }
     }
     
+    public static double getmontant(int id) throws SQLException{
+    	double montantotal = 0.00;
+    	int [] opse = rq.getUniqueListElementByIdFromTable("choix", "fkidReservation", id, "fkidOptionsServices");
+    	
+    	for(int unique : opse){
+    		System.out.println(Integer.toString(unique));
+    		System.out.println(Double.toString(montantotal));
+    		System.out.println(Double.toString(rq.getTarifServiceint(unique)));
+    		montantotal += rq.getTarifServiceint(unique);
+    	}
+    	/*int [] infosalle = rq.getUniqueListElementByIdFromTable("sallesresa", "fkidReservation", id, "fkidInfoSalle");
+    	for(int unique : infosalle){
+    		montantotal += rq.getUniqueElementByIdFromTable("optionsservices","idOptionsServices", unique, "prixTTC");
+    	}*/
+    	System.out.println(Double.toString(montantotal));
+    	return montantotal;
+    }
+    
+    public static String[] getlibelleoption(int id) throws SQLException{
+    	int [] opse = rq.getUniqueListElementByIdFromTable("choix", "fkidReservation", id, "fkidOptionsServices");
+    	String [] listelibelle = new String [16];
+    	for(int i=0; i<opse.length;++i){
+    		listelibelle[i]=rq.getUniqueStringByIdFromTable("optionsservices", "idOptionsServices", opse[i], "libelle");
+    	}
+    	return listelibelle;
+    }
+    
+    public static double[] getprixoption(int id) throws SQLException{
+    	int [] opse = rq.getUniqueListElementByIdFromTable("choix", "fkidReservation", id, "fkidOptionsServices");
+    	double [] listeprix = new double [16];
+    	for(int i=0; i<opse.length;++i){
+    		listeprix[i]=rq.getTarifServiceint(opse[i]);
+    	}
+    	return listeprix;
+    }
 }
