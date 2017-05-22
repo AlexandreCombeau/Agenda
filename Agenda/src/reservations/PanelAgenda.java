@@ -86,19 +86,14 @@ public class PanelAgenda extends javax.swing.JPanel {
       for (int i=0;i<7;i++) { //pour chaque jour de la semaine (de 0 à 6)
     	  int decalageEvenement = 3; // decale les evenemets sur le cote afin de pouvoir les differencier
     	  for(int j=0;j<2;j++) { 
-			  if(j==0) {
-					try {
-						rs = rq.getReservationsJour(cal2);
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				}
-				else {
-					try {
-						rs = rq.getTachesJour(cal2);
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
+    		  try {
+    			  if(j==0) 
+    				  rs = rq.getReservationsJour(cal2);
+    			  else 
+    				  rs = rq.getTachesJour(cal2);
+				
+    		  } catch (SQLException e) {
+					e.printStackTrace();
 				}
 	          
 	          if(rs != null) { // on test pour determiner si il existe une reservation pour la date de cal2
