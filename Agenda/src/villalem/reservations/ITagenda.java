@@ -363,7 +363,7 @@ public class ITagenda extends javax.swing.JFrame {
         					.addGap(18))))
         );
         getContentPane().setLayout(layout);
-        JScrollPane scrollPane = new JScrollPane(panelJour,   ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane scrollPane = new JScrollPane(panelJour,   ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.getVerticalScrollBar().setUnitIncrement(25);
         panelCardLayout.add(panelAgenda1, VU_SEMAINE);
         panelCardLayout.add(scrollPane, VU_JOUR);
@@ -413,8 +413,8 @@ public class ITagenda extends javax.swing.JFrame {
     	if(vuSemaine) {
 	        c.add(Calendar.DAY_OF_YEAR, 7);//ajoute 7 jours au calendrier
 	        remplirLabelsJours();
-	        if(!panelAgenda1.ListeEvenements.isEmpty())//vide les évènements de la semaine précédente
-	        	panelAgenda1.ListeEvenements.clear();
+	        if(!panelAgenda1.listeEvenements.isEmpty())//vide les évènements de la semaine précédente
+	        	panelAgenda1.listeEvenements.clear();
 	        panelAgenda1.repaint();//repaint() redessine l'agenda 
 	        panelAgenda1.remplirAgenda(c);
     	}
@@ -433,7 +433,7 @@ public class ITagenda extends javax.swing.JFrame {
 	    if(vuSemaine) {
 	    	c.add(Calendar.DAY_OF_YEAR, -7);//enlève 7 jours au calendrier
 	        remplirLabelsJours();
-	        panelAgenda1.ListeEvenements.clear();//vide les évènements de la semaine suivante
+	        panelAgenda1.listeEvenements.clear();//vide les évènements de la semaine suivante
 	        panelAgenda1.repaint();//repaint() redessine l'agenda
 	        panelAgenda1.remplirAgenda(c);
 	    }
@@ -448,9 +448,13 @@ public class ITagenda extends javax.swing.JFrame {
 
     private void btnRemplirTableauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemplirTableauActionPerformed
         remplirLabelsJours();
-        panelAgenda1.ListeEvenements.clear();//vide les évènements de la semaine suivante
+        panelAgenda1.listeEvenements.clear();//vide les évènements de la semaine suivante
         panelAgenda1.repaint();//repaint() redessine l'agenda
         panelAgenda1.remplirAgenda(c);
+        remplirLabelsJours();
+        panelJour.getListeEvenements().clear();//vide les évènements de la semaine suivante
+        panelJour.repaint();//repaint() redessine l'agenda
+        panelJour.remplirAgenda(c);
     }//GEN-LAST:event_btnRemplirTableauActionPerformed
     
     
@@ -459,8 +463,11 @@ public class ITagenda extends javax.swing.JFrame {
     	vuJour = true;
     	vuSemaine = false;
     	((CardLayout)panelCardLayout.getLayout()).show(panelCardLayout, VU_JOUR);
+    	panelJour.getListeEvenements().clear();
     	remplirLabelsJours();
     	panelJour.repaint();
+    	panelJour.remplirAgenda(c);
+    	
     }
     
     private void btnSemaine(ActionEvent evt) {
@@ -469,6 +476,7 @@ public class ITagenda extends javax.swing.JFrame {
     	((CardLayout)panelCardLayout.getLayout()).show(panelCardLayout, VU_SEMAINE);
     	remplirLabelsJours();
     	panelAgenda1.repaint();  	
+    	panelAgenda1.remplirAgenda(c);
     }
 
     //Méthodes

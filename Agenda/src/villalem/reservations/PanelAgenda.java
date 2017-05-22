@@ -17,55 +17,54 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JOptionPane;
-
 
 /**
- *
+ * Cette classe represente la vue semaine de l'agenda 
  * @author alexis
  */
 public class PanelAgenda extends javax.swing.JPanel {
 
-    public ArrayList<Evenement> ListeEvenements = new ArrayList<>();
+	/**
+	 * Liste qui contient tous les evenements d'une semaine
+	 */
+    public List<Evenement> listeEvenements = new ArrayList<>();
     
-    private final Calendar cal = Calendar.getInstance();
-    private final int largeurColonneHeure = 40;//largeur de la première colonne, en px
-    private final int largeurColonneJour = 140;//largeur de chaque colonne jour, en px
-    private final int espacementHeure = 30;//espacement vertical entre chaque heure, en px
-    private final int largeurEven = 60;
     /**
-     * Creates new form PanelAgenda
+     * Largeur de la première colonne, en px
      */
+    private final int largeurColonneHeure = 40;
+    
+    /**
+     * Largeur de chaque colonne jour, en px
+     */
+    private final int largeurColonneJour = 140;
+    
+    /**
+     * Espacement vertical entre chaque heure, en px
+     */
+    private final int espacementHeure = 30;
+    
+    /**
+     * Largeur d'un evenement, en px
+     */
+    private final int largeurEven = 60;
+
     public PanelAgenda() {
-        initComponents();
-        //remplirTableau(cal); // rempli le tableau avec les reservations, à commenter pour éviter le bug d'affichage
-        
-       this.addMouseListener(new MouseAdapter() {
-    	   public void mouseClicked(MouseEvent e) {
-    		   for(Evenement evt:ListeEvenements) {
-    			   if(evt.contain(e.getPoint())) {
-    				   affichePopup(evt);
-    			   }
-    		   }
-    	   }
-       });        
-    }
-    
-    
-    private void affichePopup(Evenement evt) {
-    	String message ="";
-		try {
-			message = rq.getInfoEvenement(evt.getId());
-			if(rq.getEstReservation(evt.getId())) {
-				message = rq.getInfoReservation(evt.getId());
-			}
-		} catch (SQLException e) {	
-			e.printStackTrace();
-		}
-		JOptionPane.showMessageDialog(this, message);
+    	initComponents();       
+    	this.addMouseListener(new MouseAdapter() {
+    		public void mouseClicked(MouseEvent e) {
+    			Collections.reverse(listeEvenements); // on inverse l'ordre de verification des evenements car graphiquement les derniers de la list sont ceux au premier plan
+    												  // cette inversion permet donc que si on clique sur un evenement c'est bien celui sur lequel on clique qui va être appeler et non celui en dessous
+    			if(listeEvenements.stream().filter(evt->evt.contain(e.getPoint())).findFirst().isPresent()) { // on test si l'evenement qui à capter notre clic existe bien
+    				listeEvenements.stream().filter(evt->evt.contain(e.getPoint())).findFirst().get().affichePopup(); // on recupère cette evenement et on l'affiche
+    			}
+    		}
+    	});        
     }
     
     /**
@@ -74,7 +73,6 @@ public class PanelAgenda extends javax.swing.JPanel {
      * puis relancer NetBeans.
      * Sinon, une erreur d'affichage sera lancée, il faut l'ignorer et ne pas
      * toucher au design.
-     * 
      * @param c
      */
    
@@ -82,88 +80,108 @@ public class PanelAgenda extends javax.swing.JPanel {
     public void remplirAgenda(Calendar c) { 
       //copie le calendrier, sinon le calendrier 'c' changerait de date à cause de sa manipulation dans BdDAO.java avec rq.getReservationsJour()
       Calendar cal2 = (Calendar)c.clone();
-      
-      cal2.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);//met le calendrier à Lundi pour commencer la semaine
+    
+      ResultSet rs = null; //initialise le ResultSet     
+	  cal2.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);//met le calendrier à Lundi pour commencer la semaine   	  
       for (int i=0;i<7;i++) { //pour chaque jour de la semaine (de 0 à 6)
-          ResultSet rs; //initialise le ResultSet
-          int decalageEvenement = 3; // decale les evenemets sur le cote afin de pouvoir les differencier
-          try {
-              rs = rq.getEvenementsJour(cal2);
-              if(rs != null) { // on test pour determiner si il existe une reservation pour la date de cal2
-            try {
-            	
-                  while(rs.next()) { //obtient chaque réservation de la journée
-                	 
-                      //obtient l'heure de début et de fin (il faudra faire en sorte d'inclure les minutes)
-                	 
-                	  String[] strDebut = rs.getString("dateDebut").split("-");
-                	  String[] strFin = rs.getString("dateFin").split("-");
-                	  
-                      Integer heureDebut = Integer.parseInt(rs.getString("heureDebut").split(":")[0]);
-                      Integer heureFin = Integer.parseInt(rs.getString("heureFin").split(":")[0]);
-                
-                      Integer jourDebut = Integer.parseInt(rs.getString("dateDebut").split("-")[2]);
-                      Integer jourFin = Integer.parseInt(rs.getString("dateFin").split("-")[2]);
-                      
-                      int idEvenement = rs.getInt("evenement.id");
-                      String couleur = rq.getCouleurEvenement(idEvenement);
-                      //System.out.println( (heureFin-6)*espacementHeure ); //à supprimer                                            
-                      /**
-                       * Pour chaque reservation, créé un évènement qui est en fait un rectangle
-                       * dont les coordonnées correspondent à l'heure de début et de fin, ainsi
-                       * qu'à la journée.
-                       * --pour l'abscisse 'x': le 1 est pour décaler d'un pixel, largeurColonneHeure est
-                       * pour tenir compte de la premiere colonne, et i*largeurColonneJour est pour décaler
-                       * de la largeur de chaque colonne 'jour'. Donc pour le lundi, celà vaut 0, car i=0.
-                       * --pour l'ordonnée 'y': on enlève 6 à l'heure de début, car le graphique commence à 6h du matin
-                       * (et non 7h, le 6 correspond à y=0). On multiplie par espacementHeure pour le faire déscendre.
-                       * --La largeur est fixé arbitrairement pour l'instant.
-                       * --La hauteur correspond à la différence entre l'heure de début et de fin, fois espacementHeure.
-                      **/                   
-                      
-                      System.out.println(jourDebut+"-"+jourFin+"-"+jourDebut.equals(jourFin));
-                      if(!(jourDebut.equals(jourFin))) {
-                    	 if(((Integer)new Calendar.Builder().setDate(Integer.parseInt(strDebut[0]),Integer.parseInt(strDebut[1]),Integer.parseInt(strDebut[2])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))) {
-                    	  ListeEvenements.add(new Evenement(1+largeurColonneHeure+i*largeurColonneJour+decalageEvenement,
-                                  (heureDebut-6)*espacementHeure, largeurEven, (23 - heureDebut)*espacementHeure,idEvenement,couleur));
-                    	  
-	                      } // commence ce jour et finit après
-	                      else if(!((Integer)new Calendar.Builder().setDate(Integer.parseInt(strDebut[0]),Integer.parseInt(strDebut[1]),Integer.parseInt(strDebut[2])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))
-	                    		  && !((Integer)new Calendar.Builder().setDate(Integer.parseInt(strFin[0]),Integer.parseInt(strFin[1]),Integer.parseInt(strFin[2])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))) {
-	                    	  ListeEvenements.add(new Evenement(1+largeurColonneHeure+i*largeurColonneJour+decalageEvenement,
-	                                  (7-6)*espacementHeure, largeurEven, (23 - 7)*espacementHeure,idEvenement,couleur));  
-	                      } // commence avant et finit après ce jour
-	                      else if(((Integer)new Calendar.Builder().setDate(Integer.parseInt(strFin[0]),Integer.parseInt(strFin[1]),Integer.parseInt(strFin[2])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))) {
-	                    	  ListeEvenements.add(new Evenement(1+largeurColonneHeure+i*largeurColonneJour+decalageEvenement,
-	                                  (7-6)*espacementHeure, largeurEven, (heureFin - 7)*espacementHeure,idEvenement,couleur));
-	                      } // commence avant et finit ce jour
-                      }
-                      
-                      else {
-                    	  ListeEvenements.add(new Evenement(1+largeurColonneHeure+i*largeurColonneJour+decalageEvenement,
-                                  (heureDebut-6)*espacementHeure, largeurEven, (heureFin - heureDebut)*espacementHeure,idEvenement,couleur));                          
-                      } // commence et fini le même jour
-                      decalageEvenement+=70;
-                     
-                  }
-              } catch (SQLException ex) {
-                  Logger.getLogger(PanelAgenda.class.getName()).log(Level.SEVERE, null, ex);
-              }
-              }
-                      } catch (SQLException ex) {
-                  Logger.getLogger(PanelAgenda.class.getName()).log(Level.SEVERE, null, ex);
-              }
-        //ici, on incrémente le calendrier d'un jour pour obtenir les réservation du jour suivant.
+    	  int decalageEvenement = 3; // decale les evenemets sur le cote afin de pouvoir les differencier
+    	  for(int j=0;j<2;j++) { 
+			  if(j==0) {
+					try {
+						rs = rq.getReservationsJour(cal2);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				else {
+					try {
+						rs = rq.getTachesJour(cal2);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+	          
+	          if(rs != null) { // on test pour determiner si il existe une reservation pour la date de cal2
+	        	  try {
+				      while(rs.next()) { //obtient chaque réservation de la journée
+				          //obtient l'heure de début et de fin (il faudra faire en sorte d'inclure les minutes)
+				    	  String[] strDebut = rs.getString("dateDebut").split("-");
+				    	  String[] strFin = rs.getString("dateFin").split("-");
+				    	  
+				          Integer heureDebut = Integer.parseInt(rs.getString("heureDebut").split(":")[0]);
+				          Integer heureFin = Integer.parseInt(rs.getString("heureFin").split(":")[0]);
+				    
+				          Integer jourDebut = Integer.parseInt(rs.getString("dateDebut").split("-")[0]);
+				          Integer jourFin = Integer.parseInt(rs.getString("dateFin").split("-")[0]);
+				          
+				          int decalageMinuteDebut = ((Integer)Integer.parseInt(rs.getString("heureDebut").split(":")[1])) > 0 ? espacementHeure/2: 0;
+				          int decalageMinuteFin = ((Integer)Integer.parseInt(rs.getString("heureFin").split(":")[1])) > 0 ? espacementHeure/2: 0;
+				          int idEvenement = rs.getInt(1);
+				          int typeEvenement;
+			              String couleur = "";
+			              if(j==0) {
+			            	  couleur = rq.getCouleurReservation(idEvenement);
+			            	  typeEvenement = Evenement.Reservation;
+			              }
+			              else {
+			            	  couleur = rq.getCouleurTache(idEvenement);
+			            	  typeEvenement = Evenement.Tache;
+			              }
+				         // System.out.println(idEvenement+"-"+couleur+"-"+heureDebut+"-"+heureFin+"-"+jourDebut+"-"+jourFin);
+				          /**
+				           * Pour chaque reservation, créé un évènement qui est en fait un rectangle
+				           * dont les coordonnées correspondent à l'heure de début et de fin, ainsi
+				           * qu'à la journée.
+				           * --pour l'abscisse 'x': le 1 est pour décaler d'un pixel, largeurColonneHeure est
+				           * pour tenir compte de la premiere colonne, et i*largeurColonneJour est pour décaler
+				           * de la largeur de chaque colonne 'jour'. Donc pour le lundi, celà vaut 0, car i=0.
+				           * --pour l'ordonnée 'y': on enlève 6 à l'heure de début, car le graphique commence à 6h du matin
+				           * (et non 7h, le 6 correspond à y=0). On multiplie par espacementHeure pour le faire déscendre.
+				           * --La largeur est fixé arbitrairement pour l'instant.
+				           * --La hauteur correspond à la différence entre l'heure de début et de fin, fois espacementHeure.
+				          **/     
+				          Evenement evenement = null;
+				          if(!(jourDebut.equals(jourFin))) {
+				        	 if(((Integer)new Calendar.Builder().setDate(Integer.parseInt(strDebut[2]),Integer.parseInt(strDebut[1]),Integer.parseInt(strDebut[0])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))) {
+				        		 evenement = new Evenement(1+largeurColonneHeure+i*largeurColonneJour+decalageEvenement,
+				                      ((heureDebut-6)*espacementHeure)+decalageMinuteDebut, largeurEven, ((23 - heureDebut)*espacementHeure)+decalageMinuteFin-decalageMinuteDebut,idEvenement,couleur, typeEvenement);
+				        	  
+				              } // commence ce jour et finit après
+				              else if(!((Integer)new Calendar.Builder().setDate(Integer.parseInt(strDebut[2]),Integer.parseInt(strDebut[1]),Integer.parseInt(strDebut[0])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))
+				            		  && !((Integer)new Calendar.Builder().setDate(Integer.parseInt(strFin[2]),Integer.parseInt(strFin[1]),Integer.parseInt(strFin[0])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))) {
+				            	  evenement = new Evenement(1+largeurColonneHeure+i*largeurColonneJour+decalageEvenement,
+				                         ((7-6)*espacementHeure)+decalageMinuteDebut, largeurEven, ((23 - 7)*espacementHeure)+decalageMinuteFin-decalageMinuteDebut,idEvenement,couleur, typeEvenement);  
+				              } // commence avant et finit après ce jour
+				              else if(((Integer)new Calendar.Builder().setDate(Integer.parseInt(strFin[2]),Integer.parseInt(strFin[1]),Integer.parseInt(strFin[0])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))) {
+				            	  evenement = new Evenement(1+largeurColonneHeure+i*largeurColonneJour+decalageEvenement,
+				                          ((7-6)*espacementHeure)+decalageMinuteDebut, largeurEven, ((heureFin - 7)*espacementHeure)+decalageMinuteFin-decalageMinuteDebut,idEvenement,couleur, typeEvenement);
+				              } // commence avant et finit ce jour
+				          }
+				          
+				          else {
+				        	  evenement = new Evenement(1+largeurColonneHeure+i*largeurColonneJour+decalageEvenement,
+				                     ((heureDebut-6)*espacementHeure)+decalageMinuteDebut, largeurEven, ((heureFin - heureDebut)*espacementHeure)+decalageMinuteFin-decalageMinuteDebut,idEvenement,couleur, typeEvenement);                          
+				          } // commence et fini le même jour
+				          decalageEvenement+=30;
+				          listeEvenements.add(evenement);
+				      }
+				  } catch (SQLException ex) {
+				      Logger.getLogger(PanelAgenda.class.getName()).log(Level.SEVERE, null, ex);
+				  }
+	          }
+    	  }
         cal2.add(Calendar.DATE, 1);
-      } 
+      }
+      
 
   }
 
+    /**
+     * Cette methode va dessiner les elements de ce panel
+     */
     @Override
     public void paintComponent(Graphics g) {
-    	
     	super.paintComponent(g);
-    	
         //cette méthode construit l'arrière plan de l'agenda, avec une colonne par jour de la semaine
         setBackground(Color.white);
         g.setColor(Color.BLACK);
@@ -175,18 +193,13 @@ public class PanelAgenda extends javax.swing.JPanel {
             String heure = Integer.toString(i);
             g.drawString(heure + ":00", 0, (i-6)*espacementHeure);//une heure = 30px
         }
-        for(int i=0; i<7; i++) { //affiche une colonne pour chaque jour de la semaine
+        for(int i=0; i<7; i++) //affiche une colonne pour chaque jour de la semaine
             g.drawRect(i*largeurColonneJour+largeurColonneHeure, 0, largeurColonneJour, hauteurFenetre);
-        }
-        g.setColor(Color.DARK_GRAY);
-        /**
-         * méthode qui déssine les rectangles pour chaque évènement dans la liste:
-         */
-        for (Evenement s : ListeEvenements) {       	
-        	s.draw(g);  
-        	
-        }
         
+        g.setColor(Color.DARK_GRAY);
+        //méthode qui déssine les rectangles pour chaque évènement dans la liste:
+        for (Evenement s : listeEvenements)    	
+        	s.draw(g);  
   }
     /**
      * This method is called from within the constructor to initialize the form.
