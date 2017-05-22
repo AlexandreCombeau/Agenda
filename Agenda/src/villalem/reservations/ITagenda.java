@@ -363,11 +363,12 @@ public class ITagenda extends javax.swing.JFrame {
         					.addGap(18))))
         );
         getContentPane().setLayout(layout);
+        // ajout du scrollPane pour la vue jour, il permet d'avoir des barres de defilements
         JScrollPane scrollPane = new JScrollPane(panelJour,   ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(25);
-        panelCardLayout.add(panelAgenda1, VU_SEMAINE);
-        panelCardLayout.add(scrollPane, VU_JOUR);
-        ((CardLayout)panelCardLayout.getLayout()).show(panelCardLayout, VU_SEMAINE);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(25); // la molette parcour plus de distance quand on l'utilise 
+        panelCardLayout.add(panelAgenda1, VU_SEMAINE); // ajout des panels panelAgenda et panelJour dans un cardLayout
+        panelCardLayout.add(scrollPane, VU_JOUR); //  le cardLayout permet de simuler une sorte de diaporama, empilement de panels
+        ((CardLayout)panelCardLayout.getLayout()).show(panelCardLayout, VU_SEMAINE); // on affiche le panelAgenda par defaut quand on ITAgenda se charge
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -409,6 +410,10 @@ public class ITagenda extends javax.swing.JFrame {
         t1.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    /**
+     * Cette methode avance l'agenda d'une semaine ou d'un jour, cela depend de la vu dans laquel nous sommes
+     * @param evt
+     */
     private void btnSemaineSuivanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSemaineSuivanteActionPerformed
     	if(vuSemaine) {
 	        c.add(Calendar.DAY_OF_YEAR, 7);//ajoute 7 jours au calendrier
@@ -429,6 +434,10 @@ public class ITagenda extends javax.swing.JFrame {
 	        
     }//GEN-LAST:event_btnSemaineSuivanteActionPerformed
 
+    /**
+     * Idem que la precedente mais dans l'autre sens
+     * @param evt
+     */
     private void btnSemainePrecedenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSemainePrecedenteActionPerformed
 	    if(vuSemaine) {
 	    	c.add(Calendar.DAY_OF_YEAR, -7);//enlève 7 jours au calendrier
@@ -446,6 +455,11 @@ public class ITagenda extends javax.swing.JFrame {
     	}
     }//GEN-LAST:event_btnSemainePrecedenteActionPerformed
 
+    /**
+     * Cette methode met à jour l'agenda par rapport à la base de donnée
+     * Elle va forcé le fait de remplir l'agenda avec les evenements de la periode dans laquel nous sommes 
+     * @param evt
+     */
     private void btnRemplirTableauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemplirTableauActionPerformed
         remplirLabelsJours();
         panelAgenda1.listeEvenements.clear();//vide les évènements de la semaine suivante
@@ -457,7 +471,11 @@ public class ITagenda extends javax.swing.JFrame {
         panelJour.remplirAgenda(c);
     }//GEN-LAST:event_btnRemplirTableauActionPerformed
     
-    
+    /**
+     * Cette methode va passer a la vue jour et remplir cette vue avec les evenements correspondants
+     * On arrive sur le lundi par defaut
+     * @param evt
+     */
     private void btnJour(ActionEvent evt) {
     	c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY); 
     	vuJour = true;
@@ -470,6 +488,10 @@ public class ITagenda extends javax.swing.JFrame {
     	
     }
     
+    /**
+     * Cette methode va passer a la vue semaine et la remplir avec les evenements correspondants
+     * @param evt
+     */
     private void btnSemaine(ActionEvent evt) {
     	vuSemaine = true;
     	vuJour = false;
@@ -479,9 +501,10 @@ public class ITagenda extends javax.swing.JFrame {
     	panelAgenda1.remplirAgenda(c);
     }
 
-    //Méthodes
+
     /**
      * affiche les dates de chaque jour:
+     * depend de la vue selectionnee
      */
     private void remplirLabelsJours() {
     	
@@ -528,7 +551,7 @@ public class ITagenda extends javax.swing.JFrame {
 			lblDimancheStatic.setText("");
     		int numJour =  c.get(Calendar.DAY_OF_WEEK); // on recupere le numero du jour
     		String strJour = sdf.format(c.getTime());
-    		switch(numJour) {
+    		switch(numJour) { // on n'affiche que le jour actuel dans la vue jour, on va donc vider tous les labels et ne remplir que celui en question
     		case 2:
     			lblLundi.setText(strJour);
     			lblLundiStatic.setText("lun");
@@ -558,8 +581,6 @@ public class ITagenda extends javax.swing.JFrame {
     			lblDimancheStatic.setText("dim");
     			break;
     		}
-    		System.out.println("numero du jour :"+numJour);
-    		
     		c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
     		String lundi = sdf2.format(c.getTime());
     		c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);// dimanche
