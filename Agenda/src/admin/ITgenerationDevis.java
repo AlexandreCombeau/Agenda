@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.villalem.admin;
+package admin;
 
-import static fr.villalem.factures.Devis.creerDevis;
+import static factures.Devis.creerDevis;
 import static gestionagenda.GestionAgenda.rq;
 import java.awt.Dimension;
 import java.io.IOException;

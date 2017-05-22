@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.villalem.factures;
+package factures;
 
-import static fr.villalem.admin.ITgenerationDevis.round;
+import static admin.ITgenerationDevis.round;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

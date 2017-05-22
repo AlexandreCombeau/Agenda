@@ -3,10 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.villalem.reservations;
+package reservations;
 
-import fr.villalem.admin.ITadmin;
-import fr.villalem.labd.ITconnexion;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -14,6 +12,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+
+import admin.ITadmin;
+import database.ITconnexion;
 
 
 /**
@@ -59,7 +60,7 @@ public class ITagenda extends javax.swing.JFrame {
         btnSemaineSuivante = new javax.swing.JButton();
         lbOJD = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        panelAgenda1 = new fr.villalem.reservations.PanelAgenda();
+        panelAgenda1 = new reservations.PanelAgenda();
         btnRemplirTableau = new javax.swing.JButton();
         lblLundi = new javax.swing.JLabel();
         lblLundiStatic = new javax.swing.JLabel();
@@ -433,7 +434,7 @@ public class ITagenda extends javax.swing.JFrame {
     private javax.swing.JLabel lblSamediStatic;
     private javax.swing.JLabel lblVendredi;
     private javax.swing.JLabel lblVendrediStatic;
-    private fr.villalem.reservations.PanelAgenda panelAgenda1;
+    private reservations.PanelAgenda panelAgenda1;
     private javax.swing.JLabel txtWelcome;
     // End of variables declaration//GEN-END:variables
 

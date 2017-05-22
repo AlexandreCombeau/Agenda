@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.villalem.labd;
-import fr.villalem.reservations.Evenement;
-import fr.villalem.usager.Usager;
+package database;
+import reservations.Evenement;
+import usager.Usager;
+
 import java.awt.Color;
 import java.math.BigDecimal;
 import java.sql.ResultSet;

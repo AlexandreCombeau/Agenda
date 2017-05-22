@@ -1,6 +1,6 @@
-package fr.villalem.admin;
+package admin;
 
-import static fr.villalem.admin.ITajoutUtilisateur.checkEmail;
+import static admin.ITajoutUtilisateur.checkEmail;
 import static gestionagenda.GestionAgenda.rq;
 import java.awt.Color;
 import java.sql.SQLException;

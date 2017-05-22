@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.villalem.reservations;
+package reservations;
 import static gestionagenda.GestionAgenda.rq;
 import java.sql.*;
 

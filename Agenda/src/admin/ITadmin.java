@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.villalem.admin;
+package admin;
 
-import static fr.villalem.admin.ITmodifUtilisateur.getNomPrenom;
+import static admin.ITmodifUtilisateur.getNomPrenom;
 import static gestionagenda.GestionAgenda.rq;
 import java.sql.SQLException;
 import java.util.logging.Level;
