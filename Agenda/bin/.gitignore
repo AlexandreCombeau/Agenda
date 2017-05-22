@@ -1,3 +1,7 @@
-/fr/
-/.classpath
-/.project
+/admin/
+/clients/
+/database/
+/factures/
+/gestionagenda/
+/reservations/
+/usager/
