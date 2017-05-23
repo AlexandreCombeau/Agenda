@@ -181,7 +181,7 @@ public class ITadmin extends javax.swing.JFrame {
     private void btnOptionsSallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOptionsSallesActionPerformed
         String[] options = {"Ajouter une salle", "Modifier une salle", "Supprimer une salle"};
         String nom = "";
-        nom = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une option","Options salles",JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+        nom = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une option","Options salle",JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
         if(nom != null){
         switch(nom){
             case "Ajouter une salle":
@@ -197,7 +197,7 @@ public class ITadmin extends javax.swing.JFrame {
             case "Modifier une salle":
                 String nomsalle;
             try {
-                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getElementByIdFromTable("salles", "Salle", "libelle"), rq.getElementByIdFromTable("salles", "Salle", "libelle")[0]);
+                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getElementByIdFromTable("salle", "Salle", "libelle"), rq.getElementByIdFromTable("salle", "Salle", "libelle")[0]);
                 if(nomsalle != null){
                     ITmodif modif = new ITmodif();
                     modif.setTxtTitle("Salle : "+nomsalle);
@@ -214,12 +214,12 @@ public class ITadmin extends javax.swing.JFrame {
                 
             case "Supprimer une salle":
             try {
-                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Suppression -", JOptionPane.QUESTION_MESSAGE, null, rq.getElementByIdFromTable("salles", "Salle", "libelle"), rq.getElementByIdFromTable("salles", "Salle", "libelle")[0]);
+                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Suppression -", JOptionPane.QUESTION_MESSAGE, null, rq.getElementByIdFromTable("salle", "Salle", "libelle"), rq.getElementByIdFromTable("salle", "Salle", "libelle")[0]);
                 if(nomsalle != null){
                     int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer : "+nomsalle+"?", "Suppression de la salle : "+nomsalle, JOptionPane.YES_NO_OPTION);
                     if(choix == 0){
                         //Requete DELETE sur la BD
-                        rq.delete("salles", "libelle", nomsalle);
+                        rq.delete("salle", "libelle", nomsalle);
                         JOptionPane.showMessageDialog(null, "La salle '"+nomsalle+"' a été supprimée !");
                     }
                     else{

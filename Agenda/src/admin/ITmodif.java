@@ -218,7 +218,7 @@ public class ITmodif extends javax.swing.JFrame {
             System.out.println("LE NOUVEAU NOM EST : "+nouveauNom);
             if(nouveauNom != null && !(nouveauNom.equals(""))){
                 try {
-                    if(rq.checkErreurModif("salles", nouveauNom, "libelle") == false){
+                    if(rq.checkErreurModif("salle", nouveauNom, "libelle") == false){
                         JOptionPane.showMessageDialog(null, "Ce nom de "+lbTable.getText()+" existe déjà");
                         nouveauNom = "";
                     }
@@ -235,7 +235,7 @@ public class ITmodif extends javax.swing.JFrame {
             System.out.println("ICIIIIIIII LE CHOIXX : "+choix); // OK = 0 // REFUSER = 1
             if(choix == 0){
                 //UPDATE SUR LA BD
-                rq.MAJnom("salles", lbNom.getText(), nouveauNom, "libelle");
+                rq.MAJnom("salle", lbNom.getText(), nouveauNom, "libelle");
                 this.setTxtTitle(nouveauNom);
                 this.setLbNom(nouveauNom);
             }
@@ -259,7 +259,7 @@ public class ITmodif extends javax.swing.JFrame {
                 System.out.println("ICIIIIIIII LE CHOIXX : "+choix); // OK = 0 // REFUSER = 1
                 if(choix == 0){
                     //UPDATE SUR LA BD
-                    rq.MAJnom("salles", getDesc(lbNom.getText()), nouveauDesc, "descriptif");
+                    rq.MAJnom("salle", getDesc(lbNom.getText()), nouveauDesc, "descriptif");
                     this.setTxtTitle(nouveauDesc);
                     this.setLbNom(nouveauDesc);
                 }
@@ -297,7 +297,7 @@ public class ITmodif extends javax.swing.JFrame {
                 System.out.println("ICIIIIIIII LE CHOIXX : "+choix); // OK = 0 // REFUSER = 1
                 if(choix == 0){
                     //UPDATE SUR LA BD
-                    rq.MAJSuperficie("salles", lbNom.getText(), Integer.parseInt(nouveauSuperficie), "superficie");
+                    rq.MAJSuperficie("salle", lbNom.getText(), Integer.parseInt(nouveauSuperficie), "superficie");
                     this.setTxtTitle(nouveauSuperficie);
                     this.setLbNom(nouveauSuperficie);
                 }

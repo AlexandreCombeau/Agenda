@@ -36,6 +36,7 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             lesOptions = rq.getOptionService("option");
             lesServices = rq.getOptionService("service");
             lesClients= rq.getClients();
+            
 
             //On enlève tout les items associés aux combo box par défaut.
             cbDisposition.removeAllItems();
@@ -55,6 +56,8 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             cbService4.removeAllItems();
             cbService5.removeAllItems();
             cbService6.removeAllItems();
+            cbHeureDebut.removeAllItems();
+            cbHeureFin.removeAllItems();
             
             //On ajoute l'item "Aucune".
             cbSalle2.addItem("Aucune");
@@ -66,6 +69,11 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             cbOption6.addItem("Aucune");
             
             //On initialise les combo box avec les données récupérées plus haut.
+            for (String heures : heures){
+            	cbHeureDebut.addItem(heures);
+            	cbHeureFin.addItem(heures);
+            }
+            
             for (String lesSalle : lesSalles) {
                 cbSalle1.addItem(lesSalle);
                 cbSalle2.addItem(lesSalle);
@@ -136,16 +144,13 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         labelFormule = new javax.swing.JLabel();
         cbFormule = new javax.swing.JComboBox<>();
         labelNbHeures = new javax.swing.JLabel();
-        txtNombreHeures = new javax.swing.JTextField();
         labelNbParticipants = new javax.swing.JLabel();
         txtNombreParticipants = new javax.swing.JTextField();
         labelSalle1 = new javax.swing.JLabel();
         cbSalle1 = new javax.swing.JComboBox<>();
         labelDateDebut = new javax.swing.JLabel();
         labelHoraire = new javax.swing.JLabel();
-        txtHoraireDebut = new javax.swing.JTextField();
         labelA = new javax.swing.JLabel();
-        txtHoraireFin = new javax.swing.JTextField();
         labelSalle2 = new javax.swing.JLabel();
         btnEnregistrer = new javax.swing.JButton();
         btnAnnuler = new javax.swing.JButton();
@@ -163,6 +168,8 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         cbService4 = new javax.swing.JComboBox<>();
         cbService5 = new javax.swing.JComboBox<>();
         cbService6 = new javax.swing.JComboBox<>();
+        cbHeureDebut = new javax.swing.JComboBox<>();
+        cbHeureFin = new javax.swing.JComboBox<>();
         labelClient = new javax.swing.JLabel();
         txtDateDebut = new javax.swing.JTextField();
         cbClient = new javax.swing.JComboBox<>();
@@ -323,11 +330,9 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
 
         cbSalle2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         
-        JComboBox<String> cbHeureDebut = new JComboBox<String>();
-        cbHeureDebut.setModel(new DefaultComboBoxModel(new String[] {"Item 1"}));
+        cbHeureDebut.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         
-        JComboBox<String> cbHeureFin = new JComboBox<String>();
-        cbHeureFin.setModel(new DefaultComboBoxModel(new String[] {"Item 1"}));
+        cbHeureFin.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         layout.setHorizontalGroup(
@@ -382,10 +387,7 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         					.addGroup(layout.createParallelGroup(Alignment.LEADING)
         						.addComponent(labelDateDebut)
         						.addComponent(labelDateFin)
-        						.addGroup(layout.createSequentialGroup()
-        							.addComponent(labelNbHeures)
-        							.addGap(18)
-        							.addComponent(txtNombreHeures, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
+        						.addComponent(labelNbHeures))
         					.addPreferredGap(ComponentPlacement.RELATED)
         					.addGroup(layout.createParallelGroup(Alignment.TRAILING)
         						.addGroup(layout.createSequentialGroup()
@@ -393,28 +395,25 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         								.addComponent(txtDateDebut, GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
         								.addComponent(txtDateFin))
         							.addPreferredGap(ComponentPlacement.UNRELATED)
-        							.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-        								.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+        							.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        								.addGroup(layout.createSequentialGroup()
         									.addComponent(labelFormule)
         									.addPreferredGap(ComponentPlacement.RELATED)
         									.addComponent(cbFormule, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         								.addGroup(layout.createSequentialGroup()
         									.addComponent(labelHoraire)
-        									.addPreferredGap(ComponentPlacement.RELATED)
-        									.addComponent(txtHoraireDebut, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
-        									.addPreferredGap(ComponentPlacement.RELATED)
+        									.addGap(14)
+        									.addComponent(cbHeureDebut, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
+        									.addPreferredGap(ComponentPlacement.UNRELATED)
         									.addComponent(labelA)
-        									.addPreferredGap(ComponentPlacement.RELATED)
-        									.addComponent(txtHoraireFin, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))))
+        									.addPreferredGap(ComponentPlacement.UNRELATED)
+        									.addComponent(cbHeureFin, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)))
+        							.addGap(94))
         						.addGroup(layout.createSequentialGroup()
         							.addComponent(labelNbParticipants)
         							.addGap(18)
         							.addComponent(txtNombreParticipants, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-        							.addGap(249)))
-        					.addGap(18)
-        					.addComponent(cbHeureDebut, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addComponent(cbHeureFin, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE))))
+        							.addGap(249))))))
         		.addGroup(layout.createSequentialGroup()
         			.addGap(129)
         			.addComponent(btnEnregistrer, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)
@@ -470,9 +469,7 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         				.addComponent(cbSalle1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         				.addComponent(labelDateDebut)
         				.addComponent(labelHoraire)
-        				.addComponent(txtHoraireDebut, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         				.addComponent(labelA)
-        				.addComponent(txtHoraireFin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         				.addComponent(txtDateDebut, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         				.addComponent(cbHeureDebut, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         				.addComponent(cbHeureFin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -485,7 +482,6 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         			.addGap(18)
         			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(labelNbHeures)
-        				.addComponent(txtNombreHeures, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         				.addComponent(labelNbParticipants)
         				.addComponent(txtNombreParticipants, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         			.addGap(24)
@@ -511,21 +507,28 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
 
     private void btnEnregistrerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnregistrerActionPerformed
        try {
+    	    
             //SALLE 1
             String nomSalle1 = (String)cbSalle1.getSelectedItem();
             String formule = (String)cbFormule.getSelectedItem();
-            String horaireDebut = txtHoraireDebut.getText();
-            String horaireFin = txtHoraireFin.getText();
+            String horaireDebut = (String)cbHeureDebut.getSelectedItem();
+            String horaireFin = (String)cbHeureFin.getSelectedItem();
+            String disposition = (String)cbDisposition.getSelectedItem();
             String dateDebut = txtDateDebut.getText();
             String dateFin = txtDateFin.getText();
-            String nbHeures = txtNombreHeures.getText();
+            
             String nbParticipants = txtNombreParticipants.getText();
             
+            if((Integer.parseInt(horaireDebut.split(":")[0]) > Integer.parseInt(horaireFin.split(":")[0]))||(Integer.parseInt(horaireDebut.split(":")[0]) == Integer.parseInt(horaireFin.split(":")[0]) && Integer.parseInt(horaireDebut.split(":")[1]) > Integer.parseInt(horaireFin.split(":")[1]))){
+            	
+            }
+            else{
             //CLIENT
+            double nbHeures = Double.parseDouble(horaireFin.split(":")[0])-Double.parseDouble(horaireDebut.split(":")[0])+(Double.parseDouble(horaireFin.split(":")[1])-Double.parseDouble(horaireDebut.split(":")[1]))/60;
             String[] clients;
             clients = rq.getClients();
-            String[] noms = rq.getElementByIdFromTable("clients", "Client", "nom");
-            String[] prenoms = rq.getElementByIdFromTable("clients", "Client", "prenom");
+            String[] noms = rq.getElementByIdFromTable("client", "Client", "nom");
+            String[] prenoms = rq.getElementByIdFromTable("client", "Client", "prenom");
             String client = (String)cbClient.getSelectedItem();
             int longueur = noms.length;
             String[] client2 = new String[longueur];
@@ -540,11 +543,12 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             }
             int idClient = rq.getIdClient(leNom, lePrenom);
             int idFormule = rq.getIdFormule(formule);
-            rq.ajoutReservation(dateDebut,dateFin,horaireDebut,horaireFin,Integer.parseInt(nbParticipants),Integer.parseInt(nbHeures), idClient, idFormule);
+            rq.ajoutReservation(dateDebut,dateFin,horaireDebut+":00",horaireFin+":00",Integer.parseInt(nbParticipants),nbHeures, idClient, idFormule);
             
             int idReservation = rq.getIdReservation(idClient, dateDebut);
-            
-
+            int idsalle = rq.getIdSalle(nomSalle1);
+            int iddispo = rq.getIdDisposition(disposition);
+            rq.ajoutSalleResa(idReservation, idsalle, iddispo);
             //LES OPTIONS
             String o1 = (String)cbOption1.getSelectedItem();
             String o2 = (String)cbOption2.getSelectedItem();
@@ -602,6 +606,7 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             String existe = (String)cbSalle2.getSelectedItem();
             if(!(existe.equals("Aucune"))){
                String nomSalle2 = (String)cbSalle2.getSelectedItem();
+            }
             }
         } catch (SQLException ex) {
             Logger.getLogger(ITcreerReservation1.class.getName()).log(Level.SEVERE, null, ex);
@@ -680,6 +685,8 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbService4;
     private javax.swing.JComboBox<String> cbService5;
     private javax.swing.JComboBox<String> cbService6;
+    private javax.swing.JComboBox<String> cbHeureDebut;
+    private javax.swing.JComboBox<String> cbHeureFin;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel25;
@@ -701,9 +708,6 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
     private javax.swing.JLabel labelTitre;
     private javax.swing.JTextField txtDateDebut;
     private javax.swing.JTextField txtDateFin;
-    private javax.swing.JTextField txtHoraireDebut;
-    private javax.swing.JTextField txtHoraireFin;
-    private javax.swing.JTextField txtNombreHeures;
     private javax.swing.JTextField txtNombreParticipants;
     // End of variables declaration//GEN-END:variables
     private String[] lesSalles = null;
@@ -712,4 +716,5 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
     private String[] lesOptions = null;
     private String[] lesServices = null;
     private String[] lesClients = null;
+    private String[] heures= {"09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","22:30","23:00"};
 }

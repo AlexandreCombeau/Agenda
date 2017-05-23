@@ -37,14 +37,14 @@ public class Factures {
     	DecimalFormat dcf= new DecimalFormat ("0.00");
     	double montant = getmontant(idResa);
     	rq.ajoutFacture(montant,idResa);
-    	int idclient = rq.getUniqueIntByIdFromTable("réservations", "idReservation", idResa, "fkidClient");
+    	int idclient = rq.getUniqueIntByIdFromTable("reservation", "idReservation", idResa, "fkidClient");
     	System.out.println();
     	System.out.println(Integer.toString(idclient));
-    	String adresseclient= rq.getUniqueStringByIdFromTable("clients", "idClient", idclient, "adresseFacturation");
+    	String adresseclient= rq.getUniqueStringByIdFromTable("client", "idClient", idclient, "adresseFacturation");
     	System.out.println(adresseclient);
     	String [] adresseprete=adresseclient.split(",");
-    	String nom= rq.getUniqueStringByIdFromTable("clients", "idClient", idclient, "nom");
-    	String prenom= rq.getUniqueStringByIdFromTable("clients", "idClient", idclient, "prenom");
+    	String nom= rq.getUniqueStringByIdFromTable("client", "idClient", idclient, "nom");
+    	String prenom= rq.getUniqueStringByIdFromTable("client", "idClient", idclient, "prenom");
     	String intituleclient= prenom+" "+nom;
     	String[] optselib = getlibelleoption(idResa);
     	double[] optseprix = getprixoption(idResa);
@@ -169,7 +169,7 @@ public class Factures {
         for (int i = 0; i <= 5; ++i) {
             cell = row.createCell(i);
             if (i == 0) {
-                cell.setCellValue("SociÃ©tÃ© de production audiovisuelle");
+                cell.setCellValue("Société de production audiovisuelle");
                 cellStyle = wb.createCellStyle();
                 cellStyle.setFont(fonte16);
                 cellStyle.setBorderBottom(BorderStyle.MEDIUM);
@@ -559,7 +559,7 @@ public class Factures {
     	int [] opse = rq.getUniqueListElementByIdFromTable("choix", "fkidReservation", id, "fkidOptionsServices");
     	String [] listelibelle = new String [16];
     	for(int i=0; i<opse.length;++i){
-    		listelibelle[i]=rq.getUniqueStringByIdFromTable("optionsservices", "idOptionsServices", opse[i], "libelle");
+    		listelibelle[i]=rq.getUniqueStringByIdFromTable("optionService", "idOptionsServices", opse[i], "libelle");
     	}
     	return listelibelle;
     }
