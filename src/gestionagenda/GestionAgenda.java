@@ -6,12 +6,14 @@
 package gestionagenda;
 
 
-import static fr.villalem.factures.Devis.creerDevis;
-import static fr.villalem.factures.Factures.creerFacture;
-import fr.villalem.labd.*;
 import java.io.IOException;
+
+import static factures.Devis.creerDevis;
+import static factures.Factures.creerFacture;
 import static java.lang.Math.round;
 import java.sql.SQLException;
+
+import database.*;
 
 
 /**
