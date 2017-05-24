@@ -7,13 +7,28 @@ package admin;
 
 import static gestionagenda.GestionAgenda.rq;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.util.Date;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.Icon;
 import javax.swing.JColorChooser;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
+import javax.swing.SpinnerModel;
+import javax.swing.UIManager;
+
+import javafx.scene.control.Spinner;
 
 /**
  *
@@ -271,7 +286,35 @@ public class ITajout extends javax.swing.JFrame {
                         this.dispose();
                     }
                     else{
-                        //rq.ajoutTache(nom, hex, comment);
+                    	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                    	Calendar c = Calendar.getInstance();
+                    	Date initDate = (Date)c.getTime();
+                    	c.add(Calendar.YEAR, -100);
+                    	Date earliestDate = (Date) c.getTime();
+                    	c.add(Calendar.YEAR, 200);
+                    	Date latestDate = (Date )c.getTime();
+                    	
+                    	SpinnerModel spinnerModel = new SpinnerDateModel(initDate,earliestDate,latestDate,Calendar.DAY_OF_YEAR);
+                    	JSpinner spinner = new JSpinner(spinnerModel);
+                    	spinner.setPreferredSize(new Dimension(spinner.getWidth(), 50));
+                    	
+                		JOptionPane.showMessageDialog(this, spinner, "Date de debut de la tache", JOptionPane.QUESTION_MESSAGE);
+                		
+                		Date d = (Date)spinner.getValue();
+                		c.setTime(d);
+                		
+                		String dateDebut = sdf.format(c.getTime());
+                		
+                    	JOptionPane.showMessageDialog(this, spinner, "Date de fin de la tache", JOptionPane.QUESTION_MESSAGE);
+                    	d = (Date)spinner.getValue();
+                    	c.setTime(d);
+                    	
+                    	String dateFin = sdf.format(c.getTime());
+                    	for(String s:dateFin.split(" "))
+                    		System.out.println(s+"-"+dateFin);
+                    	
+                    	rq.ajoutTache(dateDebut.split(" ")[0],dateFin.split(" ")[0], dateDebut.split(" ")[1], dateFin.split(" ")[1], nom, hex, comment);
+                    	
                         JOptionPane.showMessageDialog(null, "Nouvelle tache créée avec succès !");
                         this.dispose();
                     } 
@@ -288,10 +331,11 @@ public class ITajout extends javax.swing.JFrame {
             Logger.getLogger(ITajout.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSubmitActionPerformed
-/**
- * Cette fonction sert à choisir une nouvelle couleur et repaint le bouton avec celle-ci.
- * @param evt 
- */
+    
+	/**
+	 * Cette fonction sert à choisir une nouvelle couleur et repaint le bouton avec celle-ci.
+	 * @param evt 
+	 */
     private void btnColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColorActionPerformed
         Color couleur = JColorChooser.showDialog(null, "Code couleur de la "+lbTable.getText(), Color.WHITE);
         System.out.println(couleur);

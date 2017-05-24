@@ -6,10 +6,12 @@
 package admin;
 
 import static gestionagenda.GestionAgenda.rq;
+
 import java.awt.Color;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JLabel;
@@ -213,7 +215,7 @@ public class ITmodif extends javax.swing.JFrame {
  */
     private void btnNomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNomActionPerformed
         String nouveauNom = "";
-        while(nouveauNom == null || nouveauNom.equals("")){
+        while(nouveauNom.equals("")){
             nouveauNom = (String)JOptionPane.showInputDialog(null, "Le nom actuel est : "+lbNom.getText()+".\nQuel sera le nouveau nom ?", "Modification de la "+lbTable.getText()+" : "+lbNom.getText(), JOptionPane.QUESTION_MESSAGE);
             System.out.println("LE NOUVEAU NOM EST : "+nouveauNom);
             if(nouveauNom != null && !(nouveauNom.equals(""))){
@@ -233,9 +235,9 @@ public class ITmodif extends javax.swing.JFrame {
         if(!(nouveauNom == null) && !(nouveauNom.equals(""))){
             int choix = (int)JOptionPane.showConfirmDialog(null, "Le nouveau nom de la "+lbTable.getText()+" sera : "+nouveauNom+".\nConfirmer ?", "Modification de la "+lbTable.getText()+" : "+lbNom.getText(), JOptionPane.YES_NO_OPTION);
             System.out.println("ICIIIIIIII LE CHOIXX : "+choix); // OK = 0 // REFUSER = 1
-            if(choix == 0){
+            if(choix == 0) {
                 //UPDATE SUR LA BD
-                rq.MAJnom("salles", lbNom.getText(), nouveauNom, "libelle");
+                rq.MAJnom(lbTable.getText(), lbNom.getText(), nouveauNom, "nom"+lbTable.getText());
                 this.setTxtTitle(nouveauNom);
                 this.setLbNom(nouveauNom);
             }
@@ -250,7 +252,7 @@ public class ITmodif extends javax.swing.JFrame {
         private void btnDescriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNomActionPerformed
             String nouveauDesc = "";
             while(nouveauDesc == null || nouveauDesc.equals("")){
-                nouveauDesc = (String)JOptionPane.showInputDialog(null, "Le nom actuel est : "+getDesc(lbNom.getText())+".\nQuel sera le nouveau nom ?", "Modification de la "+lbTable.getText()+" : "+lbNom.getText(), JOptionPane.QUESTION_MESSAGE);
+                nouveauDesc = (String)JOptionPane.showInputDialog(null, "Le nom actuel est : "+getDesc(lbNom.getText(), lbTable.getText())+".\nQuel sera le nouveau nom ?", "Modification de la "+lbTable.getText()+" : "+lbNom.getText(), JOptionPane.QUESTION_MESSAGE);
                 System.out.println("LE NOUVEAU NOM EST : "+nouveauDesc);
                 
             }
@@ -259,7 +261,7 @@ public class ITmodif extends javax.swing.JFrame {
                 System.out.println("ICIIIIIIII LE CHOIXX : "+choix); // OK = 0 // REFUSER = 1
                 if(choix == 0){
                     //UPDATE SUR LA BD
-                    rq.MAJnom("salles", getDesc(lbNom.getText()), nouveauDesc, "descriptif");
+                	rq.MAJnom(lbTable.getText(), getDesc(lbNom.getText(), lbTable.getText()), nouveauDesc, "descriptif");
                     this.setTxtTitle(nouveauDesc);
                     this.setLbNom(nouveauDesc);
                 }
@@ -321,8 +323,17 @@ public class ITmodif extends javax.swing.JFrame {
     	return rq.getSuperficieSalle(nom);
     }
     
-    public String getDesc (String nom){
-    	return rq.getCommentSalle(nom);
+    public String getDesc (String nom, String nomTable){
+    	if("Tache".equals(nomTable)) {
+    		try {
+    			return rq.getCommentTache(nom);
+    		} catch(SQLException e) {
+    			e.printStackTrace();
+    		}
+    	}
+    	else
+    		return rq.getCommentSalle(nom);
+    	return null;
     }
     
     public void setLbNom(String txt) {

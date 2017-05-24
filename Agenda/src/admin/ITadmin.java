@@ -311,11 +311,11 @@ public class ITadmin extends javax.swing.JFrame {
             case "Modifier une tache":
                 String nomTache;
             try {
-                nomTache = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une tache", "Options taches - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTacheEntiteFormule("taches", "Tache"), rq.getSalleTacheEntiteFormule("taches", "Tache")[0]);
+                nomTache = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une tache", "Options taches - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTacheEntiteFormule("tache"), rq.getSalleTacheEntiteFormule("tache")[0]);
                 System.out.println("ICIIII : "+nomTache);
                 if(nomTache != null){
                     ITmodif modif = new ITmodif();
-                    modif.setTxtTitle("Tache : "+nomTache);
+                    modif.setTxtTitle("tache : "+nomTache);
                     modif.setLbNom(nomTache);
                     modif.getLbNom().setVisible(false);
                     modif.getBtnCouleur().setBackground(rq.hex2Rgb("Tache", nomTache));
@@ -330,7 +330,7 @@ public class ITadmin extends javax.swing.JFrame {
                 
             case "Supprimer une tache":
             try {
-                nomTache = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une tache", "Options taches - Suppression -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTacheEntiteFormule("tache", "Tache"), rq.getSalleTacheEntiteFormule("taches", "Tache")[0]);
+                nomTache = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une tache", "Options taches - Suppression -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTacheEntiteFormule("tache"), rq.getSalleTacheEntiteFormule("tache")[0]);
                 if(nomTache != null){
                     int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer : "+nomTache+"?", "Suppression de la tache : "+nomTache, JOptionPane.YES_NO_OPTION);
                     if(choix == 0){

@@ -1,10 +1,7 @@
-<<<<<<< HEAD
-/villalem/
-=======
-/fr/
-/gestionagenda/
->>>>>>> refs/remotes/origin/master
 /admin/
-/bd/
-/factures/
+/clients/
+/gestionagenda/
 /reservations/
+/usager/
+/factures/
+/bd/

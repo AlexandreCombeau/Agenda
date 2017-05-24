@@ -33,12 +33,11 @@ public class Factures {
     
     public static void creerFacture(int idResa) throws SQLException{
     	
-    	//Recuperer montant, et cr�er facture dans la bdd
+    	//Recuperer montant, et créer facture dans la bdd
     	DecimalFormat dcf= new DecimalFormat ("0.00");
     	double montant = getmontant(idResa);
     	rq.ajoutFacture(montant,idResa);
-    	int idclient = rq.getUniqueIntByIdFromTable("r�servations", "idReservation", idResa, "fkidClient");
-    	System.out.println();
+    	int idclient = rq.getUniqueIntByIdFromTable("réservations", "idReservation", idResa, "fkidClient");
     	System.out.println(Integer.toString(idclient));
     	String adresseclient= rq.getUniqueStringByIdFromTable("clients", "idClient", idclient, "adresseFacturation");
     	System.out.println(adresseclient);
@@ -53,7 +52,7 @@ public class Factures {
     	
     	
         /*
-        Création des variables
+        CrÃ©ation des variables
         */
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet("Format");
@@ -130,7 +129,7 @@ public class Factures {
         /*
         Fusion des cellules
         */
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 2)); // Fusionne les cellules de la ligne 0 à la ligne 0 et colonnes 0 à colonne 2
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 2)); // Fusionne les cellules de la ligne 0 Ã  la ligne 0 et colonnes 0 Ã  colonne 2
         sheet.addMergedRegion(new CellRangeAddress(1,1,0,3));
         sheet.addMergedRegion(new CellRangeAddress(2, 2, 0, 2));
         sheet.addMergedRegion(new CellRangeAddress(3, 3, 0, 3));
@@ -143,7 +142,7 @@ public class Factures {
         sheet.addMergedRegion(new CellRangeAddress(14, 14, 4, 5));
         
         /*
-        Redimensionnement des lignes et colonnes par défaut
+        Redimensionnement des lignes et colonnes par dÃ©faut
         */
         sheet.setDefaultColumnWidth(15);
         sheet.setDefaultRowHeightInPoints(22);
@@ -169,7 +168,7 @@ public class Factures {
         for (int i = 0; i <= 5; ++i) {
             cell = row.createCell(i);
             if (i == 0) {
-                cell.setCellValue("Société de production audiovisuelle");
+                cell.setCellValue("SociÃ©tÃ© de production audiovisuelle");
                 cellStyle = wb.createCellStyle();
                 cellStyle.setFont(fonte16);
                 cellStyle.setBorderBottom(BorderStyle.MEDIUM);
@@ -198,7 +197,7 @@ public class Factures {
 
         row = sheet.createRow(2);
         cell = row.createCell(0);
-        cell.setCellValue("n° d'identification : 450 621 818 R.C.S");
+        cell.setCellValue("nÂ° d'identification : 450 621 818 R.C.S");
         cell.setCellStyle(cellStyleFont12);
         
         /*
@@ -250,7 +249,7 @@ public class Factures {
         
         row = sheet.createRow(6);
         cell = row.createCell(0);
-        cell.setCellValue("Sébastien AUTRET");
+        cell.setCellValue("SÃ©bastien AUTRET");
         cell.setCellStyle(cellStyleFont12);
         
         
@@ -451,7 +450,7 @@ public class Factures {
             			cell.setCellValue(optselib[k-21]);
             		}
             		if(i == k && j==5 && optselib[k-21]!=null){
-            			cell.setCellValue(optseprix[k-21]+" �");
+            			cell.setCellValue(optseprix[k-21]+" ");
             		}
             		
             	}
@@ -474,7 +473,7 @@ public class Factures {
         lesRows[1] = row36;
         lesRows[2] = row37;
         
-        //Juste pour l'exemple (à voir)
+        //Juste pour l'exemple (Ã  voir)
         String[] lesTotaux = {"TOTAL HT", "TVA 20%", "TOTAL TTC"};
         double prix = montant;
         double tva = prix/100*20;
@@ -488,7 +487,7 @@ public class Factures {
                     cell.setCellValue(lesTotaux[i - 35]);
                 }
                 else{
-                    cell.setCellValue(dcf.format(lesPrix[i - 35])+" �");
+                    cell.setCellValue(dcf.format(lesPrix[i - 35])+" ");
                 }
             }
         }

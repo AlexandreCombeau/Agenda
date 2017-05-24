@@ -177,12 +177,12 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                                 if (valide!=null){
                                     if ("valider reservation".equals(valide)){
                                         int valider = 1;
-                                        rq.MAJIntfromId("r�servations", "estValide", valider, idReservation, "idReservation");
+                                        rq.MAJIntfromId("réservations", "estValide", valider, idReservation, "idReservation");
                                         JOptionPane.showMessageDialog(null, "La reservation a bien été validée ! ", "Information", JOptionPane.INFORMATION_MESSAGE); 
                                     }
                                     else {
                                         int valider = 0;
-                                        rq.MAJIntfromId("r�servations", "estValide", valider, idReservation, "idReservation");
+                                        rq.MAJIntfromId("réservations", "estValide", valider, idReservation, "idReservation");
                                         JOptionPane.showMessageDialog(null, "La reservation a bien été invalidée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
                                     }
                                 }
@@ -191,7 +191,7 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                                 String dateActuelle = infos[0];
                                 String dateDe = (String)JOptionPane.showInputDialog(null, "Modifier la "+dateActuelle,"date de debut",JOptionPane.QUESTION_MESSAGE);
                                 if (dateDe!=null){
-                                    rq.MAJStrfromId("r�servations", "dateDebut", dateDe, idReservation, "idReservation");
+                                    rq.MAJStrfromId("réservations", "dateDebut", dateDe, idReservation, "idReservation");
                                     JOptionPane.showMessageDialog(null, "La date de début a bien été modifiée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
                                 }
                             }
@@ -199,7 +199,7 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                                 String dateActuelle = infos[1];
                                 String dateFi = (String)JOptionPane.showInputDialog(null, "Modifier la "+dateActuelle,"date de fin",JOptionPane.QUESTION_MESSAGE);
                                 if (dateFi!=null){
-                                	rq.MAJStrfromId("r�servations", "dateFin", dateFi, idReservation, "idReservation");
+                                	rq.MAJStrfromId("réservations", "dateFin", dateFi, idReservation, "idReservation");
                                     JOptionPane.showMessageDialog(null, "La date de fin a bien été modifiée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
                                 }
                             }
@@ -207,7 +207,7 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                                 String heureActuelle = infos[2];
                                 String heureDe = (String)JOptionPane.showInputDialog(null, "Modifier l'"+heureActuelle,"heure de debut",JOptionPane.QUESTION_MESSAGE);
                                 if (heureDe!=null){
-                                	rq.MAJTimefromId("r�servations", "heureDebut", heureDe, idReservation, "idReservation");
+                                	rq.MAJTimefromId("réservations", "heureDebut", heureDe, idReservation, "idReservation");
                                     JOptionPane.showMessageDialog(null, "L'heure de début a bien été modifiée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
                                 }
                             }
@@ -215,7 +215,7 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                                 String heureActuelle = infos[3];
                                 String heureFi = (String)JOptionPane.showInputDialog(null, "Modifier l'"+heureActuelle,"heure de fin",JOptionPane.QUESTION_MESSAGE);
                                 if (heureFi!=null){
-                                	rq.MAJTimefromId("r�servations", "heureFin", heureFi, idReservation, "idReservation");
+                                	rq.MAJTimefromId("réservations", "heureFin", heureFi, idReservation, "idReservation");
                                     JOptionPane.showMessageDialog(null, "L'heure de fin a bien été modifiée ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
                                 }
                             }
@@ -224,7 +224,7 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                                 String nbP = (String)JOptionPane.showInputDialog(null, "Modifier le "+nbPActuel,"nombre de personnes",JOptionPane.QUESTION_MESSAGE);
                                 if (nbP!=null){
                                     int nb = Integer.parseInt(nbP, 10);
-                                    rq.MAJIntfromId("r�servations", "nbPersonnes", nb, idReservation, "idReservation");
+                                    rq.MAJIntfromId("réservations", "nbPersonnes", nb, idReservation, "idReservation");
                                     JOptionPane.showMessageDialog(null, "Le nombre de personnes a bien été modifié ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
                                 }
                             }
@@ -233,7 +233,7 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                                 String nbH = (String)JOptionPane.showInputDialog(null, "Modifier le "+nbHActuel,"nombre d'heures",JOptionPane.QUESTION_MESSAGE);
                                 if (nbH!=null){
                                     int nb = Integer.parseInt(nbH, 10);
-                                    rq.MAJIntfromId("r�servations", "nbHeures", nb, idReservation, "idReservation");
+                                    rq.MAJIntfromId("réservations", "nbHeures", nb, idReservation, "idReservation");
                                     JOptionPane.showMessageDialog(null, "Le nombre d'heures a bien été modifié ! ", "Information", JOptionPane.INFORMATION_MESSAGE);
                                 }
                             }
@@ -412,7 +412,7 @@ public class ITboutonsModifier extends javax.swing.JFrame {
     }//GEN-LAST:event_btnQuitterActionPerformed
 
     private void btnFactureActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_btnFactureActionPerformed
-    	String strFac = (String)JOptionPane.showInputDialog(null, "Veuillez choisir facture a editer", "Edition de facture", JOptionPane.QUESTION_MESSAGE, null, rq.getElementByIdFromTable("r�servations", "Reservation", "idReservation"), rq.getElementByIdFromTable("r�servations", "Reservation", "idReservation")[0]);
+    	String strFac = (String)JOptionPane.showInputDialog(null, "Veuillez choisir facture a editer", "Edition de facture", JOptionPane.QUESTION_MESSAGE, null, rq.getElementByIdFromTable("réservations", "Reservation", "idReservation"), rq.getElementByIdFromTable("réservations", "Reservation", "idReservation")[0]);
         creerFacture(Integer.parseInt(strFac));
     }//GEN-LAST:event_btnFactureActionPerformed
 

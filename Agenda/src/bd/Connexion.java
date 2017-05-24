@@ -79,6 +79,7 @@ public class Connexion {
             statement.executeUpdate(request);
         } catch (SQLException e) {
             System.out.println("Erreur dans la requête : " + request);
+            e.printStackTrace();
         }
         return result;
     }
@@ -89,6 +90,7 @@ public class Connexion {
             statement.execute(request);
         } catch (SQLException e) {
             System.out.println("Erreur dans la requête : " + request);
+            e.printStackTrace();
         }
         return result;
     }
