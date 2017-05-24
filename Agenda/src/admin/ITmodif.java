@@ -254,7 +254,6 @@ public class ITmodif extends javax.swing.JFrame {
             while(nouveauDesc == null || nouveauDesc.equals("")){
                 nouveauDesc = (String)JOptionPane.showInputDialog(null, "Le nom actuel est : "+getDesc(lbNom.getText(), lbTable.getText())+".\nQuel sera le nouveau nom ?", "Modification de la "+lbTable.getText()+" : "+lbNom.getText(), JOptionPane.QUESTION_MESSAGE);
                 System.out.println("LE NOUVEAU NOM EST : "+nouveauDesc);
-                
             }
             if(!(nouveauDesc == null) && !(nouveauDesc.equals(""))){
                 int choix = (int)JOptionPane.showConfirmDialog(null, "Le nouveau nom de la "+lbTable.getText()+" sera : "+nouveauDesc+".\nConfirmer ?", "Modification de la "+lbTable.getText()+" : "+lbNom.getText(), JOptionPane.YES_NO_OPTION);
@@ -267,7 +266,6 @@ public class ITmodif extends javax.swing.JFrame {
                 }
             }
         }//GEN-LAST:event_btnNomActionPerformed
-    
     
     /**
      * Cette fonction sert à changer la superficie de la salle ou de la tache en vérifiant si le nom est disponible.

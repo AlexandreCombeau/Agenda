@@ -760,7 +760,7 @@ public class BdDAO {
         
         
         public String[] getDatesReservations(int idClient) throws SQLException{
-            String dates = "SELECT dateDebut FROM r�servations WHERE fkidClient="+idClient+"";
+            String dates = "SELECT dateDebut FROM reservation WHERE fkidClient="+idClient+"";
             ArrayList<String> datesR = new ArrayList<>();
             rs = co.query(dates);
             String date = "";
@@ -774,7 +774,7 @@ public class BdDAO {
             return datesRe;
         }
         public String getDateDebut(int idReservation) throws SQLException{
-            String dateR = "SELECT dateDebut FROM r�servations WHERE idReservation="+idReservation+"";
+            String dateR = "SELECT dateDebut FROM reservation WHERE idReservation="+idReservation+"";
             rs = co.query(dateR);
             String date = "";
             while(rs.next()){
@@ -784,7 +784,7 @@ public class BdDAO {
         }
         
         public String getValidite(int idReservation) throws SQLException{
-            String validite = "SELECT estValide FROM r�servations WHERE idReservation="+idReservation+"";
+            String validite = "SELECT estValide FROM reservation WHERE idReservation="+idReservation+"";
             rs = co.query(validite);
             String valide = "";
             while(rs.next()){
@@ -1252,7 +1252,7 @@ public class BdDAO {
         
         public void ajoutReservation(String Datedebut, String Datefin, String Heuredebut, String Heurefin, int nbPersonne, int nbHeure, int idClient, int idFormule){
         	System.out.println(Time.valueOf(Heuredebut));
-        	String nouvelleResa = "INSERT INTO r�servations (estValide, dateDebut, dateFin, heureDebut, heureFin, nbPersonnes, nbHeures, fkidClient, fkidFormule) VALUES (0, '"+Datedebut+"', '"+Datefin+"', '"+Time.valueOf(Heuredebut)+"', '"+Time.valueOf(Heurefin)+"', "+nbPersonne+", "+nbHeure+", "+idClient+", "+idFormule+")";
+        	String nouvelleResa = "INSERT INTO reservation (estValide, dateDebut, dateFin, heureDebut, heureFin, nbPersonnes, nbHeures, fkidClient, fkidFormule) VALUES (0, '"+Datedebut+"', '"+Datefin+"', '"+Time.valueOf(Heuredebut)+"', '"+Time.valueOf(Heurefin)+"', "+nbPersonne+", "+nbHeure+", "+idClient+", "+idFormule+")";
         	co.update(nouvelleResa);
         }
         
