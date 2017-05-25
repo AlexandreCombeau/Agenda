@@ -59,7 +59,6 @@ public class PanelJour extends JPanel {
      */
     private final int espacementHeure = 40;
     
-    
 	public PanelJour() {
 		listeEvenements = new ArrayList<>();	
 		this.setPreferredSize(new Dimension(950, 1400));
