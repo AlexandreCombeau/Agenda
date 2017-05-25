@@ -24,6 +24,8 @@ import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import admin.ITadmin;
 import bd.ITconnexion;
@@ -52,14 +54,25 @@ public class ITagenda extends javax.swing.JFrame {
      * Creates new form ITagenda
      */
     public ITagenda() {
-    	
+    	try {
+    		for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+    			System.out.println(info.getName());
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
         initComponents();
         lbOJD.setText("");
         //c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         //String st2  = Integer.toString(c.getFirstDayOfWeek());
         //String st = c.getTime().toString();
-
+        
         String st = sdf.format(c.getTime());
         jLabel2.setText(st);
     }

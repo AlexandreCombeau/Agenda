@@ -29,7 +29,7 @@ public class ITgenerationDevis extends javax.swing.JFrame {
         initComponents();
         try {
             //On initialise les tableaux avec les données de la base de données.
-            lesSalles = rq.getSalleTacheEntiteFormule("salles");
+            lesSalles = rq.getSalleTacheEntiteFormule("salle");
             lesFormules = rq.getSalleTacheEntiteFormule("formule");
             lesDispositions = rq.getSalleTacheEntiteFormule("disposition");
             lesOptions = rq.getOptionService("Option");

@@ -8,6 +8,7 @@ package admin;
 import static gestionagenda.GestionAgenda.rq;
 import java.awt.Dimension;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -16,6 +17,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.GroupLayout;
 import javax.swing.DefaultComboBoxModel;
+import com.toedter.calendar.JCalendar;
 
 /**
  *
@@ -30,12 +32,13 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         initComponents();
         try {
             //On initialise les tableaux avec les données de la base de données.
-            lesSalles = rq.getSalleTacheEntiteFormule("salles");
+            lesSalles = rq.getSalleTacheEntiteFormule("salle");
             lesFormules = rq.getSalleTacheEntiteFormule("formule");
             lesDispositions = rq.getSalleTacheEntiteFormule("disposition");
             lesOptions = rq.getOptionService("option");
             lesServices = rq.getOptionService("service");
             lesClients= rq.getClients();
+            
 
             //On enlève tout les items associés aux combo box par défaut.
             cbDisposition.removeAllItems();
@@ -55,6 +58,8 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             cbService4.removeAllItems();
             cbService5.removeAllItems();
             cbService6.removeAllItems();
+            cbHeureDebut.removeAllItems();
+            cbHeureFin.removeAllItems();
             
             //On ajoute l'item "Aucune".
             cbSalle2.addItem("Aucune");
@@ -66,6 +71,11 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             cbOption6.addItem("Aucune");
             
             //On initialise les combo box avec les données récupérées plus haut.
+            for (String heures : heures){
+            	cbHeureDebut.addItem(heures);
+            	cbHeureFin.addItem(heures);
+            }
+            
             for (String lesSalle : lesSalles) {
                 cbSalle1.addItem(lesSalle);
                 cbSalle2.addItem(lesSalle);
@@ -136,16 +146,13 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         labelFormule = new javax.swing.JLabel();
         cbFormule = new javax.swing.JComboBox<>();
         labelNbHeures = new javax.swing.JLabel();
-        txtNombreHeures = new javax.swing.JTextField();
         labelNbParticipants = new javax.swing.JLabel();
         txtNombreParticipants = new javax.swing.JTextField();
         labelSalle1 = new javax.swing.JLabel();
         cbSalle1 = new javax.swing.JComboBox<>();
         labelDateDebut = new javax.swing.JLabel();
         labelHoraire = new javax.swing.JLabel();
-        txtHoraireDebut = new javax.swing.JTextField();
         labelA = new javax.swing.JLabel();
-        txtHoraireFin = new javax.swing.JTextField();
         labelSalle2 = new javax.swing.JLabel();
         btnEnregistrer = new javax.swing.JButton();
         btnAnnuler = new javax.swing.JButton();
@@ -163,12 +170,14 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         cbService4 = new javax.swing.JComboBox<>();
         cbService5 = new javax.swing.JComboBox<>();
         cbService6 = new javax.swing.JComboBox<>();
+        cbHeureDebut = new javax.swing.JComboBox<>();
+        cbHeureFin = new javax.swing.JComboBox<>();
         labelClient = new javax.swing.JLabel();
-        txtDateDebut = new javax.swing.JTextField();
         cbClient = new javax.swing.JComboBox<>();
         labelDateFin = new javax.swing.JLabel();
-        txtDateFin = new javax.swing.JTextField();
         cbSalle2 = new javax.swing.JComboBox<>();
+        calendarDebut = new JCalendar();
+        calendarFin = new JCalendar();
 
         jLabel18.setText("Date du :");
 
@@ -205,7 +214,7 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
 
         cbSalle1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        labelDateDebut.setText("Date de debut: (JJ-MM-AAAA)");
+        labelDateDebut.setText("Date de debut: ");
 
         labelHoraire.setText("Horaire de : (HH:MM)");
 
@@ -319,15 +328,15 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
 
         cbClient.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        labelDateFin.setText("Date de fin : (JJ-MM-AAAA)");
+        labelDateFin.setText("Date de fin : ");
 
         cbSalle2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         
-        JComboBox<String> cbHeureDebut = new JComboBox<String>();
-        cbHeureDebut.setModel(new DefaultComboBoxModel(new String[] {"Item 1"}));
+        cbHeureDebut.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         
-        JComboBox<String> cbHeureFin = new JComboBox<String>();
-        cbHeureFin.setModel(new DefaultComboBoxModel(new String[] {"Item 1"}));
+        cbHeureFin.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        
+        
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         layout.setHorizontalGroup(
@@ -347,6 +356,10 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         		.addGroup(layout.createSequentialGroup()
         			.addGap(5)
         			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(labelSalle2)
+        					.addPreferredGap(ComponentPlacement.UNRELATED)
+        					.addComponent(cbSalle2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         				.addComponent(labelAttention)
         				.addGroup(layout.createSequentialGroup()
         					.addGroup(layout.createParallelGroup(Alignment.TRAILING)
@@ -371,50 +384,42 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         							.addComponent(cbService5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         							.addComponent(cbService6, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
         				.addGroup(layout.createSequentialGroup()
-        					.addComponent(labelSalle2)
-        					.addPreferredGap(ComponentPlacement.UNRELATED)
-        					.addComponent(cbSalle2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        				.addGroup(layout.createSequentialGroup()
-        					.addComponent(labelSalle1)
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addComponent(cbSalle1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        						.addComponent(labelDateDebut)
-        						.addComponent(labelDateFin)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
         						.addGroup(layout.createSequentialGroup()
-        							.addComponent(labelNbHeures)
-        							.addGap(18)
-        							.addComponent(txtNombreHeures, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-        						.addGroup(layout.createSequentialGroup()
-        							.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
-        								.addComponent(txtDateDebut, GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-        								.addComponent(txtDateFin))
-        							.addPreferredGap(ComponentPlacement.UNRELATED)
-        							.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-        								.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(labelDateDebut)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(calendarDebut, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE))
+        						.addGroup(Alignment.TRAILING, layout.createSequentialGroup()
+        							.addComponent(labelSalle1)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(cbSalle1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        							.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        								.addGroup(layout.createSequentialGroup()
         									.addComponent(labelFormule)
         									.addPreferredGap(ComponentPlacement.RELATED)
         									.addComponent(cbFormule, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        								.addGroup(layout.createSequentialGroup()
-        									.addComponent(labelHoraire)
-        									.addPreferredGap(ComponentPlacement.RELATED)
-        									.addComponent(txtHoraireDebut, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
-        									.addPreferredGap(ComponentPlacement.RELATED)
-        									.addComponent(labelA)
-        									.addPreferredGap(ComponentPlacement.RELATED)
-        									.addComponent(txtHoraireFin, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))))
+        								.addComponent(labelHoraire))))
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addGroup(layout.createSequentialGroup()
+        							.addComponent(cbHeureDebut, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(labelA)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(cbHeureFin, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(labelNbHeures))
         						.addGroup(layout.createSequentialGroup()
         							.addComponent(labelNbParticipants)
-        							.addGap(18)
-        							.addComponent(txtNombreParticipants, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-        							.addGap(249)))
-        					.addGap(18)
-        					.addComponent(cbHeureDebut, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addComponent(cbHeureFin, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE))))
+        							.addGap(14)
+        							.addComponent(txtNombreParticipants, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+        						.addGroup(layout.createSequentialGroup()
+        							.addComponent(labelDateFin)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(calendarFin, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE)))
+        					.addGap(84))))
         		.addGroup(layout.createSequentialGroup()
         			.addGap(129)
         			.addComponent(btnEnregistrer, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)
@@ -468,31 +473,30 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(labelSalle1)
         				.addComponent(cbSalle1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(labelDateDebut)
         				.addComponent(labelHoraire)
-        				.addComponent(txtHoraireDebut, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(labelA)
-        				.addComponent(txtHoraireFin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(txtDateDebut, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         				.addComponent(cbHeureDebut, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(cbHeureFin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        			.addGap(18)
+        				.addComponent(labelA)
+        				.addComponent(cbHeureFin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(labelNbHeures))
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
         			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(labelDateFin)
-        				.addComponent(txtDateFin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         				.addComponent(labelFormule)
-        				.addComponent(cbFormule, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        			.addGap(18)
-        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(labelNbHeures)
-        				.addComponent(txtNombreHeures, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(cbFormule, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         				.addComponent(labelNbParticipants)
         				.addComponent(txtNombreParticipants, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        			.addGap(24)
-        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(cbSalle2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(labelSalle2))
-        			.addPreferredGap(ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
+        			.addGap(18)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(labelDateDebut)
+        						.addComponent(calendarDebut, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE))
+        					.addGap(8)
+        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(labelSalle2)
+        						.addComponent(cbSalle2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+        				.addComponent(labelDateFin)
+        				.addComponent(calendarFin, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE))
+        			.addPreferredGap(ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
         			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(btnEnregistrer, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
         				.addComponent(btnAnnuler, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE))
@@ -511,21 +515,33 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
 
     private void btnEnregistrerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnregistrerActionPerformed
        try {
+    	    
             //SALLE 1
             String nomSalle1 = (String)cbSalle1.getSelectedItem();
             String formule = (String)cbFormule.getSelectedItem();
-            String horaireDebut = txtHoraireDebut.getText();
-            String horaireFin = txtHoraireFin.getText();
-            String dateDebut = txtDateDebut.getText();
-            String dateFin = txtDateFin.getText();
-            String nbHeures = txtNombreHeures.getText();
+            String horaireDebut = (String)cbHeureDebut.getSelectedItem();
+            String horaireFin = (String)cbHeureFin.getSelectedItem();
+            String disposition = (String)cbDisposition.getSelectedItem();
+            SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
+            String dateDebut = format1.format(calendarDebut.getDate());
+            String dateFin = format1.format(calendarFin.getDate());
+            System.out.println(dateDebut);
+            System.out.println(dateFin);
             String nbParticipants = txtNombreParticipants.getText();
             
+            if(comparerheures(horaireDebut, horaireFin)){
+            	JOptionPane.showMessageDialog(null, "L'heure de d�but doit preceder l'heure de fin", "Erreur", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else if(comparerdates(dateDebut,dateFin))
+            	JOptionPane.showMessageDialog(null, "La date de d�but doit preceder la date de fin", "Erreur", JOptionPane.INFORMATION_MESSAGE);
+            
+            else{
             //CLIENT
+            double nbHeures = Double.parseDouble(horaireFin.split(":")[0])-Double.parseDouble(horaireDebut.split(":")[0])+(Double.parseDouble(horaireFin.split(":")[1])-Double.parseDouble(horaireDebut.split(":")[1]))/60;
             String[] clients;
             clients = rq.getClients();
-            String[] noms = rq.getElementByIdFromTable("clients", "Client", "nom");
-            String[] prenoms = rq.getElementByIdFromTable("clients", "Client", "prenom");
+            String[] noms = rq.getElementByIdFromTable("client", "Client", "nom");
+            String[] prenoms = rq.getElementByIdFromTable("client", "Client", "prenom");
             String client = (String)cbClient.getSelectedItem();
             int longueur = noms.length;
             String[] client2 = new String[longueur];
@@ -540,11 +556,12 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             }
             int idClient = rq.getIdClient(leNom, lePrenom);
             int idFormule = rq.getIdFormule(formule);
-            rq.ajoutReservation(dateDebut,dateFin,horaireDebut,horaireFin,Integer.parseInt(nbParticipants),Integer.parseInt(nbHeures), idClient, idFormule);
+            rq.ajoutReservation(dateDebut,dateFin,horaireDebut+":00",horaireFin+":00",Integer.parseInt(nbParticipants),nbHeures, idClient, idFormule);
             
             int idReservation = rq.getIdReservation(idClient, dateDebut);
-            
-
+            int idsalle = rq.getIdSalle(nomSalle1);
+            int iddispo = rq.getIdDisposition(disposition);
+            rq.ajoutSalleResa(idReservation, idsalle, iddispo);
             //LES OPTIONS
             String o1 = (String)cbOption1.getSelectedItem();
             String o2 = (String)cbOption2.getSelectedItem();
@@ -603,6 +620,7 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             if(!(existe.equals("Aucune"))){
                String nomSalle2 = (String)cbSalle2.getSelectedItem();
             }
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ITcreerReservation1.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -659,6 +677,40 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
     private void cbDispositionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbDispositionActionPerformed
 
     }//GEN-LAST:event_cbDispositionActionPerformed
+    
+    
+    public Boolean comparerheures (String horaireDebut, String horaireFin){
+    	String heureDebut=horaireDebut.split(":")[0];
+    	String heureFin=horaireFin.split(":")[0];
+    	String minDebut=horaireDebut.split(":")[1];
+    	String minFin=horaireFin.split(":")[1];
+    	if(Integer.parseInt(heureDebut) > Integer.parseInt(heureFin)){
+    		 return true;
+    	}
+    	if(Integer.parseInt(heureDebut) > Integer.parseInt(heureFin) && Integer.parseInt(minDebut) > Integer.parseInt(minFin)){
+    		 return true;
+    	}
+    	return false;
+    }
+    
+    public Boolean comparerdates (String dateDebut, String dateFin){
+    	String jourDebut = dateDebut.split("-")[0];
+    	String jourFin = dateFin.split("-")[0];
+    	String moisDebut = dateDebut.split("-")[1];
+    	String moisFin = dateFin.split("-")[1];
+    	String anDebut = dateDebut.split("-")[2];
+    	String anFin = dateFin.split("-")[2];
+    	if(Integer.parseInt(anFin)<Integer.parseInt(anDebut)){
+    		return true;
+    	}
+    	if(Integer.parseInt(moisFin)<Integer.parseInt(moisDebut) && Integer.parseInt(anFin)==Integer.parseInt(anDebut)){
+    		return true;
+    	}
+    	if(Integer.parseInt(moisFin)==Integer.parseInt(moisDebut) && Integer.parseInt(anFin)==Integer.parseInt(anDebut) && Integer.parseInt(jourFin)<Integer.parseInt(jourDebut)){
+    		return true;
+    	}
+    	return false;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnnuler;
@@ -680,6 +732,8 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbService4;
     private javax.swing.JComboBox<String> cbService5;
     private javax.swing.JComboBox<String> cbService6;
+    private javax.swing.JComboBox<String> cbHeureDebut;
+    private javax.swing.JComboBox<String> cbHeureFin;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel25;
@@ -699,12 +753,9 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
     private javax.swing.JLabel labelSalle2;
     private javax.swing.JLabel labelServices;
     private javax.swing.JLabel labelTitre;
-    private javax.swing.JTextField txtDateDebut;
-    private javax.swing.JTextField txtDateFin;
-    private javax.swing.JTextField txtHoraireDebut;
-    private javax.swing.JTextField txtHoraireFin;
-    private javax.swing.JTextField txtNombreHeures;
     private javax.swing.JTextField txtNombreParticipants;
+    private JCalendar calendarDebut;
+    private JCalendar calendarFin;
     // End of variables declaration//GEN-END:variables
     private String[] lesSalles = null;
     private String[] lesFormules = null;
@@ -712,4 +763,5 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
     private String[] lesOptions = null;
     private String[] lesServices = null;
     private String[] lesClients = null;
+    private String[] heures= {"09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","22:30","23:00"};
 }

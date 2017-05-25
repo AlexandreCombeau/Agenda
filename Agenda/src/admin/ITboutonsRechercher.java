@@ -136,7 +136,7 @@ public class ITboutonsRechercher extends javax.swing.JFrame {
             String lePrenom = "";
             for(int i = 0; i<longueur; i++){
                 client2[i] = prenoms[i]+" "+noms[i];
-                if(client2[i] == null ? client == null : client2[i].equals(client)){
+                if(client2[i] == null ? client == null : client2[i].equals(client)) {
                     leNom = noms[i];
                     lePrenom = prenoms[i];
                 }

@@ -279,7 +279,7 @@ public class ITajout extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Veuillez choisir une couleur pour la "+lbTable.getText());
             }
             else{
-                if(rq.checkErreurAjout("salles", nom, hex)){
+                if(rq.checkErreurAjout("salle", nom, hex)){
                     if(aire != 0){
                         rq.ajoutSalle(nom, aire, hex, comment);
                         JOptionPane.showMessageDialog(null, "Nouvelle salle créée avec succès !");

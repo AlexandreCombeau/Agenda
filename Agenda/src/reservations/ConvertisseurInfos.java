@@ -27,7 +27,7 @@ public class ConvertisseurInfos {
 			}
 			return sbTemp.toString();
 		};
-		
+
 		sb.append(infos[0]+"-"+infos[1]+"\n"); // date debut et fin
 		sb.append(infos[2]+" "+infos[3]+"\n"); // heure debut et fin
 		if(infos[4].contains("aucun ")) {

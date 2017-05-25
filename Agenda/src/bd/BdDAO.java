@@ -230,7 +230,7 @@ public class BdDAO {
          * 
          */
         public int getSuperficieSalle(String nomSalle) {
-            String quest = "SELECT superficie FROM salles WHERE libelle = '"+nomSalle+"'";
+            String quest = "SELECT superficie FROM salle WHERE libelle = '"+nomSalle+"'";
             try{
             rs = co.query(quest);
             if(rs.next()){
@@ -248,7 +248,7 @@ public class BdDAO {
          * @return Retourne le descriptif de la salle en question
          */
         public String getCommentSalle(String nomSalle) {
-            String quest = "SELECT descriptif FROM salles WHERE libelle = '"+nomSalle+"'";
+            String quest = "SELECT descriptif FROM salle WHERE libelle = '"+nomSalle+"'";
             try{
             rs = co.query(quest);
             if(rs.next()){
@@ -388,7 +388,7 @@ public class BdDAO {
         
         
         public String getCouleurReservation(int idReservation) throws SQLException {
-        	PreparedStatement request = co.getConnection().prepareStatement("Select codeCouleur from Salles, Sallesresa, InfoSalle where fkidReservation = ? and fkidInfoSalle = idInfoSalle and fkidSalle = idSalle");
+        	PreparedStatement request = co.getConnection().prepareStatement("Select codeCouleur from salle, Sallesresa, InfoSalle where fkidReservation = ? and fkidInfoSalle = idInfoSalle and fkidSalle = idSalle");
         	request.setInt(1, idReservation);
         	rs = request.executeQuery();
         	if(rs.next()) 
@@ -582,7 +582,7 @@ public class BdDAO {
             String service = "SELECT libelle FROM optionsServices, choix WHERE optionsServices.idOptionsServices=choix.fkidOptionsServices AND choix.fkidReservation='"+idReservation+"' AND optionsServices.nature='service'";
             String option = "SELECT libelle FROM optionsServices, choix WHERE optionsServices.idOptionsServices=choix.fkidOptionsServices AND choix.fkidReservation='"+idReservation+"' AND optionsservices.nature='option'";
             String formule = "SELECT libelle FROM formule, reservation WHERE formule.idFormule=reservation.fkidFormule AND reservation.idReservation='"+idReservation+"'";
-            String salle = "SELECT libelle FROM salles, infoSalle, sallesResa WHERE infoSalle.fkidSalle=salles.idSalle AND sallesResa.fkidInfoSalle=infoSalle.idInfoSalle AND sallesResa.fkidReservation='"+idReservation+"'";
+            String salle = "SELECT libelle FROM salle, infoSalle, sallesResa WHERE infoSalle.fkidSalle=salle.idSalle AND sallesResa.fkidInfoSalle=infoSalle.idInfoSalle AND sallesResa.fkidReservation='"+idReservation+"'";
             String disposition = "SELECT libelle FROM sallesResa, disposition, infoSalle WHERE infoSalle.fkidDisposition=disposition.idDisposition AND sallesResa.fkidInfoSalle=infoSalle.idInfoSalle AND sallesResa.fkidReservation='"+idReservation+"'";
             ArrayList<String> infosReservation = new ArrayList<>();  
             
@@ -915,7 +915,7 @@ public class BdDAO {
             //Comparaison avec les données de la BD pour déterminer les doublons
         	
             String quest1 = "SELECT * FROM "+nomTable+" WHERE libelle = '"+nom+"'";
-            String quest2 = "SELECT * FROM salles, tache WHERE salles.codeCouleur = '"+couleur+"' OR tache.codeCouleur = '"+couleur+"'";
+            String quest2 = "SELECT * FROM salle, tache WHERE salle.codeCouleur = '"+couleur+"' OR tache.codeCouleur = '"+couleur+"'";
             return !((rs = co.query(quest1)).next() || (rs = co.query(quest2)).next());
         }
 
@@ -1205,7 +1205,7 @@ public class BdDAO {
          * @throws SQLException 
          */
         public void ajoutSalle(String name, int superficie, String couleur, String comment) throws SQLException{
-            String quest = "INSERT INTO salles(libelle, superficie, fkidCouleur, descriptif) VALUES('"+name+"', "+superficie+", "+couleur+", '"+comment+"')";
+            String quest = "INSERT INTO salle(libelle, superficie, fkidCouleur, descriptif) VALUES('"+name+"', "+superficie+", "+couleur+", '"+comment+"')";
             co.update(quest);
             System.out.println("Insertion réussie");
         }
