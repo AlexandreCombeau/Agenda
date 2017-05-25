@@ -79,6 +79,7 @@ public class Connexion {
             statement.executeUpdate(request);
         } catch (SQLException e) {
             System.out.println("Erreur dans la requête : " + request);
+            e.printStackTrace();
         }
         return result;
     }
@@ -89,6 +90,7 @@ public class Connexion {
             statement.execute(request);
         } catch (SQLException e) {
             System.out.println("Erreur dans la requête : " + request);
+            e.printStackTrace();
         }
         return result;
     }
@@ -96,5 +98,15 @@ public class Connexion {
     Statement createStatement(int TYPE_SCROLL_SENSITIVE, int CONCUR_UPDATABLE) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+	public Connection getConnection() {
+		return connection;
+	}
+
+	public void setConnection(Connection connection) {
+		this.connection = connection;
+	}
+
+	
     
 }

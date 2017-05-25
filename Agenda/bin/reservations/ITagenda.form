@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
@@ -339,3 +340,346 @@
     </Component>
   </SubComponents>
 </Form>
+=======
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <NonVisualComponents>
+    <Component class="javax.swing.JButton" name="jButton1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jButton1"/>
+      </Properties>
+    </Component>
+    <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
+      <SubComponents>
+        <Menu class="javax.swing.JMenu" name="jMenu1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Fichier"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuParamAdmin">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Param&#xe8;tres administrateur"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuParamAdminActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuDeconnexion">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="D&#xe9;connexion"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuDeconnexionActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="jMenu2">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Test"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuChercherConflit">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Chercher confli r&#xe9;servation"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuChercherConflitActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="test tableau"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem2ActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+      </SubComponents>
+    </Menu>
+  </NonVisualComponents>
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="resizable" type="boolean" value="false"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar1"/>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="txtWelcome" min="-2" pref="225" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                      <Component id="lbOJD" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
+                      <Component id="btnSemainePrecedente" min="-2" pref="43" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnSemaineSuivante" min="-2" pref="43" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="btnAdmin" min="-2" pref="219" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="btnDeconnexion" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                      <Component id="btnRemplirTableau" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="lblLundiSemaine" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+          </Group>
+          <Group type="102" attributes="0">
+              <EmptySpace min="-2" pref="192" max="-2" attributes="0"/>
+              <Component id="lblLundiStatic" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="lblLundi" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
+              <Component id="lblMardiStatic" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="lblMardi" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
+              <Component id="lblMercrediStatix" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="lblMercredi" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
+              <Component id="lblJeudiStatic" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="lblJeudi" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
+              <Component id="lblVendrediStatic" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="lblVendredi" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
+              <Component id="lblSamediStatic" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="lblSamedi" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
+              <Component id="lblDimancheStatic" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="lblDimanche" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="86" max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="panelAgenda1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="lbOJD" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btnSemainePrecedente" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnSemaineSuivante" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnRemplirTableau" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblLundiSemaine" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblLundi" alignment="3" max="32767" attributes="0"/>
+                  <Component id="lblLundiStatic" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblMardiStatic" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblMercrediStatix" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblJeudiStatic" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblVendrediStatic" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblSamediStatic" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblDimancheStatic" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblMardi" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblMercredi" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblJeudi" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblSamedi" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblVendredi" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblDimanche" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="panelAgenda1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jLabel2" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="txtWelcome" min="-2" pref="10" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="btnDeconnexion" alignment="3" min="-2" pref="45" max="-2" attributes="0"/>
+                          <Component id="btnAdmin" alignment="3" min="-2" pref="48" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JButton" name="btnAdmin">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Param&#xe8;tres administrateur"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAdminActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnDeconnexion">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Deconnexion"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeconnexionActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="txtWelcome">
+    </Component>
+    <Component class="javax.swing.JButton" name="btnSemainePrecedente">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&lt;"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSemainePrecedenteActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnSemaineSuivante">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&gt;"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSemaineSuivanteActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lbOJD">
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+    </Component>
+    <Container class="fr.villalem.reservations.PanelAgenda" name="panelAgenda1">
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace min="0" pref="1021" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace min="0" pref="536" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+    </Container>
+    <Component class="javax.swing.JButton" name="btnRemplirTableau">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Remplir tableau"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRemplirTableauActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblLundi">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="00-00"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblLundiStatic">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="lun."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblMardiStatic">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="mar."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblMercrediStatix">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="mer."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblJeudiStatic">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jeu."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblVendrediStatic">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="ven."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblSamediStatic">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="sam."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblDimancheStatic">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="dim."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblMardi">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="00-00"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblMercredi">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="00-00"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblJeudi">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="00-00"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblSamedi">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="00-00"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblVendredi">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="00-00"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblDimanche">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="00-00"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblLundiSemaine">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="..."/>
+      </Properties>
+    </Component>
+  </SubComponents>
+</Form>
+>>>>>>> refs/remotes/origin/master

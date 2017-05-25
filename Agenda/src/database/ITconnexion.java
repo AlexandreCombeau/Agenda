@@ -6,15 +6,14 @@
 package database;
 
 import static gestionagenda.GestionAgenda.rq;
-import java.sql.Connection;
+
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import reservations.ITagenda;
 import reservations.ITagenda;
 import usager.Usager;
-
-import java.awt.event.KeyEvent;
 
 /**
  *

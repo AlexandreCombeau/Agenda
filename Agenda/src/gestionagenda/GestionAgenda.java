@@ -6,14 +6,13 @@
 package gestionagenda;
 
 
-import java.io.IOException;
 
-import static factures.Devis.creerDevis;
-import static factures.Factures.creerFacture;
-import static java.lang.Math.round;
+import java.io.IOException;
 import java.sql.SQLException;
 
-import database.*;
+import database.BdDAO;
+import database.Connexion;
+import database.ITconnexion;
 
 
 /**
@@ -34,3 +33,5 @@ public class GestionAgenda {
     }
     
 }
+
+
