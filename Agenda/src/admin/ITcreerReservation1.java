@@ -22,6 +22,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.GroupLayout;
 import javax.swing.DefaultComboBoxModel;
 import com.toedter.calendar.JCalendar;
+import javax.swing.JTextField;
 
 /**
  *
@@ -48,7 +49,6 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
 
             //On enlève tout les items associés aux combo box par défaut.
             cbDisposition.removeAllItems();
-            cbClient.removeAllItems();
             cbFormule.removeAllItems();
             cbSalle1.removeAllItems();
             cbSalle2.removeAllItems();
@@ -90,7 +90,7 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             for (String lesDisposition : lesDispositions) {
                 cbDisposition.addItem(lesDisposition);
             }
-             for (String lesClient : lesClients) {
+            for (String lesClient : lesClients) {
                 cbClient.addItem(lesClient);
             }
             
@@ -178,8 +178,8 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         cbService6 = new javax.swing.JComboBox<>();
         cbHeureDebut = new javax.swing.JComboBox<>();
         cbHeureFin = new javax.swing.JComboBox<>();
+        cbClient = new javax.swing.JComboBox();
         labelClient = new javax.swing.JLabel();
-        cbClient = new javax.swing.JComboBox<>();
         labelDateFin = new javax.swing.JLabel();
         cbSalle2 = new javax.swing.JComboBox<>();
         calendarDebut = new JCalendar();
@@ -332,8 +332,6 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
 
         labelClient.setText("Client :");
 
-        cbClient.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         labelDateFin.setText("Date de fin : ");
 
         cbSalle2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -341,6 +339,8 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         cbHeureDebut.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         
         cbHeureFin.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        
+        
         
         
 
@@ -357,7 +357,7 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         				.addGroup(layout.createSequentialGroup()
         					.addComponent(labelClient)
         					.addGap(18)
-        					.addComponent(cbClient, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+        					.addComponent(cbClient, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE))))
         		.addComponent(labelTitre, GroupLayout.PREFERRED_SIZE, 1237, GroupLayout.PREFERRED_SIZE)
         		.addGroup(layout.createSequentialGroup()
         			.addGap(5)
@@ -390,13 +390,13 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         							.addComponent(cbService5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         							.addComponent(cbService6, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
         				.addGroup(layout.createSequentialGroup()
-        					.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        					.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
         						.addGroup(layout.createSequentialGroup()
         							.addPreferredGap(ComponentPlacement.RELATED)
         							.addComponent(labelDateDebut)
         							.addPreferredGap(ComponentPlacement.RELATED)
         							.addComponent(calendarDebut, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE))
-        						.addGroup(Alignment.TRAILING, layout.createSequentialGroup()
+        						.addGroup(layout.createSequentialGroup()
         							.addComponent(labelSalle1)
         							.addPreferredGap(ComponentPlacement.RELATED)
         							.addComponent(cbSalle1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -424,8 +424,7 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         						.addGroup(layout.createSequentialGroup()
         							.addComponent(labelDateFin)
         							.addPreferredGap(ComponentPlacement.RELATED)
-        							.addComponent(calendarFin, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE)))
-        					.addGap(84))))
+        							.addComponent(calendarFin, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE))))))
         		.addGroup(layout.createSequentialGroup()
         			.addGap(129)
         			.addComponent(btnEnregistrer, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)
@@ -778,12 +777,7 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
     }
     
     public void setHeureDebut (String heure){
-    	for(int i=0; i<cbHeureDebut.getItemCount();++i){
-    		
-    		if(cbHeureDebut.getItemAt(i).toString().equals(heure)){
-    			cbHeureDebut.setSelectedIndex(i);
-    		}
-    	}
+    	cbHeureDebut.setSelectedItem(heure);
     }
     
     public void setNbPersonne (int nb){
@@ -835,7 +829,6 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnnuler;
     private javax.swing.JButton btnEnregistrer;
-    private javax.swing.JComboBox<String> cbClient;
     private javax.swing.JComboBox<String> cbDisposition;
     private javax.swing.JComboBox<String> cbFormule;
     private javax.swing.JComboBox<String> cbOption1;
@@ -873,6 +866,7 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
     private javax.swing.JLabel labelSalle2;
     private javax.swing.JLabel labelServices;
     private javax.swing.JLabel labelTitre;
+    private javax.swing.JComboBox cbClient;
     private javax.swing.JTextField txtNombreParticipants;
     private JCalendar calendarDebut;
     private JCalendar calendarFin;

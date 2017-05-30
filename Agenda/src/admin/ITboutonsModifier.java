@@ -13,6 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
+import database.operationModif;
+
 public class ITboutonsModifier extends javax.swing.JFrame {
 
     /**

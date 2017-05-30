@@ -18,5 +18,8 @@ public interface Ioperation {
 	public void operationResa (String Datedebut, String Datefin, String Heuredebut, String Heurefin, int nbPersonne, double nbHeure, int idClient, int idFormule);
 	public void operationSalleResa (int idReservation, int info) throws SQLException;
 	public void operationChoix(int idReservation, List<Integer> choix) throws SQLException;
+	public void operationUser(String nom, String prenom, String email, int admin, String login, String mdp);
+	public void operationTache(String nom, String hex, String comment, String dateDebut, String dateFin, String horaireDebut, String horaireFin);
+	public void operationSalle(String name, int superficie, String couleur, String comment) throws SQLException;
 	public void recevoirId(int id);
 }

@@ -12,6 +12,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
+import database.operationAjout;
+import database.operationModif;
+
 /**
  *
  * @author Villalemons
@@ -185,7 +188,7 @@ public class ITadmin extends javax.swing.JFrame {
         if(nom != null){
         switch(nom){
             case "Ajouter une salle":
-                ITajout ajout = new ITajout();
+                ITajout ajout = new ITajout(new operationAjout());
                 ajout.setLabelTitle(ajout.getLabelTitle()+"d'une salle");
                 ajout.setLabelChoice(ajout.getLabelChoice()+"votre salle");
                 ajout.setLabelTable("Salle");
@@ -199,13 +202,23 @@ public class ITadmin extends javax.swing.JFrame {
             try {
                 nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getElementByIdFromTable("salle", "Salle", "libelle"), rq.getElementByIdFromTable("salle", "Salle", "libelle")[0]);
                 if(nomsalle != null){
-                    ITmodif modif = new ITmodif();
-                    modif.setTxtTitle("Salle : "+nomsalle);
+                	int id=rq.getIdSalle(nomsalle);
+                	int superficie=rq.getSuperficieSalle(id);
+                	String couleur=rq.getCouleurSalle(id);
+                	String comment=rq.getCommentSalle(id);
+                    ITajout modif = new ITajout(new operationModif());
+                    modif.setNom(nomsalle);
+                    modif.setSuperficie(superficie);
+                    modif.setCouleur(couleur);
+                    modif.setComment(comment);
+                    
+                    /*modif.setTxtTitle("Salle : "+nomsalle);
                     modif.setLbNom(nomsalle);
                     modif.getLbNom().setVisible(false);
                     modif.setLbTable("Salle");
-                    modif.getLbTable().setVisible(false);
+                    modif.getLbTable().setVisible(false);*/
                     //modif.getBtnCouleur().setBackground(rq.hex2Rgb("Salle", nomsalle));
+                    modif.setTitle(Integer.toString(id));
                     modif.setVisible(true); 
                 }
             }catch (SQLException ex){Logger.getLogger(ITadmin.class.getName()).log(Level.SEVERE, null, ex);}
@@ -244,7 +257,7 @@ public class ITadmin extends javax.swing.JFrame {
         nom = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une option","Options utilisateurs",JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
         switch(nom){
             case "Ajouter un utilisateur":
-                ITajoutUtilisateur ajout = new ITajoutUtilisateur();
+                ITajoutUtilisateur ajout = new ITajoutUtilisateur(new operationAjout());
                 ajout.setVisible(true);
                 
                 break;
@@ -254,15 +267,31 @@ public class ITadmin extends javax.swing.JFrame {
             try {
                 nomutilisateur = (String)JOptionPane.showInputDialog(null, "Veuillez choisir un utilisateur à modifier", "Options utilisateurs - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getElementByIdFromTable("usager", "Usager", "login"), rq.getElementByIdFromTable("usager", "Usager", "nom")[0]);
                 if(nomutilisateur != null){
-                    ITmodifUtilisateur modif = new ITmodifUtilisateur();
-                    modif.setTxtTitle("Utilisateur : "+nomutilisateur);
+                	int id=rq.getIdUser(nomutilisateur);
+                	int admin=rq.getAdmin(id);
+                	String mail=rq.getEmail(id);
+                	String login=rq.getLogin(id);
+                	String mdp=rq.getMdp(id);
+                	String prenom=rq.getPrenom(id);
+                	String nomU=rq.getNom(id);
+                    ITajoutUtilisateur modif = new ITajoutUtilisateur(new operationModif());
+                    modif.setTitle(Integer.toString(id));
+                    modif.setAdmin(admin);
+                    modif.setMail(mail);
+                    modif.setLogin(login);
+                    modif.setMDP(mdp);
+                    modif.setPrenom(prenom);
+                    modif.setNom(nomU);
+                    modif.setVisible(true);
+                    /*modif.setTitle("Utilisateur : "+nomutilisateur);
                     modif.setLbUser(nomutilisateur);
                     modif.getLbUser().setVisible(false);
-                    modif.setVisible(true); 
+                    modif.setVisible(true);*/ 
                 }
             }catch (SQLException ex){Logger.getLogger(ITadmin.class.getName()).log(Level.SEVERE, null, ex);}
             
                 break;
+                
                 
             case "Supprimer un utilisateur":
             try {
@@ -298,12 +327,12 @@ public class ITadmin extends javax.swing.JFrame {
         if(nom != null){
         switch(nom){
             case "Ajouter une tache":
-                ITajout ajout = new ITajout();
-                ajout.setLabelTitle(ajout.getLabelTitle()+"d'une tache");
+                ITajoutTache ajout = new ITajoutTache(new operationAjout());
+                /*ajout.setLabelTitle(ajout.getLabelTitle()+"d'une tache");
                 ajout.setLabelChoice(ajout.getLabelChoice()+"une tache");
                 ajout.getPanelSalle().setVisible(false);
                 ajout.setLabelTable("Tache");
-                ajout.getLabelTable().setVisible(false);
+                ajout.getLabelTable().setVisible(false);*/
                 ajout.setVisible(true);
                 
                 break;
@@ -311,17 +340,36 @@ public class ITadmin extends javax.swing.JFrame {
             case "Modifier une tache":
                 String nomTache;
             try {
-                nomTache = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une tache", "Options taches - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTacheEntiteFormule("taches", "Tache"), rq.getSalleTacheEntiteFormule("taches", "Tache")[0]);
+                nomTache = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une tache", "Options taches - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getElementByIdFromTable("tache", "Tache", "nomTache"), rq.getElementByIdFromTable("tache", "Tache", "nomTache")[0]);
                 System.out.println("ICIIII : "+nomTache);
                 if(nomTache != null){
-                    ITmodif modif = new ITmodif();
-                    modif.setTxtTitle("Tache : "+nomTache);
+                	String [] dates = rq.getDatesTaches(nomTache);
+                	String dateDebut = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner une date de début de réservation","Rechercher une date",JOptionPane.QUESTION_MESSAGE, null,dates,dates[0]);
+                    int id = rq.getIdTache(nomTache, dateDebut);
+                	String dateFin = rq.getDateFinTache(id);
+                	String comment = rq.getCommentTache(id);
+                	String heureD = rq.getHeureDebutFromTache(id);
+                	String heureF = rq.getHeureFinFromTache(id);
+                	heureD = heureD.split(":")[0]+":"+heureD.split(":")[1];
+                    
+                    heureF = heureF.split(":")[0]+":"+heureF.split(":")[1];
+                	String hexa = rq.getCouleurTache(id);
+                	ITajoutTache modif = new ITajoutTache(new operationModif());
+                    /*modif.setTxtTitle("Tache : "+nomTache);
                     modif.setLbNom(nomTache);
                     modif.getLbNom().setVisible(false);
                     modif.getBtnCouleur().setBackground(rq.hex2Rgb("Tache", nomTache));
                     modif.getBtnSuperficie().setVisible(false);
                     modif.setLbTable("Tache");
-                    modif.getLbTable().setVisible(false);
+                    modif.getLbTable().setVisible(false);*/
+                    modif.setDateDebut(dateDebut);
+                    modif.setDateFin(dateFin);
+                    modif.setComment(comment);
+                    modif.setHeureDebut(heureD);
+                    modif.setHeureFin(heureF);
+                    modif.setCouleur(hexa);
+                    modif.setNom(nomTache);
+                    modif.setTitle(Integer.toString(id));
                     modif.setVisible(true); 
                 }
             }catch (SQLException ex){Logger.getLogger(ITadmin.class.getName()).log(Level.SEVERE, null, ex);}

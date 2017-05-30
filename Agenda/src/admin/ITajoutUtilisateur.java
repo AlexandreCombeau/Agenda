@@ -16,11 +16,12 @@ import javax.swing.JOptionPane;
  * @author Stagiaire
  */
 public class ITajoutUtilisateur extends javax.swing.JFrame {
-
+	public Ioperation Io;
     /**
      * Creates new form ITajoutUtilisateur
      */
-    public ITajoutUtilisateur() {
+    public ITajoutUtilisateur(Ioperation Io) {
+    	this.Io=Io;
         initComponents();
     }
 
@@ -193,13 +194,37 @@ public class ITajoutUtilisateur extends javax.swing.JFrame {
  */
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         try {
-            String nom, prenom, email, login, mdp;
+        	String nom, prenom, email, login, mdp;
             nom = this.txtNomUtilisateur.getText();
             prenom = this.txtPrenomUtilisateur.getText();
             email = this.txtEmail.getText();
             login = this.txtLogin.getText();
             mdp = this.txtMdp.getText();
+            int adminnb = -1;
             boolean admin = this.checkAdmin.isSelected();
+        	if(!getTitle().equals("")){
+        	    Io.recevoirId(Integer.parseInt(getTitle()));
+        	    
+        	    if(admin){adminnb=1;}else{adminnb=0;}
+        	    
+            	int choice;
+            	if(admin)
+            		choice = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment créer l'utilisateur suivant ?\nNom : "+nom+", Prenom : "+prenom+"\nEmail : "+email+"\nLogin : "+login+", Mot de passe : "+mdp+"\n\n De plus, "+prenom+" "+nom+" sera administrateur !", "Annuler", JOptionPane.YES_NO_OPTION);
+            	else{
+            		choice = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment créer l'utilisateur suivant ?\nNom : "+nom+", Prenom : "+prenom+"\nEmail : "+email+"\nLogin : "+login+", Mot de passe : "+mdp+"\n\n De plus, "+prenom+" "+nom+" ne sera pas administrateur !", "Annuler", JOptionPane.YES_NO_OPTION);
+            	}
+                if(choice == 0){
+                	Io.operationUser(nom, prenom, email, adminnb, login, mdp);
+                    //rq.ajoutUtilisateur(nom, prenom, email, 0, login, mdp);
+                    JOptionPane.showMessageDialog(null, "L'utilisateur "+prenom+" "+nom+" a été créé avec succès !");
+                    this.dispose();
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Création de l'utilisateur "+prenom+" "+nom+" annulé !");
+                }
+        	   }
+        	else{
+            
             if(nom.equals("") || prenom.equals("") || email.equals("") || login.equals("") || mdp.equals("")){
                 JOptionPane.showMessageDialog(null, "Vous devez renseigner tous les champs !");
             }
@@ -213,31 +238,25 @@ public class ITajoutUtilisateur extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Cet e-mail est déjà utilisé !");
             }
             else{
-                if(admin == false){
-                    int choice;
-                    choice = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment créer l'utilisateur suivant ?\nNom : "+nom+", Prenom : "+prenom+"\nEmail : "+email+"\nLogin : "+login+", Mot de passe : "+mdp+"\n\n De plus, "+prenom+" "+nom+" ne sera pas administrateur !", "Annuler", JOptionPane.YES_NO_OPTION);
-                    if(choice == 0){
-                        rq.ajoutUtilisateur(nom, prenom, email, 0, login, mdp);
-                        JOptionPane.showMessageDialog(null, "L'utilisateur "+prenom+" "+nom+" a été créé avec succès !");
-                        this.dispose();
-                    }
-                    else{
-                        JOptionPane.showMessageDialog(null, "Création de l'utilisateur "+prenom+" "+nom+" annulé !");
-                    }
+            	if(admin){adminnb=1;}else{adminnb=0;}
+            	int choice;
+            	if(admin)
+            		choice = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment créer l'utilisateur suivant ?\nNom : "+nom+", Prenom : "+prenom+"\nEmail : "+email+"\nLogin : "+login+", Mot de passe : "+mdp+"\n\n De plus, "+prenom+" "+nom+" sera administrateur !", "Annuler", JOptionPane.YES_NO_OPTION);
+            	else{
+            		choice = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment créer l'utilisateur suivant ?\nNom : "+nom+", Prenom : "+prenom+"\nEmail : "+email+"\nLogin : "+login+", Mot de passe : "+mdp+"\n\n De plus, "+prenom+" "+nom+" ne sera pas administrateur !", "Annuler", JOptionPane.YES_NO_OPTION);
+            	}
+            	if(choice == 0){
+                	Io.operationUser(nom, prenom, email, adminnb, login, mdp);
+                    //rq.ajoutUtilisateur(nom, prenom, email, 0, login, mdp);
+                    JOptionPane.showMessageDialog(null, "L'utilisateur "+prenom+" "+nom+" a été créé avec succès !");
+                    this.dispose();
                 }
                 else{
-                    int choice;
-                    choice = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment créer l'utilisateur suivant ?\nNom : "+nom+", Prenom : "+prenom+"\nEmail : "+email+"\nLogin : "+login+", Mot de passe : "+mdp+"\n\n De plus, "+prenom+" "+nom+" sera reconnu en tant qu'administrateur !", "Annuler", JOptionPane.YES_NO_OPTION);
-                    if(choice == 0){
-                        rq.ajoutUtilisateur(nom, prenom, email, 1, login, mdp);
-                        JOptionPane.showMessageDialog(null, "L'utilisateur "+prenom+" "+nom+" a été créé avec succès !");
-                        this.dispose();
-                    }
-                    else{
-                        JOptionPane.showMessageDialog(null, "Création de l'utilisateur "+prenom+" "+nom+" annulé !");
-                    }
+                    JOptionPane.showMessageDialog(null, "Création de l'utilisateur "+prenom+" "+nom+" annulé !");
                 }
+                
             }
+        	}
         } catch (SQLException ex) {
             Logger.getLogger(ITajoutUtilisateur.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -264,6 +283,37 @@ public class ITajoutUtilisateur extends javax.swing.JFrame {
         }
         return false;
     }
+    
+    public void setLogin (String login){
+    	txtLogin.setText(login);
+    }
+    
+    public void setMDP (String mdp){
+    	txtMdp.setText(mdp);
+    }
+    
+    public void setPrenom (String prenom){
+    	txtPrenomUtilisateur.setText(prenom);
+    }
+    
+    public void setNom (String nom){
+    	txtNomUtilisateur.setText(nom);
+    }
+    
+    public void setMail (String mail){
+    	txtEmail.setText(mail);
+    }
+    
+    public void setAdmin (int admin){
+    	if(admin==0){
+    		checkAdmin.setSelected(false);
+    	}
+    	if(admin==1){
+    		checkAdmin.setSelected(true);
+    	}
+    }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;

@@ -7,6 +7,8 @@ package database;
 import reservations.Evenement;
 import usager.Usager;
 
+import static gestionagenda.GestionAgenda.rq;
+
 import java.awt.Color;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -184,8 +186,8 @@ public class BdDAO {
         * @return Retourne l'email de l'utilisateur en question
         * 
         */
-       public String getEmail(String user){
-           String quest = "SELECT mail FROM usager WHERE login = '"+user+"'";
+       public String getEmail(int user){
+           String quest = "SELECT mail FROM usager WHERE idUsager = "+user+"";
            try{
            rs = co.query(quest);
            if(rs.next()){
@@ -196,6 +198,76 @@ public class BdDAO {
            	
            }
            return null;
+       }
+       
+       public String getNom(int user){
+           String quest = "SELECT nom FROM usager WHERE idUsager = "+user+"";
+           try{
+           rs = co.query(quest);
+           if(rs.next()){
+               String comment = rs.getString("nom");
+               return comment;
+           }
+           } catch (SQLException ex){
+           	
+           }
+           return null;
+       }
+       
+       public String getPrenom(int user){
+           String quest = "SELECT prenom FROM usager WHERE idUsager = "+user+"";
+           try{
+           rs = co.query(quest);
+           if(rs.next()){
+               String comment = rs.getString("prenom");
+               return comment;
+           }
+           } catch (SQLException ex){
+           	
+           }
+           return null;
+       }
+       
+       public String getLogin(int user){
+           String quest = "SELECT login FROM usager WHERE idUsager = "+user+"";
+           try{
+           rs = co.query(quest);
+           if(rs.next()){
+               String comment = rs.getString("login");
+               return comment;
+           }
+           } catch (SQLException ex){
+           	
+           }
+           return null;
+       }
+       
+       public String getMdp(int user){
+           String quest = "SELECT password FROM usager WHERE idUsager = "+user+"";
+           try{
+           rs = co.query(quest);
+           if(rs.next()){
+               String comment = rs.getString("password");
+               return comment;
+           }
+           } catch (SQLException ex){
+           	
+           }
+           return null;
+       }
+       
+       public int getAdmin(int user){
+           String quest = "SELECT administrateur FROM usager WHERE idUsager = "+user+"";
+           try{
+           rs = co.query(quest);
+           if(rs.next()){
+               int comment = rs.getInt("administrateur");
+               return comment;
+           }
+           } catch (SQLException ex){
+           	
+           }
+           return -1;
        }
        
         /**
@@ -231,8 +303,8 @@ public class BdDAO {
          * @return Retourne la superficie de la salle en question
          * 
          */
-        public int getSuperficieSalle(String nomSalle) {
-            String quest = "SELECT superficie FROM salle WHERE libelle = '"+nomSalle+"'";
+        public int getSuperficieSalle(int idSalle) {
+            String quest = "SELECT superficie FROM salle WHERE idSalle = "+idSalle+"";
             try{
             rs = co.query(quest);
             if(rs.next()){
@@ -631,6 +703,17 @@ public class BdDAO {
             return IdOS;
         }
         
+        public int getIdTache(String nom, String dateDebut) throws SQLException{
+            String quest = "SELECT idTache FROM tache WHERE nomTache='"+nom+"' AND dateDebut='"+dateDebut+"'";
+            rs = co.query(quest);
+            int IdOS=0;
+            while (rs.next()){
+                IdOS = rs.getInt("idTache");
+                System.out.println(IdOS);
+            }
+            return IdOS;
+        }
+        
         public String getCouleurReservation(int idReservation) throws SQLException {
         	PreparedStatement request = co.getConnection().prepareStatement("Select codeCouleur from salle, salleResa, infoSalle where fkidReservation = ? and fkidInfoSalle = idInfoSalle and fkidSalle = idSalle");
         	request.setInt(1, idReservation);
@@ -646,6 +729,26 @@ public class BdDAO {
         	rs = request.executeQuery();
         	if(rs.next()) {
         		return rs.getString("codeCouleur");
+        	}
+        	return "";
+        }
+        
+        public String getCouleurSalle(int idTache) throws SQLException {
+        	PreparedStatement request  = co.getConnection().prepareStatement("Select codeCouleur from salle where salle.idSalle = ?");
+        	request.setInt(1, idTache);
+        	rs = request.executeQuery();
+        	if(rs.next()) {
+        		return rs.getString("codeCouleur");
+        	}
+        	return "";
+        }
+        
+        public String getCommentSalle(int id) throws SQLException {
+        	PreparedStatement request  = co.getConnection().prepareStatement("Select descriptif from salle where salle.idSalle = ?");
+        	request.setInt(1, id);
+        	rs = request.executeQuery();
+        	if(rs.next()) {
+        		return rs.getString("descriptif");
         	}
         	return "";
         }
@@ -803,6 +906,21 @@ public class BdDAO {
             return idFormule;
         }
         
+        public String[] getDatesTaches(String nom) throws SQLException{
+            String dates = "SELECT dateDebut FROM tache WHERE nomTache='"+nom+"'";
+            ArrayList<String> datesR = new ArrayList<>();
+            rs = co.query(dates);
+            String date = "";
+            while(rs.next()){
+               date = rs.getString("dateDebut");
+               datesR.add(date);
+            }
+            datesR.add("");
+            String datesRe[] = new String[datesR.size()];
+            datesRe = datesR.toArray(datesRe);
+            return datesRe;
+        }
+        
         
         public String[] getDatesReservations(int idClient) throws SQLException{
             String dates = "SELECT dateDebut FROM reservation WHERE fkidClient="+idClient+"";
@@ -824,6 +942,26 @@ public class BdDAO {
             String date = "";
             while(rs.next()){
                date = rs.getString("dateDebut");
+            }
+            return date;
+        }
+        
+        public String getDateDebutTache(int idTache) throws SQLException{
+            String dateR = "SELECT dateDebut FROM tache WHERE idTache="+idTache+"";
+            rs = co.query(dateR);
+            String date = "";
+            while(rs.next()){
+               date = rs.getString("dateDebut");
+            }
+            return date;
+        }
+        
+        public String getDateFinTache(int idTache) throws SQLException{
+            String dateR = "SELECT dateFin FROM tache WHERE idTache="+idTache+"";
+            rs = co.query(dateR);
+            String date = "";
+            while(rs.next()){
+               date = rs.getString("dateFin");
             }
             return date;
         }
@@ -852,6 +990,30 @@ public class BdDAO {
         
         public String getHeureFinFromResa(int idReservation) throws SQLException{
         	String query = "SELECT heureFin FROM reservation WHERE idReservation="+idReservation+"";
+        	SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+            rs = co.query(query);
+            String heure = "";
+            while(rs.next()){
+               heure = formatter.format(rs.getTime("heureFin"));
+               
+            }
+            return heure;
+        }
+        
+        public String getHeureDebutFromTache(int idTache) throws SQLException{
+        	String query = "SELECT heureDebut FROM tache WHERE idTache="+idTache+"";
+        	SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+            rs = co.query(query);
+            String heure = "";
+            while(rs.next()){
+               heure = formatter.format(rs.getTime("heureDebut"));
+               
+            }
+            return heure;
+        }
+        
+        public String getHeureFinFromTache(int idTache) throws SQLException{
+        	String query = "SELECT heureFin FROM tache WHERE idTache="+idTache+"";
         	SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
             rs = co.query(query);
             String heure = "";
@@ -954,6 +1116,17 @@ public class BdDAO {
             }
             return choix;
         }
+        
+        public int getIdUser(String login) throws SQLException{
+        	String query = "SELECT idUsager FROM usager WHERE login='"+login+"'";
+            rs = co.query(query);
+            int choix = 0;
+            while(rs.next()){
+               choix = rs.getInt("idUsager");
+            }
+            return choix;
+        }
+        
         
        
         /*public int reservationExiste(int idClient, String dateDebut) throws SQLException{
@@ -1248,6 +1421,12 @@ public class BdDAO {
          * @return TRUE si l'update a réussie sinon FALSE
          * @throws SQLException
          */
+       
+       public void MAJUtilisateur(int id, String nom, String prenom, String email, int admin, String login, String mdp){
+    	   String quest = "UPDATE usager SET nom = '"+nom+"', prenom = '"+prenom+"', mail = '"+email+"', administrateur = "+admin+", login = '"+login+"', password = '"+mdp+"' WHERE idUsager="+id+"";
+           co.update(quest);
+       }
+       
         public boolean MAJcodeCouleur(String nomTable, String nom, String hex) throws SQLException{
             String quest = "UPDATE "+nomTable+" SET codeCouleur = '"+hex+"' WHERE nom"+nomTable+" = '"+nom+"'";
             String quest1 = "SELECT * FROM "+nomTable+" WHERE codeCouleur = '"+hex+"'";
@@ -1367,6 +1546,18 @@ public class BdDAO {
         	co.update(nouvelleResa);
         	System.out.println(Time.valueOf(Heuredebut));
         }
+        
+        public void MAJTache(int id, String nom, String hex, String comment, String dateDebut, String dateFin, String horaireDebut, String horaireFin){
+            String quest = "UPDATE tache SET nomTache='"+nom+"', codeCouleur='"+hex+"', descriptif='"+comment+"', dateDebut='"+dateDebut+"', dateFin='"+dateFin+"', heureDebut='"+Time.valueOf(horaireDebut)+"', heureFin='"+Time.valueOf(horaireFin)+"' WHERE idTache="+id+"";
+            co.update(quest);
+            System.out.println("MAJ Reussie");
+        }
+        
+        public void MAJSalle(int id, String name, int superficie, String couleur, String comment) throws SQLException{
+            String quest = "UPDATE salle SET libelle='"+name+"', superficie="+superficie+", codeCouleur='"+couleur+"', descriptif='"+comment+"' WHERE idSalle="+id+"";
+            co.update(quest);
+            System.out.println("MAJ réussie");
+        }
         /*
         ========================================================================
                                     FIN MISES A JOUR
@@ -1386,8 +1577,7 @@ public class BdDAO {
          * @throws SQLException 
          */
         public void ajoutSalle(String name, int superficie, String couleur, String comment) throws SQLException{
-        	int idcouleur=getCouleur(couleur);
-            String quest = "INSERT INTO salle(libelle, superficie, fkidCouleur, descriptif) VALUES('"+name+"', "+superficie+", "+idcouleur+", '"+comment+"')";
+            String quest = "INSERT INTO salle(libelle, superficie, codeCouleur, descriptif) VALUES('"+name+"', "+superficie+", '"+couleur+"', '"+comment+"')";
             co.execut(quest);
             System.out.println("Insertion réussie");
         }
@@ -1399,9 +1589,9 @@ public class BdDAO {
          * @param couleur Prend le code couleur HEXADECIMAL que la nouvelle tache aura
          * @param comment Prend le commentaire que la nouvelle tache aura
          */
-        public void ajoutTache(String name, String couleur, String comment){
-            String quest = "INSERT INTO Taches(nomTache, codeCouleur, descriptif) VALUES('"+name+"', '"+couleur+"', '"+comment+"')";
-            co.query(quest);
+        public void ajoutTache(String nom, String hex, String comment, String dateDebut, String dateFin, String horaireDebut, String horaireFin){
+            String quest = "INSERT INTO tache(nomTache, codeCouleur, descriptif, dateDebut, dateFin, heureDebut, heureFin) VALUES('"+nom+"', '"+hex+"', '"+comment+"', '"+dateDebut+"', '"+dateFin+"', '"+Time.valueOf(horaireDebut)+"', '"+Time.valueOf(horaireFin)+"' )";
+            co.execut(quest);
             System.out.println("Insertion réussie");
         }
 

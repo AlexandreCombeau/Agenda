@@ -20,11 +20,12 @@ import javax.swing.JPanel;
  * @author Stagiaire
  */
 public class ITajout extends javax.swing.JFrame {
-
+	Ioperation Io;
     /**
      * Creates new form ITajout
      */
-    public ITajout() {
+    public ITajout(Ioperation Io) {
+    	this.Io = Io;
         initComponents();
     }
     
@@ -238,11 +239,14 @@ public class ITajout extends javax.swing.JFrame {
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         //Mettre l'insertion dans la BD + gérer les éventuelles erreurs
         try{
+        	if(!getTitle().equals("")){
+        	    Io.recevoirId(Integer.parseInt(getTitle()));
+        	   }
             String nom = txtName.getText();
             String comment = txtComment.getText();
             int aire = 0;
             
-            if(this.panelSalle.isVisible()){
+            
             	try{
                 int superficie = Integer.parseInt(txtSuperficie.getText());
                 if(superficie < 0){
@@ -255,7 +259,7 @@ public class ITajout extends javax.swing.JFrame {
                 	JOptionPane.showMessageDialog(null, "La superficie doit être un nombre entier positif. \nVeuillez corriger.");
                 	nom=null;
                 }
-            }
+            
             
             if(nom == null || nom.equals("")){
                 JOptionPane.showMessageDialog(null, "Veuillez rentrer un nom de "+lbTable.getText());
@@ -264,21 +268,21 @@ public class ITajout extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Veuillez choisir une couleur pour la "+lbTable.getText());
             }
             else{
-                if(rq.checkErreurAjout("salle", nom, hex)){
-                    if(aire != 0){
-                        rq.ajoutSalle(nom, aire, hex, comment);
+                //if(rq.checkErreurAjout("salle", nom, hex)){
+                    	Io.operationSalle(nom,aire,hex,comment);
+                        //rq.ajoutSalle(nom, aire, hex, comment);
                         JOptionPane.showMessageDialog(null, "Nouvelle salle créée avec succès !");
                         this.dispose();
-                    }
-                    else{
+                    
+                    
                         //rq.ajoutTache(nom, hex, comment);
-                        JOptionPane.showMessageDialog(null, "Nouvelle tache créée avec succès !");
-                        this.dispose();
-                    } 
-                }
-                else{
-                    JOptionPane.showMessageDialog(null, "Nom de "+lbTable.getText()+" déjà existant ou code couleur déjà utilisé !");
-                }
+                        //JOptionPane.showMessageDialog(null, "Nouvelle tache créée avec succès !");
+                        //this.dispose();
+                    
+                //}
+                //else{
+                //    JOptionPane.showMessageDialog(null, "Nom de "+lbTable.getText()+" déjà existant ou code couleur déjà utilisé !");
+                //}
             }  
         }catch(NumberFormatException e){
             JOptionPane.showMessageDialog(null, "La superficie doit être un nombre entier positif. \nVeuillez corriger.");
@@ -334,6 +338,27 @@ public class ITajout extends javax.swing.JFrame {
         this.lbTable.setText(labelTable);
     }
     
+    public void setSuperficie(int superficie) {
+		txtSuperficie.setText(Integer.toString(superficie));
+		
+	}
+
+	public void setCouleur(String couleur) {
+		
+	    this.hex=couleur;
+	    btnColor.setBackground(Color.decode(couleur));
+		
+	}
+
+	public void setNom(String nomsalle) {
+		txtName.setText(nomsalle);
+		
+	}
+    
+	public void setComment(String comment) {
+		txtComment.setText(comment);
+		
+	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
@@ -358,4 +383,6 @@ public class ITajout extends javax.swing.JFrame {
     private javax.swing.JTextField txtSuperficie;
     // End of variables declaration//GEN-END:variables
     private String hex;
+	
+	
 }

@@ -1,4 +1,4 @@
-package admin;
+package database;
 
 import static gestionagenda.GestionAgenda.rq;
 import reservations.Evenement;
@@ -15,6 +15,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import admin.Ioperation;
+
 public class operationAjout implements Ioperation{
 	public void operationResa (String Datedebut, String Datefin, String Heuredebut, String Heurefin, int nbPersonne, double nbHeure, int idClient, int idFormule){
 		rq.ajoutReservation(Datedebut, Datefin, Heuredebut, Heurefin, nbPersonne, nbHeure, idClient, idFormule);
@@ -30,6 +32,18 @@ public class operationAjout implements Ioperation{
 		for(int id : choix){
 			rq.ajoutChoix(idReservation, id);
 		}
+	}
+	
+	public void operationUser(String nom, String prenom, String email, int admin, String login, String mdp){
+		rq.ajoutUtilisateur(nom, prenom, email, admin, login, mdp);
+	}
+	
+	public void operationTache(String nom, String hex, String comment, String dateDebut, String dateFin, String horaireDebut, String horaireFin){
+		rq.ajoutTache(nom, hex, comment, dateDebut, dateFin, horaireDebut, horaireFin);
+	}
+	
+	public void operationSalle(String name, int superficie, String couleur, String comment) throws SQLException{
+		rq.ajoutSalle(name, superficie, couleur, comment);
 	}
 
 	@Override

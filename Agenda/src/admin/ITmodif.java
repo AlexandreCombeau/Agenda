@@ -318,7 +318,7 @@ public class ITmodif extends javax.swing.JFrame {
     }
 
     public int getArea (String nom){
-    	return rq.getSuperficieSalle(nom);
+    	return 0;//rq.getSuperficieSalle(nom);
     }
     
     public String getDesc (String nom){

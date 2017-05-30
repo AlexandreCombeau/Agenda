@@ -182,10 +182,10 @@ public class ITmodifUtilisateur extends javax.swing.JFrame {
  * @param evt 
  */
     private void btnEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmailActionPerformed
-        try{
+        /*try{
         String nouveauMail = "";
         //String[] nomUsager = this.getNomPrenom(lbUser.getText());
-        nouveauMail = (String)JOptionPane.showInputDialog(null, "L'ancien mail de "+lbUser.getText()+" est : "+rq.getEmail(lbUser.getText())+"\nQuel sera le nouveau mail ?", "Modification de l'utilisateur : "+lbUser.getText(), JOptionPane.QUESTION_MESSAGE);
+        nouveauMail = (String)JOptionPane.showInputDialog(null, "L'ancien mail de "+lbUser.getText()+" est : "+rq.getEMail(lbUser.getText())+"\nQuel sera le nouveau mail ?", "Modification de l'utilisateur : "+lbUser.getText(), JOptionPane.QUESTION_MESSAGE);
         if(!(rq.checkUtilisateurEmail(nouveauMail))){
             JOptionPane.showMessageDialog(null, "Ce mail est déjà utlisé !\nVeuillez en choisir un autre");
         }
@@ -195,13 +195,13 @@ public class ITmodifUtilisateur extends javax.swing.JFrame {
         else if(nouveauMail != null && !(nouveauMail.equals(""))){
             int choix = (int)JOptionPane.showConfirmDialog(null, "Le nouveau mail pour "+lbUser.getText()+" sera : "+nouveauMail+".\nConfirmer ?", "Modification de l'utilisateur : "+lbUser.getText(), JOptionPane.YES_NO_OPTION);
             if(choix == 0){
-            	rq.MAJnom("usager", rq.getEmail(lbUser.getText()), nouveauMail, "mail");
+            	//rq.MAJnom("usager", rq.getEmail(lbUser.getText()), nouveauMail, "mail");
                 JOptionPane.showMessageDialog(null, "Le nouveau mail de "+lbUser.getText()+" est : "+nouveauMail);
             }
         }
         }catch (SQLException ex) {
                 Logger.getLogger(ITmodifUtilisateur.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
     }//GEN-LAST:event_btnEmailActionPerformed
     
     public JLabel getTxtTitle() {

@@ -1,4 +1,4 @@
-package admin;
+package database;
 
 import static gestionagenda.GestionAgenda.rq;
 import reservations.Evenement;
@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+
+import admin.Ioperation;
 
 public class operationModif implements Ioperation{
 	int id;
@@ -36,6 +38,18 @@ public class operationModif implements Ioperation{
 		for(int id : choix){
 			rq.ajoutChoix(idReservation, id);
 		}
+	}
+	
+	public void operationUser(String nom, String prenom, String email, int admin, String login, String mdp){
+		rq.MAJUtilisateur(id, nom, prenom, email, admin, login, mdp);
+	}
+	
+	public void operationTache(String nom, String hex, String comment, String dateDebut, String dateFin, String horaireDebut, String horaireFin){
+		rq.MAJTache(id,nom, hex, comment, dateDebut, dateFin, horaireDebut, horaireFin);
+	}
+	
+	public void operationSalle(String name, int superficie, String couleur, String comment) throws SQLException{
+		rq.MAJSalle(id, name, superficie, couleur, comment);
 	}
 
 	@Override
