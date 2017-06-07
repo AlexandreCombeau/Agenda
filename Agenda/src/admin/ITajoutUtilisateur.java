@@ -11,15 +11,31 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
+import database.operationAjout;
+import database.operationModif;
+
 /**
  *
  * @author Stagiaire
  */
 public class ITajoutUtilisateur extends javax.swing.JFrame {
 	public Ioperation Io;
+	int id;
     /**
      * Creates new form ITajoutUtilisateur
      */
+	public static ITajoutUtilisateur creerFenetre(int id){
+		ITajoutUtilisateur modif = new ITajoutUtilisateur(new operationModif());
+		modif.id=id;
+		return modif;
+	}
+	
+	public static ITajoutUtilisateur creerFenetre(){
+		ITajoutUtilisateur ajout = new ITajoutUtilisateur(new operationAjout());
+		ajout.id=0;
+		return ajout;
+	}
+	
     public ITajoutUtilisateur(Ioperation Io) {
     	this.Io=Io;
         initComponents();
@@ -202,8 +218,8 @@ public class ITajoutUtilisateur extends javax.swing.JFrame {
             mdp = this.txtMdp.getText();
             int adminnb = -1;
             boolean admin = this.checkAdmin.isSelected();
-        	if(!getTitle().equals("")){
-        	    Io.recevoirId(Integer.parseInt(getTitle()));
+        	if(id!=0){
+        	    Io.recevoirId(id);
         	    
         	    if(admin){adminnb=1;}else{adminnb=0;}
         	    

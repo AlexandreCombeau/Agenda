@@ -176,7 +176,7 @@ public class BdDAO {
         	PreparedStatement request = co.getConnection().prepareStatement("Select "+element+" from "+table+"");
         	
         	rs = request.executeQuery();
-        	if(rs.next()) {
+        	while(rs.next()) {
         		ListedElements.add(rs.getString(element));
         		
         	}
@@ -189,7 +189,7 @@ public class BdDAO {
         	PreparedStatement request = co.getConnection().prepareStatement("Select "+element+" from "+table+" where "+idnom+"= ?");
         	request.setInt(1, id);
         	rs = request.executeQuery();
-        	if(rs.next()) {
+        	while(rs.next()) {
         		ListedElements.add(rs.getString(element));
         		
         	}
@@ -201,7 +201,7 @@ public class BdDAO {
         	PreparedStatement request = co.getConnection().prepareStatement("Select "+element+" from "+table+" where "+nomname+"= ?");
         	request.setString(1, nom);
         	rs = request.executeQuery();
-        	if(rs.next()) {
+        	while(rs.next()) {
         		ListedElements.add(rs.getString(element));
         		
         	}
@@ -1791,8 +1791,14 @@ public class BdDAO {
         	System.out.println(Time.valueOf(Heuredebut));
         }
         
-        public void MAJTache(int id, String nom, String hex, String comment, String dateDebut, String dateFin, String horaireDebut, String horaireFin){
-            String quest = "UPDATE tache SET nomTache='"+nom+"', codeCouleur='"+hex+"', descriptif='"+comment+"', dateDebut='"+dateDebut+"', dateFin='"+dateFin+"', heureDebut='"+Time.valueOf(horaireDebut)+"', heureFin='"+Time.valueOf(horaireFin)+"' WHERE idTache="+id+"";
+        public void MAJTache(int id, String nom, int type, String comment, String dateDebut, String dateFin, String horaireDebut, String horaireFin){
+            String quest = "UPDATE tache SET nomTache='"+nom+"', fkidTypeTache="+type+", descriptif='"+comment+"', dateDebut='"+dateDebut+"', dateFin='"+dateFin+"', heureDebut='"+Time.valueOf(horaireDebut)+"', heureFin='"+Time.valueOf(horaireFin)+"' WHERE idTache="+id+"";
+            co.update(quest);
+            System.out.println("MAJ Reussie");
+        }
+        
+        public void MAJTypeTache(int id, String nom, String hex){
+            String quest = "UPDATE typeTache SET nom='"+nom+"', codeCouleur='"+hex+"' WHERE idTypeTache="+id+"";
             co.update(quest);
             System.out.println("MAJ Reussie");
         }
@@ -1839,8 +1845,8 @@ public class BdDAO {
          * @param couleur Prend le code couleur HEXADECIMAL que la nouvelle tache aura
          * @param comment Prend le commentaire que la nouvelle tache aura
          */
-        public void ajoutTache(String nom, String hex, String comment, String dateDebut, String dateFin, String horaireDebut, String horaireFin){
-            String quest = "INSERT INTO tache(nomTache, codeCouleur, descriptif, dateDebut, dateFin, heureDebut, heureFin) VALUES('"+nom+"', '"+hex+"', '"+comment+"', '"+dateDebut+"', '"+dateFin+"', '"+Time.valueOf(horaireDebut)+"', '"+Time.valueOf(horaireFin)+"' )";
+        public void ajoutTache(String nom, int type, String comment, String dateDebut, String dateFin, String horaireDebut, String horaireFin){
+            String quest = "INSERT INTO tache(nomTache, fkidTypeTache, descriptif, dateDebut, dateFin, heureDebut, heureFin) VALUES('"+nom+"', "+type+", '"+comment+"', '"+dateDebut+"', '"+dateFin+"', '"+Time.valueOf(horaireDebut)+"', '"+Time.valueOf(horaireFin)+"' )";
             co.execut(quest);
             System.out.println("Insertion réussie");
         }
@@ -1877,6 +1883,11 @@ public class BdDAO {
         	
             String nouvelleSalle = "INSERT INTO salleResa (fkidReservation, fkidInfoSalle) VALUES ("+idReservation+", "+Info+")";
             co.execut(nouvelleSalle);
+        }
+        
+        public void ajoutTypeTache(String nom, String codeCouleur){
+            String nouveauType = "INSERT INTO typeTache (nom, codeCouleur) VALUES ('"+nom+"', '"+codeCouleur+"')";
+            co.execut(nouveauType);
         }
         
         public void ajoutReservation(String Datedebut, String Datefin, String Heuredebut, String Heurefin, int nbPersonne, double nbHeure, int idClient, int idFormule){
@@ -1943,6 +1954,10 @@ public class BdDAO {
        
        public void deleteResa(int idReservation){
     	   String request = "DELETE FROM reservation WHERE idReservation="+idReservation+"";
+    	   co.execut(request);
+    	   request = "DELETE FROM salleResa WHERE fkidReservation="+idReservation+"";
+    	   co.execut(request);
+    	   request = "DELETE FROM choix WHERE fkidReservation="+idReservation+"";
     	   co.execut(request);
            System.out.println("DELETE REUSSIE");
        }

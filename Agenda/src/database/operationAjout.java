@@ -38,8 +38,8 @@ public class operationAjout implements Ioperation{
 		rq.ajoutUtilisateur(nom, prenom, email, admin, login, mdp);
 	}
 	
-	public void operationTache(String nom, String hex, String comment, String dateDebut, String dateFin, String horaireDebut, String horaireFin){
-		rq.ajoutTache(nom, hex, comment, dateDebut, dateFin, horaireDebut, horaireFin);
+	public void operationTache(String nom, int type, String comment, String dateDebut, String dateFin, String horaireDebut, String horaireFin){
+		rq.ajoutTache(nom, type, comment, dateDebut, dateFin, horaireDebut, horaireFin);
 	}
 	
 	public void operationSalle(String name, int superficie, String couleur, String comment) throws SQLException{
@@ -48,6 +48,10 @@ public class operationAjout implements Ioperation{
 	
 	public void operationClient(String nom, String prenom, String email, String phone, String adresse, String entite, String comment) throws SQLException{
 		rq.ajoutClient(nom, prenom, email, phone, adresse, entite, comment);
+	}
+	
+	public void operationTypeTache(String nom, String couleur){
+		rq.ajoutTypeTache(nom, couleur);
 	}
 
 	@Override

@@ -28,6 +28,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import database.operationAjout;
+import database.operationModif;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 
@@ -37,9 +39,22 @@ import java.beans.PropertyChangeEvent;
  */
 public class ITcreerReservation1 extends javax.swing.JFrame {
 	public Ioperation Io;
+	int id;
     /**
      * Creates new form ITgenerationDevis
      */
+	public static ITcreerReservation1 creerFenetre(int id){
+		ITcreerReservation1 modif = new ITcreerReservation1(new operationModif());
+		modif.id=id;
+		return modif;
+	}
+	
+	public static ITcreerReservation1 creerFenetre(){
+		ITcreerReservation1 ajout = new ITcreerReservation1(new operationAjout());
+		ajout.id=0;
+		return ajout;
+	}
+	
     public ITcreerReservation1(Ioperation Io) {
     	this.Io=Io;
     	
@@ -610,8 +625,8 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             int idClient = rq.getIdClient(leNom, lePrenom);
             
             boolean resadispo = true;
-            if(!getTitle().equals("")){
-        	    Io.recevoirId(Integer.parseInt(getTitle()));
+            if(id!=0){
+        	    Io.recevoirId(id);
             }
             else{
             	resadispo=rq.checkResa(idsalle,dateDebut, dateFin, horaireDebut, horaireFin);

@@ -15,15 +15,31 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import database.operationAjout;
+import database.operationModif;
+
 /**
  *
  * @author Stagiaire
  */
 public class ITajout extends javax.swing.JFrame {
 	Ioperation Io;
+	int id;
     /**
      * Creates new form ITajout
      */
+	public static ITajout creerFenetre(int id){
+		ITajout modif = new ITajout(new operationModif());
+		modif.id=id;
+		return modif;
+	}
+	
+	public static ITajout creerFenetre(){
+		ITajout ajout = new ITajout(new operationAjout());
+		ajout.id=0;
+		return ajout;
+	}
+	
     public ITajout(Ioperation Io) {
     	this.Io = Io;
         initComponents();
@@ -239,8 +255,8 @@ public class ITajout extends javax.swing.JFrame {
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         //Mettre l'insertion dans la BD + gérer les éventuelles erreurs
         try{
-        	if(!getTitle().equals("")){
-        	    Io.recevoirId(Integer.parseInt(getTitle()));
+        	if(id!=0){
+        	    Io.recevoirId(id);
         	   }
             String nom = txtName.getText();
             String comment = txtComment.getText();

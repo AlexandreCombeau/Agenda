@@ -15,6 +15,10 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
+
+import database.operationAjout;
+import database.operationModif;
+
 import java.awt.Component;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
@@ -26,11 +30,24 @@ import javax.swing.JLabel;
  */
 public class ITajoutClient extends javax.swing.JFrame {
 	public Ioperation Io;
+	public int id;
     /**
      * Creates new form ITajoutUtilisateur
      */
 	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+	public static ITajoutClient creerFenetre(int id){
+		ITajoutClient modif = new ITajoutClient(new operationModif());
+		modif.id=id;
+		return modif;
+	}
+	
+	public static ITajoutClient creerFenetre(){
+		ITajoutClient ajout = new ITajoutClient(new operationAjout());
+		ajout.id=0;
+		return ajout;
+	}
+	
     public ITajoutClient(Ioperation Io) {
     	setMinimumSize(new Dimension(527, 450));
     	this.Io=Io;
@@ -256,8 +273,8 @@ public class ITajoutClient extends javax.swing.JFrame {
             entite = this.cbEntite.getSelectedItem().toString();
             int adminnb = -1;
             //boolean admin = this.checkAdmin.isSelected();
-        	if(!getTitle().equals("")){
-        	    Io.recevoirId(Integer.parseInt(getTitle()));
+        	if(id!=0){
+        	    Io.recevoirId(id);
         	    if(nom.equals("") || prenom.equals("") || email.equals("") || adresseRue.equals("") || adresseVille.equals("") || phone.equals("")){
                     JOptionPane.showMessageDialog(null, "Vous devez renseigner tous les champs !");
                 }
