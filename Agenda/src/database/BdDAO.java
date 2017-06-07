@@ -1,5 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
+ * To change this license header, 
+choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -16,11 +17,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+
+import admin.ITcreerReservation1;
 /**
  *
  * @author Villalemons
@@ -98,6 +102,113 @@ public class BdDAO {
         * @return Retourne toutes les Salles ou toutes les Taches
         * @throws SQLException
         */
+        
+        public String getStrById(String table, String idnom, String element, int id) throws SQLException{
+        	PreparedStatement request = co.getConnection().prepareStatement("Select "+element+" from "+table+" where "+idnom+" = ?");
+        	
+        	request.setInt(1, id);
+        	System.out.println(request);
+        	rs = request.executeQuery();
+        	if(rs.next())
+        		return rs.getString(element);
+        	return "";
+        }
+        
+        public int getIntById(String table, String idnom, String element, int id) throws SQLException{
+        	PreparedStatement request = co.getConnection().prepareStatement("Select "+element+" from "+table+" where "+idnom+" = ?");
+        	
+        	request.setInt(1, id);
+        	System.out.println(request);
+        	rs = request.executeQuery();
+        	if(rs.next())
+        		return rs.getInt(element);
+        	return 0;
+        }
+        
+        public int getIdByName(String table, String idnom, String nom, String nomname) throws SQLException{
+        	PreparedStatement request = co.getConnection().prepareStatement("Select "+idnom+" from "+table+" where "+nomname+" = ?");
+        	
+        	request.setString(1, nom);
+        	System.out.println(request);
+        	rs = request.executeQuery();
+        	if(rs.next())
+        		return rs.getInt(idnom);
+        	return 0;
+        }
+        
+        public int getIdByTwoNames(String table, String idnom, String nom1, String nomname1, String nom2, String nomname2) throws SQLException{
+        	PreparedStatement request = co.getConnection().prepareStatement("Select "+idnom+" from "+table+" where "+nomname1+" = ? AND "+nomname2+"= ?");
+        	
+        	request.setString(1, nom1);
+        	request.setString(2, nom2);
+        	System.out.println(request);
+        	rs = request.executeQuery();
+        	if(rs.next())
+        		return rs.getInt(idnom);
+        	return 0;
+        }
+        
+        public int getIdByIdString(String table, String idnom, String nom, String nomname, int id, String idname) throws SQLException{
+        	PreparedStatement request = co.getConnection().prepareStatement("Select "+idnom+" from "+table+" where "+nomname+" = ? AND "+idname+"= ?");
+        	
+        	request.setString(1, nom);
+        	request.setInt(2, id);
+        	System.out.println(request);
+        	rs = request.executeQuery();
+        	if(rs.next())
+        		return rs.getInt(idnom);
+        	return 0;
+        }
+        
+        public String getHourById(String table, String idnom, String element, int id) throws SQLException{
+        	PreparedStatement request = co.getConnection().prepareStatement("Select "+element+" from "+table+" where "+idnom+" = ?");
+        	SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        	request.setInt(1, id);
+        	System.out.println(request);
+        	rs = request.executeQuery();
+        	if(rs.next())
+        		return formatter.format(rs.getTime(element));
+        	return "";
+        }
+        
+        public String[] getListedElements(String table, String element) throws SQLException {
+        	List<String> ListedElements = new ArrayList<>(); 
+        	PreparedStatement request = co.getConnection().prepareStatement("Select "+element+" from "+table+"");
+        	
+        	rs = request.executeQuery();
+        	if(rs.next()) {
+        		ListedElements.add(rs.getString(element));
+        		
+        	}
+        	return ListedElements.toArray(new String[0]);
+        }
+        
+        
+        public String[] getListedElementsById(String table, String element, int id, String idnom) throws SQLException {
+        	List<String> ListedElements = new ArrayList<>(); 
+        	PreparedStatement request = co.getConnection().prepareStatement("Select "+element+" from "+table+" where "+idnom+"= ?");
+        	request.setInt(1, id);
+        	rs = request.executeQuery();
+        	if(rs.next()) {
+        		ListedElements.add(rs.getString(element));
+        		
+        	}
+        	return ListedElements.toArray(new String[0]);
+        }
+        
+        public String[] getListedElementsByName(String table, String element, String nom, String nomname) throws SQLException {
+        	List<String> ListedElements = new ArrayList<>(); 
+        	PreparedStatement request = co.getConnection().prepareStatement("Select "+element+" from "+table+" where "+nomname+"= ?");
+        	request.setString(1, nom);
+        	rs = request.executeQuery();
+        	if(rs.next()) {
+        		ListedElements.add(rs.getString(element));
+        		
+        	}
+        	return ListedElements.toArray(new String[0]);
+        }
+        
+        
        public String[] getElementByIdFromTable(String table, String id, String element) throws SQLException{
            
        String quest = "SELECT * FROM "+table;
@@ -192,6 +303,76 @@ public class BdDAO {
            rs = co.query(quest);
            if(rs.next()){
                String comment = rs.getString("mail");
+               return comment;
+           }
+           } catch (SQLException ex){
+           	
+           }
+           return null;
+       }
+       
+       public String getAdresse(int id){
+           String quest = "SELECT adresseFacturation FROM client WHERE idClient = "+id+"";
+           try{
+           rs = co.query(quest);
+           if(rs.next()){
+               String comment = rs.getString("adresseFacturation");
+               return comment;
+           }
+           } catch (SQLException ex){
+           	
+           }
+           return null;
+       }
+       
+       public String getEmailClient(int id){
+           String quest = "SELECT eMail FROM client WHERE idClient = "+id+"";
+           try{
+           rs = co.query(quest);
+           if(rs.next()){
+               String comment = rs.getString("eMail");
+               return comment;
+           }
+           } catch (SQLException ex){
+           	
+           }
+           return null;
+       }
+       
+       public String getCommentClient(int id){
+           String quest = "SELECT commentaire FROM client WHERE idClient = "+id+"";
+           try{
+           rs = co.query(quest);
+           if(rs.next()){
+               String comment = rs.getString("commentaire");
+               return comment;
+           }
+           } catch (SQLException ex){
+           	
+           }
+           return null;
+       }
+       
+       public String getEntite(int id){
+           String quest = "SELECT entite FROM client WHERE idClient = "+id+"";
+           try{
+           rs = co.query(quest);
+           if(rs.next()){
+               String comment = rs.getString("entite");
+               return comment;
+           }
+           } catch (SQLException ex){
+           	
+           }
+           return null;
+       }
+       
+       public String getTelephone(int id){
+           String quest = "SELECT telephone FROM client WHERE idClient = "+id+"";
+           try{
+           rs = co.query(quest);
+           if(rs.next()){
+               String comment = rs.getString("telephone");
                return comment;
            }
            } catch (SQLException ex){
@@ -316,6 +497,22 @@ public class BdDAO {
             }
             return 0;
         }
+        
+        public int getCapacite(int idInfoSalle) {
+            String quest = "SELECT capacite FROM infosalle WHERE idInfoSalle = "+idInfoSalle+"";
+            try{
+            rs = co.query(quest);
+            if(rs.next()){
+                int spr = rs.getInt("capacite");
+                return spr;
+            }
+            } catch (SQLException ex) {
+            	
+            }
+            return 0;
+        }
+        
+        
         
         /**
          * 
@@ -1335,6 +1532,18 @@ public class BdDAO {
             rs = co.query(request);
             return !rs.next();
         }
+        
+        public boolean checkClient(String nom, String prenom, String email, String phone) throws SQLException{
+            try{
+            	String request = "SELECT * FROM client WHERE mail = '"+email+"' OR (nom='"+nom+"' AND prenom='"+prenom+"') OR telephone='"+phone+"'";
+            
+            	rs = co.query(request);
+            	return !rs.next();
+            }catch (NullPointerException e){
+            	return true;
+            }
+        }
+
 
         /**
          *
@@ -1347,6 +1556,41 @@ public class BdDAO {
             rs = co.query(request);
             return !rs.next();
         }
+        
+        
+        public boolean checkResa(int idsalle, String dateDebut, String dateFin, String horaireDebut, String horaireFin) throws SQLException{
+        	try{
+        		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+            	//String dateD=dateDebut.split("-")[2]+"-"+dateDebut.split("-")[1]+"-"+dateDebut.split("-")[0];
+            	//String dateF=dateFin.split("-")[2]+"-"+dateFin.split("-")[1]+"-"+dateFin.split("-")[0];
+            	String request = "SELECT reservation.idReservation, reservation.dateDebut, reservation.dateFin, reservation.heureDebut, reservation.heureFin FROM reservation, salleresa, infosalle WHERE reservation.idReservation = salleresa.fkidReservation AND salleresa.fkidInfoSalle=infosalle.idInfoSalle AND infosalle.fkidSalle="+idsalle+" GROUP BY reservation.idReservation, reservation.dateDebut, reservation.dateFin,reservation.heureDebut, reservation.heureFin";
+            
+            	System.out.println(request);
+            	System.out.println("caca".equals("caca"));
+            	System.out.println("caca".equals("prout"));
+            	rs = co.query(request);
+            	while(rs.next()){
+            		String dD = rs.getString("dateDebut");
+            		String dF = rs.getString("dateFin");
+            		String hD = formatter.format(rs.getTime("heureDebut"));
+            		String hF = formatter.format(rs.getTime("heureFin"));
+            		if((ITcreerReservation1.comparerdates(dateDebut, dD) && ITcreerReservation1.comparerdates(dF ,dateDebut)) || (ITcreerReservation1.comparerdates(dateFin, dD) && ITcreerReservation1.comparerdates(dF, dateFin))|| (ITcreerReservation1.comparerdates(dD, dateDebut) && ITcreerReservation1.comparerdates(dateFin, dF))|| ITcreerReservation1.comparerheures(hF, horaireDebut, dateDebut, dF) || ITcreerReservation1.comparerheures(horaireFin, hD, dateFin, dD)){
+            			return false;
+            		}
+            	}
+            	return true;
+            }catch (NullPointerException e){
+            	return true; 
+			}
+        }
+        /*SELECT idReservation FROM reservation, salleresa, infosalle "
+            			+ "WHERE (((substr(reservation.dateDebut, 7, 4) || '-' || substr(reservation.dateDebut, 4, 2) || '-' || substr(reservation.dateDebut, 1, 2)) BETWEEN '"+dateD+"' AND '"+dateF+"') "
+            					+ "OR ((substr(reservation.dateFin, 7, 4) || '-' || substr(reservation.dateFin, 4, 2) || '-' || substr(reservation.dateFin, 1, 2)) BETWEEN '"+dateD+"' AND '"+dateF+"') "
+            							+ "OR (substr(reservation.dateDebut, 7, 4) || '-' || substr(reservation.dateDebut, 4, 2) || '-' || substr(reservation.dateDebut, 1, 2))='"+dateF+"' AND  reservation.heureDebut > '"+horaireFin+":00"+"') "
+            									+ "OR (substr(reservation.dateFin, 7, 4) || '-' || substr(reservation.dateFin, 4, 2) || '-' || substr(reservation.dateFin, 1, 2))='"+dateD+"' AND  reservation.heureFin < '"+horaireDebut+":00"+"')) "
+            											+ "AND reservation.idReservation = salleresa.fkidReservation "
+            											+ "AND salleresa.fkidInfoSalle=infosalle.idInfoSalle "
+            											+ "AND infosalle.fkidSalle="+idsalle+"";*/
 
         /*
         ========================================================================
@@ -1558,6 +1802,12 @@ public class BdDAO {
             co.update(quest);
             System.out.println("MAJ réussie");
         }
+        
+        public void MAJClient(int id, String nom, String prenom, String email, String phone, String adresse, String entite, String comment) throws SQLException{
+            String quest = "UPDATE client SET nom='"+nom+"', prenom='"+prenom+"', eMail='"+email+"', telephone='"+phone+"', adresseFacturation='"+adresse+"', entite='"+entite+"', commentaire='"+comment+"' WHERE idClient="+id+"";
+            co.update(quest);
+            System.out.println("MAJ réussie");
+        }
         /*
         ========================================================================
                                     FIN MISES A JOUR
@@ -1595,6 +1845,11 @@ public class BdDAO {
             System.out.println("Insertion réussie");
         }
 
+        public void ajoutClient(String nom, String prenom, String email, String phone, String adresse, String entite, String comment){
+        	String quest = "INSERT INTO client(nom, prenom, adresseFacturation, entite, telephone, eMail,commentaire) VALUES('"+nom+"', '"+prenom+"', '"+adresse+"', '"+entite+"', '"+phone+"', '"+email+"', '"+comment+"' )";
+            co.execut(quest);
+            System.out.println("Insertion réussie");
+        }
         /**
          *
          * @param nom Prend le nom du nouvel utilisateur
@@ -1653,7 +1908,7 @@ public class BdDAO {
          */
         public void delete(String nomTable, String nomSalle){
             String request = "DELETE FROM "+nomTable+" WHERE nom"+nomTable+" = '"+nomSalle+"'";
-            co.update(request);
+            co.execut(request);
             System.out.println("DELETE REUSSIE");
         }
 
@@ -1664,7 +1919,7 @@ public class BdDAO {
         public void deleteUser(String login){
             String quest = "DELETE FROM usager WHERE login = '"+login+"'";
             System.out.println(quest);
-            co.update(quest);
+            co.execut(quest);
             System.out.println("SUPPRESSION REUSSIE");
         }
         
@@ -1676,7 +1931,7 @@ public class BdDAO {
         */
        public void delete(String table, String attribut, String identifiant){
            String request = "DELETE FROM "+table+" WHERE "+attribut+" = '"+identifiant+"'";
-           co.update(request);
+           co.execut(request);
            System.out.println("DELETE REUSSIE");
        }
        
@@ -1685,6 +1940,20 @@ public class BdDAO {
     	   co.execut(request);
            System.out.println("DELETE REUSSIE");
        }
+       
+       public void deleteResa(int idReservation){
+    	   String request = "DELETE FROM reservation WHERE idReservation="+idReservation+"";
+    	   co.execut(request);
+           System.out.println("DELETE REUSSIE");
+       }
+       
+       public void deleteClient(String prenom, String nom){
+    	   String request = "DELETE FROM client WHERE prenom='"+prenom+"' AND nom='"+nom+"'";
+    	   co.execut(request);
+           System.out.println("DELETE REUSSIE");
+       }
+
+	
 
 	
 }

@@ -51,6 +51,10 @@ public class operationModif implements Ioperation{
 	public void operationSalle(String name, int superficie, String couleur, String comment) throws SQLException{
 		rq.MAJSalle(id, name, superficie, couleur, comment);
 	}
+	
+	public void operationClient(String nom, String prenom, String email, String phone, String adresse, String entite, String comment) throws SQLException{
+		rq.MAJClient(id, nom, prenom, email, phone, adresse, entite, comment);
+	}
 
 	@Override
 	public void recevoirId(int id) {

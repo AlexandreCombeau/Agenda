@@ -23,6 +23,13 @@ import javax.swing.GroupLayout;
 import javax.swing.DefaultComboBoxModel;
 import com.toedter.calendar.JCalendar;
 import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+import database.operationAjout;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 
 /**
  *
@@ -127,6 +134,18 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             cbService5.setSelectedIndex(3);
             cbService6.setSelectedIndex(1);
             
+            
+            calendarFin.addPropertyChangeListener(new PropertyChangeListener() {
+            	public void propertyChange(PropertyChangeEvent e) {
+            		CalendarChange(e);
+            	}
+            });
+            
+            calendarDebut.addPropertyChangeListener(new PropertyChangeListener() {
+            	public void propertyChange(PropertyChangeEvent e) {
+            		CalendarChange(e);
+            	}
+            });
         } catch (SQLException ex) {
             Logger.getLogger(ITcreerReservation1.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -183,7 +202,10 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         labelDateFin = new javax.swing.JLabel();
         cbSalle2 = new javax.swing.JComboBox<>();
         calendarDebut = new JCalendar();
+        
         calendarFin = new JCalendar();
+        
+        btnNouveauClient = new JButton();
 
         jLabel18.setText("Date du :");
 
@@ -340,6 +362,13 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         
         cbHeureFin.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         
+        btnNouveauClient.setText("Nouveau Client");
+        btnNouveauClient.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent evt) {
+        		btnNouveauClientActionPerformed(evt);
+        	}
+        });
+        
         
         
         
@@ -357,7 +386,7 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         				.addGroup(layout.createSequentialGroup()
         					.addComponent(labelClient)
         					.addGap(18)
-        					.addComponent(cbClient, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE))))
+        					.addComponent(cbClient, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE))))
         		.addComponent(labelTitre, GroupLayout.PREFERRED_SIZE, 1237, GroupLayout.PREFERRED_SIZE)
         		.addGroup(layout.createSequentialGroup()
         			.addGap(5)
@@ -388,7 +417,8 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         							.addComponent(cbService2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         							.addComponent(cbService4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         							.addComponent(cbService5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        							.addComponent(cbService6, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+        							.addComponent(cbService6, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        						.addComponent(btnNouveauClient)))
         				.addGroup(layout.createSequentialGroup()
         					.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
         						.addGroup(layout.createSequentialGroup()
@@ -441,7 +471,8 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         			.addGap(18)
         			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(labelClient)
-        				.addComponent(cbClient, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(cbClient, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(btnNouveauClient))
         			.addGap(52)
         			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(labelDisposition)
@@ -517,14 +548,17 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         this.dispose();
         
     }//GEN-LAST:event_btnAnnulerActionPerformed
-
+    
+    private void btnNouveauClientActionPerformed(ActionEvent evt) {
+		ITajoutClient ajout = new ITajoutClient(new operationAjout());
+		ajout.setVisible(true);
+	}
+    
     private void btnEnregistrerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnregistrerActionPerformed
        try {
     	    
             //SALLE 1
-    	   if(!getTitle().equals("")){
-    	    Io.recevoirId(Integer.parseInt(getTitle()));
-    	   }
+    	   
             String nomSalle1 = (String)cbSalle1.getSelectedItem();
             String formule = (String)cbFormule.getSelectedItem();
             String horaireDebut = (String)cbHeureDebut.getSelectedItem();
@@ -536,16 +570,27 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             System.out.println(dateDebut);
             System.out.println(dateFin);
             String nbParticipants = txtNombreParticipants.getText();
+            int idFormule = rq.getIdByName("formule", "idFormule", formule, "libelle");
+            int idsalle = rq.getIdByName("salle", "idSalle", nomSalle1, "libelle");
+            int iddispo = rq.getIdByName("disposition", "idDisposition", disposition, "libelle");
+            int idinfosalle= rq.getIdInfoSalle(idsalle,iddispo);
             
-            if(comparerheures(horaireDebut, horaireFin)){
+            if(comparerheures(horaireDebut, horaireFin, dateDebut, dateFin)){
             	JOptionPane.showMessageDialog(null, "L'heure de début doit preceder l'heure de fin", "Erreur", JOptionPane.INFORMATION_MESSAGE);
             }
-            else if(comparerdates(dateDebut,dateFin))
+            else if(comparerdates(dateDebut,dateFin)){
             	JOptionPane.showMessageDialog(null, "La date de début doit preceder la date de fin", "Erreur", JOptionPane.INFORMATION_MESSAGE);
-            
+            }
+            else if(Integer.parseInt(nbParticipants)>rq.getCapacite(idinfosalle)){
+            	JOptionPane.showMessageDialog(null, "La salle dans cette disposition est de capacité insuffisante", "Erreur", JOptionPane.INFORMATION_MESSAGE);
+            }
             else{
             //CLIENT
-            double nbHeures = Double.parseDouble(horaireFin.split(":")[0])-Double.parseDouble(horaireDebut.split(":")[0])+(Double.parseDouble(horaireFin.split(":")[1])-Double.parseDouble(horaireDebut.split(":")[1]))/60;
+            //double nbHeures = Double.parseDouble(horaireFin.split(":")[0])-Double.parseDouble(horaireDebut.split(":")[0])+(Double.parseDouble(horaireFin.split(":")[1])-Double.parseDouble(horaireDebut.split(":")[1]))/60;
+            //final long MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24; 
+            
+            double nbHeures = (calendarFin.getDate().getTime()-calendarDebut.getDate().getTime())/(1000*60*60*24)*14-28+Double.parseDouble(horaireFin.split(":")[0])-Double.parseDouble(horaireDebut.split(":")[0])+(Double.parseDouble(horaireFin.split(":")[1])-Double.parseDouble(horaireDebut.split(":")[1]))/60;
+            
             String[] clients;
             clients = rq.getClients();
             String[] noms = rq.getElementByIdFromTable("client", "Client", "nom");
@@ -563,14 +608,19 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
                 }
             }
             int idClient = rq.getIdClient(leNom, lePrenom);
-            int idFormule = rq.getIdFormule(formule);
             
+            boolean resadispo = true;
+            if(!getTitle().equals("")){
+        	    Io.recevoirId(Integer.parseInt(getTitle()));
+            }
+            else{
+            	resadispo=rq.checkResa(idsalle,dateDebut, dateFin, horaireDebut, horaireFin);
+            }
+        	if(resadispo){   
             Io.operationResa(dateDebut,dateFin,horaireDebut+":00",horaireFin+":00",Integer.parseInt(nbParticipants),nbHeures, idClient, idFormule);
             
-            int idReservation = rq.getIdReservation(idClient, dateDebut);
-            int idsalle = rq.getIdSalle(nomSalle1);
-            int iddispo = rq.getIdDisposition(disposition);
-            int idinfosalle= rq.getIdInfoSalle(idsalle,iddispo);
+            int idReservation = rq.getIdByIdString("reservation", "idReservation", dateDebut, "dateDebut", idClient, "fkidClient");
+            
             Io.operationSalleResa(idReservation, idinfosalle);
             List<Integer>listeOS= new ArrayList<>();
             //LES OPTIONS
@@ -644,6 +694,10 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             if(!(existe.equals("Aucune"))){
                String nomSalle2 = (String)cbSalle2.getSelectedItem();
             }
+        	}
+        	else{
+        		JOptionPane.showMessageDialog(null, "Salle déjà réservée pour ce créaneau");
+        	}
             }
         } catch (SQLException ex) {
             Logger.getLogger(ITcreerReservation1.class.getName()).log(Level.SEVERE, null, ex);
@@ -703,21 +757,28 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
     }//GEN-LAST:event_cbDispositionActionPerformed
     
     
-    public Boolean comparerheures (String horaireDebut, String horaireFin){
+    public void CalendarChange(PropertyChangeEvent e){
+    	String horaireDebut = (String)cbHeureDebut.getSelectedItem();
+        String horaireFin = (String)cbHeureFin.getSelectedItem();
+        double nbHeures = (calendarFin.getDate().getTime()-calendarDebut.getDate().getTime())/(1000*60*60*24)*14-28+Double.parseDouble(horaireFin.split(":")[0])-Double.parseDouble(horaireDebut.split(":")[0])+(Double.parseDouble(horaireFin.split(":")[1])-Double.parseDouble(horaireDebut.split(":")[1]))/60;
+    	labelNbHeures.setText("nombre d'heures: "+Double.toString(nbHeures));
+    }
+    
+    public static Boolean comparerheures (String horaireDebut, String horaireFin, String dateDebut, String dateFin){
     	String heureDebut=horaireDebut.split(":")[0];
     	String heureFin=horaireFin.split(":")[0];
     	String minDebut=horaireDebut.split(":")[1];
     	String minFin=horaireFin.split(":")[1];
-    	if(Integer.parseInt(heureDebut) > Integer.parseInt(heureFin)){
+    	if(Integer.parseInt(heureDebut) > Integer.parseInt(heureFin) && dateDebut.equals(dateFin)){
     		 return true;
     	}
-    	if(Integer.parseInt(heureDebut) > Integer.parseInt(heureFin) && Integer.parseInt(minDebut) > Integer.parseInt(minFin)){
+    	if(Integer.parseInt(heureDebut) > Integer.parseInt(heureFin) && Integer.parseInt(minDebut) > Integer.parseInt(minFin) && dateDebut.equals(dateFin)){
     		 return true;
     	}
     	return false;
     }
     
-    public Boolean comparerdates (String dateDebut, String dateFin){
+    public static Boolean comparerdates (String dateDebut, String dateFin){
     	String jourDebut = dateDebut.split("-")[0];
     	String jourFin = dateFin.split("-")[0];
     	String moisDebut = dateDebut.split("-")[1];
@@ -825,6 +886,8 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
     		Srv[i].setSelectedItem(services[i]);
     	}	
     }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnnuler;
@@ -868,6 +931,7 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
     private javax.swing.JLabel labelTitre;
     private javax.swing.JComboBox cbClient;
     private javax.swing.JTextField txtNombreParticipants;
+    private javax.swing.JButton btnNouveauClient;
     private JCalendar calendarDebut;
     private JCalendar calendarFin;
     // End of variables declaration//GEN-END:variables

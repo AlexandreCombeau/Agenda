@@ -135,10 +135,10 @@ public class ITboutonsModifier extends javax.swing.JFrame {
        
     try {
             String[] clients = rq.getClients();
-            String[] noms = rq.getnomsClients();
-            String[] prenoms = rq.getprenomsClients();
+            String[] noms = rq.getListedElements("client", "nom");
+            String[] prenoms = rq.getListedElements("client", "prenom");
             String client = "";
-            client = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner un client","Rechercher un client",JOptionPane.QUESTION_MESSAGE, null,clients,clients[0]);
+            client = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner un client","Rechercher un client",JOptionPane.QUESTION_MESSAGE, null,clients, clients[0]);
             if (client!=null){
                 int longueur = noms.length;
                 String[] client2 = new String[longueur];
@@ -152,7 +152,7 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                     }
                 }
                 int idClient = rq.getIdClient(leNom, lePrenom);
-                String[] dates = rq.getDatesReservations(idClient);
+                String[] dates = rq.getListedElementsById("reservation", "dateDebut", idClient, "fkidClient");
                 String date = null;
                 if (!"".equals(dates[0])){
                     date = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner une date de début de réservation","Rechercher une date",JOptionPane.QUESTION_MESSAGE, null,dates,dates[0]);
@@ -161,18 +161,18 @@ public class ITboutonsModifier extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Il n'y a pas de reservation pour ce client", "information",JOptionPane.INFORMATION_MESSAGE);
                 }          
                 if (date!=null){
-                    int idReservation = rq.getIdReservation(idClient, date);
+                    int idReservation = rq.getIdByIdString("reservation", "idReservation", date, "dateDebut", idClient, "fkidClient");
                     String salle = rq.getSalleFromResa(idReservation);
-                    String infos[] = rq.getInfosReservation(idReservation);
-                    String dateFin = rq.getDateFin(idReservation);
+                    //String infos[] = rq.getInfosReservation(idReservation);
+                    String dateFin = rq.getStrById("reservation", "idReservation", "dateFin", idReservation);
                     String disposition = rq.getDispositionFromResa(idReservation);
-                    int nbpers = rq.getNbpersonnesFromResa(idReservation);
-                    String formule = rq.getFormuleFromResa(idReservation);
-                    String heureD = rq.getHeureDebutFromResa(idReservation);
+                    int nbpers = rq.getIntById("reservation", "idReservation", "nbPersonnes", idReservation);
+                    String formule = rq.getStrById("reservation", "idReservation", "fkidFormule", idReservation);
+                    String heureD = rq.getHourById("reservation", "idReservation", "heureDebut", idReservation);
                     heureD = heureD.split(":")[0]+":"+heureD.split(":")[1];
-                    String heureF = rq.getHeureFinFromResa(idReservation);
+                    String heureF = rq.getHourById("reservation", "idReservation", "heureFin", idReservation);
                     heureF = heureF.split(":")[0]+":"+heureF.split(":")[1];
-                    System.out.println(infos);
+                    //System.out.println(infos);
                     //String disposition = "";
                     //String salle = infos[9];
                     String option[] = rq.getOptionsFromResa(idReservation);
@@ -403,8 +403,8 @@ public class ITboutonsModifier extends javax.swing.JFrame {
     	try{
     		String[] clients = rq.getClients();
     		String client = "";
-    		String[] noms = rq.getnomsClients();
-    		String[] prenoms = rq.getprenomsClients();
+    		String[] noms = rq.getListedElements("client", "nom");
+    		String[] prenoms = rq.getListedElements("client", "prenom");
     		client = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner un client","Rechercher un client",JOptionPane.QUESTION_MESSAGE, null,clients,clients[0]);
     		if (client!=null){
     			int longueur = noms.length;
@@ -418,12 +418,25 @@ public class ITboutonsModifier extends javax.swing.JFrame {
     					lePrenom = prenoms[i];
     				}
     			}
-    			int idClient = rq.getIdClient(leNom, lePrenom);
-    			String[] dates = rq.getDatesReservations(idClient);
+    			int idClient = rq.getIdByTwoNames("client", "idClient", leNom, "nom", lePrenom, "prenom");
+    			//String[] dates = rq.getDatesReservations(idClient);
     			String date = null;
-    			ITmodifClient clientmodif = new ITmodifClient();
-    			clientmodif.setlabelprenom(lePrenom);
-    			clientmodif.setlabelnom(leNom);
+    			String adresse = rq.getStrById("client", "idClient", "adresseFacturation", idClient);
+    			String entite = rq.getStrById("client", "idClient", "entite", idClient);
+    			String telephone = rq.getStrById("client", "idClient", "telephone", idClient);
+    			String comment = rq.getStrById("client", "idClient", "commentaire", idClient);
+    			String mail = rq.getStrById("client", "idClient", "eMail", idClient);
+    			ITajoutClient clientmodif = new ITajoutClient(new operationModif());
+    			//clientmodif.setlabelprenom(lePrenom);
+    			//clientmodif.setlabelnom(leNom);
+    			clientmodif.setAdresse(adresse);
+    			clientmodif.setEntite(entite);
+    			clientmodif.setPhone(telephone);
+    			clientmodif.setMail(mail);
+    			clientmodif.setComment(comment);
+    			clientmodif.setNom(leNom);
+    			clientmodif.setPrenom(lePrenom);
+    			clientmodif.setTitle(Integer.toString(idClient));
     			clientmodif.setVisible(true);
     		}
     	}catch (SQLException ex) {

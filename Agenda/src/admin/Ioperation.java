@@ -21,5 +21,6 @@ public interface Ioperation {
 	public void operationUser(String nom, String prenom, String email, int admin, String login, String mdp);
 	public void operationTache(String nom, String hex, String comment, String dateDebut, String dateFin, String horaireDebut, String horaireFin);
 	public void operationSalle(String name, int superficie, String couleur, String comment) throws SQLException;
+	public void operationClient(String nom, String prenom, String email, String phone, String adresse, String entite, String comment) throws SQLException;
 	public void recevoirId(int id);
 }

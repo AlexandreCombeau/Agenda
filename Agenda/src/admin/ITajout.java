@@ -288,7 +288,7 @@ public class ITajout extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "La superficie doit être un nombre entier positif. \nVeuillez corriger.");
         }catch(NullPointerException e){
             JOptionPane.showMessageDialog(null, "Veuillez remplir tout les champs.");
-        } catch (SQLException ex) {
+        }catch (SQLException ex) {
             Logger.getLogger(ITajout.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSubmitActionPerformed

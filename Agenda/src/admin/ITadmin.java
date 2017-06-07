@@ -14,6 +14,12 @@ import javax.swing.JOptionPane;
 
 import database.operationAjout;
 import database.operationModif;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  *
@@ -107,74 +113,107 @@ public class ITadmin extends javax.swing.JFrame {
                 btnReservationActionPerformed(evt);
             }
         });
+        
+        JButton btnOptionResa = new JButton();
+        btnOptionResa.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent evt) {
+        		btnOptionReservationActionPerformed(evt);
+        	}
+        });
+        btnOptionResa.setText("Options R\u00E9servations");
+        
+        JButton btnOptionClient = new JButton();
+        btnOptionClient.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent evt) {
+        		btnOptionClientActionPerformed(evt);
+        	}
+        });
+        btnOptionClient.setText("Options Clients");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnOptionsUtilisateurs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(btnModifier, javax.swing.GroupLayout.PREFERRED_SIZE, 923, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(404, 404, 404)
-                                .addComponent(jLabel1)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnOptionsTaches, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnGenerationDevis, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnRechercher, javax.swing.GroupLayout.PREFERRED_SIZE, 923, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(btnReservation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnQuitter, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(372, 372, 372))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(btnOptionsSalles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap()))
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(btnOptionsUtilisateurs, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 935, Short.MAX_VALUE)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(404)
+        					.addComponent(jLabel1)
+        					.addGap(0, 0, Short.MAX_VALUE))
+        				.addGroup(layout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(btnOptionsTaches, GroupLayout.DEFAULT_SIZE, 923, Short.MAX_VALUE))
+        				.addGroup(layout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(btnOptionsSalles, GroupLayout.DEFAULT_SIZE, 923, Short.MAX_VALUE)))
+        			.addContainerGap())
+        		.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(btnOptionResa, GroupLayout.PREFERRED_SIZE, 923, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        		.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(btnOptionClient, GroupLayout.PREFERRED_SIZE, 923, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        		.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(btnGenerationDevis, GroupLayout.DEFAULT_SIZE, 923, Short.MAX_VALUE)
+        			.addContainerGap())
+        		.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(btnRechercher, GroupLayout.PREFERRED_SIZE, 923, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        			.addComponent(btnModifier, GroupLayout.PREFERRED_SIZE, 923, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap())
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(btnReservation, GroupLayout.DEFAULT_SIZE, 923, Short.MAX_VALUE)
+        			.addContainerGap())
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap(375, Short.MAX_VALUE)
+        			.addComponent(btnQuitter, GroupLayout.PREFERRED_SIZE, 201, GroupLayout.PREFERRED_SIZE)
+        			.addGap(371))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(86, 86, 86)
-                .addComponent(btnOptionsUtilisateurs, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnOptionsTaches, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnGenerationDevis, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnRechercher, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnModifier, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnReservation, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnQuitter, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(54, 54, 54)
-                    .addComponent(btnOptionsSalles, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(403, Short.MAX_VALUE)))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(jLabel1)
+        					.addGap(86)
+        					.addComponent(btnOptionsUtilisateurs, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+        					.addGap(18)
+        					.addComponent(btnOptionsTaches, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(54)
+        					.addComponent(btnOptionsSalles, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)))
+        			.addGap(18)
+        			.addComponent(btnOptionResa, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(btnOptionClient, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(btnGenerationDevis, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(btnRechercher, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(btnModifier, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(btnReservation, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(btnQuitter, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(178, Short.MAX_VALUE))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnQuitterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitterActionPerformed
+    
+
+	private void btnQuitterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitterActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnQuitterActionPerformed
 /**
@@ -200,12 +239,13 @@ public class ITadmin extends javax.swing.JFrame {
             case "Modifier une salle":
                 String nomsalle;
             try {
-                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getElementByIdFromTable("salle", "Salle", "libelle"), rq.getElementByIdFromTable("salle", "Salle", "libelle")[0]);
+            	String [] salles= rq.getListedElements("salle", "libelle");
+                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, salles, salles[0]);
                 if(nomsalle != null){
-                	int id=rq.getIdSalle(nomsalle);
-                	int superficie=rq.getSuperficieSalle(id);
-                	String couleur=rq.getCouleurSalle(id);
-                	String comment=rq.getCommentSalle(id);
+                	int id=rq.getIdByName("salle", "idSalle", nomsalle, "libelle");
+                	int superficie=rq.getIntById("salle","idSalle", "superficie", id);
+                	String couleur=rq.getStrById("salle","idSalle", "codeCouleur", id);
+                	String comment=rq.getStrById("salle","idSalle","descriptif",id);
                     ITajout modif = new ITajout(new operationModif());
                     modif.setNom(nomsalle);
                     modif.setSuperficie(superficie);
@@ -227,7 +267,8 @@ public class ITadmin extends javax.swing.JFrame {
                 
             case "Supprimer une salle":
             try {
-                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Suppression -", JOptionPane.QUESTION_MESSAGE, null, rq.getElementByIdFromTable("salle", "Salle", "libelle"), rq.getElementByIdFromTable("salle", "Salle", "libelle")[0]);
+            	String [] salles= rq.getListedElements("salle", "libelle");
+                nomsalle = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une salle", "Options salles - Modification -", JOptionPane.QUESTION_MESSAGE, null, salles, salles[0]);
                 if(nomsalle != null){
                     int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer : "+nomsalle+"?", "Suppression de la salle : "+nomsalle, JOptionPane.YES_NO_OPTION);
                     if(choix == 0){
@@ -265,15 +306,16 @@ public class ITadmin extends javax.swing.JFrame {
             case "Modifier un utilisateur":
                 String nomutilisateur;
             try {
-                nomutilisateur = (String)JOptionPane.showInputDialog(null, "Veuillez choisir un utilisateur à modifier", "Options utilisateurs - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getElementByIdFromTable("usager", "Usager", "login"), rq.getElementByIdFromTable("usager", "Usager", "nom")[0]);
+            	String [] users= rq.getListedElements("usager", "login");
+                nomutilisateur = (String)JOptionPane.showInputDialog(null, "Veuillez choisir un utilisateur à modifier", "Options utilisateurs - Modification -", JOptionPane.QUESTION_MESSAGE, null, users, users[0]);
                 if(nomutilisateur != null){
-                	int id=rq.getIdUser(nomutilisateur);
-                	int admin=rq.getAdmin(id);
-                	String mail=rq.getEmail(id);
-                	String login=rq.getLogin(id);
-                	String mdp=rq.getMdp(id);
-                	String prenom=rq.getPrenom(id);
-                	String nomU=rq.getNom(id);
+                	int id=rq.getIdByName("usager", "idUsager", nomutilisateur, "login");
+                	int admin=rq.getIntById("usager", "idUsager", "administrateur", id);
+                	String mail=rq.getStrById("usager", "idUsager", "mail", id);
+                	String login=rq.getStrById("usager", "idUsager", "login", id);
+                	String mdp=rq.getStrById("usager", "idUsager", "password", id);
+                	String prenom=rq.getStrById("usager", "idUsager", "prenom", id);
+                	String nomU=rq.getStrById("usager", "idUsager", "nom", id);
                     ITajoutUtilisateur modif = new ITajoutUtilisateur(new operationModif());
                     modif.setTitle(Integer.toString(id));
                     modif.setAdmin(admin);
@@ -295,7 +337,8 @@ public class ITadmin extends javax.swing.JFrame {
                 
             case "Supprimer un utilisateur":
             try {
-                nomutilisateur = (String)JOptionPane.showInputDialog(null, "Veuillez choisir un utilisateur à supprimer", "Options utilisateurs - Suppression -", JOptionPane.QUESTION_MESSAGE, null, rq.getElementByIdFromTable("usager", "Usager", "login"), rq.getElementByIdFromTable("usager", "Usager", "nom")[0]);
+            	String [] users= rq.getListedElements("usager", "login");
+                nomutilisateur = (String)JOptionPane.showInputDialog(null, "Veuillez choisir un utilisateur à modifier", "Options utilisateurs - Modification -", JOptionPane.QUESTION_MESSAGE, null, users, users[0]);
                 if(nomutilisateur != null){
                     int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer : "+nomutilisateur+"?", "Suppression de l'utilisateur : "+nomutilisateur, JOptionPane.YES_NO_OPTION);
                     if(choix == 0){
@@ -340,20 +383,21 @@ public class ITadmin extends javax.swing.JFrame {
             case "Modifier une tache":
                 String nomTache;
             try {
-                nomTache = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une tache", "Options taches - Modification -", JOptionPane.QUESTION_MESSAGE, null, rq.getElementByIdFromTable("tache", "Tache", "nomTache"), rq.getElementByIdFromTable("tache", "Tache", "nomTache")[0]);
+            	String [] taches= rq.getListedElements("tache", "nomTache");
+                nomTache = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une tache", "Options taches - Modification -", JOptionPane.QUESTION_MESSAGE, null, taches, taches[0]);
                 System.out.println("ICIIII : "+nomTache);
                 if(nomTache != null){
-                	String [] dates = rq.getDatesTaches(nomTache);
+                	String [] dates = rq.getListedElementsByName("tache", "dateDebut", nomTache, "nomTache");
                 	String dateDebut = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner une date de début de réservation","Rechercher une date",JOptionPane.QUESTION_MESSAGE, null,dates,dates[0]);
-                    int id = rq.getIdTache(nomTache, dateDebut);
-                	String dateFin = rq.getDateFinTache(id);
-                	String comment = rq.getCommentTache(id);
-                	String heureD = rq.getHeureDebutFromTache(id);
-                	String heureF = rq.getHeureFinFromTache(id);
+                    int id = rq.getIdByTwoNames("tache", "idTache", nomTache, "nomTache", dateDebut, "dateDebut");
+                	String dateFin = rq.getStrById("tache", "idTache", "dateFin", id);
+                	String comment = rq.getStrById("tache", "idTache", "descriptif", id);
+                	String heureD = rq.getHourById("tache", "idTache", "heureDebut", id);
+                	String heureF = rq.getHourById("tache", "idTache", "heureFin", id);
                 	heureD = heureD.split(":")[0]+":"+heureD.split(":")[1];
                     
                     heureF = heureF.split(":")[0]+":"+heureF.split(":")[1];
-                	String hexa = rq.getCouleurTache(id);
+                	String hexa = rq.getStrById("tache", "idTache", "codeCouleur", id);
                 	ITajoutTache modif = new ITajoutTache(new operationModif());
                     /*modif.setTxtTitle("Tache : "+nomTache);
                     modif.setLbNom(nomTache);
@@ -378,9 +422,13 @@ public class ITadmin extends javax.swing.JFrame {
                 
             case "Supprimer une tache":
             try {
-                nomTache = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une tache", "Options taches - Suppression -", JOptionPane.QUESTION_MESSAGE, null, rq.getSalleTacheEntiteFormule("tache", "Tache"), rq.getSalleTacheEntiteFormule("taches", "Tache")[0]);
+            	String [] taches= rq.getListedElements("tache", "nomTache");
+                nomTache = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une tache", "Options taches - Modification -", JOptionPane.QUESTION_MESSAGE, null, taches, taches[0]);
+                System.out.println("ICIIII : "+nomTache);
                 if(nomTache != null){
-                    int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer : "+nomTache+"?", "Suppression de la tache : "+nomTache, JOptionPane.YES_NO_OPTION);
+                	String [] dates = rq.getListedElementsByName("tache", "dateDebut", nomTache, "nomTache");
+                	String dateDebut = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner une date de début de réservation","Rechercher une date",JOptionPane.QUESTION_MESSAGE, null,dates,dates[0]);
+                	int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer : "+nomTache+"?", "Suppression de la tache : "+nomTache, JOptionPane.YES_NO_OPTION);
                     if(choix == 0){
                         //Requete DELETE sur la BD
                         rq.delete("Tache", nomTache);
@@ -390,6 +438,7 @@ public class ITadmin extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "Annulation de la suppression !");
                     }
                 }
+        	
             } catch (SQLException ex) {
                 Logger.getLogger(ITadmin.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -398,6 +447,238 @@ public class ITadmin extends javax.swing.JFrame {
         }
         }
     }//GEN-LAST:event_btnOptionsTachesActionPerformed
+    
+    private void btnOptionReservationActionPerformed(ActionEvent evt) {
+    	String[] options = {"Ajouter une reservation", "Modifier une reservation", "Supprimer une reservation"};
+        String nom = "";
+        nom = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une option","Options taches",JOptionPane.QUESTION_MESSAGE,null,options,options[0]);;
+        if(nom != null){
+        switch(nom){
+            case "Ajouter une reservation":
+            	ITcreerReservation1 nouvelleResa = new ITcreerReservation1(new operationAjout());
+                nouvelleResa.setVisible(true);
+                
+                break;
+                
+            case "Modifier une reservation":
+            	try {
+            	String[] clients = rq.getClients();
+                String[] noms = rq.getListedElements("client", "nom");
+                String[] prenoms = rq.getListedElements("client", "prenom");
+                String client = "";
+                client = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner un client","Rechercher un client",JOptionPane.QUESTION_MESSAGE, null,clients, clients[0]);
+                if (client!=null){
+                    int longueur = noms.length;
+                    String[] client2 = new String[longueur];
+                    String leNom = "";
+                    String lePrenom = "";
+                    for(int i = 0; i<longueur; i++){
+                        client2[i] = prenoms[i]+" "+noms[i];
+                        if(client2[i] == null ? client == null : client2[i].equals(client)){
+                            leNom = noms[i];
+                            lePrenom = prenoms[i];
+                        }
+                    }
+                    int idClient = rq.getIdClient(leNom, lePrenom);
+                    String[] dates = rq.getListedElementsById("reservation", "dateDebut", idClient, "fkidClient");
+                    String date = null;
+                    if (!"".equals(dates[0])){
+                        date = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner une date de début de réservation","Rechercher une date",JOptionPane.QUESTION_MESSAGE, null,dates,dates[0]);
+                    } 
+                    else{
+                        JOptionPane.showMessageDialog(null, "Il n'y a pas de reservation pour ce client", "information",JOptionPane.INFORMATION_MESSAGE);
+                    }          
+                    if (date!=null){
+                        int idReservation = rq.getIdByIdString("reservation", "idReservation", date, "dateDebut", idClient, "fkidClient");
+                        String salle = rq.getSalleFromResa(idReservation);
+                        //String infos[] = rq.getInfosReservation(idReservation);
+                        String dateFin = rq.getStrById("reservation", "idReservation", "dateFin", idReservation);
+                        String disposition = rq.getDispositionFromResa(idReservation);
+                        int nbpers = rq.getIntById("reservation", "idReservation", "nbPersonnes", idReservation);
+                        String formule = rq.getStrById("reservation", "idReservation", "fkidFormule", idReservation);
+                        String heureD = rq.getHourById("reservation", "idReservation", "heureDebut", idReservation);
+                        heureD = heureD.split(":")[0]+":"+heureD.split(":")[1];
+                        String heureF = rq.getHourById("reservation", "idReservation", "heureFin", idReservation);
+                        heureF = heureF.split(":")[0]+":"+heureF.split(":")[1];
+                        //System.out.println(infos);
+                        //String disposition = "";
+                        //String salle = infos[9];
+                        String option[] = rq.getOptionsFromResa(idReservation);
+                        String service[] = rq.getServicesFromResa(idReservation);
+                        
+                        String salles[] = {"studio", "cabane", "bureau", "atelier"};
+                        String dispositions[] = {"ecole", "en U", "theatre", "salle vide", "central", "ilots"};
+                        String[] lesChangements ={"validite de la réservation(option)", "date de début", "date de fin", "heure de début", "heure de fin","nombre de personnes", "nombre d'heures", "formule", "client", "modifier un service", "ajouter un service","modifier une option", "ajouter une option", "modifier une salle", "ajouter une salle", "disposition"};
+                        String changement = "";
+                        if (!"".equals(dates[0])){
+                        	ITcreerReservation1 nouvelResa = new ITcreerReservation1(new operationModif());
+                        	nouvelResa.setClient(client);
+                        	nouvelResa.setDisposition(disposition);
+                        	nouvelResa.setNbPersonne(nbpers);
+                        	nouvelResa.setDateDebut(date);
+                        	nouvelResa.setSalle(salle);
+                        	nouvelResa.setOptions(option);
+                        	nouvelResa.setServices(service);
+                        	nouvelResa.setDateFin(dateFin);
+                        	nouvelResa.setFormule(formule);
+                        	nouvelResa.setHeureDebut(heureD);
+                        	nouvelResa.setHeureFin(heureF);
+                        	nouvelResa.setTitle(Integer.toString(idReservation));
+                            nouvelResa.setVisible(true);
+                        }
+                    }
+                }
+            } 
+            catch (SQLException ex) {
+                Logger.getLogger(ITboutonsRechercher.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            	break;
+                
+            case "Supprimer une reservation":
+            try {
+            	String[] clients = rq.getClients();
+                String[] noms = rq.getListedElements("client", "nom");
+                String[] prenoms = rq.getListedElements("client", "prenom");
+                String client = "";
+                client = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner un client","Rechercher un client",JOptionPane.QUESTION_MESSAGE, null,clients, clients[0]);
+                if (client!=null){
+                    int longueur = noms.length;
+                    String[] client2 = new String[longueur];
+                    String leNom = "";
+                    String lePrenom = "";
+                    for(int i = 0; i<longueur; i++){
+                        client2[i] = prenoms[i]+" "+noms[i];
+                        if(client2[i] == null ? client == null : client2[i].equals(client)){
+                            leNom = noms[i];
+                            lePrenom = prenoms[i];
+                        }
+                    }
+                    int idClient = rq.getIdClient(leNom, lePrenom);
+                    String[] dates = rq.getListedElementsById("reservation", "dateDebut", idClient, "fkidClient");
+                    String date = null;
+                    if (!"".equals(dates[0])){
+                        date = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner une date de début de réservation","Rechercher une date",JOptionPane.QUESTION_MESSAGE, null,dates,dates[0]);
+                    } 
+                    else{
+                        JOptionPane.showMessageDialog(null, "Il n'y a pas de reservation pour ce client", "information",JOptionPane.INFORMATION_MESSAGE);
+                    }          
+                    if (date!=null){
+                    	
+                    	int idReservation = rq.getIdByIdString("reservation", "idReservation", date, "dateDebut", idClient, "fkidClient");
+                    	int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer la r�servation "+idReservation, "Suppression de la reservation", JOptionPane.YES_NO_OPTION);
+                    
+                    	if(choix == 0){
+                        //Requete DELETE sur la BD
+                        rq.deleteResa(idReservation);
+                        JOptionPane.showMessageDialog(null, "La reservation "+idReservation+" a été supprimée !");
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Annulation de la suppression !");
+                    }
+                }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ITadmin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+                break;
+        }
+        }
+	}
+    
+    private void btnOptionClientActionPerformed(ActionEvent evt) {
+    	String[] options = {"Ajouter un client", "Modifier un client", "Supprimer un client"};
+        String nom = "";
+        nom = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une option","Options taches",JOptionPane.QUESTION_MESSAGE,null,options,options[0]);;
+        if(nom != null){
+        switch(nom){
+            case "Ajouter un client":
+            	ITajoutClient ajout = new ITajoutClient(new operationAjout());
+        		ajout.setVisible(true);
+        		
+        		break;
+        		
+            case "Modifier un client":
+            	try{
+            		String[] clients = rq.getClients();
+            		String client = "";
+            		String[] noms = rq.getListedElements("client", "nom");
+            		String[] prenoms = rq.getListedElements("client", "prenom");
+            		client = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner un client","Rechercher un client",JOptionPane.QUESTION_MESSAGE, null,clients,clients[0]);
+            		if (client!=null){
+            			int longueur = noms.length;
+            			String[] client2 = new String[longueur];
+            			String leNom = "";
+            			String lePrenom = "";
+            			for(int i = 0; i<longueur; i++){
+            				client2[i] = prenoms[i]+" "+noms[i];
+            				if(client2[i] == null ? client == null : client2[i].equals(client)){
+            					leNom = noms[i];
+            					lePrenom = prenoms[i];
+            				}
+            			}
+            			int idClient = rq.getIdByTwoNames("client", "idClient", leNom, "nom", lePrenom, "prenom");
+            			//String[] dates = rq.getDatesReservations(idClient);
+            			String date = null;
+            			String adresse = rq.getStrById("client", "idClient", "adresseFacturation", idClient);
+            			String entite = rq.getStrById("client", "idClient", "entite", idClient);
+            			String telephone = rq.getStrById("client", "idClient", "telephone", idClient);
+            			String comment = rq.getStrById("client", "idClient", "commentaire", idClient);
+            			String mail = rq.getStrById("client", "idClient", "eMail", idClient);
+            			ITajoutClient clientmodif = new ITajoutClient(new operationModif());
+            			//clientmodif.setlabelprenom(lePrenom);
+            			//clientmodif.setlabelnom(leNom);
+            			clientmodif.setAdresse(adresse);
+            			clientmodif.setEntite(entite);
+            			clientmodif.setPhone(telephone);
+            			clientmodif.setMail(mail);
+            			clientmodif.setComment(comment);
+            			clientmodif.setNom(leNom);
+            			clientmodif.setPrenom(lePrenom);
+            			clientmodif.setTitle(Integer.toString(idClient));
+            			clientmodif.setVisible(true);
+            		}
+            	}catch (SQLException ex) {
+                    Logger.getLogger(ITboutonsRechercher.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            	
+            case "Supprimer un client":
+            	try{
+            	String[] clients = rq.getClients();
+        		String client = "";
+        		String[] noms = rq.getListedElements("client", "nom");
+        		String[] prenoms = rq.getListedElements("client", "prenom");
+        		client = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner un client","Rechercher un client",JOptionPane.QUESTION_MESSAGE, null,clients,clients[0]);
+        		if (client!=null){
+        			int longueur = noms.length;
+        			String[] client2 = new String[longueur];
+        			String leNom = "";
+        			String lePrenom = "";
+        			for(int i = 0; i<longueur; i++){
+        				client2[i] = prenoms[i]+" "+noms[i];
+        				if(client2[i] == null ? client == null : client2[i].equals(client)){
+        					leNom = noms[i];
+        					lePrenom = prenoms[i];
+        				}
+        			}
+        			int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer le client "+lePrenom+" "+leNom, "Suppression de la reservation", JOptionPane.YES_NO_OPTION);
+                    
+                	if(choix == 0){
+                    //Requete DELETE sur la BD
+                    rq.deleteClient(lePrenom, leNom);
+                    JOptionPane.showMessageDialog(null, "Le client "+lePrenom+" "+leNom+" a été supprimée !");
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Annulation de la suppression !");
+                }
+        	}
+        }catch (SQLException ex) {
+            Logger.getLogger(ITboutonsRechercher.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+        }	
+            	
+    }
 
     private void btnGenerationDevisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerationDevisActionPerformed
         ITgenerationDevis devis = new ITgenerationDevis();
@@ -429,5 +710,4 @@ public class ITadmin extends javax.swing.JFrame {
     private javax.swing.JButton btnRechercher;
     private javax.swing.JButton btnReservation;
     private javax.swing.JLabel jLabel1;
-    // End of variables declaration//GEN-END:variables
 }

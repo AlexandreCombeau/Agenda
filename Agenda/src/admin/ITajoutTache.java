@@ -288,7 +288,7 @@ public class ITajoutTache extends javax.swing.JFrame {
             System.out.println(dateFin);
             
             
-            if(comparerheures(horaireDebut, horaireFin)){
+            if(comparerheures(horaireDebut, horaireFin, dateDebut, dateFin)){
             	JOptionPane.showMessageDialog(null, "L'heure de début doit preceder l'heure de fin", "Erreur", JOptionPane.INFORMATION_MESSAGE);
             }
             else if(comparerdates(dateDebut,dateFin))
@@ -343,21 +343,21 @@ public class ITajoutTache extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnColorActionPerformed
     
-    public Boolean comparerheures (String horaireDebut, String horaireFin){
+    public static Boolean comparerheures (String horaireDebut, String horaireFin, String dateDebut, String dateFin){
     	String heureDebut=horaireDebut.split(":")[0];
     	String heureFin=horaireFin.split(":")[0];
     	String minDebut=horaireDebut.split(":")[1];
     	String minFin=horaireFin.split(":")[1];
-    	if(Integer.parseInt(heureDebut) > Integer.parseInt(heureFin)){
+    	if(Integer.parseInt(heureDebut) > Integer.parseInt(heureFin) && dateDebut.equals(dateFin)){
     		 return true;
     	}
-    	if(Integer.parseInt(heureDebut) > Integer.parseInt(heureFin) && Integer.parseInt(minDebut) > Integer.parseInt(minFin)){
+    	if(Integer.parseInt(heureDebut) > Integer.parseInt(heureFin) && Integer.parseInt(minDebut) > Integer.parseInt(minFin) && dateDebut.equals(dateFin)){
     		 return true;
     	}
     	return false;
     }
     
-    public Boolean comparerdates (String dateDebut, String dateFin){
+    public static Boolean comparerdates (String dateDebut, String dateFin){
     	String jourDebut = dateDebut.split("-")[0];
     	String jourFin = dateFin.split("-")[0];
     	String moisDebut = dateDebut.split("-")[1];

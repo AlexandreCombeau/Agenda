@@ -45,6 +45,10 @@ public class operationAjout implements Ioperation{
 	public void operationSalle(String name, int superficie, String couleur, String comment) throws SQLException{
 		rq.ajoutSalle(name, superficie, couleur, comment);
 	}
+	
+	public void operationClient(String nom, String prenom, String email, String phone, String adresse, String entite, String comment) throws SQLException{
+		rq.ajoutClient(nom, prenom, email, phone, adresse, entite, comment);
+	}
 
 	@Override
 	public void recevoirId(int id) {
