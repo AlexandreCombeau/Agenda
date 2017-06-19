@@ -358,7 +358,7 @@ public class ITadmin extends javax.swing.JFrame {
  * Cette fonction sert pour choisir une option (Ajout, Modification, Suppression) relative à une tache.
  * @param evt 
  */
-    private void btnOptionsTachesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOptionsTachesActionPerformed
+    private void btnOptionsTachesActionPerformed(java.awt.event.ActionEvent evt) {                                                 
         String[] options = {"Ajouter une tache", "Modifier une tache", "Supprimer une tache"};
         String nom = "";
         nom = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une option","Options taches",JOptionPane.QUESTION_MESSAGE,null,options,options[0]);;
@@ -443,10 +443,10 @@ public class ITadmin extends javax.swing.JFrame {
                 break;
         }
         }
-    }//GEN-LAST:event_btnOptionsTachesActionPerformed
+    }                                                
     
     private void btnOptionReservationActionPerformed(ActionEvent evt) {
-    	String[] options = {"Ajouter une reservation", "Modifier une reservation", "Supprimer une reservation, Acceder aux informations d'une reservation"};
+    	String[] options = {"Ajouter une reservation", "Modifier une reservation", "Supprimer une reservation", "Acceder aux informations d'une reservation"};
         String nom = "";
         nom = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une option","Options taches",JOptionPane.QUESTION_MESSAGE,null,options,options[0]);;
         if(nom != null){
@@ -562,7 +562,7 @@ public class ITadmin extends javax.swing.JFrame {
                     if (date!=null){
                     	
                     	int idReservation = rq.getIdByIdString("reservation", "idReservation", date, "dateDebut", idClient, "fkidClient");
-                    	int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer la r�servation "+idReservation, "Suppression de la reservation", JOptionPane.YES_NO_OPTION);
+                    	int choix = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer la r�servation "+idReservation, "Suppression de la reservation", JOptionPane.YES_NO_OPTION);
                     
                     	if(choix == 0){
                         //Requete DELETE sur la BD
@@ -626,7 +626,7 @@ public class ITadmin extends javax.swing.JFrame {
 	}
     
     private void btnOptionClientActionPerformed(ActionEvent evt) {
-    	String[] options = {"Ajouter un client", "Modifier un client", "Supprimer un client"};
+    	String[] options = {"Ajouter un client", "Modifier un client", "Supprimer un client", "acceder aux informations d'un client"};
         String nom = "";
         nom = (String)JOptionPane.showInputDialog(null, "Veuillez choisir une option","Options taches",JOptionPane.QUESTION_MESSAGE,null,options,options[0]);;
         if(nom != null){
@@ -713,6 +713,35 @@ public class ITadmin extends javax.swing.JFrame {
         	}
         }catch (SQLException ex) {
             //Logger.getLogger(ITboutonsRechercher.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                case "acceder aux informations d'un client":
+                try {
+            String[] clients = rq.getClients();
+            String[] noms = rq.getnomsClients();
+            String[] prenoms = rq.getprenomsClients();
+         
+            String client = "";
+            client = (String)JOptionPane.showInputDialog(null, "Veuillez sélectionner un client","Rechercher un client",JOptionPane.QUESTION_MESSAGE, null,clients,clients[0]);
+            
+            int longueur = noms.length;
+            String[] client2 = new String[longueur];
+            String leNom = "";
+            String lePrenom = "";
+            for(int i = 0; i<longueur; i++){
+               client2[i] = prenoms[i]+" "+noms[i];
+               if(client2[i] == null ? client == null : client2[i].equals(client)){
+                   leNom = noms[i];
+                   lePrenom = prenoms[i];
+               }
+            }
+            if(client != null){
+                int idClient = rq.getIdClient(leNom, lePrenom);
+                String[] lesInfos = rq.getInfosClient(idClient);
+                JOptionPane.showMessageDialog(null, lesInfos, "Informations sur le client",JOptionPane.INFORMATION_MESSAGE);
+            }
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(ITadmin.class.getName()).log(Level.SEVERE, null, ex);
         }
         }
         }	
@@ -802,11 +831,50 @@ public class ITadmin extends javax.swing.JFrame {
     private void btnModifierActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_btnModifierActionPerformed
     	String [] Resa=rq.getListedElements("reservation", "idReservation");
     	String strFac = (String)JOptionPane.showInputDialog(null, "Veuillez choisir facture a editer", "Edition de facture", JOptionPane.QUESTION_MESSAGE, null, Resa, Resa[0]);
-        creerFacture(Integer.parseInt(strFac));
+        
+    	int idReservation=Integer.parseInt(strFac);
+        String salle = rq.getSalleFromResa(idReservation);
+        //String infos[] = rq.getInfosReservation(idReservation);
+        int idClient = rq.getIntById("reservation", "idReservation", "fkidClient", idReservation);
+        String nomclient = rq.getStrById("client", "idClient", "nom", idClient);
+        String prenomclient = rq.getStrById("client", "idClient", "prenom", idClient);
+        String client = prenomclient+" "+nomclient;
+        String date = rq.getStrById("reservation", "idReservation", "dateDebut", idReservation);
+        String dateFin = rq.getStrById("reservation", "idReservation", "dateFin", idReservation);
+        String disposition = rq.getDispositionFromResa(idReservation);
+        int nbpers = rq.getIntById("reservation", "idReservation", "nbPersonnes", idReservation);
+        String formule = rq.getStrById("reservation", "idReservation", "fkidFormule", idReservation);
+        String heureD = rq.getHourById("reservation", "idReservation", "heureDebut", idReservation);
+        heureD = heureD.split(":")[0]+":"+heureD.split(":")[1];
+        String heureF = rq.getHourById("reservation", "idReservation", "heureFin", idReservation);
+        heureF = heureF.split(":")[0]+":"+heureF.split(":")[1];
+        //System.out.println(infos);
+        //String disposition = "";
+        //String salle = infos[9];
+        String option[] = rq.getOptionsFromResa(idReservation);
+        String service[] = rq.getServicesFromResa(idReservation);
+        
+        String salles[] = {"studio", "cabane", "bureau", "atelier"};
+        String dispositions[] = {"ecole", "en U", "theatre", "salle vide", "central", "ilots"};
+    	planningEnregistrement fac=planningEnregistrement.creerFenetre(Integer.parseInt(strFac));
+        fac.setIg(Igeneration.getIg(1));
+        fac.setClient(client);
+    	fac.setDisposition(disposition);
+    	fac.setNbPersonne(nbpers);
+    	fac.setDateDebut(date);
+    	fac.setSalle(salle);
+    	fac.setOptions(option);
+    	fac.setServices(service);
+    	fac.setDateFin(dateFin);
+    	fac.setFormule(formule);
+    	fac.setHeureDebut(heureD);
+    	fac.setHeureFin(heureF);
+        fac.setVisible(true);
+    	//creerFacture(Integer.parseInt(strFac));
         
     }//GEN-LAST:event_btnModifierActionPerformed
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify                     
     private javax.swing.JButton btnGenerationDevis;
     private javax.swing.JButton btnModifier;
     private javax.swing.JButton btnOptionsSalles;

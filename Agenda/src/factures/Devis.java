@@ -41,7 +41,7 @@ import org.apache.poi.util.IOUtils;
 public class Devis {
     
     
-    public static void creerDevis(String[] fichier, String[] client, String[] salle1, String[] salle2, String[] equipements, String[] services, String[] commentaires, String[] nbOptions, int[] nbServices, double[] tarifs, double[] prixServices, int[] nbFormules, double[] tvaServices) throws FileNotFoundException, IOException{
+    public static void creerDevis(String[] fichier, String[] client, String[] salle1, String[] salle2, String[] equipements, String[] services, String[] commentaires, String[] nbOptions, int nbPersonnes, double[] tarifs, double[] prixServices, int[] nbFormules, double[] tvaServices) throws FileNotFoundException, IOException{
         
         /*
         DEFINITION DES VARIABLES
@@ -58,18 +58,19 @@ public class Devis {
         Date aujourdhui = new Date();
         
         //PRIX FINAL HT
-        double salle1FINAL = tarifs[0]*nbFormules[0];
+        double salle1FINAL = tarifs[0]*nbPersonnes;
         double salle2FINAL = 0;
+        
         if(!(salle2[0].equals(""))) salle2FINAL = tarifs[1] * nbFormules[1];
-        double service1FINAL = prixServices[0] * nbServices[0];
-        double service2FINAL = prixServices[1] * nbServices[1];
-        double service3FINAL = prixServices[2] * nbServices[2];
-        double service4FINAL = prixServices[3] * nbServices[3];
-        double service5FINAL = prixServices[4] * nbServices[4];
-        double service6FINAL = prixServices[5] * nbServices[5];
+        double service1FINAL = prixServices[0] * nbPersonnes;
+        double service2FINAL = prixServices[1] * nbPersonnes;
+        double service3FINAL = prixServices[2] * nbPersonnes;
+        double service4FINAL = prixServices[3] * nbPersonnes;
+        double service5FINAL = prixServices[4] * nbPersonnes;
+        double service6FINAL = prixServices[5] * nbPersonnes;
         
         double prixFinalHT = salle1FINAL + salle2FINAL + service1FINAL + service2FINAL + service3FINAL + service4FINAL + service5FINAL + service6FINAL; //PRIX FINAL DU DEVIS HT
-        double tvaFinal = tvaServices[0] + tvaServices[1] + tvaServices[2] + tarifs[0] * nbFormules[0] * 0.2;
+        double tvaFinal = tvaServices[0] + tvaServices[1] + tvaServices[2] + tarifs[0] * nbPersonnes * 0.2;
         if(!(salle2[0].equals(""))) tvaFinal += tarifs[1] * nbFormules[1] * 0.2; //SI IL EXISTE UNE DEUXIEME SALLE ON RAJOUTE LA TVA DE CELLE CI
         double prixFinalTTC = prixFinalHT + tvaFinal;
         /*
@@ -298,7 +299,8 @@ public class Devis {
             for(int j = 4 ; j <= 6 ; j++){
                 cell = lesRows[i - 8].createCell(j);
                 if(i == 8 && j == 4){
-                    cell.setCellValue(client[0]+"\n"+client[1]+"\n"+client[2]); //ON AJOUTE L'ADRESSE DE FACTURATION A L'EMPLACEMENT "CLIENT" TROUVER MOYEN METTRE A LA LIGNE
+                	cell.setCellValue(client[0]+"\n"+client[1]+"\n"+client[2]); //ON AJOUTE L'ADRESSE DE FACTURATION A L'EMPLACEMENT "CLIENT" TROUVER MOYEN METTRE A LA LIGNE
+                    
                     fonte = wb.createFont();
                     fonte.setFontHeightInPoints((short)15);
                     fonte.setFontName("Calibri (Corps)");
@@ -309,6 +311,7 @@ public class Devis {
                     cellStyle.setBorderLeft(BorderStyle.MEDIUM);
                     cellStyle.setBorderRight(BorderStyle.MEDIUM);
                     cellStyle.setFont(fonte);
+                    cellStyle.setWrapText(true);
                     cell.setCellStyle(cellStyle);
                 }
                 if(i == 9 && j == 5 || i == 12 && j == 5){
@@ -510,8 +513,8 @@ public class Devis {
                     }
                     else if(i == 19 || i == 23 || i == 39 || i == 41 || i == 43 || i == 45 || i == 47 || i == 49){
                         switch(i){
-                            case 19: cell.setCellValue(salle1[7]); break; //COMMENTAIRE DE LA SALLE 1
-                            case 23: cell.setCellValue(salle2[7]); break; //COMMENTAIRE DE LA SALLE 2
+                            case 19: cell.setCellValue(salle1[7].substring(0, 75)+"..."); break; //COMMENTAIRE DE LA SALLE 1
+                            //case 23: cell.setCellValue(salle2[7].substring(0, 50)+"..."); break; //COMMENTAIRE DE LA SALLE 2
                             case 39: cell.setCellValue(commentaires[0]); break; //COMMENTAIRE DU PREMIER SERVICE
                             case 41: cell.setCellValue(commentaires[1]); break; //COMMENTAIRE DU DEUXIEME SERVICE
                             case 43: cell.setCellValue(commentaires[2]); break; //COMMENTAIRE DU TROISIEME SERVICE
@@ -523,19 +526,19 @@ public class Devis {
                     }
                     else if(i == 26 || i == 29 || i == 30 || i == 31 || i == 32 || i == 33 || i == 34){
                         switch(i){
-                            case 29: cell.setCellValue(equipements[0]); break; //NOM DE L'OPTION 1
-                            case 30: cell.setCellValue(equipements[1]); break; //NOM DE L'OPTION 2
-                            case 31: cell.setCellValue(equipements[2]); break; //NOM DE L'OPTION 3
-                            case 32: cell.setCellValue(equipements[3]); break; //NOM DE L'OPTION 4
-                            case 33: cell.setCellValue(equipements[4]); break; //NOM DE L'OPTION 5
-                            case 34: cell.setCellValue(equipements[5]); break; //NOM DE L'OPTION 6
+                            case 29: if(equipements[0]!="Aucune")cell.setCellValue(equipements[0]); break; //NOM DE L'OPTION 1
+                            case 30: if(equipements[1]!="Aucune")cell.setCellValue(equipements[1]); break; //NOM DE L'OPTION 2
+                            case 31: if(equipements[2]!="Aucune")cell.setCellValue(equipements[2]); break; //NOM DE L'OPTION 3
+                            case 32: if(equipements[3]!="Aucune")cell.setCellValue(equipements[3]); break; //NOM DE L'OPTION 4
+                            case 33: if(equipements[4]!="Aucune")cell.setCellValue(equipements[4]); break; //NOM DE L'OPTION 5
+                            case 34: if(equipements[5]!="Aucune")cell.setCellValue(equipements[5]); break; //NOM DE L'OPTION 6
                         }
                         cell.setCellStyle(cellStyleFont12left);
                     }
                     else if(i == 20 || i == 21 || i == 24 || i == 25 || i == 26){
                         switch(i){
                             case 20: cell.setCellValue("Participants :"); break;
-                            case 21: cell.setCellValue(salle1[4]); break; //DATE SALLE 1
+                            case 21: cell.setCellValue(salle1[4]+": "+salle1[5]); break; //DATE SALLE 1
                             case 24: if(!(salle2[0].equals(""))) cell.setCellValue("Participants :"); break;//SI IL EXISTE UNE DEUXIEME SALLE
                             case 25: cell.setCellValue(salle2[4]); break; //DATE SALLE 2
                         }
@@ -558,12 +561,12 @@ public class Devis {
                             case 20: cell.setCellValue(salle1[3]); break; //LE NOMBRE DE PARTICIPANT A LA SALLE 1
                             case 22: if(!(salle2[0].equals(""))){if(!(salle2[1].equals("Forfait Heure"))) cell.setCellValue(salle2[1]+" ("+salle2[2]+"h)"); else cell.setCellValue(salle2[1]);} break; //NOM FORMULE + HEURE FORMULE SALLE 2
                             case 24: cell.setCellValue(salle2[3]); break; //LE NOMBRE DE PARTICIPANT A LA SALLE 2
-                            case 29: cell.setCellValue(nbOptions[0]); break; //LE NOMBRE DE L'OPTION 1
+                            /*case 29: cell.setCellValue(nbOptions[0]); break; //LE NOMBRE DE L'OPTION 1
                             case 30: cell.setCellValue(nbOptions[1]); break; //LE NOMBRE DE L'OPTION 2
                             case 31: cell.setCellValue(nbOptions[2]); break; //LE NOMBRE DE L'OPTION 3
                             case 32: cell.setCellValue(nbOptions[3]); break; //LE NOMBRE DE L'OPTION 4
                             case 33: cell.setCellValue(nbOptions[4]); break; //LE NOMBRE DE L'OPTION 5
-                            case 34: cell.setCellValue(nbOptions[5]); break; //LE NOMBRE DE L'OPTION 6    
+                            case 34: cell.setCellValue(nbOptions[5]); break; //LE NOMBRE DE L'OPTION 6   */ 
                         }
                         cell.setCellStyle(cellStyleFont12HCT);
                     }
@@ -574,7 +577,7 @@ public class Devis {
                     }
                     if(i == 21 || i == 25){
                         switch(i){
-                            case 21: cell.setCellValue(salle1[5]+" à "+salle1[6]); break;//HORAIRE DEBUT + FIN SALLE 1
+                            case 21: cell.setCellValue(salle1[8]+": "+salle1[6]); break;//HORAIRE DEBUT + FIN SALLE 1
                             case 25: if(!(salle2[0].equals(""))) cell.setCellValue(salle2[5]+" à "+salle2[6]); break;//HORAIRE DEBUT + FIN SALLE 2
                         }
                         cell.setCellStyle(cellStyleFont12HCT);
@@ -591,14 +594,14 @@ public class Devis {
                     }
                     else if(i == 18 || i == 22 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
                         switch(i){
-                            case 18: cell.setCellValue(nbFormules[0]); break; //LE NOMBRE DE FORMULE SALLE 1
-                            case 22: if(!(salle2[0].equals(""))) cell.setCellValue(nbFormules[1]); break; //LE NOMBRE DE FORMULE SALLE 2
-                            case 38: cell.setCellValue(nbServices[0]); break;//LE NOMBRE DU SERVICE 1
-                            case 40: cell.setCellValue(nbServices[1]); break;//LE NOMBRE DU SERVICE 2
-                            case 42: cell.setCellValue(nbServices[2]); break;//LE NOMBRE DU SERVICE 3
-                            case 44: cell.setCellValue(nbServices[3]); break;//LE NOMBRE DU SERVICE 4
-                            case 46: cell.setCellValue(nbServices[4]); break;//LE NOMBRE DU SERVICE 5
-                            case 48: cell.setCellValue(nbServices[5]); break;//LE NOMBRE DU SERVICE 6
+                            case 18: cell.setCellValue(nbPersonnes); break; //LE NOMBRE DE FORMULE SALLE 1
+                            case 22: if(!(salle2[0].equals(""))) cell.setCellValue(nbPersonnes); break; //LE NOMBRE DE FORMULE SALLE 2
+                            case 38: cell.setCellValue(nbPersonnes); break;//LE NOMBRE DU SERVICE 1
+                            case 40: cell.setCellValue(nbPersonnes); break;//LE NOMBRE DU SERVICE 2
+                            case 42: cell.setCellValue(nbPersonnes); break;//LE NOMBRE DU SERVICE 3
+                            case 44: cell.setCellValue(nbPersonnes); break;//LE NOMBRE DU SERVICE 4
+                            case 46: cell.setCellValue(nbPersonnes); break;//LE NOMBRE DU SERVICE 5
+                            case 48: cell.setCellValue(nbPersonnes); break;//LE NOMBRE DU SERVICE 6
                         }
                         cell.setCellStyle(cellStyleFont12CT);
                     }
@@ -774,8 +777,8 @@ public class Devis {
         cellStyle.setAlignment(HorizontalAlignment.RIGHT);
         cellStyle.setFont(fonte);
         cell.setCellStyle(cellStyle);
-        tvaServices[2] += tarifs[0] * nbFormules[0] * 0.2;
-        if(!(salle2[0].equals(""))) tvaServices[2] += tarifs[1] * nbFormules[1] * 0.2;
+        tvaServices[2] += tarifs[0] * nbPersonnes * 0.2;
+        if(!(salle2[0].equals(""))) tvaServices[2] += tarifs[1] * nbPersonnes * 0.2;
         cell.setCellValue(tvaServices[2]+" €");
         
         /*

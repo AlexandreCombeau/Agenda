@@ -1,18 +1,10 @@
 package admin;
 
-import reservations.Evenement;
-import usager.Usager;
-
-import java.awt.Color;
-import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
+
+import database.operationAjout;
+import database.operationModif;
 
 public interface Ioperation {
 	public void operationResa (String Datedebut, String Datefin, String Heuredebut, String Heurefin, int nbPersonne, double nbHeure, int idClient, int idFormule);
@@ -24,4 +16,11 @@ public interface Ioperation {
 	public void operationClient(String nom, String prenom, String email, String phone, String adresse, String entite, String comment) throws SQLException;
 	public void operationTypeTache(String nom, String couleur);
 	public void recevoirId(int id);
+	
+	
+	public static Ioperation getIo(int i){
+		if (i==0) return new operationAjout();
+		else if (i==1) return new operationModif();
+		else return null;
+	}
 }

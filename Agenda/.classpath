@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="librairie/mysql-connector-java-5.0.8-bin.jar"/>
 	<classpathentry kind="lib" path="librairie/poi-3.16.jar"/>
 	<classpathentry kind="lib" path="librairie/sqlite-jdbc-3.16.1.jar"/>
+	<classpathentry kind="lib" path="librairie/commons-codec-1.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

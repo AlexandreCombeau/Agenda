@@ -314,10 +314,10 @@ public class ITajoutTache extends javax.swing.JFrame {
             
             
             if(comparerheures(horaireDebut, horaireFin, dateDebut, dateFin)){
-            	JOptionPane.showMessageDialog(null, "L'heure de début doit preceder l'heure de fin", "Erreur", JOptionPane.INFORMATION_MESSAGE);
+            	JOptionPane.showMessageDialog(null, "L'heure de debut doit preceder l'heure de fin", "Erreur", JOptionPane.INFORMATION_MESSAGE);
             }
             else if(comparerdates(dateDebut,dateFin))
-            	JOptionPane.showMessageDialog(null, "La date de début doit preceder la date de fin", "Erreur", JOptionPane.INFORMATION_MESSAGE);
+            	JOptionPane.showMessageDialog(null, "La date de debut doit preceder la date de fin", "Erreur", JOptionPane.INFORMATION_MESSAGE);
             
             else{
             

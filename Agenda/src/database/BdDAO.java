@@ -96,6 +96,26 @@ public class BdDAO {
         	return listeNom.toArray(new String[0]);
         }
         
+        public int[] getOptions(int idResa) throws SQLException{
+        	PreparedStatement request = co.getConnection().prepareStatement("Select optionService.idOptionsServices from optionService, choix where optionService.nature = 'service' && choix.fkidReservation=?");
+        	
+        	request.setInt(1, idResa);
+        	System.out.println(request);
+        	rs = request.executeQuery();
+        	int[] ListedElements = new int [8]; 
+        	
+        	int i =0;
+        	while(rs.next()){
+				try {
+					ListedElements[i]=rs.getInt("optionService.idOptionsServices");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}
+        	return ListedElements;
+        }
+        
         /**
         *
         * @param table Prend le nom de la table : Salle || Tache
@@ -231,6 +251,25 @@ public class BdDAO {
        
        public int[] getUniqueListElementByIdFromTable(String table, String id, int idno, String element) throws SQLException{
            String quest = "SELECT "+element+" FROM "+table+" WHERE "+id+" = "+idno+"";
+           String quest1 = "SELECT COUNT("+id+") FROM "+table+" WHERE "+id+" = "+idno+"";
+           rs = co.query(quest1);
+           int[] nom = null ;
+           while(rs.next()){
+               int longueurTableau = rs.getInt("COUNT("+id+")");
+               nom = new int[longueurTableau];
+           }
+           int i = 0;
+           rs = co.query(quest);
+           while(rs.next()){
+              int name = rs.getInt(element);
+              nom[i] = name;
+              i++;
+           }
+           return nom;   
+       }
+       
+       public int[] getOptions(String table, String id, int idno, String element) throws SQLException{
+           String quest = "SELECT "+element+" FROM "+table+" WHERE "+id+" = "+idno+" AND prixTTC>0";
            String quest1 = "SELECT COUNT("+id+") FROM "+table+" WHERE "+id+" = "+idno+"";
            rs = co.query(quest1);
            int[] nom = null ;
@@ -558,10 +597,10 @@ public class BdDAO {
          * @throws SQLException 
          */
         public double getTarifSalle(String nomSalle, String nomFormule) throws SQLException{
-            String quest = "SELECT montant FROM TarifSalleFormule, Salle, Formule WHERE Salle.idSalle = TarifSalleFormule.fk_idSalle AND Formule.idFormule = TarifSalleFormule.fk_idFormule AND Salle.nomSalle = '"+nomSalle+"' AND Formule.nomFormule = '"+nomFormule+"'";
+            String quest = "SELECT tarif FROM tarifSalle, Salle, Formule WHERE Salle.idSalle = tarifSalle.fkidSalle AND Formule.idFormule = tarifSalle.fkidFormule AND salle.libelle = '"+nomSalle+"' AND Formule.libelle = '"+nomFormule+"'";
             rs = co.query(quest);
             if(rs.next()){
-                double tarif = rs.getDouble("montant");
+                double tarif = rs.getDouble("tarif");
                 return tarif;
             }
             return 0;
@@ -1558,7 +1597,7 @@ public class BdDAO {
         }
         
         
-        public boolean checkResa(int idsalle, String dateDebut, String dateFin, String horaireDebut, String horaireFin) throws SQLException{
+        public int checkResa(int idsalle, String dateDebut, String dateFin, String horaireDebut, String horaireFin) throws SQLException{
         	try{
         		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
             	//String dateD=dateDebut.split("-")[2]+"-"+dateDebut.split("-")[1]+"-"+dateDebut.split("-")[0];
@@ -1569,18 +1608,21 @@ public class BdDAO {
             	System.out.println("caca".equals("caca"));
             	System.out.println("caca".equals("prout"));
             	rs = co.query(request);
+            	int id=0;
             	while(rs.next()){
             		String dD = rs.getString("dateDebut");
             		String dF = rs.getString("dateFin");
             		String hD = formatter.format(rs.getTime("heureDebut"));
             		String hF = formatter.format(rs.getTime("heureFin"));
             		if((ITcreerReservation1.comparerdates(dateDebut, dD) && ITcreerReservation1.comparerdates(dF ,dateDebut)) || (ITcreerReservation1.comparerdates(dateFin, dD) && ITcreerReservation1.comparerdates(dF, dateFin))|| (ITcreerReservation1.comparerdates(dD, dateDebut) && ITcreerReservation1.comparerdates(dateFin, dF))|| ITcreerReservation1.comparerheures(hF, horaireDebut, dateDebut, dF) || ITcreerReservation1.comparerheures(horaireFin, hD, dateFin, dD)){
-            			return false;
+            			id=rs.getInt("idReservation");
+            			return id;
             		}
+            		
             	}
-            	return true;
+            	return id;
             }catch (NullPointerException e){
-            	return true; 
+            	return 0; 
 			}
         }
         /*SELECT idReservation FROM reservation, salleresa, infosalle "

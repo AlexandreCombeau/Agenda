@@ -31,33 +31,26 @@ import database.operationAjout;
 import database.operationModif;
 
 import java.beans.PropertyChangeListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.beans.PropertyChangeEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 /**
  *
  * @author Stagiaire
  */
-public class ITcreerReservation1 extends javax.swing.JFrame {
-	public Ioperation Io;
+public abstract class AbstractPlanning extends javax.swing.JFrame {
+	
 	int id;
+	int currentSalle;
     /**
      * Creates new form ITgenerationDevis
      */
-	public static ITcreerReservation1 creerFenetre(int id){
-		ITcreerReservation1 modif = new ITcreerReservation1(new operationModif());
-		modif.id=id;
-		return modif;
-	}
+	Igeneration Ig;
 	
-	public static ITcreerReservation1 creerFenetre(){
-		ITcreerReservation1 ajout = new ITcreerReservation1(new operationAjout());
-		ajout.id=0;
-		return ajout;
-	}
-	
-    public ITcreerReservation1(Ioperation Io) {
-    	this.Io=Io;
-    	
+    public AbstractPlanning() {
         initComponents();
         try {
             //On initialise les tableaux avec les données de la base de données.
@@ -67,6 +60,7 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             lesOptions = rq.getOptionService("option");
             lesServices = rq.getOptionService("service");
             lesClients= rq.getClients();
+            currentSalle=0;
             
 
             //On enlève tout les items associés aux combo box par défaut.
@@ -89,7 +83,12 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             cbHeureDebut.removeAllItems();
             cbHeureFin.removeAllItems();
             
+            
+            cbNoSalle.addItem("salle 1");
+            cbNoSalle.addItem("salle 2");
+            cbNoSalle.addItem("salle 3");
             //On ajoute l'item "Aucune".
+            cbSalle1.addItem("Aucune");
             cbSalle2.addItem("Aucune");
             cbOption1.addItem("Aucune");
             cbOption2.addItem("Aucune");
@@ -157,6 +156,24 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             		CalendarChange(e);
             	}
             });
+            
+            cbNoSalle.addItemListener(new ItemListener() {
+            	public void itemStateChanged(ItemEvent e) {
+            		try {
+						SalleChange(e);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+            	}
+            });
+            
+            SalleChange();
+            currentSalle=1;
+            SalleChange();
+            currentSalle=2;
+            SalleChange();
+            currentSalle=0;
         } catch (SQLException ex) {
             Logger.getLogger(ITcreerReservation1.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -212,6 +229,8 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         labelClient = new javax.swing.JLabel();
         labelDateFin = new javax.swing.JLabel();
         cbSalle2 = new javax.swing.JComboBox<>();
+        cbNoSalle = new javax.swing.JComboBox();
+        
         calendarDebut = new JCalendar();
         
         calendarFin = new JCalendar();
@@ -264,7 +283,18 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         btnEnregistrer.setText("Enregistrer réservation");
         btnEnregistrer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEnregistrerActionPerformed(evt);
+                try {
+					btnEnregistrerActionPerformed(evt);
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
 
@@ -383,21 +413,24 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         
         
         
+        
+        
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         layout.setHorizontalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
         			.addContainerGap()
+        			.addComponent(labelClient)
+        			.addGap(18)
         			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(layout.createSequentialGroup()
-        					.addComponent(labelDisposition)
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addComponent(cbDisposition, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        				.addGroup(layout.createSequentialGroup()
-        					.addComponent(labelClient)
-        					.addGap(18)
-        					.addComponent(cbClient, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE))))
+        				.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
+        					.addComponent(cbNoSalle, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        					.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+        						.addComponent(labelDisposition)
+        						.addPreferredGap(ComponentPlacement.RELATED)
+        						.addComponent(cbDisposition, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+        				.addComponent(cbClient, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)))
         		.addComponent(labelTitre, GroupLayout.PREFERRED_SIZE, 1237, GroupLayout.PREFERRED_SIZE)
         		.addGroup(layout.createSequentialGroup()
         			.addGap(5)
@@ -484,7 +517,9 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
         				.addComponent(labelClient)
         				.addComponent(cbClient, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         				.addComponent(btnNouveauClient))
-        			.addGap(52)
+        			.addGap(12)
+        			.addComponent(cbNoSalle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
         			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(labelDisposition)
         				.addComponent(cbDisposition, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -565,7 +600,7 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
 		ajout.setVisible(true);
 	}
     
-    private void btnEnregistrerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnregistrerActionPerformed
+    private void btnEnregistrerActionPerformed(java.awt.event.ActionEvent evt) throws NumberFormatException, FileNotFoundException, IOException {//GEN-FIRST:event_btnEnregistrerActionPerformed
        try {
     	    
             //SALLE 1
@@ -628,15 +663,6 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             
             resadispo=rq.checkResa(idsalle,dateDebut, dateFin, horaireDebut, horaireFin);
             
-        	if(resadispo!=id){  
-        		if(id!=0){
-            	    Io.recevoirId(id);
-                }
-            Io.operationResa(dateDebut,dateFin,horaireDebut+":00",horaireFin+":00",Integer.parseInt(nbParticipants),nbHeures, idClient, idFormule);
-            
-            int idReservation = rq.getIdByIdString("reservation", "idReservation", dateDebut, "dateDebut", idClient, "fkidClient");
-            
-            Io.operationSalleResa(idReservation, idinfosalle);
             List<Integer>listeOS= new ArrayList<>();
             //LES OPTIONS
             String o1 = (String)cbOption1.getSelectedItem();
@@ -703,17 +729,36 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
             	listeOS.add(rq.getIdOptionService(s6)); 
             	
             }
-            Io.operationChoix(idReservation, listeOS);
-            //SI IL EXISTE UNE DEUXIEME SALLE
-            String existe = (String)cbSalle2.getSelectedItem();
-            if(!(existe.equals("Aucune"))){
-               String nomSalle2 = (String)cbSalle2.getSelectedItem();
-            }
-                JOptionPane.showMessageDialog(null, "Votre reservation a bien ete creee !");
-        	}
-        	else{
-        		JOptionPane.showMessageDialog(null, "Salle deja reservee pour ce creneau");
-        	}
+            //MAJ BDD
+        	validation(resadispo, dateDebut, dateFin, horaireDebut, horaireFin, nbParticipants, nbHeures, idClient, idFormule, idinfosalle, listeOS);
+        	
+        	//GENERATION 
+        	String adresse=rq.getStrById("client", "idClient", "adresseFacturation", idClient);
+        	String [] clientInfo= new String[6];
+        	clientInfo[0]=adresse.split(",")[0];
+        	clientInfo[1]=adresse.split(",")[1];
+        	clientInfo[2]=adresse.split(",")[1].split(" ")[1];
+        	clientInfo[5]=client;
+        	clientInfo[3]=rq.getStrById("client", "idClient", "eMail", idClient);
+        	clientInfo[4]=rq.getStrById("client", "idClient", "telephone", idClient);
+        	
+        	//String commentSalle= rq.getStrById("salle", "idSalle", "descriptif", idsalle);
+        	String[] equipements = {o1, o2, o3, o4, o5, o6, disposition};
+            String[] services = {s1,  s2,   s3,   s4,   s5,   s6};
+            services = FusionServices();
+            equipements = FusionOptions();
+            String commentS1 = rq.getCommentService(services[0]);
+            String commentS2 = rq.getCommentService(services[1]);
+            String commentS3 = rq.getCommentService(services[2]);
+            String commentS4 = rq.getCommentService(services[3]);
+            String commentS5 = rq.getCommentService(services[4]);
+            String commentS6 = rq.getCommentService(services[5]);
+            String[] commentairesServices = {commentS1, commentS2, commentS3, commentS4, commentS5, commentS6};
+            //String[] salle1 = {nomSalle1, formule, Double.toString(nbHeures), nbParticipants, dateDebut, horaireDebut, horaireFin, commentSalle, dateFin};
+            String[] infos = {formule, Double.toString(nbHeures), nbParticipants, dateDebut, horaireDebut, horaireFin, dateFin};
+            String[] salle2 = {(String)cbSalle2.getSelectedItem(), "", "", "", "", "", "", "", ""};
+        	Ig.generer(clientInfo, infos, salles, equipements, services, commentairesServices, Integer.parseInt(nbParticipants));
+        	
             }
         } catch (SQLException ex) {
             Logger.getLogger(ITcreerReservation1.class.getName()).log(Level.SEVERE, null, ex);
@@ -772,6 +817,119 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
 
     }//GEN-LAST:event_cbDispositionActionPerformed
     
+    public String[] FusionServices(){
+    	String[] Services=new String[12];
+    	for(int i=6;i<12;++i){
+    		Services[i]="0";
+    	}
+    	int a=0;
+    	
+    		for(int j=0;j<3;++j){
+    			for(int k=6;k<12;++k){
+    				int m=0;
+    				for (int l=0;l<6;++l){
+    					if (OSTab[k][j].equals(Services[l])&&!(Services[l+6]).equals("") && !(salles[2][j]).equals("")){
+    						Services[l+6]=Integer.toString(Integer.parseInt(Services[l+6])+Integer.parseInt(salles[2][j]));
+    						m=1;
+    					}
+    				}
+    				if(m==0 && a<6){
+    					Services[a]=OSTab[k][j];
+    					Services[a+6]=salles[2][j];
+    					System.out.println(Services[a]);
+    					a+=1;
+    				}
+    			}
+    		}
+    	return Services;
+    }
+    
+    public String[] FusionOptions(){
+    	String[] Options=new String[12];
+    	for(int i=6;i<12;++i){
+    		Options[i]="0";
+    	}
+    	int a=0;
+    	
+    		for(int j=0;j<3;++j){
+    			for(int k=0;k<6;++k){
+    				int m=0;
+    				for (int l=0;l<6;++l){
+    					if (OSTab[k][j].equals(Options[l]) && !(Options[l+6]).equals("") && !(salles[2][j]).equals("")){
+    						Options[l+6]=Integer.toString(Integer.parseInt(Options[l+6])+Integer.parseInt(salles[2][j]));
+    						m=1;
+    					}
+    				}
+    				if(m==0 && a<6){
+    					Options[a]=OSTab[k][j];
+    					Options[a+6]=salles[2][j];
+    					System.out.println(Options[a]);
+    					a+=1;
+    				}
+    			}
+    		}
+    	return Options;
+    }
+    
+    public void SalleChange(ItemEvent e) throws SQLException{
+    	SalleChange();
+    }
+    public void SalleChange() throws SQLException{
+    	String nomSalle = (String)cbSalle1.getSelectedItem();
+    	String disposition = (String)cbDisposition.getSelectedItem();
+    	String nbParticipants = txtNombreParticipants.getText();
+    	int idsalle = rq.getIdByName("salle", "idSalle", nomSalle, "libelle");
+    	salles[0][currentSalle]=nomSalle;
+    	salles[1][currentSalle]=disposition;
+    	salles[2][currentSalle]=nbParticipants;
+    	salles[3][currentSalle]=rq.getStrById("salle", "idSalle", "descriptif", idsalle);
+    	
+    	String o1 = (String)cbOption1.getSelectedItem();
+        String o2 = (String)cbOption2.getSelectedItem();
+        String o3 = (String)cbOption3.getSelectedItem();
+        String o4 = (String)cbOption4.getSelectedItem();
+        String o5 = (String)cbOption5.getSelectedItem();
+        String o6 = (String)cbOption6.getSelectedItem();
+        
+        String s1 = (String)cbService1.getSelectedItem();
+        String s2 = (String)cbService2.getSelectedItem();
+        String s3 = (String)cbService3.getSelectedItem();
+        String s4 = (String)cbService4.getSelectedItem();
+        String s5 = (String)cbService5.getSelectedItem();
+        String s6 = (String)cbService6.getSelectedItem();
+        
+        OSTab[0][currentSalle]=o1;
+        OSTab[1][currentSalle]=o2;
+        OSTab[2][currentSalle]=o3;
+        OSTab[3][currentSalle]=o4;
+        OSTab[4][currentSalle]=o5;
+        OSTab[5][currentSalle]=o6;
+        OSTab[6][currentSalle]=s1;
+        OSTab[7][currentSalle]=s2;
+        OSTab[8][currentSalle]=s3;
+        OSTab[9][currentSalle]=s4;
+        OSTab[10][currentSalle]=s5;
+        OSTab[11][currentSalle]=s6;
+        
+        currentSalle=cbNoSalle.getSelectedIndex();
+        
+        cbOption1.setSelectedItem(OSTab[0][currentSalle]);
+        cbOption2.setSelectedItem(OSTab[1][currentSalle]);
+        cbOption3.setSelectedItem(OSTab[2][currentSalle]);
+        cbOption4.setSelectedItem(OSTab[3][currentSalle]);
+        cbOption5.setSelectedItem(OSTab[4][currentSalle]);
+        cbOption6.setSelectedItem(OSTab[5][currentSalle]);
+        cbService1.setSelectedItem(OSTab[6][currentSalle]);
+        cbService2.setSelectedItem(OSTab[7][currentSalle]);
+        cbService3.setSelectedItem(OSTab[8][currentSalle]);
+        cbService4.setSelectedItem(OSTab[9][currentSalle]);
+        cbService5.setSelectedItem(OSTab[10][currentSalle]);
+        cbService6.setSelectedItem(OSTab[11][currentSalle]);
+        
+        cbSalle1.setSelectedItem(salles[0][currentSalle]);
+        cbDisposition.setSelectedItem(salles[1][currentSalle]);
+        txtNombreParticipants.setText(salles[2][currentSalle]);
+    }
     
     public void CalendarChange(PropertyChangeEvent e){
     	String horaireDebut = (String)cbHeureDebut.getSelectedItem();
@@ -903,6 +1061,15 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
     	}	
     }
     
+    public void setIg(Igeneration Ig){
+    	this.Ig=Ig;
+    }
+    
+	public void validation(int resadispo, String dateDebut, String dateFin, String horaireDebut, String horaireFin, String nbParticipants, double nbHeures, int idClient, int idFormule, int idinfosalle, List<Integer> listeOS) throws SQLException{
+	
+	}
+	
+    
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -946,6 +1113,7 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
     private javax.swing.JLabel labelServices;
     private javax.swing.JLabel labelTitre;
     private javax.swing.JComboBox cbClient;
+    private javax.swing.JComboBox cbNoSalle;
     private javax.swing.JTextField txtNombreParticipants;
     private javax.swing.JButton btnNouveauClient;
     private JCalendar calendarDebut;
@@ -957,5 +1125,7 @@ public class ITcreerReservation1 extends javax.swing.JFrame {
     private String[] lesOptions = null;
     private String[] lesServices = null;
     private String[] lesClients = null;
+    private String[][] salles= new String[4][3];
+    private String[][] OSTab= new String[12][3];
     private String[] heures= {"09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","22:30","23:00"};
 }

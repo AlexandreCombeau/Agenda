@@ -46,8 +46,9 @@ public class Factures {
     	String nom= rq.getUniqueStringByIdFromTable("client", "idClient", idclient, "nom");
     	String prenom= rq.getUniqueStringByIdFromTable("client", "idClient", idclient, "prenom");
     	String intituleclient= prenom+" "+nom;
+    	int nbpersonnes= rq.getIntById("reservation", "idReservation", "nbPersonnes", idResa);
     	String[] optselib = getlibelleoption(idResa);
-    	double[] optseprix = getprixoption(idResa);
+    	double[] optseprix = getprixoption(idResa, nbpersonnes);
     	
     	
     	
@@ -423,7 +424,7 @@ public class Factures {
         lesRows[14] = row33;
         lesRows[15] = row34;
         
-        for(int i = 19 ; i <= 34 ; i++){
+        for(int i = 19 ; i <= 27 ; i++){
             for(int j = 0 ; j <= 5 ; j++){
             	
             	cell = lesRows[i - 19].createCell(j);
@@ -433,7 +434,7 @@ public class Factures {
             		cellStyle.setBorderTop(BorderStyle.MEDIUM);
             		cellStyle.setTopBorderColor((short)8);
             	}
-            	if(i == 34){
+            	if(i == 26){
             		cellStyle.setBorderBottom(BorderStyle.MEDIUM);
             		cellStyle.setBottomBorderColor((short)8);
             	}
@@ -446,7 +447,7 @@ public class Factures {
             		cellStyle.setBottomBorderColor((short)8);
             	}
             	cell.setCellStyle(cellStyle);
-            	for(int k = 21;k<35;k++){
+            	for(int k = 21;k<27;k++){
             		if(i == k && j==0){
             			cell.setCellValue(optselib[k-21]);
             		}
@@ -470,9 +471,9 @@ public class Factures {
         HSSFRow row35 = sheet.createRow(35);
         HSSFRow row36 = sheet.createRow(36);
         HSSFRow row37 = sheet.createRow(37);
-        lesRows[0] = row35;
-        lesRows[1] = row36;
-        lesRows[2] = row37;
+        lesRows[0] = row27;
+        lesRows[1] = row28;
+        lesRows[2] = row29;
         
         //Juste pour l'exemple (Ã  voir)
         String[] lesTotaux = {"TOTAL HT", "TVA 20%", "TOTAL TTC"};
@@ -480,15 +481,15 @@ public class Factures {
         double tva = prix/100*20;
         double[] lesPrix = {prix, tva, prix+tva};
         
-        for(int i = 35 ; i <= 37 ; i++){
+        for(int i = 27 ; i <= 29 ; i++){
             for(int j = 4 ; j <= 5 ; j++){
-                cell = lesRows[i - 35].createCell(j);
+                cell = lesRows[i - 27].createCell(j);
                 cell.setCellStyle(cellStyleLBR);
                 if(j == 4){
-                    cell.setCellValue(lesTotaux[i - 35]);
+                    cell.setCellValue(lesTotaux[i - 27]);
                 }
                 else{
-                    cell.setCellValue(dcf.format(lesPrix[i - 35])+" €");
+                    cell.setCellValue(dcf.format(lesPrix[i - 27])+" €");
                 }
             }
         }
@@ -558,17 +559,26 @@ public class Factures {
     public static String[] getlibelleoption(int id) throws SQLException{
     	int [] opse = rq.getUniqueListElementByIdFromTable("choix", "fkidReservation", id, "fkidOptionsServices");
     	String [] listelibelle = new String [16];
+    	int j=0;
     	for(int i=0; i<opse.length;++i){
-    		listelibelle[i]=rq.getUniqueStringByIdFromTable("optionService", "idOptionsServices", opse[i], "libelle");
+    		if(rq.getTarifServiceint(opse[i])>0){
+    			listelibelle[j]=rq.getUniqueStringByIdFromTable("optionService", "idOptionsServices", opse[i], "libelle");
+    			j=j+1;
+    		}
     	}
     	return listelibelle;
     }
     
-    public static double[] getprixoption(int id) throws SQLException{
+    public static double[] getprixoption(int id, int nbpersonnes) throws SQLException{
     	int [] opse = rq.getUniqueListElementByIdFromTable("choix", "fkidReservation", id, "fkidOptionsServices");
     	double [] listeprix = new double [16];
+    	int j=0;
     	for(int i=0; i<opse.length;++i){
-    		listeprix[i]=rq.getTarifServiceint(opse[i]);
+    		if(rq.getTarifServiceint(opse[i])*nbpersonnes>0){
+    			
+    			listeprix[j]=rq.getTarifServiceint(opse[i])*nbpersonnes;
+    			j=j+1;
+    		}
     	}
     	return listeprix;
     }

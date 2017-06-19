@@ -282,7 +282,7 @@ public class ITajoutClient extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Veuillez rentrer une adresse e-mail valide !");
                 }
                 else if(!(checkPhone(phone))){
-        			JOptionPane.showMessageDialog(null, "Veuillez entrer un numero de t�l�phone valide");
+        			JOptionPane.showMessageDialog(null, "Veuillez entrer un numero de telephone valide");
         		}
                 else{
                 	String adresse=adresseRue+", "+adresseVille+"";
@@ -308,27 +308,27 @@ public class ITajoutClient extends javax.swing.JFrame {
         			JOptionPane.showMessageDialog(null, "Veuillez rentrer une adresse e-mail valide !");
         		}
         		else if(!(checkPhone(phone))){
-        			JOptionPane.showMessageDialog(null, "Veuillez entrer un numero de t�l�phone valide");
+        			JOptionPane.showMessageDialog(null, "Veuillez entrer un numero de t�l�phone valide");
         		}
         		else if(!(rq.checkClient(nom, prenom, email, phone))){
         			JOptionPane.showMessageDialog(null, "Il semblerait que cet utilisateur existe déjà.");
         		}
             /*else if(!(rq.checkUtilisateurEmail(email))){
-                JOptionPane.showMessageDialog(null, "Cet e-mail est déjà utilisé !");
+                JOptionPane.showMessageDialog(null, "Cet e-mail est dejà utilise !");
             }*/
         		else{
         			//if(admin){adminnb=1;}else{adminnb=0;}
         			int choice;
         			String adresse=adresseRue+", "+adresseVille+"";
-        			choice = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment créer l'utilisateur suivant ?\nNom : "+nom+", Prenom : "+prenom+"\nEmail : "+email+"\nAdresse : "+adresse+", Telephone : "+phone+"\n\n", "Annuler", JOptionPane.YES_NO_OPTION);
+        			choice = (int)JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment creer l'utilisateur suivant ?\nNom : "+nom+", Prenom : "+prenom+"\nEmail : "+email+"\nAdresse : "+adresse+", Telephone : "+phone+"\n\n", "Annuler", JOptionPane.YES_NO_OPTION);
         			if(choice == 0){
         				Io.operationClient(nom, prenom, email, phone, adresse, entite, comment);
         				//rq.ajoutUtilisateur(nom, prenom, email, 0, login, mdp);
-        				JOptionPane.showMessageDialog(null, "L'utilisateur "+prenom+" "+nom+" a été créé avec succès !");
+        				JOptionPane.showMessageDialog(null, "L'utilisateur "+prenom+" "+nom+" a ete cree avec succès !");
         				this.dispose();
         			}
         			else{
-        				JOptionPane.showMessageDialog(null, "Création de l'utilisateur "+prenom+" "+nom+" annulé !");
+        				JOptionPane.showMessageDialog(null, "Creation de l'utilisateur "+prenom+" "+nom+" annulé !");
         			}  
         		}
         	}
