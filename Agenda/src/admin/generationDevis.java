@@ -34,9 +34,7 @@ import org.apache.poi.util.IOUtils;
 
 public class generationDevis implements Igeneration{
 	
-	public void generer(int id){
-		
-	}
+	
 	
 	public void generer(String[] client, String[] infos, String[][] salle, String[] equipements, String[] services, String[] commentaires, int nbPersonnes) throws FileNotFoundException, IOException, SQLException{
 	    
@@ -62,6 +60,9 @@ public class generationDevis implements Igeneration{
     double prixS5 = rq.getTarifService(services[4]);
     double prixS6 = rq.getTarifService(services[5]);
     double[] prixServices = {prixS1, prixS2, prixS3, prixS4, prixS5, prixS6};
+    for(int i=0; i<6;++i){
+    	if(!(services[i].equals("Aucune")))prixServices[i] = rq.getTarifService(services[i]);else prixServices[i]=0;
+    }
     double[] tarifs = new double[3]; 
     tarifs[0] = rq.getTarifSalle(salle[0][0], infos[0]);
     if(salle[0][1]!="Aucune")tarifs[1]=rq.getTarifSalle(salle[0][1], infos[0]);
@@ -71,8 +72,12 @@ public class generationDevis implements Igeneration{
 
     //REMPLACEMENT DES "AUCUNE" DANS EQUIPEMENTS
     for(int i = 0 ; i < equipements.length ; i++){
-        if(equipements[i].equals("Aucune")){
+        try{
+    	if(equipements[i].equals("Aucune")){
             equipements[i] = "";
+        }
+        }catch (NullPointerException e){
+        	equipements[i] = "";
         }
     }
     
@@ -81,7 +86,7 @@ public class generationDevis implements Igeneration{
     double totalTVA10 = 0; //TOTAL DU TVA 10%
     double totalTVA20 = 0; //TOTAL DU TVA 20%
     
-    /*for(int i = 0 ; i < services.length-1 ; i++){
+    for(int i = 0 ; i < 6 ; i++){
         if(services[i].substring(0,5).equals("Pause") || services[i].equals("Accueil petit déjeuner")){
             totalTVA5 += nbPersonnes * prixServices[i] * 0.055;
         }
@@ -91,7 +96,7 @@ public class generationDevis implements Igeneration{
         else{
             totalTVA20 += nbPersonnes * prixServices[i] * 0.2;
         }
-    }*/
+    }
     
     /*java.text.DecimalFormat df = new java.text.DecimalFormat("0.##");
     tvaServices[0] = df.format(tvaServices[0]);*/
@@ -158,14 +163,14 @@ public class generationDevis implements Igeneration{
     sheet.addMergedRegion(new CellRangeAddress(12, 12, 4, 6));
     sheet.addMergedRegion(new CellRangeAddress(16, 16, 1, 3));
     sheet.addMergedRegion(new CellRangeAddress(27, 27, 1, 3));
-    sheet.addMergedRegion(new CellRangeAddress(23, 23, 1, 3));
+    sheet.addMergedRegion(new CellRangeAddress(25, 25, 1, 3));
     sheet.addMergedRegion(new CellRangeAddress(36, 36, 1, 3));
-    sheet.addMergedRegion(new CellRangeAddress(21, 21, 1, 2));
+    sheet.addMergedRegion(new CellRangeAddress(21, 21, 2, 3));
     sheet.addMergedRegion(new CellRangeAddress(51, 51, 1, 2));
-    sheet.addMergedRegion(new CellRangeAddress(25, 25, 1, 2));
-    sheet.addMergedRegion(new CellRangeAddress(26, 26, 1, 2));
+    sheet.addMergedRegion(new CellRangeAddress(24, 24, 2, 3));
+    //sheet.addMergedRegion(new CellRangeAddress(26, 26, 1, 2));
     sheet.addMergedRegion(new CellRangeAddress(18, 18, 2, 3));
-    sheet.addMergedRegion(new CellRangeAddress(22, 22, 2, 3));
+    sheet.addMergedRegion(new CellRangeAddress(22, 22, 1, 3));
     sheet.addMergedRegion(new CellRangeAddress(14, 14, 1, 3));
     sheet.addMergedRegion(new CellRangeAddress(55, 55, 1, 3));
     sheet.addMergedRegion(new CellRangeAddress(56, 56, 1, 2));
@@ -550,11 +555,11 @@ public class generationDevis implements Igeneration{
                     }
                     cell.setCellStyle(cellStyleFont14Gras);
                 }
-                else if(i == 18 || i == 22 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48 || i == 51){
+                else if(i == 18 || i == 21 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48 || i == 24){
                     switch(i){
                         case 18: cell.setCellValue(salle[0][0]); break; //NOM DE LA SALLE 1
-                        case 22: if(salle[0][1]!="Aucune")cell.setCellValue(salle[0][1]); break; //NOM DE LA SALLE 2
-                        case 26: if(salle[0][2]!="Aucune")cell.setCellValue(salle[0][2]); break; //NOM DE LA SALLE 2
+                        case 21: if(salle[0][1]!="Aucune")cell.setCellValue(salle[0][1]); break; //NOM DE LA SALLE 2
+                        case 24: if(salle[0][2]!="Aucune")cell.setCellValue(salle[0][2]); break; //NOM DE LA SALLE 2
                         case 38: cell.setCellValue(services[0]); break; //NOM DU SERVICE 1
                         case 40: cell.setCellValue(services[1]); break; //NOM DU SERVICE 2
                         case 42: cell.setCellValue(services[2]); break; //NOM DU SERVICE 3
@@ -564,11 +569,11 @@ public class generationDevis implements Igeneration{
                     }
                     cell.setCellStyle(cellStyleFont13Gras);
                 }
-                else if(i == 19 || i == 23 || i == 39 || i == 41 || i == 43 || i == 45 || i == 47 || i == 49){
+                else if(i == 19 || i == 22 || i == 25 || i == 39 || i == 41 || i == 43 || i == 45 || i == 47 || i == 49){
                     switch(i){
                         case 19: cell.setCellValue(salle[3][0].substring(0, 75)+"..."); break; //COMMENTAIRE DE LA SALLE 1
-                        case 23: if(salle[0][1]!="Aucune")cell.setCellValue(salle[3][1].substring(0, 75)+"..."); break; //COMMENTAIRE DE LA SALLE 2
-                        case 27: if(salle[0][2]!="Aucune")cell.setCellValue(salle[3][2].substring(0, 75)+"..."); break; //COMMENTAIRE DE LA SALLE 3
+                        case 22: if(salle[0][1]!="Aucune")cell.setCellValue(salle[3][1].substring(0, 75)+"..."); break; //COMMENTAIRE DE LA SALLE 2
+                        case 25: if(salle[0][2]!="Aucune")cell.setCellValue(salle[3][2].substring(0, 75)+"..."); break; //COMMENTAIRE DE LA SALLE 3
                         case 39: if(commentaires[0]!="Aucune")cell.setCellValue(commentaires[0]); break; //COMMENTAIRE DU PREMIER SERVICE
                         case 41: if(commentaires[1]!="Aucune")cell.setCellValue(commentaires[1]); break; //COMMENTAIRE DU DEUXIEME SERVICE
                         case 43: if(commentaires[2]!="Aucune")cell.setCellValue(commentaires[2]); break; //COMMENTAIRE DU TROISIEME SERVICE
@@ -578,7 +583,7 @@ public class generationDevis implements Igeneration{
                     }
                     cell.setCellStyle(cellStyleFont11);
                 }
-                else if(i == 26 || i == 29 || i == 30 || i == 31 || i == 32 || i == 33 || i == 34){
+                else if(i == 29 || i == 30 || i == 31 || i == 32 || i == 33 || i == 34){
                     switch(i){
                         case 29: if(equipements[0]!="Aucune")cell.setCellValue(equipements[0]); break; //NOM DE L'OPTION 1
                         case 30: if(equipements[1]!="Aucune")cell.setCellValue(equipements[1]); break; //NOM DE L'OPTION 2
@@ -589,11 +594,12 @@ public class generationDevis implements Igeneration{
                     }
                     cell.setCellStyle(cellStyleFont12left);
                 }
-                else if(i == 20 || i == 21 || i == 24 || i == 25 || i == 26){
+                else if(i == 20 || i == 17 || i == 23 || i == 26){
                     switch(i){
                         case 20: cell.setCellValue("Participants :"); break;
-                        case 21: cell.setCellValue(infos[3]+": "+infos[4]); break; //DATE SALLE 1
-                        case 24: if(!(salle[0][1].equals("Aucune"))) cell.setCellValue("Participants :"); break;//SI IL EXISTE UNE DEUXIEME SALLE
+                        case 17: cell.setCellValue(infos[3]+": "+infos[4]); break; //DATE SALLE 1
+                        case 23: if(!(salle[0][1].equals("Aucune"))) cell.setCellValue("Participants :"); break;//SI IL EXISTE UNE DEUXIEME SALLE
+                        case 26: if(!(salle[0][2].equals("Aucune"))) cell.setCellValue("Participants :"); break;//SI IL EXISTE UNE DEUXIEME SALLE
                         //case 25: if(!(salle[0][1].equals("")))cell.setCellValue(salle[]); break; //DATE SALLE 2
                     }
                     cell.setCellStyle(cellStyleFont12CT);
@@ -609,13 +615,21 @@ public class generationDevis implements Igeneration{
                 if(i == 16 || i == 27 || i == 36 || i == 52){
                     cell.setCellStyle(cellStyleBottom);
                 }
-                if(i == 18 || i == 20 || i == 22 || i == 24 || i == 29 || i == 30 || i == 31 || i == 32 || i == 33 || i == 34){
+                if(i == 18 || i == 20 || i == 21 || i == 23 || i == 24 || i == 26){
+                	System.out.println(salle[1][0]);
+                    System.out.println(salle[1][1]);
+                    System.out.println(salle[1][2]);
                     switch(i){
-                        case 18: if(!(infos[0].equals("Forfait Heure"))) cell.setCellValue(infos[0]+" ("+infos[1]+"h)"); else cell.setCellValue(infos[0]); break; //NOM FORMULE + HEURE FORMULE SALLE 1 
+                    	case 18: cell.setCellValue(salle[1][0]); break; //DISPOSITION SALLE 1
+                    	
+                    	
                         case 20: cell.setCellValue(salle[2][0]); break; //LE NOMBRE DE PARTICIPANT A LA SALLE 1
                         //case 22: if(!(salle2[0].equals(""))){if(!(salle2[1].equals("Forfait Heure"))) cell.setCellValue(salle2[1]+" ("+salle2[2]+"h)"); else cell.setCellValue(salle2[1]);} break; //NOM FORMULE + HEURE FORMULE SALLE 2
-                        case 24: if(!(salle[0][1].equals("")))cell.setCellValue(salle[2][1]); break; //LE NOMBRE DE PARTICIPANT A LA SALLE 2
-                        case 26: if(!(salle[0][2].equals("")))cell.setCellValue(salle[2][2]); break; //LE NOMBRE DE PARTICIPANT A LA SALLE 2
+                        
+                        case 21: if(!(salle[0][1].equals("Aucune")))cell.setCellValue(salle[1][1]); break;  //DISPOSITION SALLE 2
+                        case 23: if(!(salle[0][1].equals("Aucune")))cell.setCellValue(salle[2][1]); break; //LE NOMBRE DE PARTICIPANT A LA SALLE 2
+                        case 24: if(!(salle[0][2].equals("Aucune")))cell.setCellValue(salle[1][2]); break;  //DISPOSITION SALLE 3
+                        case 26: if(!(salle[0][2].equals("Aucune")))cell.setCellValue(salle[2][2]); break; //LE NOMBRE DE PARTICIPANT A LA SALLE 3
                         /*case 29: cell.setCellValue(nbOptions[0]); break; //LE NOMBRE DE L'OPTION 1
                         case 30: cell.setCellValue(nbOptions[1]); break; //LE NOMBRE DE L'OPTION 2
                         case 31: cell.setCellValue(nbOptions[2]); break; //LE NOMBRE DE L'OPTION 3
@@ -630,15 +644,15 @@ public class generationDevis implements Igeneration{
                 if(i == 16 || i == 27 || i == 36 || i == 52){
                     cell.setCellStyle(cellStyleBottom);
                 }
-                if(i == 21 || i == 25){
+                if(i == 17){
                     switch(i){
-                        case 21: cell.setCellValue(infos[5]+": "+infos[6]); break;//HORAIRE DEBUT + FIN SALLE 1
+                        case 17: cell.setCellValue(infos[6]+": "+infos[5]); break;//HORAIRE DEBUT + FIN SALLE 1
                         //case 25: if(!(salle2[0].equals(""))) cell.setCellValue(salle2[5]+" à "+salle2[6]); break;//HORAIRE DEBUT + FIN SALLE 2
                     }
                     cell.setCellStyle(cellStyleFont12HCT);
                 }
                 if(i == 29){
-                    cell.setCellValue("Disposition : "+equipements[6]); //DISPOSITION
+                	if(!(infos[0].equals("Forfait Heure"))) cell.setCellValue("Formule: "+ infos[0]+" ("+infos[1]+"h)"); else cell.setCellValue(infos[0]); //NOM FORMULE + HEURE FORMULE SALLE 1 
                     cell.setCellStyle(cellStyleFont12HCT);
                 }
             }
@@ -647,16 +661,17 @@ public class generationDevis implements Igeneration{
                     cell.setCellValue("Nombre");
                     cell.setCellStyle(cellStyle13ET);
                 }
-                else if(i == 18 || i == 22 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
+                else if(i == 18 || i == 21 || i == 24 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
                     switch(i){
                         case 18: cell.setCellValue(salle[2][0]); break; //LE NOMBRE DE FORMULE SALLE 1
-                        case 22: if(!(salle[0][1].equals("Aucune"))) cell.setCellValue(salle[2][1]); break; //LE NOMBRE DE FORMULE SALLE 2
-                        case 38: cell.setCellValue(services[6]); break;//LE NOMBRE DU SERVICE 1
-                        case 40: cell.setCellValue(services[7]); break;//LE NOMBRE DU SERVICE 2
-                        case 42: cell.setCellValue(services[8]); break;//LE NOMBRE DU SERVICE 3
-                        case 44: cell.setCellValue(services[9]); break;//LE NOMBRE DU SERVICE 4
-                        case 46: cell.setCellValue(services[10]); break;//LE NOMBRE DU SERVICE 5
-                        case 48: cell.setCellValue(services[11]); break;//LE NOMBRE DU SERVICE 6
+                        case 21: if(!(salle[0][1].equals("Aucune")))cell.setCellValue(salle[2][1]); break;//LE NOMBRE DE FORMULE SALLE 2
+                        case 24: if(!(salle[0][2].equals("Aucune")))cell.setCellValue(salle[2][2]); break;//LE NOMBRE DE FORMULE SALLE 3
+                        case 38: if(!(services[0].equals("Aucune")))cell.setCellValue(services[6]); break;//LE NOMBRE DU SERVICE 1
+                        case 40: if(!(services[1].equals("Aucune")))cell.setCellValue(services[7]); break;//LE NOMBRE DU SERVICE 2
+                        case 42: if(!(services[2].equals("Aucune")))cell.setCellValue(services[8]); break;//LE NOMBRE DU SERVICE 3
+                        case 44: if(!(services[3].equals("Aucune")))cell.setCellValue(services[9]); break;//LE NOMBRE DU SERVICE 4
+                        case 46: if(!(services[4].equals("Aucune")))cell.setCellValue(services[10]); break;//LE NOMBRE DU SERVICE 5
+                        case 48: if(!(services[5].equals("Aucune")))cell.setCellValue(services[11]); break;//LE NOMBRE DU SERVICE 6
                     }
                     cell.setCellStyle(cellStyleFont12CT);
                 }
@@ -672,17 +687,17 @@ public class generationDevis implements Igeneration{
                     cell.setCellValue("Prix unitaire HT");
                     cell.setCellStyle(cellStyle13ET);
                 }
-                else if(i == 18 || i == 22 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
+                else if(i == 18 || i == 21 || i == 24 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
                     switch(i){
                         case 18: cell.setCellValue(tarifs[0]+" €"); break; //TARIF DE LA SALLE 1 EN FONCTION DE LA FORMULE CHOISIE
-                        case 22: if(!(salle[0][1].equals("Aucune"))) cell.setCellValue(tarifs[1]+" €"); break; //TARIF DE LA SALLE 2 EN FONCTION DE LA FORMULE CHOISIE
-                        case 26: if(!(salle[0][2].equals("Aucune"))) cell.setCellValue(tarifs[2]+" €"); break; //TARIF DE LA SALLE 3 EN FONCTION DE LA FORMULE CHOISIE
-                        case 38: cell.setCellValue(prixServices[0]+" €"); break; //PRIX DU SERVICE 1
-                        case 40: cell.setCellValue(prixServices[1]+" €"); break; //PRIX DU SERVICE 2
-                        case 42: cell.setCellValue(prixServices[2]+" €"); break; //PRIX DU SERVICE 3
-                        case 44: cell.setCellValue(prixServices[3]+" €"); break; //PRIX DU SERVICE 4
-                        case 46: cell.setCellValue(prixServices[4]+" €"); break; //PRIX DU SERVICE 5
-                        case 48: cell.setCellValue(prixServices[5]+" €"); break; //PRIX DU SERVICE 6
+                        case 21: if(!(salle[0][1].equals("Aucune"))) cell.setCellValue(tarifs[1]+" €"); break; //TARIF DE LA SALLE 2 EN FONCTION DE LA FORMULE CHOISIE
+                        case 24: if(!(salle[0][2].equals("Aucune"))) cell.setCellValue(tarifs[2]+" €"); break; //TARIF DE LA SALLE 3 EN FONCTION DE LA FORMULE CHOISIE
+                        case 38: if(!(services[0].equals("Aucune")))cell.setCellValue(prixServices[0]+" €"); break; //PRIX DU SERVICE 1
+                        case 40: if(!(services[1].equals("Aucune")))cell.setCellValue(prixServices[1]+" €"); break; //PRIX DU SERVICE 2
+                        case 42: if(!(services[2].equals("Aucune")))cell.setCellValue(prixServices[2]+" €"); break; //PRIX DU SERVICE 3
+                        case 44: if(!(services[3].equals("Aucune")))cell.setCellValue(prixServices[3]+" €"); break; //PRIX DU SERVICE 4
+                        case 46: if(!(services[4].equals("Aucune")))cell.setCellValue(prixServices[4]+" €"); break; //PRIX DU SERVICE 5
+                        case 48: if(!(services[5].equals("Aucune")))cell.setCellValue(prixServices[5]+" €"); break; //PRIX DU SERVICE 6
                     }
                     cell.setCellStyle(cellStyleFont12CTsansBordures);
                 }
@@ -695,11 +710,11 @@ public class generationDevis implements Igeneration{
                     cell.setCellValue("Prix HT");
                     cell.setCellStyle(cellStyle13ET);
                 }
-                else if(i == 18 || i == 22 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
+                else if(i == 18 || i == 21 || i == 24 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
                     switch(i){
                         case 18: cell.setCellValue(salle1FINAL+" €"); break; //PRIX FINAL SALLE 1
-                        case 22: if(!(salle[0][1].equals("Aucune"))) cell.setCellValue(salle2FINAL+" €"); break; //PRIX FINAL SALLE 2 {SI EXISTE}
-                        case 26: if(!(salle[0][2].equals("Aucune"))) cell.setCellValue(salle3FINAL+" €"); break; //PRIX FINAL SALLE 3 {SI EXISTE}
+                        case 21: if(!(salle[0][1].equals("Aucune"))) cell.setCellValue(salle2FINAL+" €"); break; //PRIX FINAL SALLE 2 {SI EXISTE}
+                        case 24: if(!(salle[0][2].equals("Aucune"))) cell.setCellValue(salle3FINAL+" €"); break; //PRIX FINAL SALLE 3 {SI EXISTE}
                         case 38: if(!(services[0].equals("Aucune")))cell.setCellValue(service1FINAL+" €"); break; //PRIX FINAL SERVICE 1
                         case 40: if(!(services[1].equals("Aucune")))cell.setCellValue(service2FINAL+" €"); break; //PRIX FINAL SERVICE 2
                         case 42: if(!(services[2].equals("Aucune")))cell.setCellValue(service3FINAL+" €"); break; //PRIX FINAL SERVICE 3

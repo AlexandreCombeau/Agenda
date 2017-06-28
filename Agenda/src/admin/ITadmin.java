@@ -452,8 +452,11 @@ public class ITadmin extends javax.swing.JFrame {
         if(nom != null){
         switch(nom){
             case "Ajouter une reservation":
-            	ITcreerReservation1 nouvelleResa = ITcreerReservation1.creerFenetre();
-                nouvelleResa.setVisible(true);
+            	planningEnregistrement res=planningEnregistrement.creerFenetre();
+                res.setIg(Igeneration.getIg(0));
+                res.setVisible(true);
+            	//ITcreerReservation1 nouvelleResa = ITcreerReservation1.creerFenetre();
+                //nouvelleResa.setVisible(true);
                 
                 break;
                 
@@ -486,12 +489,17 @@ public class ITadmin extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "Il n'y a pas de reservation pour ce client", "information",JOptionPane.INFORMATION_MESSAGE);
                     }          
                     if (date!=null){
-                        int idReservation = rq.getIdByIdString("reservation", "idReservation", date, "dateDebut", idClient, "fkidClient");
-                        String salle = rq.getSalleFromResa(idReservation);
+                    	int idReservation = rq.getIdByIdString("reservation", "idReservation", date, "dateDebut", idClient, "fkidClient");
+                        String salle[] = rq.getSalleFromResa(idReservation);
                         //String infos[] = rq.getInfosReservation(idReservation);
+                        //int idClient = rq.getIntById("reservation", "idReservation", "fkidClient", idReservation);
+                        String nomclient = rq.getStrById("client", "idClient", "nom", idClient);
+                        String prenomclient = rq.getStrById("client", "idClient", "prenom", idClient);
+                        //String client = prenomclient+" "+nomclient;
+                        //String date = rq.getStrById("reservation", "idReservation", "dateDebut", idReservation);
                         String dateFin = rq.getStrById("reservation", "idReservation", "dateFin", idReservation);
-                        String disposition = rq.getDispositionFromResa(idReservation);
-                        int nbpers = rq.getIntById("reservation", "idReservation", "nbPersonnes", idReservation);
+                        String[] disposition = rq.getDispositionFromResa(idReservation);
+                        int[] nbpers = rq.getNbpersonnesFromResa(idReservation);
                         String formule = rq.getStrById("reservation", "idReservation", "fkidFormule", idReservation);
                         String heureD = rq.getHourById("reservation", "idReservation", "heureDebut", idReservation);
                         heureD = heureD.split(":")[0]+":"+heureD.split(":")[1];
@@ -500,28 +508,30 @@ public class ITadmin extends javax.swing.JFrame {
                         //System.out.println(infos);
                         //String disposition = "";
                         //String salle = infos[9];
-                        String option[] = rq.getOptionsFromResa(idReservation);
-                        String service[] = rq.getServicesFromResa(idReservation);
+                        int[] idSR=rq.getSalleResa(idReservation);
+                        String option[][] = rq.getOptionsFromResa(idSR);
+                        String service[][] = rq.getServicesFromResa(idSR);
                         
                         String salles[] = {"studio", "cabane", "bureau", "atelier"};
                         String dispositions[] = {"ecole", "en U", "theatre", "salle vide", "central", "ilots"};
-                        String[] lesChangements ={"validite de la réservation(option)", "date de début", "date de fin", "heure de début", "heure de fin","nombre de personnes", "nombre d'heures", "formule", "client", "modifier un service", "ajouter un service","modifier une option", "ajouter une option", "modifier une salle", "ajouter une salle", "disposition"};
-                        String changement = "";
                         if (!"".equals(dates[0])){
-                        	ITcreerReservation1 nouvelResa = ITcreerReservation1.creerFenetre(idReservation);
-                        	nouvelResa.setClient(client);
-                        	nouvelResa.setDisposition(disposition);
-                        	nouvelResa.setNbPersonne(nbpers);
-                        	nouvelResa.setDateDebut(date);
-                        	nouvelResa.setSalle(salle);
-                        	nouvelResa.setOptions(option);
-                        	nouvelResa.setServices(service);
-                        	nouvelResa.setDateFin(dateFin);
-                        	nouvelResa.setFormule(formule);
-                        	nouvelResa.setHeureDebut(heureD);
-                        	nouvelResa.setHeureFin(heureF);
-                        	//nouvelResa.setTitle(Integer.toString(idReservation));
-                            nouvelResa.setVisible(true);
+                        	
+                        	
+                            
+                            planningEnregistrement fac=planningEnregistrement.creerFenetre(idReservation);
+                            fac.setIg(Igeneration.getIg(0));
+                            fac.setClient(client);
+                        	fac.setDisposition(disposition);
+                        	fac.setNbPersonne(nbpers);
+                        	fac.setDateDebut(date);
+                        	fac.setSalle(salle);
+                        	fac.setOptions(option);
+                        	fac.setServices(service);
+                        	fac.setDateFin(dateFin);
+                        	fac.setFormule(formule);
+                        	fac.setHeureDebut(heureD);
+                        	fac.setHeureFin(heureF);
+                            fac.setVisible(true);
                         }
                     }
                 }
@@ -824,8 +834,11 @@ public class ITadmin extends javax.swing.JFrame {
     
 
     private void btnGenerationDevisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerationDevisActionPerformed
-        ITgenerationDevis devis = new ITgenerationDevis();
-        devis.setVisible(true);
+    	planningNotRec dev=planningNotRec.creerFenetre();
+        dev.setIg(Igeneration.getIg(1));
+        dev.setVisible(true);
+    	//ITgenerationDevis devis = new ITgenerationDevis();
+        //devis.setVisible(true);
     }//GEN-LAST:event_btnGenerationDevisActionPerformed
 
     private void btnModifierActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {//GEN-FIRST:event_btnModifierActionPerformed
@@ -833,7 +846,7 @@ public class ITadmin extends javax.swing.JFrame {
     	String strFac = (String)JOptionPane.showInputDialog(null, "Veuillez choisir facture a editer", "Edition de facture", JOptionPane.QUESTION_MESSAGE, null, Resa, Resa[0]);
         
     	int idReservation=Integer.parseInt(strFac);
-        String salle = rq.getSalleFromResa(idReservation);
+        String salle[] = rq.getSalleFromResa(idReservation);
         //String infos[] = rq.getInfosReservation(idReservation);
         int idClient = rq.getIntById("reservation", "idReservation", "fkidClient", idReservation);
         String nomclient = rq.getStrById("client", "idClient", "nom", idClient);
@@ -841,8 +854,8 @@ public class ITadmin extends javax.swing.JFrame {
         String client = prenomclient+" "+nomclient;
         String date = rq.getStrById("reservation", "idReservation", "dateDebut", idReservation);
         String dateFin = rq.getStrById("reservation", "idReservation", "dateFin", idReservation);
-        String disposition = rq.getDispositionFromResa(idReservation);
-        int nbpers = rq.getIntById("reservation", "idReservation", "nbPersonnes", idReservation);
+        String[] disposition = rq.getDispositionFromResa(idReservation);
+        int[] nbpers = rq.getNbpersonnesFromResa(idReservation);
         String formule = rq.getStrById("reservation", "idReservation", "fkidFormule", idReservation);
         String heureD = rq.getHourById("reservation", "idReservation", "heureDebut", idReservation);
         heureD = heureD.split(":")[0]+":"+heureD.split(":")[1];
@@ -851,13 +864,14 @@ public class ITadmin extends javax.swing.JFrame {
         //System.out.println(infos);
         //String disposition = "";
         //String salle = infos[9];
-        String option[] = rq.getOptionsFromResa(idReservation);
-        String service[] = rq.getServicesFromResa(idReservation);
+        int[] idSR=rq.getSalleResa(idReservation);
+        String option[][] = rq.getOptionsFromResa(idSR);
+        String service[][] = rq.getServicesFromResa(idSR);
         
         String salles[] = {"studio", "cabane", "bureau", "atelier"};
         String dispositions[] = {"ecole", "en U", "theatre", "salle vide", "central", "ilots"};
     	planningEnregistrement fac=planningEnregistrement.creerFenetre(Integer.parseInt(strFac));
-        fac.setIg(Igeneration.getIg(1));
+        fac.setIg(Igeneration.getIg(2));
         fac.setClient(client);
     	fac.setDisposition(disposition);
     	fac.setNbPersonne(nbpers);

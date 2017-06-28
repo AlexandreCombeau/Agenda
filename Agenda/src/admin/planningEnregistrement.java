@@ -3,6 +3,7 @@ package admin;
 import static gestionagenda.GestionAgenda.rq;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -32,19 +33,45 @@ public class planningEnregistrement extends AbstractPlanning{
 	}
 	
 	
-	public void validation(int resadispo, String dateDebut, String dateFin, String horaireDebut, String horaireFin, String nbParticipants, double nbHeures, int idClient, int idFormule, int idinfosalle, List<Integer> listeOS) throws SQLException{
-			if(resadispo!=id){  
+	public void validation(int resadispo, String dateDebut, String dateFin, String horaireDebut, String horaireFin, String nbParticipants, double nbHeures, int idClient, int idFormule, int[] idinfosalle, String[][] OS, int[] nbPersonnes) throws SQLException{
+			if(resadispo==0 || resadispo==id){  
         		
             
             if(id!=0){
         	    Io.recevoirId(id);
             }
             Io.operationResa(dateDebut,dateFin,horaireDebut+":00",horaireFin+":00",Integer.parseInt(nbParticipants),nbHeures, idClient, idFormule);
-        
+              
             int idReservation = rq.getIdByIdString("reservation", "idReservation", dateDebut, "dateDebut", idClient, "fkidClient");
-        
-            Io.operationSalleResa(idReservation, idinfosalle);
-            Io.operationChoix(idReservation, listeOS);
+            int[] idSR= new int[3];
+            for (int i=0;i<3;++i){
+            	if(idinfosalle[i]!=0){
+            	//Io.operationSalleResa(nbPersonnes, idReservation, idinfosalle);
+            	//List<Integer> listeOS = new ArrayList<Integer>();
+            	for(int j=0; j<12;++j){
+            		//System.out.println("i= "+i);
+            		//System.out.println("j= "+j);
+            		if(!OS[j][i].equals("Aucune")){
+            		OS[j][i]=(Integer.toString(rq.getIdOptionService(OS[j][i])));
+            		System.out.println(OS[j][i]);
+            		}
+            		
+            	}
+            	
+            	//Io.operationSalleResa(nbPersonnes, idReservation, idinfosalle[i]);
+            	
+            	}
+            	
+            }
+            
+            Io.operationSalleResa(nbPersonnes, idReservation, idinfosalle);
+            for (int i=0;i<3;++i){
+            	if(idinfosalle[i]!=0){
+            		idSR[i]=rq.getIdByTwoInt("salleResa", "idSallesResa", idReservation, "fkidReservation", idinfosalle[i], "fkidInfoSalle");
+            	}
+            }
+            Io.operationChoix(idReservation, OS, idSR);
+            //Io.operationChoix(idReservation, listeOS);
             
             //SI IL EXISTE UNE DEUXIEME SALLE
             /*String existe = (String)cbSalle2.getSelectedItem();

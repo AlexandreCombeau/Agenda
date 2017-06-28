@@ -22,15 +22,26 @@ public class operationAjout implements Ioperation{
 		rq.ajoutReservation(Datedebut, Datefin, Heuredebut, Heurefin, nbPersonne, nbHeure, idClient, idFormule);
 	}
 	
-	public void operationSalleResa (int idReservation, int info){
-		
-		rq.ajoutSalleResa(idReservation, info);
-		
+	public void operationSalleResa (int[] nbPersonnes, int idReservation, int[] info){
+		for(int i=0;i<3;++i){
+			if(nbPersonnes[i]!=0){
+				rq.ajoutSalleResa(nbPersonnes[i], idReservation, info[i]);
+			}
+		}
 	}
 	
-	public void operationChoix(int idReservation, List<Integer> choix) throws SQLException{
-		for(int id : choix){
-			rq.ajoutChoix(idReservation, id);
+	public void operationChoix(int idReservation, String[][] choix, int[] salleresa) throws SQLException{
+		for(int i=0;i<3;++i){
+			if(salleresa[i]!=0){
+				for(int j=0;j<12;++j){
+					System.out.println(choix[j][i]);
+					int c = Integer.parseInt(choix[j][i]);
+					System.out.println(c);
+					if(!choix[j][i].equals("Aucune")){
+						rq.ajoutChoix(idReservation, c, salleresa[i]);
+					}
+				}
+			}
 		}
 	}
 	

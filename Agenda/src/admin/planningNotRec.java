@@ -12,14 +12,14 @@ import database.operationModif;
 
 public class planningNotRec extends AbstractPlanning{
 	
-	public planningNotRec creerFenetre (int id){
+	public static planningNotRec creerFenetre (int id){
 		planningNotRec modif = new planningNotRec();
 		modif.id=id;
 
 		return modif;
 	}
 	
-	public planningNotRec creerFenetre (){
+	public static planningNotRec creerFenetre (){
 		planningNotRec modif = new planningNotRec();
 		modif.id=0;
 
@@ -31,8 +31,9 @@ public class planningNotRec extends AbstractPlanning{
 	}
 	
 	
-	public void validation(int resadispo, String dateDebut, String dateFin, String horaireDebut, String horaireFin, String nbParticipants, double nbHeures, int idClient, int idFormule, int idinfosalle, List<Integer> listeOS) throws SQLException{
-			if(resadispo!=id){  
+	public void validation(int resadispo, String dateDebut, String dateFin, String horaireDebut, String horaireFin, String nbParticipants, double nbHeures, int idClient, int idFormule, int[] idinfosalle, String[][] OS) throws SQLException{
+		 
+		if(resadispo!=id){  
         		
             
             

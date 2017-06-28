@@ -27,16 +27,28 @@ public class operationModif implements Ioperation{
 		
 	}
 	
-	public void operationSalleResa (int idReservation, int info) throws SQLException{
+	public void operationSalleResa (int[] nbPersonnes, int idReservation, int[] info) throws SQLException{
+		rq.deleteSalleResa(idReservation);
+		for(int i=0;i<3;++i){
+			if(nbPersonnes[i]!=0){
+				rq.ajoutSalleResa(nbPersonnes[i], idReservation, info[i]);
+			}
+		}
 		
-		rq.MAJsalle(idReservation, info);
 		
 	}
 	
-	public void operationChoix(int idReservation, List<Integer> choix) throws SQLException{
+	public void operationChoix(int idReservation, String[][] choix, int[] salleresa) throws SQLException{
 		rq.deleteChoix(idReservation);
-		for(int id : choix){
-			rq.ajoutChoix(idReservation, id);
+		for(int i=0;i<3;++i){
+			if(salleresa[i]!=0){
+				for(int j=0;j<12;++j){
+					System.out.println(choix[j][i]);
+					if(!choix[j][i].equals("Aucune")){
+						rq.ajoutChoix(idReservation, Integer.parseInt(choix[j][i]), salleresa[i]);
+					}
+				}
+			}
 		}
 	}
 	
