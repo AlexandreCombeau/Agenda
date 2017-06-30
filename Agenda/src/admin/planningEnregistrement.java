@@ -51,9 +51,10 @@ public class planningEnregistrement extends AbstractPlanning{
             	for(int j=0; j<12;++j){
             		//System.out.println("i= "+i);
             		//System.out.println("j= "+j);
+            		//System.out.println(OS[j][i]);
             		if(!OS[j][i].equals("Aucune")){
-            		OS[j][i]=(Integer.toString(rq.getIdOptionService(OS[j][i])));
-            		System.out.println(OS[j][i]);
+            		//OS[j][i]=(Integer.toString(rq.getIdOptionService(OS[j][i])));
+            		//System.out.println(OS[j][i]);
             		}
             		
             	}

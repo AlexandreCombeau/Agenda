@@ -1292,9 +1292,9 @@ public class BdDAO {
         	String query= "SELECT salle.libelle FROM salle, infoSalle, salleResa WHERE salle.idSalle=infoSalle.fkidSalle AND salleResa.fkidInfoSalle=infoSalle.idInfoSalle AND salleResa.fkidReservation="+idReservation+"";
         	rs = co.query(query);
             String []salle = new String [3];
-            salle[0]="";
-            salle[1]="";
-            salle[2]="";
+            salle[0]="Aucune";
+            salle[1]="Aucune";
+            salle[2]="Aucune";
             int lasalle=0;
             while(rs.next()){
                salle[lasalle] = rs.getString("salle.libelle");

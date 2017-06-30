@@ -102,6 +102,9 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
             cbService4.addItem("Aucune");
             cbService5.addItem("Aucune");
             cbService6.addItem("Aucune");
+            for(int i=0;i<3;++i){salles[0][i]="Aucune";}
+            for(int i=0;i<3;++i){for(int j=0;j<12;++j){salles[0][i]="Aucune";}}
+            
             
             //On initialise les combo box avec les données récupérées plus haut.
             for (String heures : heures){
@@ -607,6 +610,18 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
     	   int cs=currentSalle;
            cbNoSalle.setSelectedIndex(cs);
            SalleChange();
+           //int cs=currentSalle;
+           cbNoSalle.setSelectedIndex(0);
+           SalleChange();
+           //int cs=currentSalle;
+           cbNoSalle.setSelectedIndex(1);
+           SalleChange();
+           //int cs=currentSalle;
+           cbNoSalle.setSelectedIndex(2);
+           SalleChange();
+           cbNoSalle.setSelectedIndex(cs);
+           SalleChange();
+           
            //currentSalle=cs;
            
            
@@ -767,18 +782,19 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
             	}
             }
             //MAJ BDD
+            
         	validation(resadispo, dateDebut, dateFin, horaireDebut, horaireFin, nbParticipants, nbHeures, idClient, idFormule, idinfosalle, OSTab, nbPersonnes);
         	
         	//GENERATION 
         	String adresse=rq.getStrById("client", "idClient", "adresseFacturation", idClient);
-        	String [] clientInfo= new String[6];
+        	String [] clientInfo= new String[7];
         	clientInfo[0]=adresse.split(",")[0];
         	clientInfo[1]=adresse.split(",")[1];
         	clientInfo[2]=adresse.split(",")[1].split(" ")[1];
         	clientInfo[5]=client;
         	clientInfo[3]=rq.getStrById("client", "idClient", "eMail", idClient);
         	clientInfo[4]=rq.getStrById("client", "idClient", "telephone", idClient);
-        	clientInfo[5]=Integer.toString(idClient);
+        	clientInfo[6]=Integer.toString(idClient);
         	
         	//String commentSalle= rq.getStrById("salle", "idSalle", "descriptif", idsalle);
         	//String[] equipements = {o1, o2, o3, o4, o5, o6, disposition};
@@ -1133,6 +1149,7 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
     		OSTab[i][0]=options[i][0];
     		OSTab[i][1]=options[i][1];
     		OSTab[i][2]=options[i][2];
+    		System.out.println(OSTab[i][0]);
     	}	
     }
     
@@ -1144,6 +1161,7 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
     		OSTab[i][0]=services[i-6][0];
     		OSTab[i][1]=services[i-6][1];
     		OSTab[i][2]=services[i-6][2];
+    		System.out.println(OSTab[i][0]);
     	}	
     }
     

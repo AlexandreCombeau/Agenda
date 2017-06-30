@@ -560,12 +560,12 @@ public class generationDevis implements Igeneration{
                         case 18: cell.setCellValue(salle[0][0]); break; //NOM DE LA SALLE 1
                         case 21: if(salle[0][1]!="Aucune")cell.setCellValue(salle[0][1]); break; //NOM DE LA SALLE 2
                         case 24: if(salle[0][2]!="Aucune")cell.setCellValue(salle[0][2]); break; //NOM DE LA SALLE 2
-                        case 38: cell.setCellValue(services[0]); break; //NOM DU SERVICE 1
-                        case 40: cell.setCellValue(services[1]); break; //NOM DU SERVICE 2
-                        case 42: cell.setCellValue(services[2]); break; //NOM DU SERVICE 3
-                        case 44: cell.setCellValue(services[3]); break; //NOM DU SERVICE 4
-                        case 46: cell.setCellValue(services[4]); break; //NOM DU SERVICE 5
-                        case 48: cell.setCellValue(services[5]); break; //NOM DU SERVICE 6
+                        case 38: if(services[0]!="Aucune")cell.setCellValue(services[0]); break; //NOM DU SERVICE 1
+                        case 40: if(services[1]!="Aucune")cell.setCellValue(services[1]); break; //NOM DU SERVICE 2
+                        case 42: if(services[2]!="Aucune")cell.setCellValue(services[2]); break; //NOM DU SERVICE 3
+                        case 44: if(services[3]!="Aucune")cell.setCellValue(services[3]); break; //NOM DU SERVICE 4
+                        case 46: if(services[4]!="Aucune")cell.setCellValue(services[4]); break; //NOM DU SERVICE 5
+                        case 48: if(services[5]!="Aucune")cell.setCellValue(services[5]); break; //NOM DU SERVICE 6
                     }
                     cell.setCellStyle(cellStyleFont13Gras);
                 }

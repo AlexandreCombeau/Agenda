@@ -44,8 +44,10 @@ public class operationModif implements Ioperation{
 			if(salleresa[i]!=0){
 				for(int j=0;j<12;++j){
 					System.out.println(choix[j][i]);
+					int c = rq.getIdOptionService(choix[j][i]);
+					System.out.println(c);
 					if(!choix[j][i].equals("Aucune")){
-						rq.ajoutChoix(idReservation, Integer.parseInt(choix[j][i]), salleresa[i]);
+						rq.ajoutChoix(idReservation, c, salleresa[i]);
 					}
 				}
 			}
