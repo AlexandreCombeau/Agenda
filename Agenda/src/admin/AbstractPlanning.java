@@ -178,7 +178,7 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
             SalleChange();
             currentSalle=0;
         } catch (SQLException ex) {
-            Logger.getLogger(ITcreerReservation1.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(ITcreerReservation1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -818,7 +818,7 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
         	
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ITcreerReservation1.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(ITcreerReservation1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnEnregistrerActionPerformed
 

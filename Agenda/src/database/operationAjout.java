@@ -30,7 +30,7 @@ public class operationAjout implements Ioperation{
 		}
 	}
 	
-	public void operationChoix(int idReservation, String[][] choix, int[] salleresa) throws SQLException{
+	public void operationChoix(String[][] choix, int[] salleresa) throws SQLException{
 		for(int i=0;i<3;++i){
 			if(salleresa[i]!=0){
 				for(int j=0;j<12;++j){
@@ -38,7 +38,7 @@ public class operationAjout implements Ioperation{
 					int c = rq.getIdOptionService(choix[j][i]);
 					System.out.println(c);
 					if(!choix[j][i].equals("Aucune")){
-						rq.ajoutChoix(idReservation, c, salleresa[i]);
+						rq.ajoutChoix(c, salleresa[i]);
 					}
 				}
 			}

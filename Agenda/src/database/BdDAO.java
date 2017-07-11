@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import admin.ITcreerReservation1;
+import admin.AbstractPlanning;
 /**
  *
  * @author Villalemons
@@ -66,6 +66,10 @@ public class BdDAO {
          * @return Retourne l'utilisateur en question avec ses informations
          * @throws SQLException
          */
+		public Connexion getConnection(){
+			return co;
+		}
+	
         public Usager getUsager(String login, String pwd) throws SQLException{
             String request = "SELECT * FROM Usager WHERE login='"+login+"' AND password='"+pwd+"'";
             rs = co.query(request);
@@ -226,6 +230,24 @@ public class BdDAO {
         		
         	}
         	return ListedElements.toArray(new String[0]);
+        }
+        
+        public int[] getListedIntsById(String table, String element, int id, String idnom) throws SQLException {
+        	List<Integer> ListedElements = new ArrayList<>(); 
+        	PreparedStatement request = co.getConnection().prepareStatement("Select "+element+" from "+table+" where "+idnom+"= ?");
+        	request.setInt(1, id);
+        	rs = request.executeQuery();
+        	while(rs.next()) {
+        		ListedElements.add(rs.getInt(element));
+        		
+        	}
+        	int [] elements = new int [ListedElements.size()];
+        	int i=0;
+        	for(Integer I:ListedElements){
+        		elements[i]=I;
+        		i+=1;
+        	}
+        	return elements;
         }
         
         public String[] getListedElementsByName(String table, String element, String nom, String nomname) throws SQLException {
@@ -972,11 +994,21 @@ public class BdDAO {
         }
         
         public String getCouleurTache(int idTache) throws SQLException {
-        	PreparedStatement request  = co.getConnection().prepareStatement("Select codeCouleur from tache where tache.idTache = ?");
+        	PreparedStatement request  = co.getConnection().prepareStatement("Select typeTache.codeCouleur from typeTache, tache where tache.fkidTypeTache=typeTache.idTypeTache AND tache.idTache = ?");
         	request.setInt(1, idTache);
         	rs = request.executeQuery();
         	if(rs.next()) {
         		return rs.getString("codeCouleur");
+        	}
+        	return "";
+        }
+        
+        public String getTypeTache(int idTache) throws SQLException {
+        	PreparedStatement request  = co.getConnection().prepareStatement("Select typeTache.nom from typeTache, tache where tache.fkidTypeTache=typeTache.idTypeTache AND tache.idTache = ?");
+        	request.setInt(1, idTache);
+        	rs = request.executeQuery();
+        	if(rs.next()) {
+        		return rs.getString("nom");
         	}
         	return "";
         }
@@ -1677,7 +1709,7 @@ public class BdDAO {
             		String dF = rs.getString("dateFin");
             		String hD = formatter.format(rs.getTime("heureDebut"));
             		String hF = formatter.format(rs.getTime("heureFin"));
-            		if((ITcreerReservation1.comparerdates(dateDebut, dD) && ITcreerReservation1.comparerdates(dF ,dateDebut)) || (ITcreerReservation1.comparerdates(dateFin, dD) && ITcreerReservation1.comparerdates(dF, dateFin))|| (ITcreerReservation1.comparerdates(dD, dateDebut) && ITcreerReservation1.comparerdates(dateFin, dF))|| ITcreerReservation1.comparerheures(hF, horaireDebut, dateDebut, dF) || ITcreerReservation1.comparerheures(horaireFin, hD, dateFin, dD)){
+            		if((AbstractPlanning.comparerdates(dateDebut, dD) && AbstractPlanning.comparerdates(dF ,dateDebut)) || (AbstractPlanning.comparerdates(dateFin, dD) && AbstractPlanning.comparerdates(dF, dateFin))|| (AbstractPlanning.comparerdates(dD, dateDebut) && AbstractPlanning.comparerdates(dateFin, dF))|| AbstractPlanning.comparerheures(hF, horaireDebut, dateDebut, dF) || AbstractPlanning.comparerheures(horaireFin, hD, dateFin, dD)){
             			id=rs.getInt("idReservation");
             			return id;
             		}
@@ -1879,8 +1911,8 @@ public class BdDAO {
              co.update(quest);
         }
         
-        public void MAJsalle(int nbPersonnes, int infosalle, int idReservation) throws SQLException{
-            String quest = "UPDATE salleResa SET nbPersonnes="+nbPersonnes+", fkidInfoSalle = "+infosalle+" WHERE fkidReservation = "+idReservation+"";
+        public void MAJSalleResa(int nbPersonnes, int infosalle, int idsalleresa) throws SQLException{
+            String quest = "UPDATE salleResa SET nbPersonnes="+nbPersonnes+", fkidInfoSalle = "+infosalle+" WHERE idSallesResa = "+idsalleresa+"";
             co.update(quest);
         }
         
@@ -1975,10 +2007,10 @@ public class BdDAO {
             co.execut(request);
         }
         
-        public void ajoutChoix(int idReservation, int choix, int salleresa) throws SQLException{
+        public void ajoutChoix(int choix, int salleresa) throws SQLException{
         	 
         	 
-        		 String nouveauChoix = "INSERT INTO choix (fkidReservation, fkidOptionsServices, fkidSalleResa) VALUES ("+idReservation+", "+choix+", "+salleresa+")";
+        		 String nouveauChoix = "INSERT INTO choix (fkidOptionsServices, fkidSalleResa) VALUES ("+choix+", "+salleresa+")";
         	 	 System.out.print(nouveauChoix);
         		 co.execut(nouveauChoix);
         	 
@@ -2058,31 +2090,37 @@ public class BdDAO {
            System.out.println("DELETE REUSSIE");
        }
        
-       public void deleteChoix(int idReservation){
-    	   String request = "DELETE FROM choix WHERE fkidReservation="+idReservation+"";
+       public void deleteChoix(int idSalleResa){
+    	   String request = "DELETE FROM choix WHERE fkidSalleResa="+idSalleResa+"";
     	   co.execut(request);
            System.out.println("DELETE REUSSIE");
        }
        
        public void deleteResa(int idReservation){
+    	   try{
     	   String request = "DELETE FROM reservation WHERE idReservation="+idReservation+"";
     	   co.execut(request);
+    	   
+		   int[]salleResa=rq.getListedIntsById("salleResa", "idSallesResa", idReservation, "fkidReservation");
+		
     	   request = "DELETE FROM salleResa WHERE fkidReservation="+idReservation+"";
     	   co.execut(request);
-    	   request = "DELETE FROM choix WHERE fkidReservation="+idReservation+"";
-    	   co.execut(request);
-           System.out.println("DELETE REUSSIE");
+    	   for(int i:salleResa){
+    		   	request = "DELETE FROM choix WHERE fkidSalleResa="+i+"";
+    	   		co.execut(request);
+           		System.out.println("DELETE REUSSIE");
+    	   }
+    	   } catch (SQLException e) {
+   			// TODO Auto-generated catch block
+   			e.printStackTrace();
+   		   }
        }
        
        public void deleteClient(String prenom, String nom){
     	   String request = "DELETE FROM client WHERE prenom='"+prenom+"' AND nom='"+nom+"'";
     	   co.execut(request);
            System.out.println("DELETE REUSSIE");
-       }
-
-	
-
-	
+       }	
 }
         /*
         ========================================================================

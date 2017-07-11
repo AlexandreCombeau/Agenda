@@ -7,6 +7,7 @@
 package reservations;
 
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -18,6 +19,7 @@ import java.util.logging.Logger;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -29,6 +31,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import admin.ITadmin;
 import database.ITconnexion;
+import stats.FrameStats;
+import stats.PanelConfigStats;
 
 
 /**
@@ -56,7 +60,6 @@ public class ITagenda extends javax.swing.JFrame {
     public ITagenda() {
     	try {
     		for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-    			System.out.println(info.getName());
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
@@ -263,6 +266,13 @@ public class ITagenda extends javax.swing.JFrame {
         	}
         });
         
+        JButton btnNewButton = new JButton("Stats");
+        btnNewButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent evt) {
+        		btnStats(evt);
+        	}
+        });
+        
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         layout.setHorizontalGroup(
@@ -280,8 +290,10 @@ public class ITagenda extends javax.swing.JFrame {
         					.addPreferredGap(ComponentPlacement.RELATED)
         					.addComponent(btnSemaineSuivante, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)))
         			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(layout.createSequentialGroup()
-        					.addPreferredGap(ComponentPlacement.RELATED, 373, Short.MAX_VALUE)
+        				.addGroup(Alignment.TRAILING, layout.createSequentialGroup()
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(btnNewButton)
+        					.addGap(18)
         					.addComponent(btnAdmin, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
         					.addGap(30)
         					.addComponent(btnDeconnexion)
@@ -295,7 +307,7 @@ public class ITagenda extends javax.swing.JFrame {
         					.addComponent(btnJour)
         					.addPreferredGap(ComponentPlacement.UNRELATED)
         					.addComponent(btnSemaine)
-        					.addContainerGap(263, Short.MAX_VALUE))))
+        					.addContainerGap(295, Short.MAX_VALUE))))
         		.addGroup(layout.createSequentialGroup()
         			.addGap(192)
         			.addComponent(lblLundiStatic)
@@ -327,7 +339,7 @@ public class ITagenda extends javax.swing.JFrame {
         			.addComponent(lblDimanche)
         			.addContainerGap(86, Short.MAX_VALUE))
         		.addGroup(layout.createSequentialGroup()
-        			.addContainerGap(63, Short.MAX_VALUE)
+        			.addContainerGap(73, Short.MAX_VALUE)
         			.addComponent(panelCentre, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addGap(52))
         );
@@ -373,13 +385,14 @@ public class ITagenda extends javax.swing.JFrame {
         				.addGroup(layout.createSequentialGroup()
         					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
         						.addComponent(btnDeconnexion, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-        						.addComponent(btnAdmin, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE))
+        						.addComponent(btnAdmin, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
         					.addGap(18))))
         );
         getContentPane().setLayout(layout);
         // ajout du scrollPane pour la vue jour, il permet d'avoir des barres de defilements
         JScrollPane scrollPane = new JScrollPane(panelJour,   ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(25); // la molette parcour plus de distance quand on l'utilise 
+        scrollPane.getVerticalScrollBar().setUnitIncrement(25); // la mollette parcour plus de distance quand on l'utilise 
         panelCardLayout.add(panelAgenda1, VU_SEMAINE); // ajout des panels panelAgenda et panelJour dans un cardLayout
         panelCardLayout.add(scrollPane, VU_JOUR); //  le cardLayout permet de simuler une sorte de diaporama, empilement de panels
         ((CardLayout)panelCardLayout.getLayout()).show(panelCardLayout, VU_SEMAINE); // on affiche le panelAgenda par defaut quand on ITAgenda se charge
@@ -604,6 +617,17 @@ public class ITagenda extends javax.swing.JFrame {
 	        lblLundiSemaine.setText("Semaine du " + lundi + " au " + dimanche);	       
     	}
     }
+    
+    private void btnStats(ActionEvent evt) {
+        /*panelStats = new stats.PanelStats();
+		panelStats.setVisible(true);
+		panelStats.setSize(new Dimension(this.getWidth(), this.getHeight()));
+		PanelConfigStats s = new PanelConfigStats();
+		s.setVisible(true);
+		s.setSize(new Dimension(this.getWidth(), this.getHeight()));*/
+    	FrameStats fr = new FrameStats();
+    	
+	}
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -640,6 +664,7 @@ public class ITagenda extends javax.swing.JFrame {
     private reservations.PanelAgenda panelAgenda1;
     private reservations.PanelJour panelJour;
     private javax.swing.JPanel panelCentre;
+    private stats.PanelStats panelStats; 
     private javax.swing.JLabel txtWelcome;
     private JButton btnJour;
     private JButton btnSemaine;

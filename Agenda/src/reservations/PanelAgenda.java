@@ -141,7 +141,6 @@ public class PanelAgenda extends javax.swing.JPanel {
 				        	 if(((Integer)new Calendar.Builder().setDate(Integer.parseInt(strDebut[2]),Integer.parseInt(strDebut[1]),Integer.parseInt(strDebut[0])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))) {
 				        		 evenement = new Evenement(1+largeurColonneHeure+i*largeurColonneJour+decalageEvenement,
 				                      ((heureDebut-6)*espacementHeure)+decalageMinuteDebut, largeurEven, ((23 - heureDebut)*espacementHeure)+decalageMinuteFin-decalageMinuteDebut,idEvenement,couleur, typeEvenement);
-				        	  
 				              } // commence ce jour et finit après
 				              else if(!((Integer)new Calendar.Builder().setDate(Integer.parseInt(strDebut[2]),Integer.parseInt(strDebut[1]),Integer.parseInt(strDebut[0])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))
 				            		  && !((Integer)new Calendar.Builder().setDate(Integer.parseInt(strFin[2]),Integer.parseInt(strFin[1]),Integer.parseInt(strFin[0])).build().get(Calendar.DAY_OF_MONTH)).equals(cal2.get(Calendar.DAY_OF_MONTH))) {

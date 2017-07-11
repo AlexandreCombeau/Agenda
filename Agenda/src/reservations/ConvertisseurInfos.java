@@ -67,7 +67,6 @@ public class ConvertisseurInfos {
 	public static String convertTache(String[] chaine) {
 		StringBuilder sb = new StringBuilder();
 		IntStream.range(0, chaine.length).forEach(i->sb.append(chaine[i]).append("\n"));
-		System.out.println(sb.toString());
 		return sb.toString();
 	}
 }

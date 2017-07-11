@@ -121,8 +121,9 @@ public class Evenement extends JComponent {
 	    		rectangle.drawString(rq.getNomClient(id), this.getX()+3, this.getY()+25);
 	    		break;
 	    	case Tache : 
-	    		rectangle.drawString(rq.getNomTache(id), this.getX()+3, this.getY()+15);
-	    		rectangle.drawString(rq.getCommentTache(id), this.getX()+3, this.getY()+25);
+	    		rectangle.drawString(rq.getTypeTache(id), this.getX()+3, this.getY()+15);
+	    		rectangle.drawString(rq.getNomTache(id), this.getX()+3, this.getY()+25);
+	    		rectangle.drawString(rq.getCommentTache(id), this.getX()+3, this.getY()+35);
 	    		break;
 	    	}
     	}catch (SQLException e){

@@ -28,26 +28,36 @@ public class operationModif implements Ioperation{
 	}
 	
 	public void operationSalleResa (int[] nbPersonnes, int idReservation, int[] info) throws SQLException{
-		rq.deleteSalleResa(idReservation);
-		for(int i=0;i<3;++i){
+		int[] idsalleresa = rq.getListedIntsById("salleResa", "idSallesResa", id, "fkidReservation");
+		//rq.deleteSalleResa(idReservation);
+		int stock=0;
+		for(int i=0;i<idsalleresa.length;++i){
+			if(nbPersonnes[i]!=0){
+				rq.MAJSalleResa(nbPersonnes[i], info[i], idsalleresa[i]);
+				stock+=1;
+			}
+		}
+		for(int i=stock;i<3;++i){
 			if(nbPersonnes[i]!=0){
 				rq.ajoutSalleResa(nbPersonnes[i], idReservation, info[i]);
 			}
 		}
 		
-		
 	}
 	
-	public void operationChoix(int idReservation, String[][] choix, int[] salleresa) throws SQLException{
-		rq.deleteChoix(idReservation);
+	public void operationChoix(String[][] choix, int[] salleresa) throws SQLException{
+		for(int i:salleresa){
+			rq.deleteChoix(i);
+		}
 		for(int i=0;i<3;++i){
 			if(salleresa[i]!=0){
+				
 				for(int j=0;j<12;++j){
 					System.out.println(choix[j][i]);
 					int c = rq.getIdOptionService(choix[j][i]);
 					System.out.println(c);
 					if(!choix[j][i].equals("Aucune")){
-						rq.ajoutChoix(idReservation, c, salleresa[i]);
+						rq.ajoutChoix(c, salleresa[i]);
 					}
 				}
 			}

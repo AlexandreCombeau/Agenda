@@ -35,16 +35,23 @@ public class planningEnregistrement extends AbstractPlanning{
 	
 	public void validation(int resadispo, String dateDebut, String dateFin, String horaireDebut, String horaireFin, String nbParticipants, double nbHeures, int idClient, int idFormule, int[] idinfosalle, String[][] OS, int[] nbPersonnes) throws SQLException{
 			if(resadispo==0 || resadispo==id){  
-        		
+				//int[] idsalleresa = null;
             
             if(id!=0){
         	    Io.recevoirId(id);
+        	    //idsalleresa = rq.getListedIntsById("salleResa", "idSalleResa", id, "fkidReservation");
             }
+            
             Io.operationResa(dateDebut,dateFin,horaireDebut+":00",horaireFin+":00",Integer.parseInt(nbParticipants),nbHeures, idClient, idFormule);
               
             int idReservation = rq.getIdByIdString("reservation", "idReservation", dateDebut, "dateDebut", idClient, "fkidClient");
+            
+            //int[] idsalleresa = rq.getListedIntsById("salleResa", "idSalleResa", idReservation, "fkidReservation");
+            
+            
             int[] idSR= new int[3];
             for (int i=0;i<3;++i){
+            	
             	if(idinfosalle[i]!=0){
             	//Io.operationSalleResa(nbPersonnes, idReservation, idinfosalle);
             	//List<Integer> listeOS = new ArrayList<Integer>();
@@ -71,7 +78,8 @@ public class planningEnregistrement extends AbstractPlanning{
             		idSR[i]=rq.getIdByTwoInt("salleResa", "idSallesResa", idReservation, "fkidReservation", idinfosalle[i], "fkidInfoSalle");
             	}
             }
-            Io.operationChoix(idReservation, OS, idSR);
+            
+			Io.operationChoix(OS, idSR);
             //Io.operationChoix(idReservation, listeOS);
             
             //SI IL EXISTE UNE DEUXIEME SALLE
