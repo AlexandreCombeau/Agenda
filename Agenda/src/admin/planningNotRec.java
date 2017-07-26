@@ -31,7 +31,7 @@ public class planningNotRec extends AbstractPlanning{
 	}
 	
 	
-	public void validation(int resadispo, String dateDebut, String dateFin, String horaireDebut, String horaireFin, String nbParticipants, double nbHeures, int idClient, int idFormule, int[] idinfosalle, String[][] OS) throws SQLException{
+	public void validation(int resadispo, String[] date, String horaireDebut, String horaireFin, String nbParticipants, double nbHeures, int idClient, int idFormule, int[] idinfosalle, String[][][] OS) throws SQLException{
 		 
 		if(resadispo!=id){  
         		

@@ -33,7 +33,7 @@ public class planningEnregistrement extends AbstractPlanning{
 	}
 	
 	
-	public void validation(int resadispo, String dateDebut, String dateFin, String horaireDebut, String horaireFin, String nbParticipants, double nbHeures, int idClient, int idFormule, int[] idinfosalle, String[][] OS, int[] nbPersonnes) throws SQLException{
+	public void validation(int resadispo, String[] date, String horaireDebut, String horaireFin, String nbParticipants, double nbHeures, int idClient, int idFormule, int[][] idinfosalle, String[][][] OS, int[][] nbPersonnes) throws SQLException{
 			if(resadispo==0 || resadispo==id){  
 				//int[] idsalleresa = null;
             
@@ -42,43 +42,47 @@ public class planningEnregistrement extends AbstractPlanning{
         	    //idsalleresa = rq.getListedIntsById("salleResa", "idSalleResa", id, "fkidReservation");
             }
             
-            Io.operationResa(dateDebut,dateFin,horaireDebut+":00",horaireFin+":00",Integer.parseInt(nbParticipants),nbHeures, idClient, idFormule);
+            Io.operationResa(date[0],date[nbDates-1],horaireDebut+":00",horaireFin+":00",Integer.parseInt(nbParticipants),nbHeures, idClient, idFormule);
               
-            int idReservation = rq.getIdByIdString("reservation", "idReservation", dateDebut, "dateDebut", idClient, "fkidClient");
+            int idReservation = rq.getIdByIdString("reservation", "idReservation", date[0], "dateDebut", idClient, "fkidClient");
             
             //int[] idsalleresa = rq.getListedIntsById("salleResa", "idSalleResa", idReservation, "fkidReservation");
             
             
-            int[] idSR= new int[3];
-            for (int i=0;i<3;++i){
+            int[] idSR= new int[nbDates*3];
+            //for(int j=0;j<nbDates;++j){
+            //for (int i=0;i<3;++i){
             	
-            	if(idinfosalle[i]!=0){
+            	//if(idinfosalle[i][j]!=0){
             	//Io.operationSalleResa(nbPersonnes, idReservation, idinfosalle);
             	//List<Integer> listeOS = new ArrayList<Integer>();
-            	for(int j=0; j<12;++j){
+            	//for(int j=0; j<12;++j){
             		//System.out.println("i= "+i);
             		//System.out.println("j= "+j);
             		//System.out.println(OS[j][i]);
-            		if(!OS[j][i].equals("Aucune")){
+            		//if(!OS[j][i].equals("Aucune")){
             		//OS[j][i]=(Integer.toString(rq.getIdOptionService(OS[j][i])));
             		//System.out.println(OS[j][i]);
-            		}
+            		//}
             		
-            	}
+            	//}
             	
             	//Io.operationSalleResa(nbPersonnes, idReservation, idinfosalle[i]);
             	
-            	}
+            	//}
             	
-            }
+            //}
             
-            Io.operationSalleResa(nbPersonnes, idReservation, idinfosalle);
-            for (int i=0;i<3;++i){
-            	if(idinfosalle[i]!=0){
-            		idSR[i]=rq.getIdByTwoInt("salleResa", "idSallesResa", idReservation, "fkidReservation", idinfosalle[i], "fkidInfoSalle");
+            
+            Io.operationSalleResa(nbPersonnes, idReservation, idinfosalle, date, nbDates);
+            for(int j=0;j<nbDates;++j){
+            	for (int i=0;i<3;++i){
+            		if(idinfosalle[i][j]!=0){
+            			idSR[i+j*3]=rq.getIdByTwoIntOneString("salleResa", "idSallesResa", idReservation, "fkidReservation", idinfosalle[i][j], "fkidInfoSalle", date[j], "date");
+            			System.out.println((i+j*3)+": "+idSR[i+j*3]);
+            		}
             	}
             }
-            
 			Io.operationChoix(OS, idSR);
             //Io.operationChoix(idReservation, listeOS);
             

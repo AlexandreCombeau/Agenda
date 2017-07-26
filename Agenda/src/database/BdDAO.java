@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import admin.AbstractPlanning;
@@ -177,6 +178,19 @@ public class BdDAO {
         	
         	request.setInt(1, nom1);
         	request.setInt(2, nom2);
+        	System.out.println(request);
+        	rs = request.executeQuery();
+        	if(rs.next())
+        		return rs.getInt(idnom);
+        	return 0;
+        }
+        
+        public int getIdByTwoIntOneString(String table, String idnom, int nom1, String nomname1, int nom2, String nomname2, String nom3, String nomname3) throws SQLException{
+        	PreparedStatement request = co.getConnection().prepareStatement("Select "+idnom+" from "+table+" where "+nomname1+" = ? AND "+nomname2+"= ? AND "+nomname3+"= ?");
+        	
+        	request.setInt(1, nom1);
+        	request.setInt(2, nom2);
+        	request.setString(3, nom3);
         	System.out.println(request);
         	rs = request.executeQuery();
         	if(rs.next())
@@ -1320,6 +1334,144 @@ public class BdDAO {
             return heure;
         }
         
+        public String[][][] getInfosResa(int idReservation) throws SQLException{
+        	String dates="SELECT reservation.dateDebut, reservation.dateFin FROM reservation WHERE idReservation="+idReservation+"";
+        	rs = co.query(dates);
+        	String[] debfin = new String [2];
+        	while(rs.next()){
+        		debfin[0]=rs.getString("reservation.dateDebut");
+        		debfin[1]=rs.getString("reservation.dateFin");
+        	}
+        	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        	int nbDates=0;
+        	try {
+				nbDates = (int)( (sdf.parse(debfin[1]).getTime() - sdf.parse(debfin[0]).getTime()) / (1000 * 60 * 60 * 24)+1);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	String[] date = new String[nbDates];
+        	String Current=debfin[0];
+            for(int i=0;i<nbDates;++i){
+            	System.out.println(Current);
+            	date[i]=Current;
+            	GregorianCalendar dat = new GregorianCalendar();
+            	try {
+					dat.setTime(sdf.parse(Current));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            	dat.add(Calendar.DAY_OF_YEAR, 1);
+            	Current=sdf.format(dat.getTime());
+            	System.out.println(date[i]);
+            }
+        	String query="SELECT salle.libelle, salleresa.date, disposition.libelle, salleresa.nbPersonnes, salle.descriptif FROM salleresa, salle, infosalle, disposition WHERE salleresa.fkidReservation="+idReservation+" AND salleresa.fkidInfoSalle=infosalle.idInfoSalle AND infosalle.fkidDisposition=disposition.idDisposition and infosalle.fkidSalle=salle.idSalle GROUP BY salle.libelle, disposition.libelle, salleresa.nbPersonnes, salle.descriptif, salleresa.date ORDER BY salle.libelle";
+        	rs = co.query(query);
+        	String[][][] salle = new String[4][3][365];
+        	for(int i=0;i<4;++i)for(int j=0;j<3;++j)for(int k=0;k<365;++k)salle[i][j][k]="Aucune";
+        	String[] nomsalle = new String[3];
+        	for(String s:nomsalle)s="Aucune";
+        	int lastsalle=0;
+        	while(rs.next()){
+        		for(int i=0;i<nbDates;++i){
+        			if(!rs.getString("salle.libelle").equals(nomsalle[0]) && !rs.getString("salle.libelle").equals(nomsalle[1]) && !rs.getString("salle.libelle").equals(nomsalle[2])){
+        				nomsalle[lastsalle]=rs.getString("salle.libelle");
+        				lastsalle+=1;
+        				System.out.println("NIQUE TA MERE");
+        			}
+        			if(date[i].equals(rs.getString("salleresa.date"))){
+        				for(int j=0;j<3;++j){
+        					if(rs.getString("salle.libelle").equals(nomsalle[j])){
+        						salle[0][j][i]=rs.getString("salle.libelle");
+        						salle[1][j][i]=rs.getString("disposition.libelle");
+        						salle[2][j][i]=rs.getString("salleresa.nbPersonnes");
+        						salle[3][j][i]=rs.getString("salle.descriptif");
+        						System.out.println(j+" "+i+" "+salle[0][j][i]+" "+salle[1][j][i]+" "+salle[2][j][i]+" "+salle[3][j][i]);
+        					}
+        				}
+        			}
+        		}
+        	}
+        	return salle;
+        }
+        
+        public String[][][] getOptnSrvc(int idReservation) throws SQLException{
+        	String dates="SELECT reservation.dateDebut, reservation.dateFin FROM reservation WHERE idReservation="+idReservation+"";
+        	rs = co.query(dates);
+        	String[] debfin = new String [2];
+        	while(rs.next()){
+        		debfin[0]=rs.getString("reservation.dateDebut");
+        		debfin[1]=rs.getString("reservation.dateFin");
+        	}
+        	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        	int nbDates=0;
+        	try {
+				nbDates = (int)( (sdf.parse(debfin[1]).getTime() - sdf.parse(debfin[0]).getTime()) / (1000 * 60 * 60 * 24)+1);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	String[] date = new String[nbDates];
+        	String Current=debfin[0];
+            for(int i=0;i<nbDates;++i){
+            	System.out.println(Current);
+            	date[i]=Current;
+            	GregorianCalendar dat = new GregorianCalendar();
+            	try {
+					dat.setTime(sdf.parse(Current));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            	dat.add(Calendar.DAY_OF_YEAR, 1);
+            	Current=sdf.format(dat.getTime());
+            	System.out.println(date[i]);
+            }
+        	String query="SELECT salle.libelle, salleresa.date, optionservice.libelle, optionservice.nature FROM infosalle, optionservice, salleresa, salle, choix WHERE salleresa.fkidReservation="+idReservation+" AND salleresa.idSallesResa=choix.fkidSalleResa AND choix.fkidOptionsServices=optionservice.idOptionsServices AND salleresa.fkidInfoSalle=infosalle.idInfoSalle AND salle.idSalle=infosalle.fkidSalle GROUP BY optionservice.libelle, salleresa.date, salle.libelle, optionservice.nature ORDER BY salle.libelle";
+        	rs = co.query(query);
+        	String[][][] opse = new String[12][3][365];
+        	for(int i=0;i<12;++i)for(int j=0;j<3;++j)for(int k=0;k<365;++k)opse[i][j][k]="Aucune";
+        	String[] nomsalle = new String[3];
+        	for(String s:nomsalle)s="Aucune";
+        	int lastsalle=0;
+        	while(rs.next()){
+        		for(int i=0;i<nbDates;++i){
+        			if(!rs.getString("salle.libelle").equals(nomsalle[0]) && !rs.getString("salle.libelle").equals(nomsalle[1]) && !rs.getString("salle.libelle").equals(nomsalle[2])){
+        				nomsalle[lastsalle]=rs.getString("salle.libelle");
+        				lastsalle+=1;
+        				System.out.println("NIQUE TA MERE");
+        			}
+        			if(date[i].equals(rs.getString("salleresa.date"))){
+        				for(int j=0;j<3;++j){
+        					if(rs.getString("salle.libelle").equals(nomsalle[j])){
+        						int pos=0;
+        						if(rs.getString("optionservice.nature").equals("option")){
+        							for(int k=0;k<6;++k){
+        								if(opse[k][j][i].equals("Aucune") && pos==0){
+        									opse[k][j][i]=rs.getString("optionservice.libelle");
+        									System.out.println(k+" "+j+" "+i+" "+opse[k][j][i]);
+        									pos=1;
+        								}
+        							}
+        						}
+        						else if(rs.getString("optionservice.nature").equals("service")){
+        							for(int k=6;k<12;++k){
+        								if(opse[k][j][i].equals("Aucune") && pos==0){
+        									opse[k][j][i]=rs.getString("optionservice.libelle");
+        									System.out.println(k+" "+j+" "+i+" "+opse[k][j][i]);
+        									pos=1;
+        								}
+        							}
+        						}
+        					}
+        				}
+        			}
+        		}
+        	}
+        	return opse;
+        }
+        
         public String[] getSalleFromResa(int idReservation) throws SQLException{
         	String query= "SELECT salle.libelle FROM salle, infoSalle, salleResa WHERE salle.idSalle=infoSalle.fkidSalle AND salleResa.fkidInfoSalle=infoSalle.idInfoSalle AND salleResa.fkidReservation="+idReservation+"";
         	rs = co.query(query);
@@ -1329,6 +1481,7 @@ public class BdDAO {
             salle[2]="Aucune";
             int lasalle=0;
             while(rs.next()){
+            	if(rs.getString("salle.libelle")!=salle[0] && rs.getString("salle.libelle")!=salle[1] && rs.getString("salle.libelle")!=salle[2])
                salle[lasalle] = rs.getString("salle.libelle");
                lasalle+=1;
             }
@@ -1345,12 +1498,15 @@ public class BdDAO {
             salle[2]="";
             int lasalle=0;
             while(rs.next()){
-               salle[lasalle] = rs.getString("disposition.libelle");
-               lasalle+=1;
+            	if(rs.getString("disposition.libelle")!=salle[0] && rs.getString("disposition.libelle")!=salle[1] && rs.getString("disposition.libelle")!=salle[2])    
+                salle[lasalle] = rs.getString("disposition.libelle");
+                lasalle+=1;
             }
             System.out.println(salle);
             return salle;
         }
+        
+        
         
         public int[] getNbpersonnesFromResa(int idReservation) throws SQLException{
         	String query = "SELECT nbPersonnes FROM salleResa WHERE fkidReservation="+idReservation+"";
@@ -1911,8 +2067,8 @@ public class BdDAO {
              co.update(quest);
         }
         
-        public void MAJSalleResa(int nbPersonnes, int infosalle, int idsalleresa) throws SQLException{
-            String quest = "UPDATE salleResa SET nbPersonnes="+nbPersonnes+", fkidInfoSalle = "+infosalle+" WHERE idSallesResa = "+idsalleresa+"";
+        public void MAJSalleResa(int nbPersonnes, int infosalle, int idsalleresa, String date) throws SQLException{
+            String quest = "UPDATE salleResa SET nbPersonnes="+nbPersonnes+", fkidInfoSalle = "+infosalle+", date = '"+date+"' WHERE idSallesResa = "+idsalleresa+"";
             co.update(quest);
         }
         
@@ -2016,10 +2172,10 @@ public class BdDAO {
         	 
         }
         
-        public void ajoutSalleResa(int nbPersonnes, int idReservation, int Info){
+        public void ajoutSalleResa(int nbPersonnes, int idReservation, int Info, String date){
         	
         	
-            String nouvelleSalle = "INSERT INTO salleResa (nbPersonnes, fkidReservation, fkidInfoSalle) VALUES ("+nbPersonnes+", "+idReservation+", "+Info+")";
+            String nouvelleSalle = "INSERT INTO salleResa (nbPersonnes, fkidReservation, fkidInfoSalle, date) VALUES ("+nbPersonnes+", "+idReservation+", "+Info+", '"+date+"')";
             co.execut(nouvelleSalle);
         }
         
