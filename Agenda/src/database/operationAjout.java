@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import admin.Ioperation;
@@ -22,23 +23,32 @@ public class operationAjout implements Ioperation{
 		rq.ajoutReservation(Datedebut, Datefin, Heuredebut, Heurefin, nbPersonne, nbHeure, idClient, idFormule);
 	}
 	
-	public void operationSalleResa (int[] nbPersonnes, int idReservation, int[] info){
-		for(int i=0;i<3;++i){
-			if(nbPersonnes[i]!=0){
-				rq.ajoutSalleResa(nbPersonnes[i], idReservation, info[i]);
+	public void operationSalleResa (int[][] nbPersonnes, int idReservation, int[][] info, String[][] horaireDebut, String[][] horaireFin, String[] date, int nbDate, double[][] nbHeures, int[][] formule){
+		//for(String d : date)System.out.println(d);
+		for(int j=0;j<nbDate;++j){	
+			for(int i=0;i<3;++i){
+				if(nbPersonnes[i][j]!=0){				
+					rq.ajoutSalleResa(nbPersonnes[i][j], idReservation, info[i][j], horaireDebut[i][j], horaireFin[i][j], date[j], nbHeures[i][j], formule[i][j]);
+					System.out.println(date[nbDate-1]);
+				}
 			}
 		}
 	}
 	
-	public void operationChoix(String[][] choix, int[] salleresa) throws SQLException{
+	public void operationChoix(String[][][] choix, int[] salleresa) throws SQLException{
 		for(int i=0;i<3;++i){
-			if(salleresa[i]!=0){
-				for(int j=0;j<12;++j){
-					System.out.println(choix[j][i]);
-					int c = rq.getIdOptionService(choix[j][i]);
-					System.out.println(c);
-					if(!choix[j][i].equals("Aucune")){
-						rq.ajoutChoix(c, salleresa[i]);
+			for(int j=0;j<12;++j){
+				for(int k=0; k<salleresa.length/3;k++){
+					if(salleresa[i+k*3]!=0){
+						//System.out.println(choix[j][i][k]);
+						
+						//System.out.println(c);
+						if(!choix[j][i][k].equals("Aucune")){
+							System.out.println(choix[j][i][k]);
+							System.out.println(choix[j][i][k]);
+							int c = rq.getIdOptionService(choix[j][i][k]);
+							rq.ajoutChoix(c, salleresa[i+k*3]);
+						}
 					}
 				}
 			}

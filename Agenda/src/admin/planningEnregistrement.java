@@ -33,7 +33,7 @@ public class planningEnregistrement extends AbstractPlanning{
 	}
 	
 	
-	public void validation(int resadispo, String[] date, String horaireDebut, String horaireFin, String nbParticipants, double nbHeures, int idClient, int idFormule, int[][] idinfosalle, String[][][] OS, int[][] nbPersonnes) throws SQLException{
+	public void validation(int resadispo, String[] date, String[][] horaireDebut, String[][] horaireFin, String nbParticipants, double[][] nbHeures, int idClient, int[][] formule, int[][] idinfosalle, String[][][] OS, int[][] nbPersonnes) throws SQLException{
 			if(resadispo==0 || resadispo==id){  
 				//int[] idsalleresa = null;
             
@@ -41,8 +41,8 @@ public class planningEnregistrement extends AbstractPlanning{
         	    Io.recevoirId(id);
         	    //idsalleresa = rq.getListedIntsById("salleResa", "idSalleResa", id, "fkidReservation");
             }
-            
-            Io.operationResa(date[0],date[nbDates-1],horaireDebut+":00",horaireFin+":00",Integer.parseInt(nbParticipants),nbHeures, idClient, idFormule);
+            System.out.println(horaireDebut[0][0]+" "+horaireFin[0][0]);
+            Io.operationResa(date[0],date[nbDates-1],horaireDebut[0][0]+":00",horaireFin[0][0]+":00",Integer.parseInt(nbParticipants),nbHeures[0][0], idClient, formule[0][0]);
               
             int idReservation = rq.getIdByIdString("reservation", "idReservation", date[0], "dateDebut", idClient, "fkidClient");
             
@@ -74,7 +74,7 @@ public class planningEnregistrement extends AbstractPlanning{
             //}
             
             
-            Io.operationSalleResa(nbPersonnes, idReservation, idinfosalle, date, nbDates);
+            Io.operationSalleResa(nbPersonnes, idReservation, idinfosalle, horaireDebut, horaireFin, date, nbDates, nbHeures, formule);
             for(int j=0;j<nbDates;++j){
             	for (int i=0;i<3;++i){
             		if(idinfosalle[i][j]!=0){
@@ -83,6 +83,7 @@ public class planningEnregistrement extends AbstractPlanning{
             		}
             	}
             }
+            for(int i=0; i<12;++i)for(int j=0;j<3;++j)for(int k=0;k<365;++k)if(!OS[i][j][k].equals("Aucune"))System.out.println(OS[i][j][k]);
 			Io.operationChoix(OS, idSR);
             //Io.operationChoix(idReservation, listeOS);
             

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public interface Igeneration {
-	public void generer(String[] client, String[] infos, String[][] salle, String[] equipements, String[] services, String[] commentaires, int nbPersonnes) throws FileNotFoundException, IOException, SQLException;
+	public void generer(String[] client, String[][][] salle, String[] equipements, String[] services, String[] commentaires, String[][][] OS) throws FileNotFoundException, IOException, SQLException;
 		
 	
 	public static Igeneration getIg (int i){

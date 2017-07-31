@@ -36,7 +36,7 @@ public class generationDevis implements Igeneration{
 	
 	
 	
-	public void generer(String[] client, String[] infos, String[][] salle, String[] equipements, String[] services, String[] commentaires, int nbPersonnes) throws FileNotFoundException, IOException, SQLException{
+	public void generer(String[] client, String[][][] salle, String[] equipements, String[] services, String[] commentaires, String[][][] OS) throws FileNotFoundException, IOException, SQLException{
 	    
 	/*
     DEFINITION DES VARIABLES
@@ -60,13 +60,30 @@ public class generationDevis implements Igeneration{
     double prixS5 = rq.getTarifService(services[4]);
     double prixS6 = rq.getTarifService(services[5]);
     double[] prixServices = {prixS1, prixS2, prixS3, prixS4, prixS5, prixS6};
-    for(int i=0; i<6;++i){
+    /*for(int i=0; i<6;++i){
     	if(!(services[i].equals("Aucune")))prixServices[i] = rq.getTarifService(services[i]);else prixServices[i]=0;
+    }*/
+    int nbsalle=0;
+    int[] nbdatesalle=new int[3];
+    nbdatesalle[0]=0;nbdatesalle[1]=0;nbdatesalle[2]=0;
+    String[] noms={"Aucune","Aucune","Aucune"};
+    String[] desc={"Aucune","Aucune","Aucune"};
+    double[] tarifs = new double [3*365];
+    for(int i=0;i<3;++i){
+    	
+    	for(int j=0;j<365;++j){
+    		if(!salle[0][i][j].equals("Aucune")){
+    			tarifs[i+i*j]=rq.getTarifSalle(salle[0][i][j], salle[6][i][j])*Integer.parseInt(salle[2][i][j]);
+    			nbdatesalle[i]+=1;
+    			noms[i]=salle[0][i][j];
+    			desc[i]=salle[3][i][j];
+    		}
+    	}
+    	nbsalle+=1;
     }
-    double[] tarifs = new double[3]; 
-    tarifs[0] = rq.getTarifSalle(salle[0][0], infos[0]);
+    /*tarifs[0] = rq.getTarifSalle(salle[0][0], infos[0]);
     if(salle[0][1]!="Aucune")tarifs[1]=rq.getTarifSalle(salle[0][1], infos[0]);
-    if(salle[0][2]!="Aucune")tarifs[2]=rq.getTarifSalle(salle[0][2], infos[0]);
+    if(salle[0][2]!="Aucune")tarifs[2]=rq.getTarifSalle(salle[0][2], infos[0]);*/
     double[] tvaServices = new double[3];
     //int[] nbFormules = new int[2]; nbFormules[0] = nbFormuleSalle1;
 
@@ -88,13 +105,13 @@ public class generationDevis implements Igeneration{
     
     for(int i = 0 ; i < 6 ; i++){
         if(services[i].substring(0,5).equals("Pause") || services[i].equals("Accueil petit dÃ©jeuner")){
-            totalTVA5 += nbPersonnes * prixServices[i] * 0.055;
+            totalTVA5 += Double.parseDouble(services[i+6]) * prixServices[i] * 0.055;
         }
         else if(services[i].equals("Plateaux repas") || services[i].equals("Afterwork") || services[i].equals("Champagne")){
-            totalTVA10 += nbPersonnes * prixServices[i] * 0.1;
+            totalTVA10 += Double.parseDouble(services[i+6]) * prixServices[i] * 0.1;
         }
         else{
-            totalTVA20 += nbPersonnes * prixServices[i] * 0.2;
+            totalTVA20 += Double.parseDouble(services[i+6]) * prixServices[i] * 0.2;
         }
     }
     
@@ -106,11 +123,12 @@ public class generationDevis implements Igeneration{
     tvaServices[2] = round(totalTVA20, 2); 
     
     //PRIX FINAL HT
-    double salle1FINAL = tarifs[0]*Integer.parseInt(salle[2][0]);
+    /*double salle1FINAL = 0;
     double salle2FINAL = 0;
     double salle3FINAL = 0;
+    if(salle[0][0]!="Aucune")salle2FINAL=tarifs[0]*Integer.parseInt(salle[2][0]);
     if(salle[0][1]!="Aucune")salle2FINAL=tarifs[1]*Integer.parseInt(salle[2][1]);
-    if(salle[0][2]!="Aucune")salle3FINAL=tarifs[2]*Integer.parseInt(salle[2][2]);
+    if(salle[0][2]!="Aucune")salle3FINAL=tarifs[2]*Integer.parseInt(salle[2][2]);*/
     
     //if(!(salle2[0].equals(""))) salle2FINAL = tarifs[1] * nbFormules[1];
     double service1FINAL=0;
@@ -126,8 +144,13 @@ public class generationDevis implements Igeneration{
     if(!services[10].equals(""))service5FINAL = prixServices[4] * Integer.parseInt(services[10]);
     if(!services[11].equals(""))service6FINAL = prixServices[5] * Integer.parseInt(services[11]);
     
-    double prixFinalHT = salle1FINAL + salle2FINAL + service1FINAL + service2FINAL + service3FINAL + service4FINAL + service5FINAL + service6FINAL; //PRIX FINAL DU DEVIS HT
-    double tvaFinal = tvaServices[0] + tvaServices[1] + tvaServices[2] + tarifs[0] * nbPersonnes * 0.2;
+    double prixFinalHT = 0; //PRIX FINAL DU DEVIS HT
+    for(double prix:tarifs){
+    	prixFinalHT+=prix;
+    }
+    double prixSalle=prixFinalHT;
+    prixFinalHT=service1FINAL + service2FINAL + service3FINAL + service4FINAL + service5FINAL + service6FINAL;
+    double tvaFinal = tvaServices[0] + tvaServices[1] + tvaServices[2] + prixSalle * 0.2;
     //if(!(salle2[0].equals(""))) tvaFinal += tarifs[1] * nbFormules[1] * 0.2; //SI IL EXISTE UNE DEUXIEME SALLE ON RAJOUTE LA TVA DE CELLE CI
     double prixFinalTTC = prixFinalHT + tvaFinal;
     /*
@@ -452,7 +475,7 @@ public class generationDevis implements Igeneration{
     DEBUT CREATION DES LIGNES POUR LE GROS BLOC
     */
     
-    HSSFRow[] lesLignes = new HSSFRow[39];
+    HSSFRow[] lesLignes = new HSSFRow[60];
     for(int i = 0 ; i < lesLignes.length ; i++){
         lesLignes[i] = sheet.createRow(i + 14);
     }
@@ -539,72 +562,59 @@ public class generationDevis implements Igeneration{
     cellStyle13ET.setFillPattern(FillPatternType.SOLID_FOREGROUND);
     cellStyle13ET.setFont(fonte13ET);
     
-    for(int i = 14 ; i <= 52 ; i++){
+    for(int i = 14 ; i <= 52+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2] ; i++){
         for(int j = 1 ; j <= 7 ; j++){
             cell = lesLignes[i - 14].createCell(j);
             if(j == 1){
                 if(i == 14){
-                    cell.setCellValue("DÃ©signation");
+                    cell.setCellValue("Désignation");
                     cell.setCellStyle(cellStyle13ET);
                 }
-                else if(i == 16 || i == 27 || i == 36){
-                    switch(i){
-                        case 16: cell.setCellValue("Espaces"); break;
-                        case 27: cell.setCellValue("Equipements"); break;
-                        case 36: cell.setCellValue("Services"); break;
-                    }
-                    cell.setCellStyle(cellStyleFont14Gras);
-                }
-                else if(i == 18 || i == 21 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48 || i == 24){
-                    switch(i){
-                        case 18: cell.setCellValue(salle[0][0]); break; //NOM DE LA SALLE 1
-                        case 21: if(salle[0][1]!="Aucune")cell.setCellValue(salle[0][1]); break; //NOM DE LA SALLE 2
-                        case 24: if(salle[0][2]!="Aucune")cell.setCellValue(salle[0][2]); break; //NOM DE LA SALLE 2
-                        case 38: if(services[0]!="Aucune")cell.setCellValue(services[0]); break; //NOM DU SERVICE 1
-                        case 40: if(services[1]!="Aucune")cell.setCellValue(services[1]); break; //NOM DU SERVICE 2
-                        case 42: if(services[2]!="Aucune")cell.setCellValue(services[2]); break; //NOM DU SERVICE 3
-                        case 44: if(services[3]!="Aucune")cell.setCellValue(services[3]); break; //NOM DU SERVICE 4
-                        case 46: if(services[4]!="Aucune")cell.setCellValue(services[4]); break; //NOM DU SERVICE 5
-                        case 48: if(services[5]!="Aucune")cell.setCellValue(services[5]); break; //NOM DU SERVICE 6
-                    }
-                    cell.setCellStyle(cellStyleFont13Gras);
-                }
-                else if(i == 19 || i == 22 || i == 25 || i == 39 || i == 41 || i == 43 || i == 45 || i == 47 || i == 49){
-                    switch(i){
-                        case 19: cell.setCellValue(salle[3][0].substring(0, 75)+"..."); break; //COMMENTAIRE DE LA SALLE 1
-                        case 22: if(salle[0][1]!="Aucune")cell.setCellValue(salle[3][1].substring(0, 75)+"..."); break; //COMMENTAIRE DE LA SALLE 2
-                        case 25: if(salle[0][2]!="Aucune")cell.setCellValue(salle[3][2].substring(0, 75)+"..."); break; //COMMENTAIRE DE LA SALLE 3
-                        case 39: if(commentaires[0]!="Aucune")cell.setCellValue(commentaires[0]); break; //COMMENTAIRE DU PREMIER SERVICE
-                        case 41: if(commentaires[1]!="Aucune")cell.setCellValue(commentaires[1]); break; //COMMENTAIRE DU DEUXIEME SERVICE
-                        case 43: if(commentaires[2]!="Aucune")cell.setCellValue(commentaires[2]); break; //COMMENTAIRE DU TROISIEME SERVICE
-                        case 45: if(commentaires[3]!="Aucune")cell.setCellValue(commentaires[3]); break; //COMMENTAIRE DU QUATRIEME SERVICE
-                        case 47: if(commentaires[4]!="Aucune")cell.setCellValue(commentaires[4]); break; //COMMENTAIRE DU CINQUIEME SERVICE
-                        case 49: if(commentaires[5]!="Aucune")cell.setCellValue(commentaires[5]); break; //COMMENTAIRE DU SIXIEME SERVICE
-                    }
-                    cell.setCellStyle(cellStyleFont11);
-                }
-                else if(i == 29 || i == 30 || i == 31 || i == 32 || i == 33 || i == 34){
-                    switch(i){
-                        case 29: if(equipements[0]!="Aucune")cell.setCellValue(equipements[0]); break; //NOM DE L'OPTION 1
-                        case 30: if(equipements[1]!="Aucune")cell.setCellValue(equipements[1]); break; //NOM DE L'OPTION 2
-                        case 31: if(equipements[2]!="Aucune")cell.setCellValue(equipements[2]); break; //NOM DE L'OPTION 3
-                        case 32: if(equipements[3]!="Aucune")cell.setCellValue(equipements[3]); break; //NOM DE L'OPTION 4
-                        case 33: if(equipements[4]!="Aucune")cell.setCellValue(equipements[4]); break; //NOM DE L'OPTION 5
-                        case 34: if(equipements[5]!="Aucune")cell.setCellValue(equipements[5]); break; //NOM DE L'OPTION 6
-                    }
-                    cell.setCellStyle(cellStyleFont12left);
-                }
-                else if(i == 20 || i == 17 || i == 23 || i == 26){
-                    switch(i){
-                        case 20: cell.setCellValue("Participants :"); break;
-                        case 17: cell.setCellValue(infos[3]+": "+infos[4]); break; //DATE SALLE 1
-                        case 23: if(!(salle[0][1].equals("Aucune"))) cell.setCellValue("Participants :"); break;//SI IL EXISTE UNE DEUXIEME SALLE
-                        case 26: if(!(salle[0][2].equals("Aucune"))) cell.setCellValue("Participants :"); break;//SI IL EXISTE UNE DEUXIEME SALLE
+                //LEGENDES
+                else if(i==16){ cell.setCellValue("Espaces"); cell.setCellStyle(cellStyleFont14Gras);}
+                else if(i==27+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ cell.setCellValue("Equipements"); cell.setCellStyle(cellStyleFont14Gras);}
+                else if(i==36+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ cell.setCellValue("Services"); cell.setCellStyle(cellStyleFont14Gras);}               
+                //NOMS
+                else if(i==18){ cell.setCellValue(noms[0]);cell.setCellStyle(cellStyleFont13Gras);} //NOM DE LA SALLE 1
+                else if(i==21+nbdatesalle[0]){ if(noms[1]!="Aucune")cell.setCellValue(noms[1]); cell.setCellStyle(cellStyleFont13Gras);} //NOM DE LA SALLE 2
+                else if(i==24+nbdatesalle[0]+nbdatesalle[1]){ if(noms[2]!="Aucune")cell.setCellValue(noms[2]); cell.setCellStyle(cellStyleFont13Gras);} //NOM DE LA SALLE 2
+            	else if(i==38+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(services[0]!="Aucune")cell.setCellValue(services[0]); cell.setCellStyle(cellStyleFont13Gras);} //NOM DU SERVICE 1
+            	else if(i==40+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(services[1]!="Aucune")cell.setCellValue(services[1]); cell.setCellStyle(cellStyleFont13Gras);} //NOM DU SERVICE 2
+            	else if(i==42+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(services[2]!="Aucune")cell.setCellValue(services[2]); cell.setCellStyle(cellStyleFont13Gras);} //NOM DU SERVICE 3
+            	else if(i==44+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(services[3]!="Aucune")cell.setCellValue(services[3]); cell.setCellStyle(cellStyleFont13Gras);} //NOM DU SERVICE 4
+            	else if(i==46+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(services[4]!="Aucune")cell.setCellValue(services[4]); cell.setCellStyle(cellStyleFont13Gras);} //NOM DU SERVICE 5
+            	else if(i==48+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(services[5]!="Aucune")cell.setCellValue(services[5]); cell.setCellStyle(cellStyleFont13Gras);} //NOM DU SERVICE 6
+            	//COMMENTAIRES
+            	else if(i==19){ cell.setCellValue(desc[0]); cell.setCellStyle(cellStyleFont11);} //COMMENTAIRE DE LA SALLE 1
+            	else if(i==22+nbdatesalle[0]){ if(noms[1]!="Aucune")cell.setCellValue(desc[1].substring(0, 75)+"..."); cell.setCellStyle(cellStyleFont11);} //COMMENTAIRE DE LA SALLE 2
+            	else if(i==25+nbdatesalle[0]+nbdatesalle[1]){ if(noms[2]!="Aucune")cell.setCellValue(desc[2].substring(0, 75)+"..."); cell.setCellStyle(cellStyleFont11);} //COMMENTAIRE DE LA SALLE 3
+            	else if(i==39+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(commentaires[0]!="Aucune")cell.setCellValue(commentaires[0]); cell.setCellStyle(cellStyleFont11);} //COMMENTAIRE DU PREMIER SERVICE
+            	else if(i==41+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(commentaires[1]!="Aucune")cell.setCellValue(commentaires[1]); cell.setCellStyle(cellStyleFont11);} //COMMENTAIRE DU DEUXIEME SERVICE
+            	else if(i==43+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(commentaires[2]!="Aucune")cell.setCellValue(commentaires[2]); cell.setCellStyle(cellStyleFont11);} //COMMENTAIRE DU TROISIEME SERVICE
+            	else if(i==45+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(commentaires[3]!="Aucune")cell.setCellValue(commentaires[3]); cell.setCellStyle(cellStyleFont11);} //COMMENTAIRE DU QUATRIEME SERVICE
+            	else if(i==47+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(commentaires[4]!="Aucune")cell.setCellValue(commentaires[4]); cell.setCellStyle(cellStyleFont11);} //COMMENTAIRE DU CINQUIEME SERVICE
+            	else if(i==49+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(commentaires[5]!="Aucune")cell.setCellValue(commentaires[5]); cell.setCellStyle(cellStyleFont11);} //COMMENTAIRE DU SIXIEME SERVICE
+                //EQUIPEMENTS
+            	else if(i==29+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(equipements[0]!="Aucune")cell.setCellValue(equipements[0]); cell.setCellStyle(cellStyleFont12left);} //NOM DE L'OPTION 1
+            	else if(i==30+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(equipements[1]!="Aucune")cell.setCellValue(equipements[1]); cell.setCellStyle(cellStyleFont12left);} //NOM DE L'OPTION 2
+            	else if(i==31+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(equipements[2]!="Aucune")cell.setCellValue(equipements[2]); cell.setCellStyle(cellStyleFont12left);} //NOM DE L'OPTION 3
+            	else if(i==32+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(equipements[3]!="Aucune")cell.setCellValue(equipements[3]); cell.setCellStyle(cellStyleFont12left);} //NOM DE L'OPTION 4
+            	else if(i==33+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(equipements[4]!="Aucune")cell.setCellValue(equipements[4]); cell.setCellStyle(cellStyleFont12left);} //NOM DE L'OPTION 5
+            	else if(i==34+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(equipements[5]!="Aucune")cell.setCellValue(equipements[5]); cell.setCellStyle(cellStyleFont12left);} //NOM DE L'OPTION 6
+                    
+                    
+                
+                //else if(i == 20 || i == 17 || i == 23 || i == 26){
+                    //switch(i){
+                        //case 20: //cell.setCellValue("Participants :"); break;
+                        //case 17: //cell.setCellValue(infos[3]+": "+infos[4]); break; //DATE SALLE 1
+                        //case 23: //if(!(salle[0][1].equals("Aucune"))) cell.setCellValue("Participants :"); break;//SI IL EXISTE UNE DEUXIEME SALLE
+                        //case 26: //if(!(salle[0][2].equals("Aucune"))) cell.setCellValue("Participants :"); break;//SI IL EXISTE UNE DEUXIEME SALLE
                         //case 25: if(!(salle[0][1].equals("")))cell.setCellValue(salle[]); break; //DATE SALLE 2
-                    }
-                    cell.setCellStyle(cellStyleFont12CT);
-                }
-                else if(i == 52){
+                    //}
+                    //cell.setCellStyle(cellStyleFont12CT);
+                //}
+                else if(i == 52+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){
                     cell.setCellStyle(cellStyleFont14Gras);
                 }
                 else{
@@ -612,7 +622,7 @@ public class generationDevis implements Igeneration{
                 }
             }
             else if(j == 2){
-                if(i == 16 || i == 27 || i == 36 || i == 52){
+                if(i == 16 || i == 27+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2] || i == 36+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){
                     cell.setCellStyle(cellStyleBottom);
                 }
                 if(i == 18 || i == 20 || i == 21 || i == 23 || i == 24 || i == 26){
@@ -620,16 +630,16 @@ public class generationDevis implements Igeneration{
                     System.out.println(salle[1][1]);
                     System.out.println(salle[1][2]);
                     switch(i){
-                    	case 18: cell.setCellValue(salle[1][0]); break; //DISPOSITION SALLE 1
+                    	case 18: cell.setCellValue(salle[1][0][0]); break; //DISPOSITION SALLE 1
                     	
                     	
-                        case 20: cell.setCellValue(salle[2][0]); break; //LE NOMBRE DE PARTICIPANT A LA SALLE 1
+                        case 20: cell.setCellValue(salle[2][0][0]); break; //LE NOMBRE DE PARTICIPANT A LA SALLE 1
                         //case 22: if(!(salle2[0].equals(""))){if(!(salle2[1].equals("Forfait Heure"))) cell.setCellValue(salle2[1]+" ("+salle2[2]+"h)"); else cell.setCellValue(salle2[1]);} break; //NOM FORMULE + HEURE FORMULE SALLE 2
                         
-                        case 21: if(!(salle[0][1].equals("Aucune")))cell.setCellValue(salle[1][1]); break;  //DISPOSITION SALLE 2
-                        case 23: if(!(salle[0][1].equals("Aucune")))cell.setCellValue(salle[2][1]); break; //LE NOMBRE DE PARTICIPANT A LA SALLE 2
-                        case 24: if(!(salle[0][2].equals("Aucune")))cell.setCellValue(salle[1][2]); break;  //DISPOSITION SALLE 3
-                        case 26: if(!(salle[0][2].equals("Aucune")))cell.setCellValue(salle[2][2]); break; //LE NOMBRE DE PARTICIPANT A LA SALLE 3
+                        case 21: if(!(salle[0][1].equals("Aucune")))cell.setCellValue(salle[1][1][0]); break;  //DISPOSITION SALLE 2
+                        case 23: if(!(salle[0][1].equals("Aucune")))cell.setCellValue(salle[2][1][0]); break; //LE NOMBRE DE PARTICIPANT A LA SALLE 2
+                        case 24: if(!(salle[0][2].equals("Aucune")))cell.setCellValue(salle[1][2][0]); break;  //DISPOSITION SALLE 3
+                        case 26: if(!(salle[0][2].equals("Aucune")))cell.setCellValue(salle[2][2][0]); break; //LE NOMBRE DE PARTICIPANT A LA SALLE 3
                         /*case 29: cell.setCellValue(nbOptions[0]); break; //LE NOMBRE DE L'OPTION 1
                         case 30: cell.setCellValue(nbOptions[1]); break; //LE NOMBRE DE L'OPTION 2
                         case 31: cell.setCellValue(nbOptions[2]); break; //LE NOMBRE DE L'OPTION 3
@@ -639,21 +649,27 @@ public class generationDevis implements Igeneration{
                     }
                     cell.setCellStyle(cellStyleFont12HCT);
                 }
+                else if(i == 52+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){
+                    cell.setCellStyle(cellStyleFont14Gras);
+                }
             }
             else if(j == 3){
-                if(i == 16 || i == 27 || i == 36 || i == 52){
+                if(i == 16 || i == 27+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2] || i == 36+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){
                     cell.setCellStyle(cellStyleBottom);
                 }
                 if(i == 17){
                     switch(i){
-                        case 17: cell.setCellValue(infos[6]+": "+infos[5]); break;//HORAIRE DEBUT + FIN SALLE 1
+                        case 17: //cell.setCellValue(infos[6]+": "+infos[5]); break;//HORAIRE DEBUT + FIN SALLE 1
                         //case 25: if(!(salle2[0].equals(""))) cell.setCellValue(salle2[5]+" Ã  "+salle2[6]); break;//HORAIRE DEBUT + FIN SALLE 2
                     }
                     cell.setCellStyle(cellStyleFont12HCT);
                 }
                 if(i == 29){
-                	if(!(infos[0].equals("Forfait Heure"))) cell.setCellValue("Formule: "+ infos[0]+" ("+infos[1]+"h)"); else cell.setCellValue(infos[0]); //NOM FORMULE + HEURE FORMULE SALLE 1 
+                	//if(!(infos[0].equals("Forfait Heure"))) cell.setCellValue("Formule: "+ infos[0]+" ("+infos[1]+"h)"); else cell.setCellValue(infos[0]); //NOM FORMULE + HEURE FORMULE SALLE 1 
                     cell.setCellStyle(cellStyleFont12HCT);
+                }
+                else if(i == 52+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){
+                    cell.setCellStyle(cellStyleFont14Gras);
                 }
             }
             else if(j == 4){
@@ -661,21 +677,20 @@ public class generationDevis implements Igeneration{
                     cell.setCellValue("Nombre");
                     cell.setCellStyle(cellStyle13ET);
                 }
-                else if(i == 18 || i == 21 || i == 24 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
-                    switch(i){
-                        case 18: cell.setCellValue(salle[2][0]); break; //LE NOMBRE DE FORMULE SALLE 1
-                        case 21: if(!(salle[0][1].equals("Aucune")))cell.setCellValue(salle[2][1]); break;//LE NOMBRE DE FORMULE SALLE 2
-                        case 24: if(!(salle[0][2].equals("Aucune")))cell.setCellValue(salle[2][2]); break;//LE NOMBRE DE FORMULE SALLE 3
-                        case 38: if(!(services[0].equals("Aucune")))cell.setCellValue(services[6]); break;//LE NOMBRE DU SERVICE 1
-                        case 40: if(!(services[1].equals("Aucune")))cell.setCellValue(services[7]); break;//LE NOMBRE DU SERVICE 2
-                        case 42: if(!(services[2].equals("Aucune")))cell.setCellValue(services[8]); break;//LE NOMBRE DU SERVICE 3
-                        case 44: if(!(services[3].equals("Aucune")))cell.setCellValue(services[9]); break;//LE NOMBRE DU SERVICE 4
-                        case 46: if(!(services[4].equals("Aucune")))cell.setCellValue(services[10]); break;//LE NOMBRE DU SERVICE 5
-                        case 48: if(!(services[5].equals("Aucune")))cell.setCellValue(services[11]); break;//LE NOMBRE DU SERVICE 6
-                    }
-                    cell.setCellStyle(cellStyleFont12CT);
-                }
-                else if(i == 52){
+                
+                else if(i==18){for(int k=0;k<nbdatesalle[0];++k){i=i+k;if(i<nbdatesalle[0]+18){cell.setCellValue(salle[2][0][k]);cell.setCellStyle(cellStyleFont12CT);}i=18;}}
+                else if(i==21+nbdatesalle[0]){for(int k=0;k<nbdatesalle[1];++k){i=i+k;if(i<nbdatesalle[1]+21){cell.setCellValue(salle[2][1][k]);cell.setCellStyle(cellStyleFont12CT);}i=21+nbdatesalle[0];}}
+                else if(i==24+nbdatesalle[0]+nbdatesalle[1]){for(int k=0;k<nbdatesalle[2];++k){i=i+k;if(i<nbdatesalle[2]+24){cell.setCellValue(salle[2][2][k]);cell.setCellStyle(cellStyleFont12CT);}i=24+nbdatesalle[0]+nbdatesalle[1];}}
+                else if(i==38+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(services[0]!="Aucune")cell.setCellValue(services[6]); cell.setCellStyle(cellStyleFont12CT);} //NOMBRE DU SERVICE 1
+                else if(i==40+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(services[1]!="Aucune")cell.setCellValue(services[7]); cell.setCellStyle(cellStyleFont12CT);} //NOMBRE DU SERVICE 2
+                else if(i==42+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(services[2]!="Aucune")cell.setCellValue(services[8]); cell.setCellStyle(cellStyleFont12CT);} //NOMBRE DU SERVICE 3
+                else if(i==44+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(services[3]!="Aucune")cell.setCellValue(services[9]); cell.setCellStyle(cellStyleFont12CT);} //NOMBRE DU SERVICE 4
+                else if(i==46+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(services[4]!="Aucune")cell.setCellValue(services[10]); cell.setCellStyle(cellStyleFont12CT);} //NOMBRE DU SERVICE 5
+                else if(i==48+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(services[5]!="Aucune")cell.setCellValue(services[11]); cell.setCellStyle(cellStyleFont12CT);} //NOMBRE DU SERVICE 6
+                	
+
+                
+                else if(i == 52+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){
                     cell.setCellStyle(cellStyleFont14Gras);
                 }
                 else{
@@ -687,22 +702,19 @@ public class generationDevis implements Igeneration{
                     cell.setCellValue("Prix unitaire HT");
                     cell.setCellStyle(cellStyle13ET);
                 }
-                else if(i == 18 || i == 21 || i == 24 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
-                    switch(i){
-                        case 18: cell.setCellValue(tarifs[0]+" â‚¬"); break; //TARIF DE LA SALLE 1 EN FONCTION DE LA FORMULE CHOISIE
-                        case 21: if(!(salle[0][1].equals("Aucune"))) cell.setCellValue(tarifs[1]+" â‚¬"); break; //TARIF DE LA SALLE 2 EN FONCTION DE LA FORMULE CHOISIE
-                        case 24: if(!(salle[0][2].equals("Aucune"))) cell.setCellValue(tarifs[2]+" â‚¬"); break; //TARIF DE LA SALLE 3 EN FONCTION DE LA FORMULE CHOISIE
-                        case 38: if(!(services[0].equals("Aucune")))cell.setCellValue(prixServices[0]+" â‚¬"); break; //PRIX DU SERVICE 1
-                        case 40: if(!(services[1].equals("Aucune")))cell.setCellValue(prixServices[1]+" â‚¬"); break; //PRIX DU SERVICE 2
-                        case 42: if(!(services[2].equals("Aucune")))cell.setCellValue(prixServices[2]+" â‚¬"); break; //PRIX DU SERVICE 3
-                        case 44: if(!(services[3].equals("Aucune")))cell.setCellValue(prixServices[3]+" â‚¬"); break; //PRIX DU SERVICE 4
-                        case 46: if(!(services[4].equals("Aucune")))cell.setCellValue(prixServices[4]+" â‚¬"); break; //PRIX DU SERVICE 5
-                        case 48: if(!(services[5].equals("Aucune")))cell.setCellValue(prixServices[5]+" â‚¬"); break; //PRIX DU SERVICE 6
-                    }
-                    cell.setCellStyle(cellStyleFont12CTsansBordures);
-                }
-                else if(i == 52){
-                    cell.setCellStyle(cellStyleBottom);
+                
+                else if(i==18) cell.setCellValue(tarifs[0]/Integer.parseInt(salle[2][0][0])+"€"); //TARIF DE LA SALLE 1 EN FONCTION DE LA FORMULE CHOISIE
+                else if(i==21) if(!(salle[0][1].equals("Aucune"))) cell.setCellValue(tarifs[1]/Integer.parseInt(salle[2][0][0])+"€");  //TARIF DE LA SALLE 2 EN FONCTION DE LA FORMULE CHOISIE
+                else if(i==24) if(!(salle[0][2].equals("Aucune"))) cell.setCellValue(tarifs[2]/Integer.parseInt(salle[2][0][0])+"€");  //TARIF DE LA SALLE 3 EN FONCTION DE LA FORMULE CHOISIE
+                else if(i==38+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(!(services[0].equals("Aucune")))cell.setCellValue(prixServices[0]+"€"); cell.setCellStyle(cellStyleFont12CTsansBordures);} //PRIX DU SERVICE 1
+                else if(i==40+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(!(services[1].equals("Aucune")))cell.setCellValue(prixServices[1]+"€"); cell.setCellStyle(cellStyleFont12CTsansBordures);} //PRIX DU SERVICE 2
+                else if(i==42+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(!(services[2].equals("Aucune")))cell.setCellValue(prixServices[2]+"€"); cell.setCellStyle(cellStyleFont12CTsansBordures);} //PRIX DU SERVICE 3
+                else if(i==44+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(!(services[3].equals("Aucune")))cell.setCellValue(prixServices[3]+"€"); cell.setCellStyle(cellStyleFont12CTsansBordures);} //PRIX DU SERVICE 4
+                else if(i==46+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(!(services[4].equals("Aucune")))cell.setCellValue(prixServices[4]+"€"); cell.setCellStyle(cellStyleFont12CTsansBordures);} //PRIX DU SERVICE 5
+                else if(i==48+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){ if(!(services[5].equals("Aucune")))cell.setCellValue(prixServices[5]+"€"); cell.setCellStyle(cellStyleFont12CTsansBordures);} //PRIX DU SERVICE 6
+                    
+                else if(i == 52+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){
+                	cell.setCellStyle(cellStyleFont14Gras);
                 }
             }
             else if(j == 6){
@@ -712,19 +724,19 @@ public class generationDevis implements Igeneration{
                 }
                 else if(i == 18 || i == 21 || i == 24 || i == 38 || i == 40 || i == 42 || i == 44 || i == 46 || i == 48){
                     switch(i){
-                        case 18: cell.setCellValue(salle1FINAL+" â‚¬"); break; //PRIX FINAL SALLE 1
-                        case 21: if(!(salle[0][1].equals("Aucune"))) cell.setCellValue(salle2FINAL+" â‚¬"); break; //PRIX FINAL SALLE 2 {SI EXISTE}
-                        case 24: if(!(salle[0][2].equals("Aucune"))) cell.setCellValue(salle3FINAL+" â‚¬"); break; //PRIX FINAL SALLE 3 {SI EXISTE}
-                        case 38: if(!(services[0].equals("Aucune")))cell.setCellValue(service1FINAL+" â‚¬"); break; //PRIX FINAL SERVICE 1
-                        case 40: if(!(services[1].equals("Aucune")))cell.setCellValue(service2FINAL+" â‚¬"); break; //PRIX FINAL SERVICE 2
-                        case 42: if(!(services[2].equals("Aucune")))cell.setCellValue(service3FINAL+" â‚¬"); break; //PRIX FINAL SERVICE 3
-                        case 44: if(!(services[3].equals("Aucune")))cell.setCellValue(service4FINAL+" â‚¬"); break; //PRIX FINAL SERVICE 4
-                        case 46: if(!(services[4].equals("Aucune")))cell.setCellValue(service5FINAL+" â‚¬"); break; //PRIX FINAL SERVICE 5
-                        case 48: if(!(services[5].equals("Aucune")))cell.setCellValue(service6FINAL+" â‚¬"); break; //PRIX FINAL SERVICE 6
+                        case 18: //cell.setCellValue(salle1FINAL+"€"); break; //PRIX FINAL SALLE 1
+                        case 21: if(!(salle[0][1].equals("Aucune"))) ; break; //PRIX FINAL SALLE 2 {SI EXISTE}
+                        case 24: if(!(salle[0][2].equals("Aucune"))) ; break; //PRIX FINAL SALLE 3 {SI EXISTE}
+                        case 38: if(!(services[0].equals("Aucune")))cell.setCellValue(service1FINAL+"€"); break; //PRIX FINAL SERVICE 1
+                        case 40: if(!(services[1].equals("Aucune")))cell.setCellValue(service2FINAL+"€"); break; //PRIX FINAL SERVICE 2
+                        case 42: if(!(services[2].equals("Aucune")))cell.setCellValue(service3FINAL+"€"); break; //PRIX FINAL SERVICE 3
+                        case 44: if(!(services[3].equals("Aucune")))cell.setCellValue(service4FINAL+"€"); break; //PRIX FINAL SERVICE 4
+                        case 46: if(!(services[4].equals("Aucune")))cell.setCellValue(service5FINAL+"€"); break; //PRIX FINAL SERVICE 5
+                        case 48: if(!(services[5].equals("Aucune")))cell.setCellValue(service6FINAL+"€"); break; //PRIX FINAL SERVICE 6
                     }
                     cell.setCellStyle(cellStyleFont12CTsansBordures);
                 }
-                else if(i == 52){
+                else if(i == 52+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]){
                     cell.setCellStyle(cellStyleBottom);
                 }
             }
@@ -742,7 +754,7 @@ public class generationDevis implements Igeneration{
     DEBUT LIGNES 56 - 58
     */
     
-    row = sheet.createRow(55);
+    row = sheet.createRow(55+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]);
     cell = row.createCell(1);
     fonte = wb.createFont();
     fonte.setFontName("Calibri (Corps)");
@@ -772,11 +784,11 @@ public class generationDevis implements Igeneration{
     cellStyle.setAlignment(HorizontalAlignment.RIGHT);
     cellStyle.setFont(fonte);
     cell.setCellStyle(cellStyle);
-    cell.setCellValue(tvaServices[0]+" â‚¬"); //TVA 10% 
+    cell.setCellValue(tvaServices[0]+"€"); //TVA 10% 
     
     //--------------------------------------------------------------------//
     
-    row = sheet.createRow(56);
+    row = sheet.createRow(56+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]);
     cell = row.createCell(1);
     fonte = wb.createFont();
     fonte.setFontName("Calibri (Corps)");
@@ -794,7 +806,7 @@ public class generationDevis implements Igeneration{
     cellStyle = wb.createCellStyle();
     cellStyle.setFont(fonte);
     cell.setCellStyle(cellStyle);
-    cell.setCellValue(round(prixFinalTTC/2, 2)+" â‚¬"); //L'ACCOMPTE 50% PRIX FINAL TTC
+    cell.setCellValue(round(prixFinalTTC/2, 2)+"€"); //L'ACCOMPTE 50% PRIX FINAL TTC
     
     cell = row.createCell(5);
     fonte = wb.createFont();
@@ -815,11 +827,11 @@ public class generationDevis implements Igeneration{
     cellStyle.setAlignment(HorizontalAlignment.RIGHT);
     cellStyle.setFont(fonte);
     cell.setCellStyle(cellStyle);
-    cell.setCellValue(tvaServices[1]+" â‚¬"); //TVA 10 %
+    cell.setCellValue(tvaServices[1]+"€"); //TVA 10 %
     
     //--------------------------------------------------------------------//
     
-    row = sheet.createRow(57);
+    row = sheet.createRow(57+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]);
     cell = row.createCell(1);
     fonte = wb.createFont();
     fonte.setFontName("Calibri (Corps)");
@@ -849,10 +861,10 @@ public class generationDevis implements Igeneration{
     cellStyle.setAlignment(HorizontalAlignment.RIGHT);
     cellStyle.setFont(fonte);
     cell.setCellStyle(cellStyle);
-    tvaServices[2] += tarifs[0] * nbPersonnes * 0.2;
-    if(!(salle[0][1].equals(""))) tvaServices[2] += tarifs[1] * nbPersonnes * 0.2;
-    if(!(salle[0][2].equals(""))) tvaServices[2] += tarifs[2] * nbPersonnes * 0.2;
-    cell.setCellValue(tvaServices[2]+" â‚¬");
+    //tvaServices[2] += tarifs[0] * nbPersonnes * 0.2;
+    //if(!(salle[0][1].equals(""))) tvaServices[2] += tarifs[1] * nbPersonnes * 0.2;
+    //if(!(salle[0][2].equals(""))) tvaServices[2] += tarifs[2] * nbPersonnes * 0.2;
+    cell.setCellValue(tvaServices[2]+"€");
     
     /*
     FIN LIGNES 56 - 58
@@ -862,7 +874,7 @@ public class generationDevis implements Igeneration{
     DEBUT BLOC DU BAS 
     */
     
-    row = sheet.createRow(54);
+    row = sheet.createRow(54+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]);
     cell = row.createCell(5);
     fonte = wb.createFont();
     fonte.setFontName("Calibri (Corps)");
@@ -890,11 +902,11 @@ public class generationDevis implements Igeneration{
     cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
     cellStyle.setFont(fonte);
     cell.setCellStyle(cellStyle);
-    cell.setCellValue(round(prixFinalHT, 2)+" â‚¬"); //PRIX FINAL DU DEVIS HT
+    cell.setCellValue(round(prixFinalHT, 2)+"€"); //PRIX FINAL DU DEVIS HT
     
     //--------------------------------------------------------------------//
     
-    row = sheet.createRow(58);
+    row = sheet.createRow(58+nbdatesalle[0]+nbdatesalle[1]+nbdatesalle[2]);
     cell = row.createCell(5);
     fonte = wb.createFont();
     fonte.setFontName("Calibri (Corps)");
@@ -922,7 +934,7 @@ public class generationDevis implements Igeneration{
     cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
     cellStyle.setFont(fonte);
     cell.setCellStyle(cellStyle);
-    cell.setCellValue(round(prixFinalTTC, 2)+" â‚¬"); //PRIX FINAL DU DEVIS TTC
+    cell.setCellValue(round(prixFinalTTC, 2)+"€"); //PRIX FINAL DU DEVIS TTC
     
     /*
     FIN BLOC DU BAS
@@ -931,7 +943,7 @@ public class generationDevis implements Igeneration{
     
     try{
         
-        FileOutputStream fileOut = new FileOutputStream("devis "+client[5]+" "+infos[3]+".xls");
+        FileOutputStream fileOut = new FileOutputStream("devis "+client[5]+" "+".xls");
         wb.write(fileOut);
         fileOut.close();
         

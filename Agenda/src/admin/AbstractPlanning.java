@@ -65,8 +65,15 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
             lesServices = rq.getOptionService("service");
             lesClients= rq.getClients();
             currentSalle=0;
-            
-
+            String[] jean= new String[lesSalles.length-1];
+            int la=0;
+            for(int i=0; i<lesSalles.length;++i){
+            	if(!lesSalles[i].equals("privatisation totale")){
+            		jean[la]=lesSalles[i];
+            		la+=1;
+            	}
+            }
+            lesSalles=jean;
             //On enlève tout les items associés aux combo box par défaut.
             cbDisposition.removeAllItems();
             cbFormule.removeAllItems();
@@ -91,6 +98,7 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
             cbNoSalle.addItem("salle 1");
             cbNoSalle.addItem("salle 2");
             cbNoSalle.addItem("salle 3");
+            cbNoSalle.addItem("privatisation");
             //On ajoute l'item "Aucune".
             cbSalle1.addItem("Aucune");
             //cbDate.addItem("Aucune");
@@ -107,7 +115,7 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
             cbService5.addItem("Aucune");
             cbService6.addItem("Aucune");
             for(int i=0;i<3;++i){salles[0][i][0]="Aucune";}
-            for(int i=0;i<3;++i){for(int j=0;j<4;++j){for(int k=0;k<365;++k){salles[j][i][k]="Aucune";}}}
+            for(int i=0;i<3;++i){for(int j=0;j<7;++j){for(int k=0;k<365;++k){salles[j][i][k]="Aucune";}}}
             for(int i=0;i<3;++i){for(int j=0;j<12;++j){for(int k=0;k<365;++k){OSTab[j][i][k]="Aucune";}}}
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
             cbDate.addItem(formatter.format(new Date()));
@@ -250,6 +258,11 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
         labelDateFin = new javax.swing.JLabel();
         cbDate = new javax.swing.JComboBox<>();
         cbNoSalle = new javax.swing.JComboBox();
+        cbNoSalle.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		btnNoSalleActionPerformed (arg0);
+        	}
+        });
         
         calendarDebut = new JCalendar();
         
@@ -620,32 +633,118 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
 		ajout.setVisible(true);
 	}
     
+    private void privat(){
+    	currentSalle=0;
+    	cbNoSalle.setSelectedItem("privatisation");
+		cbSalle1.addItem("privatisation totale");
+		cbSalle1.setSelectedItem("privatisation totale");
+		cbDisposition.setSelectedItem("salle_vide");
+		cbDisposition.setEnabled(false);
+		cbDate.setEnabled(false);
+		cbSalle1.setEnabled(false);
+		System.out.println("CA MARCHE YOUPI");
+    }
+    
+    private void btnNoSalleActionPerformed(java.awt.event.ActionEvent evt) {
+    	if(cbNoSalle.getSelectedItem()== "privatisation"){
+    		privat();
+    	}
+    	else{
+    		cbSalle1.removeItem("privatisation totale");
+    		cbDisposition.setEnabled(true);
+    		cbDate.setEnabled(true);
+    		cbSalle1.setEnabled(true);
+    		System.out.println("CA MARCHE PLUS");
+    	}
+    }
+    
     private void btnEnregistrerActionPerformed(java.awt.event.ActionEvent evt) throws NumberFormatException, FileNotFoundException, IOException {//GEN-FIRST:event_btnEnregistrerActionPerformed
        try {
     	    
             //SALLE 1
-    	   int cs=currentSalle;
-           cbNoSalle.setSelectedIndex(cs);
-           SalleChange();
+    	   
+           
+           if(cbNoSalle.getSelectedIndex()==3){
+        	   //int cs=0;
+        	   System.out.println("JEAN LASSALE "+salles[0][0][currentDate]);
+               //cbNoSalle.setSelectedIndex(cs);
+               SalleChange();
+        	   
+        	   String nomSalle = (String)cbSalle1.getSelectedItem();
+           		String disposition = (String)cbDisposition.getSelectedItem();
+           		String nbParticipants = txtNombreParticipants.getText();
+           		int idsalle = rq.getIdByName("salle", "idSalle", nomSalle, "libelle");
+           		salles[0][0][currentDate]=nomSalle;
+           		salles[1][0][currentDate]=disposition;
+           		salles[2][0][currentDate]=nbParticipants;
+           		salles[3][0][currentDate]=rq.getStrById("salle", "idSalle", "descriptif", idsalle);
+           		salles[4][0][currentDate]=(String)cbHeureDebut.getSelectedItem();
+            	salles[5][0][currentDate]=(String)cbHeureFin.getSelectedItem();
+            	salles[6][0][currentDate]=(String)cbFormule.getSelectedItem();
+           		
+        	   for(int i=0;i<nbDates;++i){
+        		   salles[0][0][i]=salles[0][0][currentDate];
+        		   salles[1][0][i]=salles[1][0][currentDate];
+        		   salles[2][0][i]=salles[2][0][currentDate];
+        		   salles[3][0][i]=salles[3][0][currentDate];
+        		   salles[4][0][i]=salles[4][0][currentDate];
+        		   salles[5][0][i]=salles[5][0][currentDate];
+        		   salles[6][0][i]=salles[6][0][currentDate];
+        		   for(int j=1;j<3;++j){
+        			   salles[0][j][i]="Aucune";
+            		   salles[1][j][i]="Aucune";
+            		   salles[2][j][i]="Aucune";
+            		   salles[3][j][i]="Aucune";
+            		   salles[4][j][i]="Aucune";
+            		   salles[5][j][i]="Aucune";
+            		   salles[6][j][i]="Aucune";
+        		   }
+        		   for(int j=0;j<12;++j){
+        			   OSTab[j][0][i]=OSTab[j][0][currentDate];
+        			   for(int k=1;k<3;++k){
+        				   OSTab[j][k][i]="Aucune";
+        			   }
+        		   }
+        		   
+        	   }
+           }
+           else{
+        	   int cs=currentSalle;
+        	   System.out.println(salles[0][0][currentDate]);
+               cbNoSalle.setSelectedIndex(cs);
+               SalleChange();
+               for(int i=0;i<3;++i){
+            	   for(int j=0;j<nbDates;++j){
+            		   if(salles[0][i][j].equals("Aucune")){
+            			   salles[0][i][j]="Aucune";
+            			   salles[1][i][j]="Aucune";
+            			   salles[2][i][j]="Aucune";
+            			   salles[3][i][j]="Aucune";
+            		   };
+            	   }
+               }
+           }
            //int cs=currentSalle;
-           cbNoSalle.setSelectedIndex(0);
-           SalleChange();
+           //cbNoSalle.setSelectedIndex(0);
+           //SalleChange();
            //int cs=currentSalle;
-           cbNoSalle.setSelectedIndex(1);
-           SalleChange();
+           //cbNoSalle.setSelectedIndex(1);
+           //SalleChange();
            //int cs=currentSalle;
-           cbNoSalle.setSelectedIndex(2);
-           SalleChange();
-           cbNoSalle.setSelectedIndex(cs);
-           SalleChange();
+           //cbNoSalle.setSelectedIndex(2);
+           //SalleChange();
+           //cbNoSalle.setSelectedIndex(cs);
+           //SalleChange();
            
            //currentSalle=cs;
-           
+           System.out.println("BORDEL DE PUTAIN DE SALOPERIE DE MERDE");
+           for(int i=0; i<12;++i)for(int j=0;j<3;++j)for(int k=0;k<365;++k)if(!OSTab[i][j][k].equals("Aucune"))System.out.println(OSTab[i][j][k]);
+			
            
             String nomSalle1 = (String)cbSalle1.getSelectedItem();
             String formule = (String)cbFormule.getSelectedItem();
-            String horaireDebut = (String)cbHeureDebut.getSelectedItem();
-            String horaireFin = (String)cbHeureFin.getSelectedItem();
+            String horaireD = (String)cbHeureDebut.getSelectedItem();
+            String horaireF = (String)cbHeureFin.getSelectedItem();
             String disposition = (String)cbDisposition.getSelectedItem();
             SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
             String[] date = new String[nbDates];
@@ -667,10 +766,11 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
             System.out.println(Fin);
             System.out.println(date[nbDates-1]);
             String nbParticipants = txtNombreParticipants.getText();
+            
             int idFormule = rq.getIdByName("formule", "idFormule", formule, "libelle");
             
             //int iddispo = rq.getIdByName("disposition", "idDisposition", disposition, "libelle");
-            int[][] idinfosalle = new int [12][nbDates];
+            int[][] idinfosalle = new int [3][nbDates];
             for(int i=0;i<3;++i){
             	for(int k=0; k<nbDates;++k){
             		if(!salles[0][i].equals("Aucune")){
@@ -687,7 +787,7 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
             if("".equals(nbParticipants)){
                 nbParticipants="0";
             }
-            if(comparerheures(horaireDebut, horaireFin, Debut, Fin)){
+            if(comparerheures(horaireD, horaireF, Debut, Fin)){
             	JOptionPane.showMessageDialog(null, "L'heure de debut doit preceder l'heure de fin", "Erreur", JOptionPane.INFORMATION_MESSAGE);
             }
             else if(comparerdates(Debut,Fin)){
@@ -701,7 +801,7 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
             //double nbHeures = Double.parseDouble(horaireFin.split(":")[0])-Double.parseDouble(horaireDebut.split(":")[0])+(Double.parseDouble(horaireFin.split(":")[1])-Double.parseDouble(horaireDebut.split(":")[1]))/60;
             //final long MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24; 
             
-            double nbHeures = (calendarFin.getDate().getTime()-calendarDebut.getDate().getTime())/(1000*60*60*24)*14+Double.parseDouble(horaireFin.split(":")[0])-Double.parseDouble(horaireDebut.split(":")[0])+(Double.parseDouble(horaireFin.split(":")[1])-Double.parseDouble(horaireDebut.split(":")[1]))/60;
+            //double nbHeures = (calendarFin.getDate().getTime()-calendarDebut.getDate().getTime())/(1000*60*60*24)*14+Double.parseDouble(horaireFin.split(":")[0])-Double.parseDouble(horaireDebut.split(":")[0])+(Double.parseDouble(horaireFin.split(":")[1])-Double.parseDouble(horaireDebut.split(":")[1]))/60;
             
             String[] clients;
             clients = rq.getClients();
@@ -727,7 +827,7 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
             	for(int k=0; k<nbDates;++k){
             		if(!salles[0][i].equals("Aucune")){
             			int idsalle = rq.getIdByName("salle", "idSalle", salles[0][i][k], "libelle");
-            			resadispo=rq.checkResa(idsalle , Debut, Fin, horaireDebut, horaireFin);
+            			resadispo=rq.checkResa(idsalle , Debut, Fin, horaireD, horaireF);
             			if(resadispo==0){
             				current=resadispo;
             			}
@@ -805,12 +905,24 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
             	listeOS.add(rq.getIdOptionService(s6)); 
             	
             }
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+            
             int[][] nbPersonnes = new int[3][nbDates];
+            double[][] nbHeures=new double[3][nbDates];
+            int[][]formules=new int[3][nbDates];
+            String[][] horaireDebut = new String[3][nbDates];
+            String[][] horaireFin = new String[3][nbDates];
             for(int i=0;i<3;++i){
             	for(int k=0; k<nbDates;++k){
+            		System.out.println(i+" "+k+" "+nbDates);
             		if(!salles[0][i][k].equals("Aucune")){
+            			horaireDebut[i][k]=salles[4][i][k];
+            			horaireFin[i][k]=salles[5][i][k];
             			nbPersonnes[i][k]=Integer.parseInt(salles[2][i][k]);
-            			System.out.println("nb personnes "+nbPersonnes[i][k]);
+            			nbHeures[i][k]=(sdf.parse(horaireFin[i][k]).getTime()-sdf.parse(horaireDebut[i][k]).getTime())/(1000*60*60*24)*14+Double.parseDouble(horaireFin[i][k].split(":")[0])-Double.parseDouble(horaireDebut[i][k].split(":")[0])+(Double.parseDouble(horaireFin[i][k].split(":")[1])-Double.parseDouble(horaireDebut[i][k].split(":")[1]))/60;
+            			formules[i][k]=rq.getIdByName("formule", "idFormule", salles[6][i][k], "libelle");
+            			//System.out.println("nb personnes "+nbPersonnes[i][k]);
             		}
             		else{
             			nbPersonnes[i][k]=0;
@@ -819,7 +931,9 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
             }
             //MAJ BDD
             
-        	validation(resadispo, date, horaireDebut, horaireFin, nbParticipants, nbHeures, idClient, idFormule, idinfosalle, OSTab, nbPersonnes);
+            
+            
+        	validation(resadispo, date, horaireDebut, horaireFin, nbParticipants, nbHeures, idClient, formules, idinfosalle, OSTab, nbPersonnes);
         	
         	//GENERATION 
         	String adresse=rq.getStrById("client", "idClient", "adresseFacturation", idClient);
@@ -847,10 +961,10 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
             
             String[] commentairesServices = {commentS1, commentS2, commentS3, commentS4, commentS5, commentS6};
             //String[] salle1 = {nomSalle1, formule, Double.toString(nbHeures), nbParticipants, dateDebut, horaireDebut, horaireFin, commentSalle, dateFin};
-            String[] infos = {formule, Double.toString(nbHeures), nbParticipants, date[0], horaireDebut, horaireFin, date[nbDates-1]};
+            String[] infos = {formule, Double.toString(nbHeures[0][0]), nbParticipants, date[0], horaireD, horaireF, date[nbDates-1]};
             String[] salle2 = {(String)cbDate.getSelectedItem(), "", "", "", "", "", "", "", ""};
             if(Ig!=null){
-            	Ig.generer(clientInfo, infos, salles[0], equipements, services, commentairesServices, Integer.parseInt(nbParticipants));
+            	Ig.generer(clientInfo, salles, equipements, services, commentairesServices, OSTab);
             }
         	
             }
@@ -1014,6 +1128,9 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
     	salles[1][currentSalle][currentDate]=disposition;
     	salles[2][currentSalle][currentDate]=nbParticipants;
     	salles[3][currentSalle][currentDate]=rq.getStrById("salle", "idSalle", "descriptif", idsalle);
+    	salles[4][currentSalle][currentDate]=(String)cbHeureDebut.getSelectedItem();
+    	salles[5][currentSalle][currentDate]=(String)cbHeureFin.getSelectedItem();
+    	salles[6][currentSalle][currentDate]=(String)cbFormule.getSelectedItem();
     	
     	String o1 = (String)cbOption1.getSelectedItem();
         String o2 = (String)cbOption2.getSelectedItem();
@@ -1045,6 +1162,7 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
         //currentSalle=0;
         if(cbDate.getSelectedIndex()!=-1){
         	currentDate=cbDate.getSelectedIndex();
+        	
         	System.out.println(currentSalle+" "+currentDate+" "+cbDate.getSelectedIndex());
         	cbOption1.setSelectedItem(OSTab[0][currentSalle][currentDate]);
         	cbOption2.setSelectedItem(OSTab[1][currentSalle][currentDate]);
@@ -1062,6 +1180,10 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
         	cbSalle1.setSelectedItem(salles[0][currentSalle][currentDate]);
         	cbDisposition.setSelectedItem(salles[1][currentSalle][currentDate]);
         	txtNombreParticipants.setText(salles[2][currentSalle][currentDate]);
+        	cbHeureDebut.setSelectedItem(salles[4][currentSalle][currentDate]);
+            cbHeureFin.setSelectedItem(salles[5][currentSalle][currentDate]);
+            cbFormule.setSelectedItem(salles[6][currentSalle][currentDate]);
+        	for(int i=0;i<3;++i)if(salles[0][i][currentDate].equals("privatisation totale"))privat();
         
         	System.out.println(salles[0][0][currentDate]);
         	System.out.println(salles[0][1][currentDate]);
@@ -1082,6 +1204,9 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
     	salles[1][currentSalle][currentDate]=disposition;
     	salles[2][currentSalle][currentDate]=nbParticipants;
     	salles[3][currentSalle][currentDate]=rq.getStrById("salle", "idSalle", "descriptif", idsalle);
+    	salles[4][currentSalle][currentDate]=(String)cbHeureDebut.getSelectedItem();
+    	salles[5][currentSalle][currentDate]=(String)cbHeureFin.getSelectedItem();
+    	salles[6][currentSalle][currentDate]=(String)cbFormule.getSelectedItem();
     	
     	String o1 = (String)cbOption1.getSelectedItem();
         String o2 = (String)cbOption2.getSelectedItem();
@@ -1109,9 +1234,9 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
         OSTab[9][currentSalle][currentDate]=s4;
         OSTab[10][currentSalle][currentDate]=s5;
         OSTab[11][currentSalle][currentDate]=s6;
-        
-        currentSalle=cbNoSalle.getSelectedIndex();
-        
+        if(cbNoSalle.getSelectedIndex()==3){currentSalle=0;}
+        else{currentSalle=cbNoSalle.getSelectedIndex();}
+        System.out.println(currentSalle+" "+currentDate+" "+cbDate.getSelectedIndex());
         cbOption1.setSelectedItem(OSTab[0][currentSalle][currentDate]);
         cbOption2.setSelectedItem(OSTab[1][currentSalle][currentDate]);
         cbOption3.setSelectedItem(OSTab[2][currentSalle][currentDate]);
@@ -1128,10 +1253,12 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
         cbSalle1.setSelectedItem(salles[0][currentSalle][currentDate]);
         cbDisposition.setSelectedItem(salles[1][currentSalle][currentDate]);
         txtNombreParticipants.setText(salles[2][currentSalle][currentDate]);
-        
-        System.out.println(salles[0][0][currentDate]);
-        System.out.println(salles[0][1][currentDate]);
-        System.out.println(salles[0][2][currentDate]);
+        cbHeureDebut.setSelectedItem(salles[4][currentSalle][currentDate]);
+        cbHeureFin.setSelectedItem(salles[5][currentSalle][currentDate]);
+        cbFormule.setSelectedItem(salles[6][currentSalle][currentDate]);
+        System.out.println(salles[0][0][currentDate]+" SALLE 1");
+        System.out.println(salles[0][1][currentDate]+" SALLE 2");
+        System.out.println(salles[0][2][currentDate]+" SALLE 3");
     }
     
     public void CalendarChange(PropertyChangeEvent e){
@@ -1329,16 +1456,19 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
     
     public void setTab(String[][][] salles){
     	this.salles=salles;
-    	
     	cbSalle1.setSelectedItem(salles[0][0][0]);
     	cbDisposition.setSelectedItem(salles[1][0][0]);
     	txtNombreParticipants.setText(salles[2][0][0]);
+    	cbHeureDebut.setSelectedItem(salles[4][0][0]);
+    	cbHeureFin.setSelectedItem(salles[5][0][0]);
+    	cbFormule.setSelectedItem(salles[6][0][0]);
     	
     	currentDate=0;
     	currentSalle=0;
     	System.out.println("CA A MARCHE LOL");
-    	for(int i=0;i<4;++i)for(int j=0;j<3;++j)for(int k=0;k<365;++k)if(!this.salles[i][j][k].equals("Aucune"))System.out.println(this.salles[i][j][k]);
-    	for(int i=0;i<4;++i)for(int j=0;j<3;++j)for(int k=0;k<365;++k)if(!salles[i][j][k].equals("Aucune"))System.out.println(salles[i][j][k]);
+    	for(int i=0;i<6;++i)for(int j=0;j<3;++j)for(int k=0;k<365;++k)if(!this.salles[i][j][k].equals("Aucune"))System.out.println(this.salles[i][j][k]);
+    	for(int i=0;i<6;++i)for(int j=0;j<3;++j)for(int k=0;k<365;++k)if(!salles[i][j][k].equals("Aucune"))System.out.println(salles[i][j][k]);
+    	for(int i=0;i<6;++i)for(int j=0;j<3;++j)for(int k=0;k<365;++k)if(this.salles[i][j][k].equals("privatisation totale"))privat();
     }
     
     public void setOS(String[][][] OS){
@@ -1357,6 +1487,7 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
     	cbService5.setSelectedItem(OSTab[10][0][0]);
     	cbService6.setSelectedItem(OSTab[11][0][0]);
     	currentDate=0;
+    	currentSalle=0;
     	System.out.println("CA A MARCHE LOL");
     	for(int i=0;i<4;++i)for(int j=0;j<3;++j)for(int k=0;k<365;++k)if(!this.OSTab[i][j][k].equals("Aucune"))System.out.println(this.OSTab[i][j][k]);
     	for(int i=0;i<4;++i)for(int j=0;j<3;++j)for(int k=0;k<365;++k)if(!OS[i][j][k].equals("Aucune"))System.out.println(OS[i][j][k]);
@@ -1368,7 +1499,7 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
     	this.Ig=Ig;
     }
     
-	public void validation(int resadispo, String[] date, String horaireDebut, String horaireFin, String nbParticipants, double nbHeures, int idClient, int idFormule, int[][] idinfosalle, String[][][] OS, int[][] nbPersonnes) throws SQLException{
+	public void validation(int resadispo, String[] date, String[][] horaireDebut, String[][] horaireFin, String nbParticipants, double[][] nbHeures, int idClient, int[][] formules, int[][] idinfosalle, String[][][] OS, int[][] nbPersonnes) throws SQLException{
 	
 	}
 	
@@ -1429,7 +1560,7 @@ public abstract class AbstractPlanning extends javax.swing.JFrame {
     private String[] lesOptions = null;
     private String[] lesServices = null;
     private String[] lesClients = null;
-    private String[][][] salles= new String[4][3][365];
+    private String[][][] salles= new String[7][3][365];
     private String[][][] OSTab= new String[12][3][365];
     private String[] heures= {"09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","22:30","23:00"};
 }

@@ -27,10 +27,21 @@ public class operationModif implements Ioperation{
 		
 	}
 	
-	public void operationSalleResa (int[][] nbPersonnes, int idReservation, int[][] info, String[] date, int nbDate) throws SQLException{
+	public void operationSalleResa (int[][] nbPersonnes, int idReservation, int[][] info, String[][] horaireDebut, String[][] horaireFin, String[] date, int nbDate, double[][] nbHeures, int[][] formule) throws SQLException{
 		int[] idsalleresa = rq.getListedIntsById("salleResa", "idSallesResa", id, "fkidReservation");
-		//rq.deleteSalleResa(idReservation);
-		int stock=0;
+		for(int i:idsalleresa){
+			rq.deleteChoix(i);
+		}
+		rq.deleteSalleResa(idReservation);
+		for(int j=0;j<nbDate;++j){	
+			for(int i=0;i<3;++i){
+				if(nbPersonnes[i][j]!=0){				
+					rq.ajoutSalleResa(nbPersonnes[i][j], idReservation, info[i][j], horaireDebut[i][j], horaireFin[i][j], date[j], nbHeures[i][j], formule[i][j]);
+					System.out.println(date[nbDate-1]);
+				}
+			}
+		}
+		/*int stock=0;
 		for(int j=0;j<nbDate;++j){
 		for(int i=0;i<idsalleresa.length/3;++i){
 			if(nbPersonnes[i][j]!=0){
@@ -43,23 +54,23 @@ public class operationModif implements Ioperation{
 				rq.ajoutSalleResa(nbPersonnes[i][j], idReservation, info[i][j], date[j]);
 			}
 		}
-		}
+		}*/
 		
 	}
 	
 	public void operationChoix(String[][][] choix, int[] salleresa) throws SQLException{
 		for(int i:salleresa){
-			rq.deleteChoix(i);
+			//rq.deleteChoix(i);
 		}
 		for(int i=0;i<3;++i){
 			for(int j=0;j<12;++j){
 				for(int k=0; k<salleresa.length/3;k++){
 					if(salleresa[i+k*3]!=0){
-						
+						System.out.println(choix[j][i][k]);
 						if(!choix[j][i][k].equals("Aucune")){
 							System.out.println(choix[j][i][k]);
 							int c = rq.getIdOptionService(choix[j][i][k]);
-							System.out.println(c);
+							System.out.println(c+"C UN ID PUTAIN");
 							rq.ajoutChoix(c, salleresa[i+k*3]);
 						}
 					}

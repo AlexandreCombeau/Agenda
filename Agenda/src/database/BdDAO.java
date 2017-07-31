@@ -186,7 +186,7 @@ public class BdDAO {
         }
         
         public int getIdByTwoIntOneString(String table, String idnom, int nom1, String nomname1, int nom2, String nomname2, String nom3, String nomname3) throws SQLException{
-        	PreparedStatement request = co.getConnection().prepareStatement("Select "+idnom+" from "+table+" where "+nomname1+" = ? AND "+nomname2+"= ? AND "+nomname3+"= ?");
+        	PreparedStatement request = co.getConnection().prepareStatement("Select "+idnom+" from "+table+" where "+nomname1+" = ? AND "+nomname2+" = ? AND "+nomname3+" = ?");
         	
         	request.setInt(1, nom1);
         	request.setInt(2, nom2);
@@ -1343,6 +1343,7 @@ public class BdDAO {
         		debfin[1]=rs.getString("reservation.dateFin");
         	}
         	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        	SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         	int nbDates=0;
         	try {
 				nbDates = (int)( (sdf.parse(debfin[1]).getTime() - sdf.parse(debfin[0]).getTime()) / (1000 * 60 * 60 * 24)+1);
@@ -1366,10 +1367,11 @@ public class BdDAO {
             	Current=sdf.format(dat.getTime());
             	System.out.println(date[i]);
             }
-        	String query="SELECT salle.libelle, salleresa.date, disposition.libelle, salleresa.nbPersonnes, salle.descriptif FROM salleresa, salle, infosalle, disposition WHERE salleresa.fkidReservation="+idReservation+" AND salleresa.fkidInfoSalle=infosalle.idInfoSalle AND infosalle.fkidDisposition=disposition.idDisposition and infosalle.fkidSalle=salle.idSalle GROUP BY salle.libelle, disposition.libelle, salleresa.nbPersonnes, salle.descriptif, salleresa.date ORDER BY salle.libelle";
+        	String query="SELECT salleresa.idSallesResa, salle.libelle, salleresa.date, disposition.libelle, salleresa.nbPersonnes, salle.descriptif, salleresa.heureDebut, salleresa.heureFin, formule.libelle FROM salleresa, salle, infosalle, disposition, formule WHERE salleresa.fkidReservation="+idReservation+" AND salleresa.fkidInfoSalle=infosalle.idInfoSalle AND infosalle.fkidDisposition=disposition.idDisposition and infosalle.fkidSalle=salle.idSalle AND formule.idFormule=salleresa.fkidFormule GROUP BY salle.libelle, disposition.libelle, salleresa.nbPersonnes, salle.descriptif, salleresa.date, salleresa.heureDebut, salleresa.heureFin, formule.libelle ORDER BY salleresa.idSallesResa";
+        	System.out.println(query);
         	rs = co.query(query);
-        	String[][][] salle = new String[4][3][365];
-        	for(int i=0;i<4;++i)for(int j=0;j<3;++j)for(int k=0;k<365;++k)salle[i][j][k]="Aucune";
+        	String[][][] salle = new String[7][3][365];
+        	for(int i=0;i<7;++i)for(int j=0;j<3;++j)for(int k=0;k<365;++k)salle[i][j][k]="Aucune";
         	String[] nomsalle = new String[3];
         	for(String s:nomsalle)s="Aucune";
         	int lastsalle=0;
@@ -1387,7 +1389,10 @@ public class BdDAO {
         						salle[1][j][i]=rs.getString("disposition.libelle");
         						salle[2][j][i]=rs.getString("salleresa.nbPersonnes");
         						salle[3][j][i]=rs.getString("salle.descriptif");
-        						System.out.println(j+" "+i+" "+salle[0][j][i]+" "+salle[1][j][i]+" "+salle[2][j][i]+" "+salle[3][j][i]);
+        						salle[4][j][i]=formatter.format(rs.getTime("salleresa.heureDebut")).split(":")[0]+":"+formatter.format(rs.getTime("salleresa.heureDebut")).split(":")[1];
+        						salle[5][j][i]=formatter.format(rs.getTime("salleresa.heureFin")).split(":")[0]+":"+formatter.format(rs.getTime("salleresa.heureFin")).split(":")[1];
+        						salle[6][j][i]=rs.getString("formule.libelle");
+        						System.out.println(j+" "+i+" "+salle[0][j][i]+" "+salle[1][j][i]+" "+salle[2][j][i]+" "+salle[3][j][i]+" "+salle[4][j][i]+" "+salle[5][j][i]);
         					}
         				}
         			}
@@ -1398,6 +1403,7 @@ public class BdDAO {
         
         public String[][][] getOptnSrvc(int idReservation) throws SQLException{
         	String dates="SELECT reservation.dateDebut, reservation.dateFin FROM reservation WHERE idReservation="+idReservation+"";
+        	
         	rs = co.query(dates);
         	String[] debfin = new String [2];
         	while(rs.next()){
@@ -1428,7 +1434,8 @@ public class BdDAO {
             	Current=sdf.format(dat.getTime());
             	System.out.println(date[i]);
             }
-        	String query="SELECT salle.libelle, salleresa.date, optionservice.libelle, optionservice.nature FROM infosalle, optionservice, salleresa, salle, choix WHERE salleresa.fkidReservation="+idReservation+" AND salleresa.idSallesResa=choix.fkidSalleResa AND choix.fkidOptionsServices=optionservice.idOptionsServices AND salleresa.fkidInfoSalle=infosalle.idInfoSalle AND salle.idSalle=infosalle.fkidSalle GROUP BY optionservice.libelle, salleresa.date, salle.libelle, optionservice.nature ORDER BY salle.libelle";
+        	String query="SELECT salleresa.idSallesResa, salle.libelle, salleresa.date, optionservice.libelle, optionservice.nature FROM infosalle, optionservice, salleresa, salle, choix WHERE salleresa.fkidReservation="+idReservation+" AND salleresa.idSallesResa=choix.fkidSalleResa AND choix.fkidOptionsServices=optionservice.idOptionsServices AND salleresa.fkidInfoSalle=infosalle.idInfoSalle AND salle.idSalle=infosalle.fkidSalle GROUP BY optionservice.libelle, salleresa.date, salle.libelle, optionservice.nature ORDER BY salleresa.idSallesResa";
+        	System.out.println(query);
         	rs = co.query(query);
         	String[][][] opse = new String[12][3][365];
         	for(int i=0;i<12;++i)for(int j=0;j<3;++j)for(int k=0;k<365;++k)opse[i][j][k]="Aucune";
@@ -2172,10 +2179,10 @@ public class BdDAO {
         	 
         }
         
-        public void ajoutSalleResa(int nbPersonnes, int idReservation, int Info, String date){
+        public void ajoutSalleResa(int nbPersonnes, int idReservation, int Info, String horaireDebut, String horaireFin, String date, double nbHeures, int formule){
         	
         	
-            String nouvelleSalle = "INSERT INTO salleResa (nbPersonnes, fkidReservation, fkidInfoSalle, date) VALUES ("+nbPersonnes+", "+idReservation+", "+Info+", '"+date+"')";
+            String nouvelleSalle = "INSERT INTO salleResa (nbPersonnes, heureDebut, heureFin, nbHeures, fkidReservation, fkidInfoSalle, date, fkidFormule) VALUES ("+nbPersonnes+", '"+horaireDebut+"', '"+horaireFin+"', "+nbHeures+", "+idReservation+", "+Info+", '"+date+"', "+formule+")";
             co.execut(nouvelleSalle);
         }
         

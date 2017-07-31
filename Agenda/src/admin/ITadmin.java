@@ -852,7 +852,7 @@ public class ITadmin extends javax.swing.JFrame {
     	String strFac = (String)JOptionPane.showInputDialog(null, "Veuillez choisir facture a editer", "Edition de facture", JOptionPane.QUESTION_MESSAGE, null, Resa, Resa[0]);
         
     	int idReservation=Integer.parseInt(strFac);
-        String salle[] = rq.getSalleFromResa(idReservation);
+        //String salle[] = rq.getSalleFromResa(idReservation);
         //String infos[] = rq.getInfosReservation(idReservation);
         int idClient = rq.getIntById("reservation", "idReservation", "fkidClient", idReservation);
         String nomclient = rq.getStrById("client", "idClient", "nom", idClient);
@@ -860,8 +860,8 @@ public class ITadmin extends javax.swing.JFrame {
         String client = prenomclient+" "+nomclient;
         String date = rq.getStrById("reservation", "idReservation", "dateDebut", idReservation);
         String dateFin = rq.getStrById("reservation", "idReservation", "dateFin", idReservation);
-        String[] disposition = rq.getDispositionFromResa(idReservation);
-        int[] nbpers = rq.getNbpersonnesFromResa(idReservation);
+        //String[] disposition = rq.getDispositionFromResa(idReservation);
+        //int[] nbpers = rq.getNbpersonnesFromResa(idReservation);
         String formule = rq.getStrById("reservation", "idReservation", "fkidFormule", idReservation);
         String heureD = rq.getHourById("reservation", "idReservation", "heureDebut", idReservation);
         heureD = heureD.split(":")[0]+":"+heureD.split(":")[1];
@@ -871,27 +871,36 @@ public class ITadmin extends javax.swing.JFrame {
         //String disposition = "";
         //String salle = infos[9];
         int[] idSR=rq.getSalleResa(idReservation);
+        
         String[][][]salles=rq.getInfosResa(idReservation);
-        String option[][] = rq.getOptionsFromResa(idSR);
-        String service[][] = rq.getServicesFromResa(idSR);
+        String[][][] optionservice=rq.getOptnSrvc(idReservation);
+        //String option[][] = rq.getOptionsFromResa(idSR);
+        //String service[][] = rq.getServicesFromResa(idSR);
         
         //String salles[] = {"studio", "cabane", "bureau", "atelier"};
         String dispositions[] = {"ecole", "en U", "theatre", "salle vide", "central", "ilots"};
-    	planningEnregistrement fac=planningEnregistrement.creerFenetre(Integer.parseInt(strFac));
-        fac.setIg(Igeneration.getIg(2));
-        fac.setTab(salles);
-        fac.setClient(client);
-    	fac.setDisposition(disposition);
-    	fac.setNbPersonne(nbpers);
-    	fac.setDateDebut(date);
-    	fac.setSalle(salle);
-    	fac.setOptions(option);
-    	fac.setServices(service);
-    	fac.setDateFin(dateFin);
-    	fac.setFormule(formule);
-    	fac.setHeureDebut(heureD);
-    	fac.setHeureFin(heureF);
-        fac.setVisible(true);
+        
+        	
+        	
+            
+            planningEnregistrement fac=planningEnregistrement.creerFenetre(idReservation);
+            fac.setIg(Igeneration.getIg(2));
+            //fac.setTab(salles);
+            fac.setClient(client);
+        	//fac.setDisposition(disposition);
+        	//fac.setNbPersonne(nbpers);
+        	fac.setDateDebut(date);
+        	//fac.setSalle(salle);
+        	//fac.setOptions(option);
+        	//fac.setServices(service);
+        	//System.out.println("date marche");
+        	fac.setDateFin(dateFin);
+        	fac.setFormule(formule);
+        	fac.setHeureDebut(heureD);
+        	fac.setHeureFin(heureF);
+        	fac.setTab(salles);
+        	fac.setOS(optionservice);
+            fac.setVisible(true);
     	//creerFacture(Integer.parseInt(strFac));
         
     }//GEN-LAST:event_btnModifierActionPerformed

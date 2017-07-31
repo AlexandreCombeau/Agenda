@@ -8,7 +8,7 @@ import database.operationModif;
 
 public interface Ioperation {
 	public void operationResa (String Datedebut, String Datefin, String Heuredebut, String Heurefin, int nbPersonne, double nbHeure, int idClient, int idFormule);
-	public void operationSalleResa (int[][] nbPersonnes, int idReservation, int[][] info, String[] date, int nbDate) throws SQLException;
+	public void operationSalleResa (int[][] nbPersonnes, int idReservation, int[][] info,String[][] horaireDebut, String[][] horaireFin, String[] date, int nbDate, double[][] nbHeures, int[][] formule) throws SQLException;
 	public void operationChoix(String[][][] choix, int[] salleresa) throws SQLException;
 	public void operationUser(String nom, String prenom, String email, int admin, String login, String mdp);
 	public void operationTache(String nom, int type, String comment, String dateDebut, String dateFin, String horaireDebut, String horaireFin);

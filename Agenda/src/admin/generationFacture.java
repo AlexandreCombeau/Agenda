@@ -34,11 +34,13 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.IOUtils;
 
 public class generationFacture implements Igeneration{
-	public void generer(String[] client, String[] infos, String[][] salle, String[] equipements, String[] services, String[] commentaires, int nbPersonnes) throws FileNotFoundException, IOException, SQLException{
+	public void generer(String[] client, String[][][] salle, String[] equipements, String[] services, String[] commentaires) throws FileNotFoundException, IOException, SQLException{
 	    
 	/*
     DEFINITION DES VARIABLES
-    */
+    
+	*/
+	System.out.println("GENERATION TEXTO");
     HSSFWorkbook wb = new HSSFWorkbook();
     HSSFSheet sheet = wb.createSheet("Format");
     HSSFCellStyle cellStyle = null;
